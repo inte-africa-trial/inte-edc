@@ -20,6 +20,8 @@ from edc_auth.group_permissions_updater import GroupPermissionsUpdater
 
 style = color_style()
 
+protocol_number = "102"
+
 
 def post_migrate_update_edc_auth(sender=None, **kwargs):
     from inte_auth.codenames_by_group import get_codenames_by_group
@@ -47,7 +49,7 @@ class EdcProtocolAppConfig(BaseEdcProtocolAppConfig):
     project_repo = "https://github.com/inte-africa-trail"
     protocol = "INTE"
     protocol_name = "INTE"
-    protocol_number = "102"
+    protocol_number = protocol_number
     protocol_title = "INTE Africa Trial"
     study_open_datetime = datetime(2019, 7, 31, 0, 0, 0, tzinfo=gettz("UTC"))
     study_close_datetime = datetime(
@@ -64,10 +66,9 @@ class EdcVisitTrackingAppConfig(BaseEdcVisitTrackingAppConfig):
         "subject_visit", "inte_subject.subjectvisit")}
 
 
-# TODO: this is ignored for identifiers
 class EdcIdentifierAppConfig(BaseEdcIdentifierAppConfig):
-    identifier_prefix = "101"
-    subject_identifier_pattern = "101\-[0-9\-]+"
+    identifier_prefix = protocol_number
+    subject_identifier_pattern = f"{protocol_number}\-[0-9\-]+"
 
 
 class EdcMetadataAppConfig(BaseEdcMetadataAppConfig):
