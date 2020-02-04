@@ -10,6 +10,7 @@ Install dependencies
 	sudo apt-get update
 	sudo apt-get -y upgrade
 	sudo apt-get -y install mysql-server-5.7
+	sudo apt-get install python3.7-dev default-libmysqlclient-dev
 
 
 Login to MySQL as non-root account
