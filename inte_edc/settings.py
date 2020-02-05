@@ -15,7 +15,8 @@ except AssertionError:
         "Incorrect python version. Expected 3.6 or 3.7. Check your environment."
     )
 
-BASE_DIR = str(Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+BASE_DIR = str(Path(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__)))))
 
 env = environ.Env(
     AWS_ENABLED=(bool, False),
@@ -281,7 +282,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = env.str("DJANGO_LANGUAGE_CODE")
 
-LANGUAGES = [x.split(":") for x in env.list("DJANGO_LANGUAGES")] or (("en", "English"),)
+LANGUAGES = [x.split(":") for x in env.list(
+    "DJANGO_LANGUAGES")] or (("en", "English"),)
 
 TIME_ZONE = env.str("DJANGO_TIME_ZONE")
 
@@ -378,7 +380,8 @@ AUTO_CREATE_KEYS = env.str("DJANGO_AUTO_CREATE_KEYS")
 EXPORT_FOLDER = env.str("DJANGO_EXPORT_FOLDER") or os.path.expanduser("~/")
 
 # django_simple_history
-SIMPLE_HISTORY_PERMISSIONS_ENABLED = env.str("SIMPLE_HISTORY_PERMISSIONS_ENABLED")
+SIMPLE_HISTORY_PERMISSIONS_ENABLED = env.str(
+    "SIMPLE_HISTORY_PERMISSIONS_ENABLED")
 SIMPLE_HISTORY_REVERT_DISABLED = env.str("SIMPLE_HISTORY_REVERT_DISABLED")
 
 FQDN = env.str("DJANGO_FQDN")
@@ -404,11 +407,13 @@ DATA_DICTIONARY_APP_LABELS = [
 EDC_RANDOMIZATION_LIST_FILE = env.str("EDC_RANDOMIZATION_LIST_FILE")
 EDC_RANDOMIZATION_BLINDED_TRIAL = env("EDC_RANDOMIZATION_BLINDED_TRIAL")
 if EDC_RANDOMIZATION_BLINDED_TRIAL:
-    EDC_RANDOMIZATION_UNBLINDED_USERS = env.list("EDC_RANDOMIZATION_UNBLINDED_USERS")
+    EDC_RANDOMIZATION_UNBLINDED_USERS = env.list(
+        "EDC_RANDOMIZATION_UNBLINDED_USERS")
 else:
     EDC_RANDOMIZATION_UNBLINDED_USERS = []
 
 EDC_RANDOMIZATION_LIST_MODEL = env.str("EDC_RANDOMIZATION_LIST_MODEL")
+EDC_RANDOMIZATION_ASSIGNMENT_MAP = env.dict("EDC_RANDOMIZATION_ASSIGNMENT_MAP")
 
 # static
 if env("AWS_ENABLED"):
