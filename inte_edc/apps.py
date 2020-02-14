@@ -7,8 +7,6 @@ from django.apps import apps as django_apps
 from django.core.checks import register
 from django.core.management.color import color_style
 from django.db.models.signals import post_migrate
-from edc_appointment.appointment_config import AppointmentConfig
-from edc_appointment.apps import AppConfig as BaseEdcAppointmentAppConfig
 from edc_device.apps import AppConfig as BaseEdcDeviceAppConfig
 from edc_device.constants import CENTRAL_SERVER
 from edc_facility.apps import AppConfig as BaseEdcFacilityAppConfig
@@ -45,10 +43,10 @@ class AppConfig(DjangoAppConfig):
 
 class EdcProtocolAppConfig(BaseEdcProtocolAppConfig):
     institution = "Liverpool School of Tropical Medicine (LSTM)"
-    project_name = "INTE"
+    project_name = "INTE-Africa"
     project_repo = "https://github.com/inte-africa-trail"
     protocol = "INTE"
-    protocol_name = "INTE"
+    protocol_name = "INTE-Africa"
     protocol_number = protocol_number
     protocol_title = "INTE Africa Trial"
     study_open_datetime = datetime(2019, 7, 31, 0, 0, 0, tzinfo=gettz("UTC"))
@@ -71,16 +69,6 @@ class EdcIdentifierAppConfig(BaseEdcIdentifierAppConfig):
 
 class EdcMetadataAppConfig(BaseEdcMetadataAppConfig):
     reason_field = {"inte_subject.subjectvisit": "reason"}
-
-
-class EdcAppointmentAppConfig(BaseEdcAppointmentAppConfig):
-    configurations = [
-        AppointmentConfig(
-            model="edc_appointment.appointment",
-            related_visit_model="inte_subject.subjectvisit",
-            appt_type="hospital",
-        )
-    ]
 
 
 class EdcFacilityAppConfig(BaseEdcFacilityAppConfig):

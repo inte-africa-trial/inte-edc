@@ -21,9 +21,9 @@ BASE_DIR = str(Path(os.path.dirname(
 env = environ.Env(
     AWS_ENABLED=(bool, False),
     CDN_ENABLED=(bool, False),
-    EDC_RANDOMIZATION_BLINDED_TRIAL=(bool, False),
     DATABASE_SQLITE_ENABLED=(bool, False),
     DJANGO_AUTO_CREATE_KEYS=(bool, False),
+    DJANGO_CRYPTO_FIELDS_TEMP_PATH=(bool, False),
     DJANGO_CSRF_COOKIE_SECURE=(bool, True),
     DJANGO_DEBUG=(bool, False),
     DJANGO_EDC_BOOTSTRAP=(int, 3),
@@ -35,11 +35,12 @@ env = environ.Env(
     DJANGO_USE_I18N=(bool, True),
     DJANGO_USE_L10N=(bool, False),
     DJANGO_USE_TZ=(bool, True),
+    EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER=(bool, True),
     SAUCE_ENABLED=(bool, False),
     SENTRY_ENABLED=(bool, False),
-    TWILIO_ENABLED=(bool, False),
     SIMPLE_HISTORY_PERMISSIONS_ENABLED=(bool, False),
     SIMPLE_HISTORY_REVERT_DISABLED=(bool, False),
+    TWILIO_ENABLED=(bool, False),
 )
 
 # copy your .env file from .envs/ to BASE_DIR
@@ -97,6 +98,7 @@ INSTALLED_APPS = [
     "simple_history",
     "storages",
     "edc_action_item.apps.AppConfig",
+    "edc_appointment.apps.AppConfig",
     "edc_adverse_event.apps.AppConfig",
     "edc_auth.apps.AppConfig",
     "edc_consent.apps.AppConfig",
@@ -143,7 +145,7 @@ INSTALLED_APPS = [
     "inte_export.apps.AppConfig",
     "inte_screening.apps.AppConfig",
     "inte_sites.apps.AppConfig",
-    "inte_edc.apps.EdcAppointmentAppConfig",
+    # "inte_edc.apps.EdcAppointmentAppConfig",
     "inte_edc.apps.EdcDeviceAppConfig",
     "inte_edc.apps.EdcIdentifierAppConfig",
     "inte_edc.apps.EdcMetadataAppConfig",
@@ -404,17 +406,9 @@ DATA_DICTIONARY_APP_LABELS = [
 ]
 
 # edc_randomization
-EDC_RANDOMIZATION_LIST_FILE = env.str("EDC_RANDOMIZATION_LIST_FILE")
-EDC_RANDOMIZATION_BLINDED_TRIAL = env("EDC_RANDOMIZATION_BLINDED_TRIAL")
-if EDC_RANDOMIZATION_BLINDED_TRIAL:
-    EDC_RANDOMIZATION_UNBLINDED_USERS = env.list(
-        "EDC_RANDOMIZATION_UNBLINDED_USERS")
-else:
-    EDC_RANDOMIZATION_UNBLINDED_USERS = []
-
-EDC_RANDOMIZATION_LIST_MODEL = env.str("EDC_RANDOMIZATION_LIST_MODEL")
-EDC_RANDOMIZATION_ASSIGNMENT_MAP = env.dict("EDC_RANDOMIZATION_ASSIGNMENT_MAP")
-
+EDC_RANDOMIZATION_LIST_PATH = env.str("EDC_RANDOMIZATION_LIST_PATH")
+EDC_RANDOMIZATION_UNBLINDED_USERS = env.list("EDC_RANDOMIZATION_UNBLINDED_USERS")
+EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER = env("EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER")
 # static
 if env("AWS_ENABLED"):
     # see
@@ -451,18 +445,11 @@ else:
     if env("DJANGO_LOGGING_ENABLED"):
         from .logging.standard import LOGGING  # noqa
 
-# if SENTRY_ENABLED:
-#     import raven  # noqa
-#     from .logging.raven import LOGGING  # noqa
-#
-#     SENTRY_DSN = env.str("SENTRY_DSN")
-#     RAVEN_CONFIG = {"dsn": SENTRY_DSN,
-#                     "release": raven.fetch_git_sha(BASE_DIR)}
-# else:
-#     if env("DJANGO_LOGGING_ENABLED"):
-#         from .logging.standard import LOGGING  # noqa
-
 if "test" in sys.argv:
+    ETC_DIR = os.path.join(BASE_DIR, "inte_edc", "tests", "etc")
+    KEY_PATH = os.path.join(BASE_DIR, "inte_edc", "tests", "etc")
+    DJANGO_CRYPTO_FIELDS_TEMP_PATH = env("DJANGO_CRYPTO_FIELDS_TEMP_PATH")
+
 
     class DisableMigrations:
         def __contains__(self, item):
@@ -471,10 +458,7 @@ if "test" in sys.argv:
         def __getitem__(self, item):
             return None
 
+
     MIGRATION_MODULES = DisableMigrations()
     PASSWORD_HASHERS = ("django.contrib.auth.hashers.MD5PasswordHasher",)
     DEFAULT_FILE_STORAGE = "inmemorystorage.InMemoryStorage"
-
-    if env("SAUCE_ENABLED"):
-        SAUCE_USERNAME = env.str("SAUCE_USERNAME")
-        SAUCE_ACCESS_KEY = env.str("SAUCE_ACCESS_KEY")
