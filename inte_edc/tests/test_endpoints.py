@@ -2,15 +2,13 @@ import sys
 
 from dateutil.relativedelta import relativedelta
 from django.apps import apps as django_apps
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.core.management.color import color_style
-from django.test import tag
+from django.test import tag, TestCase
 from django.test.utils import override_settings
 from django.urls.base import reverse
 from django.urls.exceptions import NoReverseMatch
-from django_webtest import WebTest
 from edc_appointment.constants import IN_PROGRESS_APPT, SCHEDULED_APPT
 from edc_appointment.models import Appointment
 from edc_auth import TMG, EVERYONE, AUDITOR, CLINIC, PII, EXPORT, LAB
@@ -20,14 +18,13 @@ from edc_utils import get_utcnow
 from inte_screening.tests.inte_test_case_mixin import InteTestCaseMixin
 from inte_sites.sites import inte_sites, fqdn
 from model_bakery import baker
-from webtest.app import AppError
 from inte_screening.models.subject_screening import SubjectScreening
 
 style = color_style()
 
 User = get_user_model()
 
-app_prefix = "ambition"
+app_prefix = "inte"
 
 
 def login(testcase, user=None, superuser=None, groups=None):
@@ -40,40 +37,29 @@ def login(testcase, user=None, superuser=None, groups=None):
         for group_name in groups:
             group = Group.objects.get(name=group_name)
             user.groups.add(group)
-    form = testcase.app.get(reverse(settings.LOGIN_REDIRECT_URL)).maybe_follow().form
-    form["username"] = user.username
-    form["password"] = "pass"
-    return form.submit()
+    return testcase.client.force_login(user or testcase.user)
 
 
 @override_settings(SIMPLE_HISTORY_PERMISSIONS_ENABLED=True)
-class AdminSiteTest(InteTestCaseMixin, WebTest):
+class AdminSiteTest(InteTestCaseMixin, TestCase):
     def setUp(self):
         self.user = User.objects.create_superuser("user_login", "u@example.com", "pass")
 
-    def login(self, **kwargs):
-        return login(self, **kwargs)
-
-    @tag("2")
-    @tag("webtest")
     def test_ae(self):
         self.login(superuser=False, groups=[EVERYONE, AUDITOR])
-        response = self.app.get(reverse("inte_ae:home_url"), user=self.user, status=200)
-        response = self.app.get(
-            reverse("edc_adverse_event:ae_home_url"), user=self.user, status=200
-        )
-        response = self.app.get(
-            reverse("edc_adverse_event:tmg_home_url"), user=self.user, status=200
-        )
-        response = self.app.get(
-            reverse("edc_data_manager:home_url"), user=self.user, status=200
-        )
+        response = self.client.get(reverse("inte_ae:home_url"))
+        self.assertEquals(response.status_code, 200)
+        response = self.client.get(reverse("edc_adverse_event:ae_home_url"))
+        self.assertEquals(response.status_code, 200)
+        response = self.client.get(reverse("edc_adverse_event:tmg_home_url"))
+        self.assertEquals(response.status_code, 200)
+        response = self.client.get(reverse("edc_data_manager:home_url"))
+        self.assertEquals(response.status_code, 200)
 
-    @tag("1")
-    @tag("webtest")
     def test_home_everyone(self):
         self.login(superuser=False, groups=[EVERYONE])
-        response = self.app.get(reverse("home_url"), user=self.user, status=200)
+        response = self.client.get(reverse("home_url"))
+        self.assertEquals(response.status_code, 200)
         self.assertNotIn("Screening", response)
         self.assertNotIn("Subjects", response)
         self.assertNotIn("Specimens", response)
@@ -86,11 +72,10 @@ class AdminSiteTest(InteTestCaseMixin, WebTest):
         self.assertIn("Switch sites", response)
         self.assertIn("Log out", response)
 
-    @tag("1")
-    @tag("webtest")
     def test_home_auditor(self):
         self.login(superuser=False, groups=[EVERYONE, AUDITOR])
-        response = self.app.get(reverse("home_url"), user=self.user, status=200)
+        response = self.client.get(reverse("home_url"))
+        self.assertEquals(response.status_code, 200)
         self.assertIn("Screening", response)
         self.assertIn("Subjects", response)
         self.assertIn("Specimens", response)
@@ -103,11 +88,9 @@ class AdminSiteTest(InteTestCaseMixin, WebTest):
         self.assertIn("Switch sites", response)
         self.assertIn("Log out", response)
 
-    @tag("1")
-    @tag("webtest")
     def test_home_clinic(self):
         self.login(superuser=False, groups=[EVERYONE, CLINIC, PII])
-        response = self.app.get(reverse("home_url"), user=self.user, status=200)
+        response = self.client.get(reverse("home_url"))
         self.assertIn("Screening", response)
         self.assertIn("Subjects", response)
         self.assertIn("Specimens", response)
@@ -120,11 +103,9 @@ class AdminSiteTest(InteTestCaseMixin, WebTest):
         self.assertIn("Switch sites", response)
         self.assertIn("Log out", response)
 
-    @tag("1")
-    @tag("webtest")
     def test_home_export(self):
         self.login(superuser=False, groups=[EVERYONE, EXPORT])
-        response = self.app.get(reverse("home_url"), user=self.user, status=200)
+        response = self.client.get(reverse("home_url"))
         self.assertNotIn("Screening", response)
         self.assertNotIn("Subjects", response)
         self.assertNotIn("Specimens", response)
@@ -135,13 +116,13 @@ class AdminSiteTest(InteTestCaseMixin, WebTest):
         self.assertIn("Export data", response)
         self.assertNotIn("Synchronization", response)
         self.assertIn("Switch sites", response)
-        self.assertIn("Log out", response)
+        self.assertIn("Log out", response) \
+ \
+        @ tag("1")
 
-    @tag("1")
-    @tag("webtest")
     def test_home_tmg(self):
         self.login(superuser=False, groups=[EVERYONE, TMG])
-        response = self.app.get(reverse("home_url"), user=self.user, status=200)
+        response = self.client.get(reverse("home_url"))
         self.assertIn("Screening", response)
         self.assertIn("Subjects", response)
         self.assertNotIn("Specimens", response)
@@ -154,11 +135,9 @@ class AdminSiteTest(InteTestCaseMixin, WebTest):
         self.assertIn("Switch sites", response)
         self.assertIn("Log out", response)
 
-    @tag("1")
-    @tag("webtest")
     def test_home_lab(self):
         self.login(superuser=False, groups=[EVERYONE, LAB])
-        response = self.app.get(reverse("home_url"), user=self.user, status=200)
+        response = self.client.get(reverse("home_url"))
         self.assertIn("Screening", response)
         self.assertIn("Subjects", response)
         self.assertIn("Specimens", response)
@@ -171,22 +150,19 @@ class AdminSiteTest(InteTestCaseMixin, WebTest):
         self.assertIn("Switch sites", response)
         self.assertIn("Log out", response)
 
-    @tag("1")
-    @tag("webtest")
     def test_screening_no_pii(self):
         self.login(superuser=False, groups=[EVERYONE, CLINIC])
-        home_page = self.app.get(reverse("home_url"), user=self.user, status=200)
+        home_page = self.client.get(reverse("home_url"))
         screening_page = home_page.click(description="Screening", index=1)
         self.assertNotIn("Add SubjectScreening", screening_page)
 
-    @tag("webtest")
     def test_screening_form(self):
         subject_screening = baker.prepare_recipe(
             f"{app_prefix}_screening.subjectscreening"
         )
         self.login(superuser=False, groups=[EVERYONE, CLINIC, PII])
 
-        home_page = self.app.get(reverse("home_url"), user=self.user, status=200)
+        home_page = self.client.get(reverse("home_url"))
         screening_listboard_page = home_page.click(description="Screening", index=1)
         add_screening_page = screening_listboard_page.click(
             description="Add Subject Screening"
@@ -220,18 +196,13 @@ class AdminSiteTest(InteTestCaseMixin, WebTest):
 
         self.assertEqual(add_subjectconsent_page.status_code, 200)
 
-    @tag("webtest")
     def test_to_subject_dashboard(self):
         add_or_update_django_sites(apps=django_apps, sites=inte_sites, fqdn=fqdn)
-        #         RandomizationListImporter()
-        #         update_permissions()
-        #         import_holidays()
-        #         site_list_data.autodiscover()
         self.login(superuser=False, groups=[EVERYONE, CLINIC, PII])
 
         subject_screening = baker.make_recipe("inte_screening.subjectscreening")
 
-        home_page = self.app.get(reverse("home_url"), user=self.user, status=200)
+        home_page = self.client.get(reverse("home_url"))
         screening_listboard_page = home_page.click(description="Screening", index=1)
 
         add_subjectconsent_page = screening_listboard_page.click(
@@ -253,7 +224,7 @@ class AdminSiteTest(InteTestCaseMixin, WebTest):
             consent_datetime=get_utcnow(),
         )
 
-        home_page = self.app.get(reverse("home_url"), user=self.user, status=200)
+        home_page = self.client.get(reverse("home_url"), user=self.user, status=200)
         screening_listboard_page = home_page.click(description="Screening", index=1)
 
         self.assertIn("Dashboard", screening_listboard_page)
@@ -262,7 +233,7 @@ class AdminSiteTest(InteTestCaseMixin, WebTest):
             screening_listboard_page,
         )
 
-        home_page = self.app.get(reverse("home_url"), user=self.user, status=200)
+        home_page = self.client.get(reverse("home_url"), user=self.user, status=200)
         subject_listboard_page = home_page.click(description="Subjects", index=1)
 
         self.assertIn(subject_consent.subject_identifier, subject_listboard_page)
@@ -295,7 +266,7 @@ class AdminSiteTest(InteTestCaseMixin, WebTest):
             f"/subject/subject_dashboard/{subject_identifier}/",
         )
 
-        subject_dashboard_page = self.app.get(
+        subject_dashboard_page = self.client.get(
             subject_dashboard_page.url, user=self.user, status=200
         )
 
@@ -317,7 +288,7 @@ class AdminSiteTest(InteTestCaseMixin, WebTest):
         self.assertEqual(subject_dashboard_page.status_code, 302)
         self.assertEqual(subject_dashboard_page.url, url)
 
-        subject_dashboard_page = self.app.get(
+        subject_dashboard_page = self.client.get(
             reverse(
                 "meta_dashboard:subject_dashboard_url",
                 kwargs=dict(
@@ -348,11 +319,10 @@ class AdminSiteTest(InteTestCaseMixin, WebTest):
                     )
                 )
             else:
-                try:
-                    self.app.get(url, user=self.user, status=200)
-                except AppError as e:
+                response = self.client.get(url)
+                if response.status_code != 200:
                     sys.stdout.write(
-                        style.ERROR(f" - '{url_name}'. Got `AppError`: {e}\n")
+                        style.ERROR(f" - '{url_name}'. Got `{response.status_code}`\n")
                     )
                 else:
                     sys.stdout.write(style.SUCCESS(f" - '{url_name}'->{url}\n"))
