@@ -189,3 +189,79 @@ Now check that the DB server will allow access
 
 See document ``prepare_database``
 
+Removing support for TLS 1.0, 1.1
+=================================
+
+See https://libre-software.net/tls-nginx/
+
+.. code-block:: bash
+
+    sudo nano /etc/nginx/nginx.conf
+
+Look for the following line within a http { } block. This line may (or may not) be commented after a hash as follows:
+
+.. code-block:: bash
+
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE
+
+... and change to:
+
+.. code-block:: bash
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+Test the configuration and reload
+
+.. code-block:: bash
+
+    nginx -t
+    sudo service nginx reload
+
+Edit ``edit options-ssl-nginx.conf``
+
+.. code-block:: bash
+
+    sudo nano /etc/letsencrypt/options-ssl-nginx.conf
+
+Again, remove TLSv1 and TLSv1.1 in the following line and add TLSv1.3:
+
+.. code-block:: bash
+
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+The line should look like this:
+
+.. code-block:: bash
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+Check if renewal works using:
+
+.. code-block:: bash
+
+    sudo certbot renew --dry-run
+
+Enable HTTP/2 in Nginx
+======================
+
+
+sudo nano /etc/nginx/sites-available/inte.conf
+
+change
+
+.. code-block:: bash
+
+    listen 443 ssl; # managed by Certbot
+
+to
+
+.. code-block:: bash
+
+    listen 443 ssl http2; # managed by Certbot
+
+Test the configuration and reload
+
+.. code-block:: bash
+
+    nginx -t
+    sudo service nginx reload
