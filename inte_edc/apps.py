@@ -37,8 +37,12 @@ class AppConfig(DjangoAppConfig):
 
         from edc_randomization.system_checks import randomization_list_check
 
-        register(randomization_list_check)(["inte_edc"])
+        register(randomization_list_check)([self.name])
         # register(inte_check)
+
+
+class AppConfigForTests(DjangoAppConfig):
+    name = "inte_edc"
 
 
 class EdcProtocolAppConfig(BaseEdcProtocolAppConfig):
