@@ -46,20 +46,6 @@
 # -e /Users/erikvw/source/django-collect-offline-files  #develop#egg=django-collect-offline-files
 -e /Users/erikvw/source/django-crypto-fields  #develop#egg=django-crypto-fields
 -e /Users/erikvw/source/django-revision  #develop#egg=django-revision
--e /Users/erikvw/source/inte-ae  #develop#egg=inte-ae
--e /Users/erikvw/source/inte-dashboard  #develop#egg=inte-dashboard
--e /Users/erikvw/source/inte-export
--e /Users/erikvw/source/inte-labs  #develop#egg=inte-labs
--e /Users/erikvw/source/inte-metadata-rules  #develop#egg=inte-metadata-rules
--e /Users/erikvw/source/inte-auth
--e /Users/erikvw/source/inte-prn  #develop#egg=inte-prn
--e /Users/erikvw/source/inte-reference  #develop#egg=inte-reference
--e /Users/erikvw/source/inte-screening  #develop#egg=inte-screening
--e /Users/erikvw/source/inte-sites
--e /Users/erikvw/source/inte-subject  #develop#egg=inte-subject
--e /Users/erikvw/source/inte-form-validators  #develop#egg=inte-form-validators
--e /Users/erikvw/source/inte-visit-schedule  #develop#egg=inte-visit-schedule
--e /Users/erikvw/source/inte-lists
 -e .
 git+https://github.com/erikvw/django-simple-history@admin_revert_permissions
-Django[argon2]==2.2.9
+Django[argon2]==2.2.10
