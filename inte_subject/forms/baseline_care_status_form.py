@@ -15,23 +15,30 @@ from ..models import BaselineCareStatus
 
 
 class BaselineCareStatusForm(
-    SiteModelFormMixin, RequiresConsentModelFormMixin, FormValidatorMixin, forms.ModelForm
+    SiteModelFormMixin,
+    RequiresConsentModelFormMixin,
+    FormValidatorMixin,
+    forms.ModelForm,
 ):
     form_validator_cls = BaselineCareStatusFormValidator
 
     def clean(self):
         cleaned_data = super().clean()
 
-        if self.cleaned_data.get("attending_hiv_clinic") != YES and self.enroled_from_clinic(HIV):
+        if (
+            self.cleaned_data.get("attending_hiv_clinic") != YES
+            and self.primary_enrolment_clinic == HIV_CLINIC
+        ):
             raise forms.ValidationError(
-                {"attending_hiv_clinic": "Subject was enrolled from an HIV Clinic."
-                 }
+                {"attending_hiv_clinic": "Subject was enrolled from an HIV Clinic."}
             )
 
-        if self.cleaned_data.get("attending_ncd_clinic") != YES and self.enroled_from_clinic(NCD):
+        if (
+            self.cleaned_data.get("attending_ncd_clinic") != YES
+            and self.primary_enrolment_clinic == NCD_CLINIC
+        ):
             raise forms.ValidationError(
-                {"attending_hiv_clinic": "Subject was enrolled from an HIV Clinic."
-                 }
+                {"attending_hiv_clinic": "Subject was enrolled from an HIV Clinic."}
             )
 
         return cleaned_data
@@ -44,14 +51,13 @@ class BaselineCareStatusForm(
     def subject_visit(self):
         return self.cleaned_data.get("subject_visit")
 
-    def enroled_from_clinic(self):
-        consent = self.get_consent(subject_identifier=self.subject_visit.subject_identifier,
-                                   report_datetime=self.cleaned_data.get("report_datetime"))
-        if consent.clinic_type == HIV_CLINIC:
-            return HIV
-        elif consent.clinic_type == NCD_CLINIC:
-            return NCD
-        return None
+    @property
+    def primary_enrolment_clinic(self):
+        obj = self.get_consent(
+            subject_identifier=self.subject_visit.subject_identifier,
+            report_datetime=self.cleaned_data.get("report_datetime"),
+        )
+        return obj.clinic_type
 
     class Meta:
         model = BaselineCareStatus

@@ -1,9 +1,20 @@
 from dateutil.relativedelta import relativedelta
 from edc_visit_schedule import Schedule, Visit as BaseVisit
 from edc_visit_schedule.constants import (
-    DAY1, MONTH6, MONTH12, MONTH4, MONTH3, MONTH2, MONTH5, MONTH7, MONTH8, MONTH9,
-    MONTH1, MONTH11,
-    MONTH10)
+    DAY1,
+    MONTH6,
+    MONTH12,
+    MONTH4,
+    MONTH3,
+    MONTH2,
+    MONTH5,
+    MONTH7,
+    MONTH8,
+    MONTH9,
+    MONTH1,
+    MONTH11,
+    MONTH10,
+)
 
 from .crfs import (
     crfs_d1,
@@ -47,13 +58,13 @@ SCHEDULE_NCD = "schedule_ncd"
 
 class Visit(BaseVisit):
     def __init__(
-            self,
-            crfs_unscheduled=None,
-            requisitions_unscheduled=None,
-            crfs_prn=None,
-            requisitions_prn=None,
-            allow_unscheduled=None,
-            **kwargs
+        self,
+        crfs_unscheduled=None,
+        requisitions_unscheduled=None,
+        crfs_prn=None,
+        requisitions_prn=None,
+        allow_unscheduled=None,
+        **kwargs
     ):
         super().__init__(
             allow_unscheduled=True if allow_unscheduled is None else allow_unscheduled,

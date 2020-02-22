@@ -29,7 +29,7 @@ class TestGeneralAssessmentInitial(InteTestCaseMixin, TestCase):
             subject_visit=self.subject_visit.pk,
             report_datetime=self.subject_visit.report_datetime,
             hiv_next_appt_date=self.subject_visit.report_datetime
-                               + relativedelta(months=1),
+            + relativedelta(months=1),
         )
 
     def test_ok(self):
@@ -40,7 +40,7 @@ class TestGeneralAssessmentInitial(InteTestCaseMixin, TestCase):
     def test_hiv_next_appt_date_applicable(self):
         self.data.update(
             hiv_next_appt_date=self.subject_visit.report_datetime
-                               + relativedelta(months=1)
+            + relativedelta(months=1)
         )
         form = GeneralAssessmentInitialForm(data=self.data)
         form.is_valid()
@@ -49,7 +49,7 @@ class TestGeneralAssessmentInitial(InteTestCaseMixin, TestCase):
     def test_ncd_next_appt_date_not_applicable(self):
         self.data.update(
             ncd_next_appt_date=self.subject_visit.report_datetime
-                               + relativedelta(months=1)
+            + relativedelta(months=1)
         )
         form = GeneralAssessmentInitialForm(data=self.data)
         form.is_valid()
@@ -58,7 +58,7 @@ class TestGeneralAssessmentInitial(InteTestCaseMixin, TestCase):
     def test_hiv_next_appt_date_is_future(self):
         self.data.update(
             hiv_next_appt_date=self.subject_visit.report_datetime
-                               - relativedelta(months=1)
+            - relativedelta(months=1)
         )
         form = GeneralAssessmentInitialForm(data=self.data)
         form.is_valid()
@@ -67,12 +67,12 @@ class TestGeneralAssessmentInitial(InteTestCaseMixin, TestCase):
     def test_ncd_next_appt_date_is_future(self):
         self.data.update(
             hiv_next_appt_date=self.subject_visit.report_datetime
-                               + relativedelta(months=1),
+            + relativedelta(months=1),
             diabetic=YES,
             attending_ncd_clinic=YES,
             use_ncd_clinic_nearby=YES,
             ncd_next_appt_date=self.subject_visit.report_datetime
-                               - relativedelta(months=1),
+            - relativedelta(months=1),
         )
         form = GeneralAssessmentInitialForm(data=self.data)
         form.is_valid()

@@ -32,7 +32,7 @@ class TestFormValidators(InteTestCaseMixin, TestCase):
             confirm_identity="77777777",
             gender=MALE,
         )
-        validator = SubjectConsentFormValidator(cleaned_data=cleaned_data, )
+        validator = SubjectConsentFormValidator(cleaned_data=cleaned_data,)
         validator.clean()
 
     def test_consent_before_eligibility_datetime(self):
@@ -49,7 +49,7 @@ class TestFormValidators(InteTestCaseMixin, TestCase):
             confirm_identity="77777777",
             gender=MALE,
         )
-        validator = SubjectConsentFormValidator(cleaned_data=cleaned_data, )
+        validator = SubjectConsentFormValidator(cleaned_data=cleaned_data,)
         self.assertRaises(forms.ValidationError, validator.clean)
         with self.assertRaises(forms.ValidationError) as cm:
             validator.clean()
@@ -69,7 +69,7 @@ class TestFormValidators(InteTestCaseMixin, TestCase):
             confirm_identity="77777777",
             gender=MALE,
         )
-        validator = SubjectConsentFormValidator(cleaned_data=cleaned_data, )
+        validator = SubjectConsentFormValidator(cleaned_data=cleaned_data,)
         try:
             validator.clean()
         except forms.ValidationError:

@@ -15,8 +15,7 @@ except AssertionError:
         "Incorrect python version. Expected 3.6 or 3.7. Check your environment."
     )
 
-BASE_DIR = str(Path(os.path.dirname(
-    os.path.dirname(os.path.abspath(__file__)))))
+BASE_DIR = str(Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 env = environ.Env(
     AWS_ENABLED=(bool, False),
@@ -284,8 +283,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = env.str("DJANGO_LANGUAGE_CODE")
 
-LANGUAGES = [x.split(":") for x in env.list(
-    "DJANGO_LANGUAGES")] or (("en", "English"),)
+LANGUAGES = [x.split(":") for x in env.list("DJANGO_LANGUAGES")] or (("en", "English"),)
 
 TIME_ZONE = env.str("DJANGO_TIME_ZONE")
 
@@ -382,8 +380,7 @@ AUTO_CREATE_KEYS = env.str("DJANGO_AUTO_CREATE_KEYS")
 EXPORT_FOLDER = env.str("DJANGO_EXPORT_FOLDER") or os.path.expanduser("~/")
 
 # django_simple_history
-SIMPLE_HISTORY_PERMISSIONS_ENABLED = env.str(
-    "SIMPLE_HISTORY_PERMISSIONS_ENABLED")
+SIMPLE_HISTORY_PERMISSIONS_ENABLED = env.str("SIMPLE_HISTORY_PERMISSIONS_ENABLED")
 SIMPLE_HISTORY_REVERT_DISABLED = env.str("SIMPLE_HISTORY_REVERT_DISABLED")
 
 FQDN = env.str("DJANGO_FQDN")
@@ -408,7 +405,9 @@ DATA_DICTIONARY_APP_LABELS = [
 # edc_randomization
 EDC_RANDOMIZATION_LIST_PATH = env.str("EDC_RANDOMIZATION_LIST_PATH")
 EDC_RANDOMIZATION_UNBLINDED_USERS = env.list("EDC_RANDOMIZATION_UNBLINDED_USERS")
-EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER = env("EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER")
+EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER = env(
+    "EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER"
+)
 # static
 if env("AWS_ENABLED"):
     # see
@@ -450,14 +449,12 @@ if "test" in sys.argv:
     KEY_PATH = os.path.join(BASE_DIR, "inte_edc", "tests", "etc")
     DJANGO_CRYPTO_FIELDS_TEMP_PATH = env("DJANGO_CRYPTO_FIELDS_TEMP_PATH")
 
-
     class DisableMigrations:
         def __contains__(self, item):
             return True
 
         def __getitem__(self, item):
             return None
-
 
     MIGRATION_MODULES = DisableMigrations()
     PASSWORD_HASHERS = ("django.contrib.auth.hashers.MD5PasswordHasher",)

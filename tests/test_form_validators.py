@@ -7,12 +7,12 @@ from inte_form_validators.form_validators import BaselineCareStatusFormValidator
 from pytz import timezone
 
 
+@tag("form_validators")
 class TestBaselineCareStatusFormValidator(TestCase):
 
     def get_now(self):
         return get_utcnow().astimezone(timezone("Africa/Kampala"))
 
-    @tag("1")
     def test_ok(self):
         user_input = {
             "hiv": YES,
@@ -30,7 +30,6 @@ class TestBaselineCareStatusFormValidator(TestCase):
         form_validator.validate()
         self.assertEqual(form_validator._errors, {})
 
-    @tag("1")
     def test_hiv_pos_attending(self):
         user_input = {
             "enroled_from_clinic": "hiv",
@@ -43,7 +42,6 @@ class TestBaselineCareStatusFormValidator(TestCase):
         form_validator.validate()
         self.assertEqual(form_validator._errors, {})
 
-    @tag("1")
     def test_hiv_other_clinic(self):
         user_input = {
             "enroled_from_clinic": "hiv",
@@ -85,7 +83,6 @@ class TestBaselineCareStatusFormValidator(TestCase):
         self.assertRaises(forms.ValidationError, form_validator.validate)
         self.assertIn("hiv_next_appt_date", form_validator._errors)
 
-    @tag("1")
     def test_ncd_attending(self):
         user_input = {
             "enroled_from_clinic": "ncd",

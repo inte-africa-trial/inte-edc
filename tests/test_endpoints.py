@@ -18,10 +18,11 @@ from edc_auth import TMG, EVERYONE, AUDITOR, CLINIC, PII, EXPORT, LAB
 from edc_dashboard.url_names import url_names
 from edc_sites import add_or_update_django_sites
 from edc_utils import get_utcnow
-from inte_screening.tests.inte_test_case_mixin import InteTestCaseMixin
 from inte_sites.sites import inte_sites, fqdn
 from model_bakery import baker
 from inte_screening.models.subject_screening import SubjectScreening
+
+from .inte_test_case_mixin import InteTestCaseMixin
 
 style = color_style()
 

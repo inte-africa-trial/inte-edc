@@ -54,8 +54,10 @@ class SubjectConsent(
     subject_screening_model = "inte_screening.subjectscreening"
 
     screening_identifier = models.CharField(
-        verbose_name="Screening identifier", max_length=50, unique=True,
-        help_text="(readonly)"
+        verbose_name="Screening identifier",
+        max_length=50,
+        unique=True,
+        help_text="(readonly)",
     )
 
     screening_datetime = models.DateTimeField(

@@ -20,7 +20,6 @@ class AppConfig(DjangoApponfig):
 if settings.APP_NAME == "inte_screening":
     from dateutil.relativedelta import MO, TU, WE, TH, FR, SA, SU
 
-
     class EdcFacilityAppConfig(BaseEdcFacilityAppConfig):
         country = "uganda"
         definitions = {

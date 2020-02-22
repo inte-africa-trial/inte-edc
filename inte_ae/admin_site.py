@@ -3,7 +3,6 @@ from django.contrib.sites.shortcuts import get_current_site
 
 
 class AdminSite(DjangoAdminSite):
-
     site_title = "INTE: Adverse Events"
     site_header = "INTE: Adverse Events"
     index_title = "INTE: Adverse Events"

@@ -30,7 +30,20 @@ class TestVisitSchedule(TestCase):
 
     def test_visit_codes_ncd(self):
         self.assertEqual(
-            ["1000", "1010", "1030", "1040", "1050", "1060", "1070", "1080", "1090", "1100", "1110", "1120"],
+            [
+                "1000",
+                "1010",
+                "1030",
+                "1040",
+                "1050",
+                "1060",
+                "1070",
+                "1080",
+                "1090",
+                "1100",
+                "1110",
+                "1120",
+            ],
             [visit for visit in schedule_ncd.visits],
         )
 

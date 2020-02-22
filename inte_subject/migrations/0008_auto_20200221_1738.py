@@ -6,28 +6,44 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('inte_subject', '0007_auto_20200221_0632'),
+        ("inte_subject", "0007_auto_20200221_0632"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='baselinecarestatus',
-            name='hiv_clinic_other',
-            field=models.CharField(max_length=50, null=True, verbose_name='If not in the HIV clinic in facility, where do you attend?'),
+            model_name="baselinecarestatus",
+            name="hiv_clinic_other",
+            field=models.CharField(
+                max_length=50,
+                null=True,
+                verbose_name="If not in the HIV clinic in facility, where do you attend?",
+            ),
         ),
         migrations.AddField(
-            model_name='historicalbaselinecarestatus',
-            name='hiv_clinic_other',
-            field=models.CharField(max_length=50, null=True, verbose_name='If not in the HIV clinic in facility, where do you attend?'),
+            model_name="historicalbaselinecarestatus",
+            name="hiv_clinic_other",
+            field=models.CharField(
+                max_length=50,
+                null=True,
+                verbose_name="If not in the HIV clinic in facility, where do you attend?",
+            ),
         ),
         migrations.AlterField(
-            model_name='baselinecarestatus',
-            name='ncd_clinic_other',
-            field=models.CharField(max_length=50, null=True, verbose_name='If not in the NCD clinic in facility, where do you attend?'),
+            model_name="baselinecarestatus",
+            name="ncd_clinic_other",
+            field=models.CharField(
+                max_length=50,
+                null=True,
+                verbose_name="If not in the NCD clinic in facility, where do you attend?",
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalbaselinecarestatus',
-            name='ncd_clinic_other',
-            field=models.CharField(max_length=50, null=True, verbose_name='If not in the NCD clinic in facility, where do you attend?'),
+            model_name="historicalbaselinecarestatus",
+            name="ncd_clinic_other",
+            field=models.CharField(
+                max_length=50,
+                null=True,
+                verbose_name="If not in the NCD clinic in facility, where do you attend?",
+            ),
         ),
     ]

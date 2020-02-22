@@ -19,7 +19,8 @@ def get_onschedule_model_name(instance):
     else:
         raise OnScheduleError(
             f"Unknown clinic type specified on {instance._meta.verbose_name}. "
-            f"Got `{instance.clinic_type}`")
+            f"Got `{instance.clinic_type}`"
+        )
     return onschedule_model_name
 
 
@@ -60,7 +61,9 @@ def subject_consent_on_post_save(sender, instance, raw, created, **kwargs):
             )
 
             # put subject on primary schedule
-            _, schedule = site_visit_schedules.get_by_onschedule_model(get_onschedule_model_name(instance))
+            _, schedule = site_visit_schedules.get_by_onschedule_model(
+                get_onschedule_model_name(instance)
+            )
             schedule.put_on_schedule(
                 subject_identifier=instance.subject_identifier,
                 onschedule_datetime=instance.consent_datetime,
@@ -79,11 +82,13 @@ def subject_consent_on_post_delete(sender, instance, using, **kwargs):
     # don't allow if subject visits exist. This should be caught
     # in the ModelAdmin delete view
     if SubjectVisit.objects.filter(
-            subject_identifier=instance.subject_identifier
+        subject_identifier=instance.subject_identifier
     ).exists():
         raise ValidationError("Unable to delete consent. Visit data exists.")
 
-    _, schedule = site_visit_schedules.get_by_onschedule_model(get_onschedule_model_name(instance))
+    _, schedule = site_visit_schedules.get_by_onschedule_model(
+        get_onschedule_model_name(instance)
+    )
     schedule.take_off_schedule(
         subject_identifier=instance.subject_identifier,
         offschedule_datetime=instance.consent_datetime,

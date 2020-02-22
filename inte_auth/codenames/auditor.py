@@ -37,5 +37,6 @@ auditor += [
     "inte_subject.view_physicalactivity",
     "inte_subject.view_riskfactors",
     "inte_subject.view_subjectrequisition",
-    "inte_subject.view_subjectvisit", ]
+    "inte_subject.view_subjectvisit",
+]
 auditor.sort()
