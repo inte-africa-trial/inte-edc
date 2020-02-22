@@ -8,7 +8,6 @@ edc-dashboard  #0.2.23
 edc-data-manager
 edc-device  #0.2.11
 edc-export  #0.2.12
-edc-fabric  #0.1.5a1
 edc-facility  #0.1.8
 edc-fieldsets  #0.1.5
 edc-form-describer  #0.1.2
@@ -43,7 +42,6 @@ edc-rest  #0.1.3
 edc-review-dashboard
 edc-screening
 edc-search  #0.1.7
-edc-selenium  #0.1.2
 edc-sites
 edc-subject-dashboard  #0.1.19
 edc-timepoint  #0.1.6
