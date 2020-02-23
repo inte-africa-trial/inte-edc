@@ -2,7 +2,7 @@ edc-action-item==0.1.67
 edc-adverse-event==0.1.21
 edc-appointment==0.2.61
 edc-auth==0.1.46
-edc-consent==0.2.41
+edc-consent==0.2.42
 edc-constants==0.2.28
 edc-dashboard==0.2.64
 edc-data-manager==0.2.43
