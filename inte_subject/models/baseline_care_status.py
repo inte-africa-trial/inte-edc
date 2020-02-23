@@ -30,14 +30,23 @@ class BaselineCareStatus(CrfModelMixin, BaseUuidModel):
     )
 
     hiv_clinic_other = models.CharField(
-        verbose_name="If not in the HIV clinic in facility, where do you attend?",
+        verbose_name=mark_safe(
+            "If <u>not</u> attending the HIV clinic in this facility, where do you attend?"
+        ),
         max_length=50,
         null=True,
         blank=False,
     )
 
+    hiv_clinic_other_is_study_clinic = models.CharField(
+        verbose_name="Is this HIV clinic an INTE study clinic?",
+        max_length=15,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
+    )
+
     hiv_willing_to_transfer = models.CharField(
-        verbose_name="Would you be willing to transfer to this facility?",
+        verbose_name="Would you be willing to transfer to the HIV clinic in this facility?",
         max_length=50,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
@@ -52,8 +61,7 @@ class BaselineCareStatus(CrfModelMixin, BaseUuidModel):
 
     diabetic = models.CharField(
         verbose_name=mark_safe(
-            "Have you previously been diagnosed with <u>diabetes</u> "
-            "(high blood sugar)?"
+            "Have you previously been diagnosed with <u>diabetes</u>?"
         ),
         max_length=25,
         choices=YES_NO_UNKNOWN,
@@ -61,8 +69,7 @@ class BaselineCareStatus(CrfModelMixin, BaseUuidModel):
 
     hypertensive = models.CharField(
         verbose_name=mark_safe(
-            "Have you previously been diagnosed with <u>hypertension</u> "
-            "(high blood pressure)?"
+            "Have you previously been diagnosed with <u>hypertension</u>?"
         ),
         max_length=25,
         choices=YES_NO_UNKNOWN,
@@ -83,14 +90,14 @@ class BaselineCareStatus(CrfModelMixin, BaseUuidModel):
     )
 
     ncd_clinic_other = models.CharField(
-        verbose_name="If not in the NCD clinic in facility, where do you attend?",
+        verbose_name="If not attending the NCD clinic in this facility, where do you attend?",
         max_length=50,
         null=True,
         blank=False,
     )
 
     ncd_willing_to_transfer = models.CharField(
-        verbose_name="Would you be willing to transfer to this facility?",
+        verbose_name="Would you be willing to transfer to the NCD clinic in this facility?",
         max_length=50,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,

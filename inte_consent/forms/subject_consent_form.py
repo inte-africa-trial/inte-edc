@@ -28,8 +28,11 @@ class SubjectConsentForm(
             if cleaned_data.get("clinic_type") != self.instance.clinic_type:
                 raise forms.ValidationError(
                     {
-                        "clinic_type": f"Invalid clinic type. Expected "
-                        f"{self.instance.get_clinic_type_display()}."
+                        "clinic_type": (
+                            f"Invalid clinic type. Expected "
+                            f"{self.instance.get_clinic_type_display()} as reported "
+                            f"on the screening form."
+                        )
                     }
                 )
         return cleaned_data

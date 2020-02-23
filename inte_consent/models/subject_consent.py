@@ -68,6 +68,7 @@ class SubjectConsent(
         verbose_name="In which type of clinic was the patient screened",
         max_length=25,
         choices=CLINIC_CHOICES,
+        help_text="Should match that reported on the Screening form.",
     )
 
     gender = models.CharField(
