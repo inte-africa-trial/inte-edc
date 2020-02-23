@@ -4,7 +4,7 @@ from edc_constants.constants import SMOKER, NONSMOKER, NOT_APPLICABLE, NO, YES
 from edc_utils import get_utcnow
 from inte_subject.forms import BaselineCareStatusForm
 
-from .inte_test_case_mixin import InteTestCaseMixin
+from ..inte_test_case_mixin import InteTestCaseMixin
 
 
 class TestBaselineCareStatus(InteTestCaseMixin, TestCase):

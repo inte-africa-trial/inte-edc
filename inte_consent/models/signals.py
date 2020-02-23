@@ -1,4 +1,4 @@
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from edc_randomization.site_randomizers import site_randomizers
@@ -9,6 +9,10 @@ from inte_screening.models import SubjectScreening
 from inte_subject.models import SubjectVisit
 
 from .subject_consent import SubjectConsent
+
+
+class InteSubjectConsentError(Exception):
+    pass
 
 
 def get_onschedule_model_name(instance):
@@ -39,11 +43,24 @@ def subject_consent_on_post_save(sender, instance, raw, created, **kwargs):
             _, schedule = site_visit_schedules.get_by_onschedule_model(
                 get_onschedule_model_name(instance)
             )
-            schedule.refresh_schedule(subject_identifier=instance.subject_identifier)
+            try:
+                schedule.refresh_schedule(
+                    subject_identifier=instance.subject_identifier
+                )
+            except ObjectDoesNotExist as e:
+                raise InteSubjectConsentError(
+                    f"Clinic type cannot be changed. Got `{instance.clinic_type}`. ({e})"
+                )
         else:
             subject_screening = SubjectScreening.objects.get(
                 screening_identifier=instance.screening_identifier
             )
+
+            if subject_screening.clinic_type != instance.clinic_type:
+                raise InteSubjectConsentError(
+                    f"Clinic type reported on screening does not match consent."
+                    f"Expected {subject_screening.clinic_type}. Got {instance.clinic_type}"
+                )
             subject_screening.subject_identifier = instance.subject_identifier
             subject_screening.consented = True
             subject_screening.save_base(

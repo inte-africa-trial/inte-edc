@@ -1,9 +1,9 @@
 from django import forms
+from edc_consent.form_validators import SubjectConsentFormValidatorMixin
 from edc_consent.modelform_mixins import ConsentModelFormMixin
+from edc_form_validators import FormValidator
 from edc_form_validators import FormValidatorMixin
 from edc_sites.forms import SiteModelFormMixin
-from edc_consent.form_validators import SubjectConsentFormValidatorMixin
-from edc_form_validators import FormValidator
 
 from ..models import SubjectConsent
 
@@ -24,6 +24,14 @@ class SubjectConsentForm(
 
     def clean(self):
         cleaned_data = super().clean()
+        if self.instance.id:
+            if cleaned_data.get("clinic_type") != self.instance.clinic_type:
+                raise forms.ValidationError(
+                    {
+                        "clinic_type": f"Invalid clinic type. Expected "
+                        f"{self.instance.get_clinic_type_display()}."
+                    }
+                )
         return cleaned_data
 
     def clean_gender_of_consent(self):

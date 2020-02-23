@@ -15,7 +15,7 @@ from edc_utils.date import get_utcnow
 from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.constants import SCHEDULED
 from inte_auth.codenames_by_group import get_codenames_by_group
-from inte_screening.constants import NCD_CLINIC
+from inte_screening.constants import NCD_CLINIC, HIV_CLINIC
 from inte_screening.forms import SubjectScreeningForm
 from inte_screening.models import SubjectScreening
 from inte_sites.sites import fqdn, inte_sites
@@ -61,9 +61,10 @@ class InteTestCaseMixin(SiteTestCaseMixin):
                 user.groups.add(group)
         return self.client.force_login(user or self.user)
 
-    def get_subject_screening(self, report_datetime=None, eligibility_datetime=None):
+    def get_subject_screening(self, report_datetime=None, eligibility_datetime=None, **kwargs):
         data = {
             "screening_consent": YES,
+            "clinic_type": HIV_CLINIC,
             "selection_method": RANDOM_SAMPLING,
             "report_datetime": report_datetime or get_utcnow(),
             "initials": "EW",
@@ -77,7 +78,7 @@ class InteTestCaseMixin(SiteTestCaseMixin):
             "unsuitable_for_study": NO,
             "unsuitable_agreed": NOT_APPLICABLE,
         }
-
+        data.update(**kwargs)
         form = SubjectScreeningForm(data=data, instance=None)
         form.save()
 
@@ -93,10 +94,9 @@ class InteTestCaseMixin(SiteTestCaseMixin):
 
         return subject_screening
 
-    def get_subject_consent(self, subject_screening, site_name=None):
+    def get_subject_consent(self, subject_screening, site_name=None, **kwargs):
         site_name = site_name or "kinoni"
-        return baker.make_recipe(
-            "inte_consent.subjectconsent",
+        options = dict(
             user_created="erikvw",
             user_modified="erikvw",
             screening_identifier=subject_screening.screening_identifier,
@@ -104,17 +104,21 @@ class InteTestCaseMixin(SiteTestCaseMixin):
             dob=get_utcnow().date()
                 - relativedelta(years=subject_screening.age_in_years),
             site=Site.objects.get(name=site_name),
+            clinic_type=HIV_CLINIC,
         )
+        options.update(**kwargs)
+        return baker.make_recipe("inte_consent.subjectconsent", **options)
 
-    def get_subject_visit(self, visit_code=None):
-        visit_code = visit_code or DAY1
-        subject_screening = self.get_subject_screening()
-        subject_consent = self.get_subject_consent(subject_screening)
-        subject_identifier = subject_consent.subject_identifier
 
-        appointment = Appointment.objects.get(
-            subject_identifier=subject_identifier, visit_code=visit_code
-        )
-        appointment.appt_status = IN_PROGRESS_APPT
-        appointment.save()
-        return SubjectVisit.objects.create(appointment=appointment, reason=SCHEDULED)
+def get_subject_visit(self, visit_code=None):
+    visit_code = visit_code or DAY1
+    subject_screening = self.get_subject_screening()
+    subject_consent = self.get_subject_consent(subject_screening)
+    subject_identifier = subject_consent.subject_identifier
+
+    appointment = Appointment.objects.get(
+        subject_identifier=subject_identifier, visit_code=visit_code
+    )
+    appointment.appt_status = IN_PROGRESS_APPT
+    appointment.save()
+    return SubjectVisit.objects.create(appointment=appointment, reason=SCHEDULED)
