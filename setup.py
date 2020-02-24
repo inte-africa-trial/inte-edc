@@ -10,8 +10,8 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
 with open(os.path.join(os.path.dirname(__file__), 'VERSION')) as f:
     VERSION = f.read().strip()
 
-tests_require = ['django-storages', 'model-mommy',
-                 'faker', 'django_environ', "django_webtest"]
+tests_require = ['django-storages', 'model-bakery',
+                 'faker', 'django_environ']
 
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
@@ -31,15 +31,18 @@ setup(
     keywords='django inte africa EDC',
     install_requires=[
         'boto3',
+        'bs4',
+        'celery',
+        'django==2.2.10',
+        'django-celery-beat',
+        'django-celery-results',
         'django-environ',
         'django-redis',
         'django-storages',
         'gunicorn',
         'python-memcached',
+        'pytz',
         'sentry_sdk',
-        'celery',
-        'django-celery-beat',
-        'django-celery-results',
     ],
     classifiers=[
         'Environment :: Web Environment',

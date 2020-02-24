@@ -7,6 +7,15 @@ from edc_sites import get_site_id
 from inte_sites import inte_sites
 from pathlib import Path
 
+
+class DisableMigrations:
+    def __contains__(self, item):
+        return True
+
+    def __getitem__(self, item):
+        return None
+
+
 # simple version check
 try:
     assert (3, 6) <= (sys.version_info.major, sys.version_info.minor) <= (3, 7)
@@ -20,9 +29,9 @@ BASE_DIR = str(Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 env = environ.Env(
     AWS_ENABLED=(bool, False),
     CDN_ENABLED=(bool, False),
-    EDC_RANDOMIZATION_BLINDED_TRIAL=(bool, False),
     DATABASE_SQLITE_ENABLED=(bool, False),
     DJANGO_AUTO_CREATE_KEYS=(bool, False),
+    DJANGO_CRYPTO_FIELDS_TEMP_PATH=(bool, False),
     DJANGO_CSRF_COOKIE_SECURE=(bool, True),
     DJANGO_DEBUG=(bool, False),
     DJANGO_EDC_BOOTSTRAP=(int, 3),
@@ -34,11 +43,12 @@ env = environ.Env(
     DJANGO_USE_I18N=(bool, True),
     DJANGO_USE_L10N=(bool, False),
     DJANGO_USE_TZ=(bool, True),
+    EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER=(bool, True),
     SAUCE_ENABLED=(bool, False),
     SENTRY_ENABLED=(bool, False),
-    TWILIO_ENABLED=(bool, False),
     SIMPLE_HISTORY_PERMISSIONS_ENABLED=(bool, False),
     SIMPLE_HISTORY_REVERT_DISABLED=(bool, False),
+    TWILIO_ENABLED=(bool, False),
 )
 
 # copy your .env file from .envs/ to BASE_DIR
@@ -63,13 +73,6 @@ TEST_DIR = os.path.join(BASE_DIR, APP_NAME, "tests")
 ALLOWED_HOSTS = ["*"]  # env.list('DJANGO_ALLOWED_HOSTS')
 
 ENFORCE_RELATED_ACTION_ITEM_EXISTS = False
-
-# get site ID from more familiar town name
-TOWN = env.str("DJANGO_TOWN")
-if TOWN:
-    SITE_ID = get_site_id(TOWN, sites=inte_sites)
-else:
-    SITE_ID = env.int("DJANGO_SITE_ID")
 
 DEFAULT_APPOINTMENT_TYPE = "hospital"
 
@@ -96,6 +99,7 @@ INSTALLED_APPS = [
     "simple_history",
     "storages",
     "edc_action_item.apps.AppConfig",
+    "edc_appointment.apps.AppConfig",
     "edc_adverse_event.apps.AppConfig",
     "edc_auth.apps.AppConfig",
     "edc_consent.apps.AppConfig",
@@ -142,7 +146,7 @@ INSTALLED_APPS = [
     "inte_export.apps.AppConfig",
     "inte_screening.apps.AppConfig",
     "inte_sites.apps.AppConfig",
-    "inte_edc.apps.EdcAppointmentAppConfig",
+    # "inte_edc.apps.EdcAppointmentAppConfig",
     "inte_edc.apps.EdcDeviceAppConfig",
     "inte_edc.apps.EdcIdentifierAppConfig",
     "inte_edc.apps.EdcMetadataAppConfig",
@@ -151,9 +155,6 @@ INSTALLED_APPS = [
     "inte_edc.apps.EdcFacilityAppConfig",
     "inte_edc.apps.AppConfig",
 ]
-
-# if env("SENTRY_ENABLED"):
-#     INSTALLED_APPS.append("raven.contrib.django.raven_compat")
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -165,14 +166,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
-# if env("SENTRY_ENABLED"):
-#     MIDDLEWARE.extend(
-#         [
-#             "raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware",
-#             "raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware",
-#         ]
-#     )
 
 MIDDLEWARE.extend(
     [
@@ -345,12 +338,12 @@ DASHBOARD_URL_NAMES = env.dict("DJANGO_DASHBOARD_URL_NAMES")
 DASHBOARD_BASE_TEMPLATES = env.dict("DJANGO_DASHBOARD_BASE_TEMPLATES")
 LAB_DASHBOARD_BASE_TEMPLATES = env.dict("DJANGO_LAB_DASHBOARD_BASE_TEMPLATES")
 LAB_DASHBOARD_URL_NAMES = env.dict("DJANGO_LAB_DASHBOARD_URL_NAMES")
+
 # is this needed?
 SUBJECT_REQUISITION_MODEL = env.str("DJANGO_SUBJECT_REQUISITION_MODEL")
 
 # edc_facility
 HOLIDAY_FILE = env.str("DJANGO_HOLIDAY_FILE")
-COUNTRY = env.str("DJANGO_COUNTRY")
 
 EMAIL_ENABLED = env("DJANGO_EMAIL_ENABLED")
 EMAIL_CONTACTS = env.dict("DJANGO_EMAIL_CONTACTS")
@@ -401,15 +394,11 @@ DATA_DICTIONARY_APP_LABELS = [
 ]
 
 # edc_randomization
-EDC_RANDOMIZATION_LIST_FILE = env.str("EDC_RANDOMIZATION_LIST_FILE")
-EDC_RANDOMIZATION_BLINDED_TRIAL = env("EDC_RANDOMIZATION_BLINDED_TRIAL")
-if EDC_RANDOMIZATION_BLINDED_TRIAL:
-    EDC_RANDOMIZATION_UNBLINDED_USERS = env.list("EDC_RANDOMIZATION_UNBLINDED_USERS")
-else:
-    EDC_RANDOMIZATION_UNBLINDED_USERS = []
-
-EDC_RANDOMIZATION_LIST_MODEL = env.str("EDC_RANDOMIZATION_LIST_MODEL")
-
+EDC_RANDOMIZATION_LIST_PATH = env.str("EDC_RANDOMIZATION_LIST_PATH")
+EDC_RANDOMIZATION_UNBLINDED_USERS = env.list("EDC_RANDOMIZATION_UNBLINDED_USERS")
+EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER = env(
+    "EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER"
+)
 # static
 if env("AWS_ENABLED"):
     # see
@@ -446,30 +435,21 @@ else:
     if env("DJANGO_LOGGING_ENABLED"):
         from .logging.standard import LOGGING  # noqa
 
-# if SENTRY_ENABLED:
-#     import raven  # noqa
-#     from .logging.raven import LOGGING  # noqa
-#
-#     SENTRY_DSN = env.str("SENTRY_DSN")
-#     RAVEN_CONFIG = {"dsn": SENTRY_DSN,
-#                     "release": raven.fetch_git_sha(BASE_DIR)}
-# else:
-#     if env("DJANGO_LOGGING_ENABLED"):
-#         from .logging.standard import LOGGING  # noqa
+# read SITE specific variables from separate .env file
+env.read_env(os.path.join(BASE_DIR, ".env-site"))
+COUNTRY = env.str("DJANGO_COUNTRY")
+# get site ID from more familiar town name
+DJANGO_SITE_NAME = env.str("DJANGO_SITE_NAME")
+if DJANGO_SITE_NAME:
+    SITE_ID = get_site_id(DJANGO_SITE_NAME, sites=inte_sites)
+else:
+    SITE_ID = env.int("DJANGO_SITE_ID")
 
-if "test" in sys.argv:
-
-    class DisableMigrations:
-        def __contains__(self, item):
-            return True
-
-        def __getitem__(self, item):
-            return None
-
+# if running tests ...
+if "test" in sys.argv or "runtests" in sys.argv:
+    ETC_DIR = os.path.join(BASE_DIR, "inte_edc", "tests", "etc")
+    KEY_PATH = os.path.join(BASE_DIR, "inte_edc", "tests", "etc")
+    DJANGO_CRYPTO_FIELDS_TEMP_PATH = env("DJANGO_CRYPTO_FIELDS_TEMP_PATH")
     MIGRATION_MODULES = DisableMigrations()
     PASSWORD_HASHERS = ("django.contrib.auth.hashers.MD5PasswordHasher",)
     DEFAULT_FILE_STORAGE = "inmemorystorage.InMemoryStorage"
-
-    if env("SAUCE_ENABLED"):
-        SAUCE_USERNAME = env.str("SAUCE_USERNAME")
-        SAUCE_ACCESS_KEY = env.str("SAUCE_ACCESS_KEY")
