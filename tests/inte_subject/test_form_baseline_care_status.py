@@ -1,15 +1,12 @@
-from unittest import skip
-
 from dateutil.relativedelta import relativedelta
 from django.test import TestCase, tag
-from edc_constants.constants import SMOKER, NONSMOKER, NOT_APPLICABLE, NO, YES
+from edc_constants.constants import NOT_APPLICABLE, NO, YES
 from edc_utils import get_utcnow
 from inte_subject.forms import BaselineCareStatusForm
 
 from ..inte_test_case_mixin import InteTestCaseMixin
 
 
-@skip
 class TestBaselineCareStatus(InteTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
