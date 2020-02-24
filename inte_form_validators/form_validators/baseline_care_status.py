@@ -45,7 +45,9 @@ class BaselineCareStatusFormValidator(FormValidator):
             field=f"use_{key}_clinic_nearby",
             field_applicable=f"{key}_willing_to_transfer",
         )
-        self.required_if(YES, field=key, field_required=f"{key}_next_appt_date")
+        self.required_if(
+            YES, field=f"attending_{key}_clinic", field_required=f"{key}_next_appt_date"
+        )
 
     def validate_attending_clinic(self, key):
         if key == "hiv":

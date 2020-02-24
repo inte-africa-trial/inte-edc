@@ -35,7 +35,7 @@ class BaselineCareStatus(CrfModelMixin, BaseUuidModel):
         ),
         max_length=50,
         null=True,
-        blank=False,
+        blank=True,
     )
 
     hiv_clinic_other_is_study_clinic = models.CharField(
@@ -93,7 +93,7 @@ class BaselineCareStatus(CrfModelMixin, BaseUuidModel):
         verbose_name="If not attending the NCD clinic in this facility, where do you attend?",
         max_length=50,
         null=True,
-        blank=False,
+        blank=True,
     )
 
     ncd_willing_to_transfer = models.CharField(
