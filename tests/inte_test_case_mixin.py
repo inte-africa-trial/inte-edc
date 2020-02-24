@@ -64,19 +64,18 @@ class InteTestCaseMixin(SiteTestCaseMixin):
     def get_subject_screening(self, report_datetime=None, eligibility_datetime=None, **kwargs):
         data = {
             "screening_consent": YES,
-            "clinic_type": HIV_CLINIC,
-            "selection_method": RANDOM_SAMPLING,
-            "report_datetime": report_datetime or get_utcnow(),
-            "initials": "EW",
-            "gender": MALE,
             "age_in_years": 25,
+            "clinic_type": HIV_CLINIC,
+            "gender": MALE,
             "hospital_identifier": "13343322",
-            "clinic_type": NCD_CLINIC,
-            "qualifying_condition": YES,
+            "initials": "EW",
             "lives_nearby": YES,
+            "qualifying_condition": YES,
+            "report_datetime": report_datetime or get_utcnow(),
             "requires_acute_care": NO,
-            "unsuitable_for_study": NO,
+            "selection_method": RANDOM_SAMPLING,
             "unsuitable_agreed": NOT_APPLICABLE,
+            "unsuitable_for_study": NO,
         }
         data.update(**kwargs)
         form = SubjectScreeningForm(data=data, instance=None)
@@ -109,16 +108,15 @@ class InteTestCaseMixin(SiteTestCaseMixin):
         options.update(**kwargs)
         return baker.make_recipe("inte_consent.subjectconsent", **options)
 
+    def get_subject_visit(self, visit_code=None):
+        visit_code = visit_code or DAY1
+        subject_screening = self.get_subject_screening()
+        subject_consent = self.get_subject_consent(subject_screening)
+        subject_identifier = subject_consent.subject_identifier
 
-def get_subject_visit(self, visit_code=None):
-    visit_code = visit_code or DAY1
-    subject_screening = self.get_subject_screening()
-    subject_consent = self.get_subject_consent(subject_screening)
-    subject_identifier = subject_consent.subject_identifier
-
-    appointment = Appointment.objects.get(
-        subject_identifier=subject_identifier, visit_code=visit_code
-    )
-    appointment.appt_status = IN_PROGRESS_APPT
-    appointment.save()
-    return SubjectVisit.objects.create(appointment=appointment, reason=SCHEDULED)
+        appointment = Appointment.objects.get(
+            subject_identifier=subject_identifier, visit_code=visit_code
+        )
+        appointment.appt_status = IN_PROGRESS_APPT
+        appointment.save()
+        return SubjectVisit.objects.create(appointment=appointment, reason=SCHEDULED)

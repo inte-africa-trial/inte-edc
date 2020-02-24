@@ -96,70 +96,67 @@ class TestSubjectConsent(InteTestCaseMixin, TestCase):
                           self.get_subject_consent,
                           subject_screening, clinic_type=NCD_CLINIC)
 
+    def test_model_clinic_type_must_match(self):
+        subject_screening = self.get_subject_screening(clinic_type=HIV_CLINIC)
+        self.assertRaises(InteSubjectConsentError,
+                          self.get_subject_consent,
+                          subject_screening, clinic_type=NCD_CLINIC)
 
-def test_model_clinic_type_cannot_be_changed(self):
-    subject_screening = self.get_subject_screening(clinic_type=HIV_CLINIC)
-    subject_consent = self.get_subject_consent(
-        subject_screening, clinic_type=HIV_CLINIC)
+    def test_model_clinic_type_cannot_be_changed(self):
+        subject_screening = self.get_subject_screening(clinic_type=HIV_CLINIC)
+        subject_consent = self.get_subject_consent(
+            subject_screening, clinic_type=HIV_CLINIC)
 
-    subject_consent.clinic_type = NCD_CLINIC
-    self.assertRaises(InteSubjectConsentError, subject_consent.save)
+        subject_consent.clinic_type = NCD_CLINIC
+        self.assertRaises(InteSubjectConsentError, subject_consent.save)
 
+    def test_form_clinic_type_cannot_be_changed(self):
+        subject_screening = self.get_subject_screening(clinic_type=HIV_CLINIC)
+        consent_datetime = (
+                self.subject_screening.eligibility_datetime
+                + relativedelta(minutes=1)
+        )
+        consent_datetime = consent_datetime.astimezone(timezone("Africa/Kampala"))
+        data = dict(
+            assessment_score=YES,
+            citizen=YES,
+            clinic_type=HIV_CLINIC,
+            confirm_identity="77777777",
+            consent_copy=YES,
+            consent_datetime=consent_datetime,
+            consent_reviewed=YES,
+            consent_signature=YES,
+            dob=self.subject_screening.report_datetime.date() - relativedelta(years=25),
+            first_name="PAT",
+            gender=MALE,
+            identity="77777777",
+            identity_type=MOBILE_NUMBER,
+            initials="PM",
+            is_dob_estimated="-",
+            is_incarcerated=NO,
+            is_literate=YES,
+            language="en",
+            last_name="METHENY",
+            legal_marriage=NO,
+            marriage_certificate=NOT_APPLICABLE,
+            may_store_genetic_samples=YES,
+            may_store_samples=YES,
+            screening_identifier=subject_screening.screening_identifier,
+            study_questions=YES,
+            subject_screening=str(subject_screening.id),
+            subject_type="subject",
+            subject_identifier=str(uuid.uuid4()),
+            user_created="erikvw",
+        )
 
-def test_form_clinic_type_must_match(self):
-    subject_screening = self.get_subject_screening(clinic_type=HIV_CLINIC)
-    self.assertRaises()
-    subject_consent = self.get_subject_consent(
-        subject_screening, clinic_type=NCD_CLINIC)
+        form = SubjectConsentForm(data=data)
+        form.is_valid()
+        instance = form.save()
 
-
-def test_form_clinic_type_cannot_be_changed(self):
-    subject_screening = self.get_subject_screening(clinic_type=HIV_CLINIC)
-    consent_datetime = (
-            self.subject_screening.eligibility_datetime
-            + relativedelta(minutes=1)
-    )
-    consent_datetime = consent_datetime.astimezone(timezone("Africa/Kampala"))
-    data = dict(
-        assessment_score=YES,
-        citizen=YES,
-        clinic_type=NCD_CLINIC,
-        confirm_identity="77777777",
-        consent_copy=YES,
-        consent_datetime=consent_datetime,
-        consent_reviewed=YES,
-        consent_signature=YES,
-        dob=self.subject_screening.report_datetime.date() - relativedelta(years=25),
-        first_name="PAT",
-        gender=MALE,
-        identity="77777777",
-        identity_type=MOBILE_NUMBER,
-        initials="PM",
-        is_dob_estimated="-",
-        is_incarcerated=NO,
-        is_literate=YES,
-        language="en",
-        last_name="METHENY",
-        legal_marriage=NO,
-        marriage_certificate=NOT_APPLICABLE,
-        may_store_genetic_samples=YES,
-        may_store_samples=YES,
-        screening_identifier=subject_screening.screening_identifier,
-        study_questions=YES,
-        subject_screening=str(subject_screening.id),
-        subject_type="subject",
-        subject_identifier=str(uuid.uuid4()),
-        user_created="erikvw",
-    )
-
-    form = SubjectConsentForm(data=data)
-    form.is_valid()
-    instance = form.save()
-
-    data.update(
-        subject_identifier=instance.subject_identifier,
-        clinic_type=HIV_CLINIC,
-    )
-    form = SubjectConsentForm(data=data, instance=instance)
-    form.is_valid()
-    self.assertIn("clinic_type", form._errors)
+        data.update(
+            subject_identifier=instance.subject_identifier,
+            clinic_type=NCD_CLINIC,
+        )
+        form = SubjectConsentForm(data=data, instance=instance)
+        form.is_valid()
+        self.assertIn("clinic_type", form._errors)

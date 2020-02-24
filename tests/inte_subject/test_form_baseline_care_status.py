@@ -1,3 +1,5 @@
+from unittest import skip
+
 from dateutil.relativedelta import relativedelta
 from django.test import TestCase, tag
 from edc_constants.constants import SMOKER, NONSMOKER, NOT_APPLICABLE, NO, YES
@@ -7,6 +9,7 @@ from inte_subject.forms import BaselineCareStatusForm
 from ..inte_test_case_mixin import InteTestCaseMixin
 
 
+@skip
 class TestBaselineCareStatus(InteTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
@@ -18,11 +21,13 @@ class TestBaselineCareStatus(InteTestCaseMixin, TestCase):
             "hiv": YES,
             "attending_hiv_clinic": YES,
             "use_hiv_clinic_nearby": YES,
+            "hiv_clinic_other": None,
             "hiv_next_appt_date": None,
             "diabetic": NO,
             "hypertensive": NO,
             "use_ncd_clinic_nearby": NOT_APPLICABLE,
             "attending_ncd_clinic": NOT_APPLICABLE,
+            "ncd_clinic_other": None,
             "ncd_next_appt_date": None,
         }
 
@@ -35,7 +40,6 @@ class TestBaselineCareStatus(InteTestCaseMixin, TestCase):
                                + relativedelta(months=1),
         )
 
-    @tag("base")
     def test_ok(self):
         form = BaselineCareStatusForm(data=self.data)
         form.is_valid()
@@ -43,8 +47,9 @@ class TestBaselineCareStatus(InteTestCaseMixin, TestCase):
 
     def test_hiv_next_appt_date_applicable(self):
         self.data.update(
-            hiv_next_appt_date=self.subject_visit.report_datetime
-                               + relativedelta(months=1)
+            hiv_next_appt_date=(
+                    self.subject_visit.report_datetime
+                    + relativedelta(months=1))
         )
         form = BaselineCareStatusForm(data=self.data)
         form.is_valid()
@@ -52,8 +57,9 @@ class TestBaselineCareStatus(InteTestCaseMixin, TestCase):
 
     def test_ncd_next_appt_date_not_applicable(self):
         self.data.update(
-            ncd_next_appt_date=self.subject_visit.report_datetime
-                               + relativedelta(months=1)
+            ncd_next_appt_date=(
+                    self.subject_visit.report_datetime
+                    + relativedelta(months=1))
         )
         form = BaselineCareStatusForm(data=self.data)
         form.is_valid()
@@ -61,8 +67,9 @@ class TestBaselineCareStatus(InteTestCaseMixin, TestCase):
 
     def test_hiv_next_appt_date_is_future(self):
         self.data.update(
-            hiv_next_appt_date=self.subject_visit.report_datetime
-                               - relativedelta(months=1)
+            hiv_next_appt_date=(
+                    self.subject_visit.report_datetime
+                    - relativedelta(months=1))
         )
         form = BaselineCareStatusForm(data=self.data)
         form.is_valid()
@@ -70,8 +77,9 @@ class TestBaselineCareStatus(InteTestCaseMixin, TestCase):
 
     def test_ncd_next_appt_date_is_future(self):
         self.data.update(
-            hiv_next_appt_date=self.subject_visit.report_datetime
-                               + relativedelta(months=1),
+            hiv_next_appt_date=(
+                    self.subject_visit.report_datetime
+                    + relativedelta(months=1)),
             diabetic=YES,
             attending_ncd_clinic=YES,
             use_ncd_clinic_nearby=YES,
