@@ -29,7 +29,6 @@ class TestForms(TestCase):
             "unsuitable_agreed": NOT_APPLICABLE,
         }
 
-    @tag("1")
     def test_screening_ok(self):
 
         form = SubjectScreeningForm(data=self.get_data(), instance=None)

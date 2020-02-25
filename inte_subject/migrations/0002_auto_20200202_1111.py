@@ -16,7 +16,6 @@ import edc_visit_tracking.managers
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("sites", "0002_alter_domain_unique"),
         ("inte_subject", "0001_initial"),

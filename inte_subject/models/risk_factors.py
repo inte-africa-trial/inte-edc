@@ -4,8 +4,8 @@ from edc_constants.constants import NOT_APPLICABLE
 from edc_model.models import BaseUuidModel
 from edc_model.validators import ym_validator
 
-from ...choices import ALCOHOL_CONSUMPTION, SMOKER_STATUS
-from ..crf_model_mixin import CrfModelMixin
+from ..choices import ALCOHOL_CONSUMPTION, SMOKER_STATUS
+from ..model_mixins import CrfModelMixin
 
 
 class RiskFactors(CrfModelMixin, BaseUuidModel):

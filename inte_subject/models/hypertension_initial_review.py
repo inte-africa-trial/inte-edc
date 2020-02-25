@@ -4,12 +4,10 @@ from django.db import models
 from edc_constants.choices import YES_NO, YES_NO_DONT_KNOW
 from inte_lists.models import HypertensionTreatment
 
-from ..crf_model_mixin import CrfModelMixin
-from .review_model_mixin import ReviewModelMixin
+from ..model_mixins import CrfModelMixin, ReviewModelMixin
 
 
 class HypertensionInitialReview(ReviewModelMixin, CrfModelMixin, BaseUuidModel):
-
     diagnosis_date = models.DateField(
         verbose_name="When was the patient diagnosed with hypertension?"
     )

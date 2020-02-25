@@ -2,7 +2,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase, tag
 from edc_action_item.models import ActionItem
 from edc_constants.constants import CLOSED, NEW
-from model_bakery import baker
 from edc_adverse_event.constants import (
     AE_FOLLOWUP_ACTION,
     AE_TMG_ACTION,
@@ -10,6 +9,7 @@ from edc_adverse_event.constants import (
     DEATH_REPORT_TMG_ACTION,
 )
 from edc_reportable.constants import GRADE4, GRADE5
+from model_bakery import baker
 
 from .inte_test_case_mixin import InteTestCaseMixin
 

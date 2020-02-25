@@ -3,11 +3,10 @@ from django.db import models
 from edc_model.models import BaseUuidModel
 from edc_model import models as edc_models
 
-from ..crf_model_mixin import CrfModelMixin
+from ..model_mixins import CrfModelMixin
 
 
 class Anthropometry(CrfModelMixin, BaseUuidModel):
-
     weight = edc_models.WeightField()
 
     height = edc_models.HeightField()

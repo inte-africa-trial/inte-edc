@@ -5,7 +5,7 @@ from edc_constants.constants import NOT_APPLICABLE
 from edc_model.models.base_uuid_model import BaseUuidModel
 from edc_model.validators import date_is_future
 
-from .crf_model_mixin import CrfModelMixin
+from ..model_mixins import CrfModelMixin
 
 
 class BaselineCareStatus(CrfModelMixin, BaseUuidModel):
@@ -15,14 +15,14 @@ class BaselineCareStatus(CrfModelMixin, BaseUuidModel):
         choices=YES_NO_UNKNOWN,
     )
 
-    attending_hiv_clinic = models.CharField(
+    receives_care_at_hiv_clinic = models.CharField(
         verbose_name="Are you receiving care at an HIV clinic",
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
     )
 
-    use_hiv_clinic_nearby = models.CharField(
+    attends_this_hiv_clinic = models.CharField(
         verbose_name="Do you attend the HIV clinic within this facility",
         max_length=15,
         choices=YES_NO_NA,
@@ -45,14 +45,14 @@ class BaselineCareStatus(CrfModelMixin, BaseUuidModel):
         default=NOT_APPLICABLE,
     )
 
-    hiv_willing_to_transfer = models.CharField(
+    hiv_clinic_willing_to_transfer = models.CharField(
         verbose_name="Would you be willing to transfer to the HIV clinic in this facility?",
         max_length=50,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
     )
 
-    hiv_next_appt_date = models.DateField(
+    hiv_clinic_next_appt_date = models.DateField(
         verbose_name="When is your next HIV appointment",
         validators=[date_is_future],
         null=True,
@@ -75,14 +75,14 @@ class BaselineCareStatus(CrfModelMixin, BaseUuidModel):
         choices=YES_NO_UNKNOWN,
     )
 
-    attending_ncd_clinic = models.CharField(
+    receives_care_at_ncd_clinic = models.CharField(
         verbose_name="Are you receiving care at an NCD clinic",
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
     )
 
-    use_ncd_clinic_nearby = models.CharField(
+    attends_this_ncd_clinic = models.CharField(
         verbose_name="Do you attend the NCD clinic within this facility",
         max_length=15,
         choices=YES_NO_NA,
@@ -96,7 +96,7 @@ class BaselineCareStatus(CrfModelMixin, BaseUuidModel):
         blank=True,
     )
 
-    ncd_willing_to_transfer = models.CharField(
+    ncd_clinic_willing_to_transfer = models.CharField(
         verbose_name="Would you be willing to transfer to the NCD clinic in this facility?",
         max_length=50,
         choices=YES_NO_NA,
@@ -110,7 +110,7 @@ class BaselineCareStatus(CrfModelMixin, BaseUuidModel):
         default=NOT_APPLICABLE,
     )
 
-    ncd_next_appt_date = models.DateField(
+    ncd_clinic_next_appt_date = models.DateField(
         verbose_name="When is your next NCD appointment",
         validators=[date_is_future],
         null=True,

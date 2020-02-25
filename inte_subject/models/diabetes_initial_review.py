@@ -4,8 +4,7 @@ from django.db import models
 from edc_constants.choices import YES_NO
 from inte_lists.models import DiabetesTreatment
 
-from ..crf_model_mixin import CrfModelMixin
-from .review_model_mixin import ReviewModelMixin
+from ..model_mixins import CrfModelMixin, ReviewModelMixin
 
 
 class DiabetesInitialReview(ReviewModelMixin, CrfModelMixin, BaseUuidModel):

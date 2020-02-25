@@ -1,5 +1,4 @@
 import uuid
-from pprint import pprint
 
 from dateutil.relativedelta import relativedelta
 from django import forms
@@ -9,7 +8,7 @@ from inte_consent.forms import SubjectConsentForm
 from edc_constants.constants import MALE, MOBILE_NUMBER, YES, NO, NOT_APPLICABLE
 from edc_utils import get_utcnow
 from inte_consent.models import InteSubjectConsentError
-from inte_form_validators import SubjectConsentFormValidator
+from inte_consent.form_validators import SubjectConsentFormValidator
 from inte_screening.constants import HIV_CLINIC, NCD_CLINIC
 from pytz import timezone
 
@@ -20,7 +19,6 @@ def get_now():
     return get_utcnow().astimezone(timezone("Africa/Kampala"))
 
 
-@tag("consent")
 class TestSubjectConsent(InteTestCaseMixin, TestCase):
 
     def setUp(self):

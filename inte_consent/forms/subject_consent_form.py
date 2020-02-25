@@ -1,15 +1,10 @@
 from django import forms
-from edc_consent.form_validators import SubjectConsentFormValidatorMixin
 from edc_consent.modelform_mixins import ConsentModelFormMixin
-from edc_form_validators import FormValidator
 from edc_form_validators import FormValidatorMixin
 from edc_sites.forms import SiteModelFormMixin
 
+from ..form_validators import SubjectConsentFormValidator
 from ..models import SubjectConsent
-
-
-class SubjectConsentFormValidator(SubjectConsentFormValidatorMixin, FormValidator):
-    subject_screening_model = "inte_screening.subjectscreening"
 
 
 class SubjectConsentForm(

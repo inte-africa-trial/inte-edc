@@ -47,7 +47,6 @@ class TestVisitSchedule(TestCase):
             [visit for visit in schedule_ncd.visits],
         )
 
-    @tag("1")
     def test_crfs(self):
         prn = [
             "inte_subject.bloodresultsfbc",

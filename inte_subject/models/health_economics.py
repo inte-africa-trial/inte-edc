@@ -10,11 +10,10 @@ from ..choices import (
     PAYEE_CHOICES,
     TRANSPORT_CHOICES,
 )
-from .crf_model_mixin import CrfModelMixin
+from ..model_mixins import CrfModelMixin
 
 
 class HealthEconomics(CrfModelMixin, BaseUuidModel):
-
     occupation = models.CharField(
         verbose_name="What is your occupation/profession?", max_length=50
     )

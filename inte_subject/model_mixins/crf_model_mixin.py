@@ -14,8 +14,6 @@ from edc_visit_tracking.model_mixins import (
     PreviousVisitModelMixin,
 )
 
-from .subject_visit import SubjectVisit
-
 
 class CrfNoManagerModelMixin(
     BaseCrfModelMixin,
@@ -27,11 +25,10 @@ class CrfNoManagerModelMixin(
     SiteModelMixin,
     ReferenceModelMixin,
 ):
-
     """ Base model for all scheduled models
     """
 
-    subject_visit = models.OneToOneField(SubjectVisit, on_delete=PROTECT)
+    subject_visit = models.OneToOneField("inte_subject.subjectvisit", on_delete=PROTECT)
 
     def natural_key(self):
         return self.subject_visit.natural_key()
@@ -48,7 +45,6 @@ class CrfNoManagerModelMixin(
 
 
 class CrfModelMixin(CrfNoManagerModelMixin):
-
     on_site = CurrentSiteManager()
     objects = CrfModelManager()
     history = HistoricalRecords(inherit=True)
