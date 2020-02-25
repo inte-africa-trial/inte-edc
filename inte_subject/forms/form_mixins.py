@@ -1,6 +1,8 @@
 import arrow
 
 from django import forms
+
+from edc_consent.modelform_mixins import RequiresConsentModelFormMixin
 from edc_form_validators import FormValidatorMixin
 from edc_sites.forms import SiteModelFormMixin
 from edc_visit_schedule.modelform_mixins import SubjectScheduleCrfModelFormMixin
@@ -11,17 +13,23 @@ from ..models import SubjectVisit
 
 class SubjectModelFormMixin(
     SiteModelFormMixin,
-    FormValidatorMixin,
+    RequiresConsentModelFormMixin,
     SubjectScheduleCrfModelFormMixin,
     VisitTrackingModelFormMixin,
-    forms.ModelForm,
+    FormValidatorMixin,
 ):
-
     visit_model = SubjectVisit
+
+    @property
+    def appointment(self):
+        return self.subject_visit.appointment
+
+    @property
+    def subject_visit(self):
+        return self.cleaned_data.get("subject_visit")
 
 
 class InlineSubjectModelFormMixin(FormValidatorMixin, forms.ModelForm):
-
     visit_model = SubjectVisit
 
 
