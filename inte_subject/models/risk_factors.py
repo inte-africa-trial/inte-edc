@@ -1,11 +1,11 @@
 from django.db import models
 from edc_constants.choices import YES_NO
 from edc_constants.constants import NOT_APPLICABLE
+from edc_crf.model_mixins import CrfModelMixin
 from edc_model.models import BaseUuidModel
 from edc_model.validators import ym_validator
 
 from ..choices import ALCOHOL_CONSUMPTION, SMOKER_STATUS
-from ..model_mixins import CrfModelMixin
 
 
 class RiskFactors(CrfModelMixin, BaseUuidModel):
@@ -26,7 +26,7 @@ class RiskFactors(CrfModelMixin, BaseUuidModel):
         ),
     )
 
-    smoker_quit_ago_months = models.IntegerField(editable=False,)
+    smoker_quit_ago_months = models.IntegerField(editable=False, )
 
     alcohol = models.CharField(
         verbose_name="Do you drink alcohol?", max_length=15, choices=YES_NO,

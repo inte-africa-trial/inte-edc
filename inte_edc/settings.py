@@ -4,6 +4,7 @@ import sys
 
 from django.core.exceptions import ImproperlyConfigured
 from edc_sites import get_site_id
+from edc_utils import get_datetime_from_env
 from inte_sites import inte_sites
 from pathlib import Path
 
@@ -52,7 +53,7 @@ env = environ.Env(
 )
 
 # copy your .env file from .envs/ to BASE_DIR
-if "test" in sys.argv:
+if "runtests.py" in sys.argv:
     env.read_env(os.path.join(BASE_DIR, ".env-tests"))
     print(f"Reading env from {os.path.join(BASE_DIR, '.env-tests')}")
 else:
@@ -392,6 +393,19 @@ DATA_DICTIONARY_APP_LABELS = [
     "inte_ae",
     "edc_appointment",
 ]
+
+# edc_protocol
+EDC_PROTOCOL = env.str("EDC_PROTOCOL")
+EDC_PROTOCOL_INSTITUTION_NAME = env.str("EDC_PROTOCOL_INSTITUTION_NAME")
+EDC_PROTOCOL_NUMBER = env.str("EDC_PROTOCOL_NUMBER")
+EDC_PROTOCOL_PROJECT_NAME = env.str("EDC_PROTOCOL_PROJECT_NAME")
+EDC_PROTOCOL_STUDY_OPEN_DATETIME = get_datetime_from_env(
+    *env.list("EDC_PROTOCOL_STUDY_OPEN_DATETIME")
+)
+EDC_PROTOCOL_STUDY_CLOSE_DATETIME = get_datetime_from_env(
+    *env.list("EDC_PROTOCOL_STUDY_CLOSE_DATETIME")
+)
+EDC_PROTOCOL_TITLE = env.str("EDC_PROTOCOL_TITLE")
 
 # edc_randomization
 EDC_RANDOMIZATION_LIST_PATH = env.str("EDC_RANDOMIZATION_LIST_PATH")

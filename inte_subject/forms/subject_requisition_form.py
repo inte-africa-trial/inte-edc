@@ -1,17 +1,13 @@
 from django import forms
-from edc_form_validators.form_validator_mixin import FormValidatorMixin
+from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_lab.form_validators import RequisitionFormValidator
 from edc_lab.forms import RequisitionFormMixin
 from edc_metadata.constants import NOT_REQUIRED
-from edc_visit_tracking.modelform_mixins import SubjectModelFormMixin
 
 from ..models import SubjectRequisition
 
 
-class SubjectRequisitionForm(
-    RequisitionFormMixin, SubjectModelFormMixin, FormValidatorMixin
-):
-
+class SubjectRequisitionForm(RequisitionFormMixin, CrfModelFormMixin, forms.ModelForm):
     form_validator_cls = RequisitionFormValidator
 
     requisition_identifier = forms.CharField(

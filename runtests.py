@@ -9,7 +9,9 @@ from django.test.runner import DiscoverRunner
 from edc_test_utils import DefaultTestSettings
 from os.path import abspath, dirname, join
 
-app_name = 'inte_edc'
+from edc_utils import get_datetime_from_env
+
+app_name = "inte_edc"
 base_dir = dirname(abspath(__file__))
 
 DEFAULT_SETTINGS = DefaultTestSettings(
@@ -21,16 +23,22 @@ DEFAULT_SETTINGS = DefaultTestSettings(
     SUBJECT_VISIT_MODEL="inte_subject.subjectvisit",
     SUBJECT_CONSENT_MODEL="inte_consent.subjectconsent",
     SUBJECT_REQUISITION_MODEL=f"inte_subject.subjectrequisition",
+    EDC_PROTOCOL_STUDY_OPEN_DATETIME=get_datetime_from_env(2019, 6, 30, 0, 0, 0, "UTC"),
+    EDC_PROTOCOL_STUDY_CLOSE_DATETIME=get_datetime_from_env(
+        2024, 12, 31, 23, 59, 59, "UTC"
+    ),
     ADVERSE_EVENT_ADMIN_SITE="inte_ae_admin",
     ADVERSE_EVENT_APP_LABEL="inte_ae",
     EDC_NAVBAR_DEFAULT="inte_dashboard",
-    DASHBOARD_BASE_TEMPLATES=dict(edc_base_template="edc_dashboard/base.html",
-                                  listboard_base_template="inte_edc/base.html",
-                                  dashboard_base_template="inte_edc/base.html",
-                                  screening_listboard_template="inte_dashboard/screening/listboard.html",
-                                  subject_listboard_template="inte_dashboard/subject/listboard.html",
-                                  subject_dashboard_template="inte_dashboard/subject/dashboard.html",
-                                  subject_review_listboard_template="edc_review_dashboard/subject_review_listboard.html"),
+    DASHBOARD_BASE_TEMPLATES=dict(
+        edc_base_template="edc_dashboard/base.html",
+        listboard_base_template="inte_edc/base.html",
+        dashboard_base_template="inte_edc/base.html",
+        screening_listboard_template="inte_dashboard/screening/listboard.html",
+        subject_listboard_template="inte_dashboard/subject/listboard.html",
+        subject_dashboard_template="inte_dashboard/subject/dashboard.html",
+        subject_review_listboard_template="edc_review_dashboard/subject_review_listboard.html",
+    ),
     ETC_DIR=os.path.join(base_dir, "tests", "etc"),
     EDC_BOOTSTRAP=3,
     EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
@@ -127,10 +135,9 @@ def main():
     if not settings.configured:
         settings.configure(**DEFAULT_SETTINGS)
     django.setup()
-    tags = [t.split('=')[1] for t in sys.argv if t.startswith('--tag')]
-    failfast = True if [t for t in sys.argv if t == '--failfast'] else False
-    failures = DiscoverRunner(failfast=failfast, tags=tags).run_tests(
-        [f'tests'])
+    tags = [t.split("=")[1] for t in sys.argv if t.startswith("--tag")]
+    failfast = True if [t for t in sys.argv if t == "--failfast"] else False
+    failures = DiscoverRunner(failfast=failfast, tags=tags).run_tests([f"tests"])
     sys.exit(bool(failures))
 
 
