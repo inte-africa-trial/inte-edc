@@ -1,9 +1,7 @@
-from decimal import Decimal
 from django.db import models
-from edc_model.models import BaseUuidModel
+from edc_crf.model_mixins import CrfModelMixin
 from edc_model import models as edc_models
-
-from ..model_mixins import CrfModelMixin
+from edc_model.models import BaseUuidModel
 
 
 class Anthropometry(CrfModelMixin, BaseUuidModel):
@@ -20,13 +18,13 @@ class Anthropometry(CrfModelMixin, BaseUuidModel):
 
     waist_circumference = edc_models.WaistCircumferenceField()
 
-    sys_blood_pressure_r1 = edc_models.SystolicPressureField(null=True, blank=False,)
+    sys_blood_pressure_r1 = edc_models.SystolicPressureField(null=True, blank=False, )
 
-    dia_blood_pressure_r1 = edc_models.DiastolicPressureField(null=True, blank=False,)
+    dia_blood_pressure_r1 = edc_models.DiastolicPressureField(null=True, blank=False, )
 
-    sys_blood_pressure_r2 = edc_models.SystolicPressureField(null=True, blank=False,)
+    sys_blood_pressure_r2 = edc_models.SystolicPressureField(null=True, blank=False, )
 
-    dia_blood_pressure_r2 = edc_models.DiastolicPressureField(null=True, blank=False,)
+    dia_blood_pressure_r2 = edc_models.DiastolicPressureField(null=True, blank=False, )
 
     def save(self, *args, **kwargs):
         self.bmi = round((float(self.weight) / (float(self.height) / 100.0)), 2)

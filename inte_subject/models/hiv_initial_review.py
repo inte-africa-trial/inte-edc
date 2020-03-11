@@ -1,12 +1,12 @@
 from django.db import models
-from edc_constants.choices import YES_NO
 from edc_constants.constants import NOT_APPLICABLE
+from edc_crf.model_mixins import CrfModelMixin
 from edc_model import models as edc_models
 from edc_model.models.base_uuid_model import BaseUuidModel
 from edc_model.validators.date import date_not_future
 from inte_lists.models import ArvRegimens
 
-from ..model_mixins import CrfModelMixin, ReviewModelMixin
+from ..model_mixins import ReviewModelMixin
 
 
 class HivInitialReview(ReviewModelMixin, CrfModelMixin, BaseUuidModel):

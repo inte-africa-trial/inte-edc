@@ -2,10 +2,9 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO_UNKNOWN, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
+from edc_crf.model_mixins import CrfModelMixin
 from edc_model.models.base_uuid_model import BaseUuidModel
 from edc_model.validators import date_is_future
-
-from ..model_mixins import CrfModelMixin
 
 
 class BaselineCareStatus(CrfModelMixin, BaseUuidModel):

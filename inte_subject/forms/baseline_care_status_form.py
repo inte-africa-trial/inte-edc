@@ -1,13 +1,13 @@
 from django import forms
 from edc_constants.constants import YES
+from edc_crf.modelform_mixins import CrfModelFormMixin
 from inte_screening.constants import HIV_CLINIC, NCD_CLINIC
 
 from ..form_validators import BaselineCareStatusFormValidator
 from ..models import BaselineCareStatus
-from .form_mixins import SubjectModelFormMixin
 
 
-class BaselineCareStatusForm(SubjectModelFormMixin, forms.ModelForm):
+class BaselineCareStatusForm(CrfModelFormMixin, forms.ModelForm):
     form_validator_cls = BaselineCareStatusFormValidator
 
     def clean(self):

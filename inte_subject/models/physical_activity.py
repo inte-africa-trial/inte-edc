@@ -1,10 +1,10 @@
 from django.db import models
 from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO
+from edc_crf.model_mixins import CrfModelMixin
 from edc_model.models import BaseUuidModel
 
 from ..choices import PHYSICAL_ACTIVITY, PHYSICAL_ACTIVITY_HOURS
-from ..model_mixins import CrfModelMixin
 
 
 class PhysicalActivity(CrfModelMixin, BaseUuidModel):
