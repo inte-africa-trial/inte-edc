@@ -1,4 +1,3 @@
-edc==0.1.7
-git+https://github.com/erikvw/django-simple-history@admin_revert_permissions
+edc==0.1.8
+git+https://github.com/erikvw/django-simple-history@admin_revert_permissions2
 beautifulsoup4
-edc-utils==0.1.20

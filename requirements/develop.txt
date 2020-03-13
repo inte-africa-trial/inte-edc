@@ -48,4 +48,4 @@
 -e /Users/erikvw/source/django-revision  #develop#egg=django-revision
 -e .
 git+https://github.com/erikvw/django-simple-history@admin_revert_permissions
-Django[argon2]==2.2.10
+Django[argon2]>=3.0.3

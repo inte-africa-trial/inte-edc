@@ -13,7 +13,7 @@ class PhysicalActivity(CrfModelMixin, BaseUuidModel):
             "Please tell us the type and amount of physical activity "
             "involved in your work."
         ),
-        max_length=25,
+        max_length=50,
         choices=PHYSICAL_ACTIVITY,
         help_text=(
             "Please tick one box that is closest to your present work "
