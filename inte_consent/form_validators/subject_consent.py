@@ -3,5 +3,4 @@ from edc_form_validators import FormValidator
 
 
 class SubjectConsentFormValidator(SubjectConsentFormValidatorMixin, FormValidator):
-
     subject_screening_model = "inte_screening.subjectscreening"

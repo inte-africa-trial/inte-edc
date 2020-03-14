@@ -2,6 +2,6 @@ include AUTHORS CHANGES LICENSE VERSION
 include MANIFEST.in
 include *.rst
 include *.txt
-recursive-include main/templates *
-recursive-include main/static *
+recursive-include inte_*/templates *
+recursive-include inte_*/static *
 recursive-include label_templates *

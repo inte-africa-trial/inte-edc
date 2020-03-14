@@ -1,20 +1,19 @@
 from django.apps import apps as django_apps
-from inte_screening.constants import NCD_CLINIC, HIV_CLINIC
 
 
 class CrfFormValidatorMixin:
     @property
     def subject_screening(self):
-        SubjectScreening = django_apps.get_model("inte_screening.subjectscreening")
-        return SubjectScreening.objects.get(subject_identifier=self.subject_identifier)
+        subject_screening_model_cls = django_apps.get_model(
+            "inte_screening.subjectscreening"
+        )
+        return subject_screening_model_cls.objects.get(
+            subject_identifier=self.subject_identifier
+        )
 
     @property
-    def ncd_clinic(self):
-        return self.subject_screening.clinic_type == NCD_CLINIC
-
-    @property
-    def hiv_clinic(self):
-        return self.subject_screening.clinic_type == HIV_CLINIC
+    def primary_enrolment_clinic_type(self):
+        return self.subject_screening.clinic_type
 
     @property
     def subject_identifier(self):

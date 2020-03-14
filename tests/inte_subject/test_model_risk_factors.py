@@ -5,7 +5,6 @@ from inte_subject.forms import RiskFactorsForm
 from ..inte_test_case_mixin import InteTestCaseMixin
 
 
-@tag('inte_subject')
 class TestRiskFactors(InteTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()

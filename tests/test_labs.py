@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from edc_lab.site_labs import site_labs
 from edc_lab.models import Panel
 from inte_labs.lab_profiles import subject_lab_profile

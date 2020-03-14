@@ -15,19 +15,3 @@ class AppConfig(DjangoApponfig):
 
     def ready(self):
         connection_created.connect(activate_foreign_keys)
-
-
-if settings.APP_NAME == "inte_screening":
-    from dateutil.relativedelta import MO, TU, WE, TH, FR, SA, SU
-
-    class EdcFacilityAppConfig(BaseEdcFacilityAppConfig):
-        country = "uganda"
-        definitions = {
-            "7-day clinic": dict(
-                days=[MO, TU, WE, TH, FR, SA, SU],
-                slots=[100, 100, 100, 100, 100, 100, 100],
-            ),
-            "5-day clinic": dict(
-                days=[MO, TU, WE, TH, FR], slots=[100, 100, 100, 100, 100]
-            ),
-        }

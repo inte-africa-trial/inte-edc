@@ -6,7 +6,6 @@ from inte_subject.forms import PhysicalActivityForm
 from ..inte_test_case_mixin import InteTestCaseMixin
 
 
-@tag('inte_subject')
 class TestPhysicalActivity(InteTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()

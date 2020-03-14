@@ -2,6 +2,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
+from edc_crf.model_mixins import CrfModelMixin
 from edc_model.models import BaseUuidModel
 
 from ..choices import (
@@ -10,11 +11,9 @@ from ..choices import (
     PAYEE_CHOICES,
     TRANSPORT_CHOICES,
 )
-from .crf_model_mixin import CrfModelMixin
 
 
 class HealthEconomics(CrfModelMixin, BaseUuidModel):
-
     occupation = models.CharField(
         verbose_name="What is your occupation/profession?", max_length=50
     )

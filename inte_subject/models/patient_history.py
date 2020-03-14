@@ -1,20 +1,19 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO
+from edc_crf.model_mixins import CrfModelMixin
 from edc_lab.choices import RESULT_QUANTIFIER
 from edc_lab.constants import EQ
 from edc_model.models import BaseUuidModel
 from edc_models import models as edc_models
+from edc_reportable.units import COPIES_PER_MILLILITER
 from inte_lists.models import VisitReasons
 
 from ..choices import GLUCOSE_UNITS
-from ..crf_model_mixin import CrfModelMixin
-from django.core.validators import MinValueValidator, MaxValueValidator
-from edc_reportable.units import COPIES_PER_MILLILITER
 
 
 class PatientHistory(CrfModelMixin, BaseUuidModel):
-
     visit_reason = models.ManyToManyField(
         VisitReasons, verbose_name="Reason for this visit",
     )
@@ -36,7 +35,7 @@ class PatientHistory(CrfModelMixin, BaseUuidModel):
         help_text="If yes, indicate below",
     )
 
-    weight = edc_models.WeightField(null=True, blank=True,)
+    weight = edc_models.WeightField(null=True, blank=True, )
 
     bp_measured = models.CharField(
         verbose_name="Was the blood pressure measured?",

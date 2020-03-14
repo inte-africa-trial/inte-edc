@@ -1,10 +1,10 @@
 from django.db import models
 from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO
+from edc_crf.model_mixins import CrfModelMixin
 from edc_model.models import BaseUuidModel
 
-from ...choices import PHYSICAL_ACTIVITY, PHYSICAL_ACTIVITY_HOURS
-from ..crf_model_mixin import CrfModelMixin
+from ..choices import PHYSICAL_ACTIVITY, PHYSICAL_ACTIVITY_HOURS
 
 
 class PhysicalActivity(CrfModelMixin, BaseUuidModel):
@@ -13,7 +13,7 @@ class PhysicalActivity(CrfModelMixin, BaseUuidModel):
             "Please tell us the type and amount of physical activity "
             "involved in your work."
         ),
-        max_length=25,
+        max_length=50,
         choices=PHYSICAL_ACTIVITY,
         help_text=(
             "Please tick one box that is closest to your present work "

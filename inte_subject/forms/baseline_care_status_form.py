@@ -1,55 +1,42 @@
-import pdb
-
 from django import forms
-
-from edc_consent.modelform_mixins import RequiresConsentModelFormMixin
 from edc_constants.constants import YES
-from edc_sites.forms import SiteModelFormMixin
-from edc_form_validators.form_validator_mixin import FormValidatorMixin
-from edc_visit_tracking.modelform_mixins import VisitTrackingModelFormMixin
-from inte_form_validators import BaselineCareStatusFormValidator
+from edc_crf.modelform_mixins import CrfModelFormMixin
 from inte_screening.constants import HIV_CLINIC, NCD_CLINIC
 
-from ..constants import HIV, NCD
+from ..form_validators import BaselineCareStatusFormValidator
 from ..models import BaselineCareStatus
 
 
-class BaselineCareStatusForm(
-    SiteModelFormMixin,
-    RequiresConsentModelFormMixin,
-    FormValidatorMixin,
-    forms.ModelForm,
-):
+class BaselineCareStatusForm(CrfModelFormMixin, forms.ModelForm):
     form_validator_cls = BaselineCareStatusFormValidator
 
     def clean(self):
         cleaned_data = super().clean()
+        self.validate_enroled_clinic_vs_attending_clinic()
+        return cleaned_data
 
+    def validate_enroled_clinic_vs_attending_clinic(self):
+        """Care status clinic type at screening and consent must
+        match response to attending clinic"""
         if (
-            self.cleaned_data.get("attending_hiv_clinic") != YES
+            self.cleaned_data.get("receives_care_at_hiv_clinic") != YES
             and self.primary_enrolment_clinic == HIV_CLINIC
         ):
             raise forms.ValidationError(
-                {"attending_hiv_clinic": "Subject was enrolled from an HIV Clinic."}
+                {
+                    "receives_care_at_hiv_clinic": "Subject was enrolled from an HIV Clinic."
+                }
             )
 
         if (
-            self.cleaned_data.get("attending_ncd_clinic") != YES
+            self.cleaned_data.get("receives_care_at_ncd_clinic") != YES
             and self.primary_enrolment_clinic == NCD_CLINIC
         ):
             raise forms.ValidationError(
-                {"attending_hiv_clinic": "Subject was enrolled from an HIV Clinic."}
+                {
+                    "receives_care_at_ncd_clinic": "Subject was enrolled from an NCD Clinic."
+                }
             )
-
-        return cleaned_data
-
-    @property
-    def appointment(self):
-        return self.subject_visit.appointment
-
-    @property
-    def subject_visit(self):
-        return self.cleaned_data.get("subject_visit")
 
     @property
     def primary_enrolment_clinic(self):

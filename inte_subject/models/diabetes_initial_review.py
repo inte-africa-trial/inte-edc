@@ -1,11 +1,10 @@
-from edc_model.models.base_uuid_model import BaseUuidModel
-
 from django.db import models
 from edc_constants.choices import YES_NO
+from edc_crf.model_mixins import CrfModelMixin
+from edc_model.models.base_uuid_model import BaseUuidModel
 from inte_lists.models import DiabetesTreatment
 
-from ..crf_model_mixin import CrfModelMixin
-from .review_model_mixin import ReviewModelMixin
+from ..model_mixins import ReviewModelMixin
 
 
 class DiabetesInitialReview(ReviewModelMixin, CrfModelMixin, BaseUuidModel):

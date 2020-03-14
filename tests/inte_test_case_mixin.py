@@ -108,10 +108,10 @@ class InteTestCaseMixin(SiteTestCaseMixin):
         options.update(**kwargs)
         return baker.make_recipe("inte_consent.subjectconsent", **options)
 
-    def get_subject_visit(self, visit_code=None):
+    def get_subject_visit(self, visit_code=None, subject_screening=None, subject_consent=None):
         visit_code = visit_code or DAY1
-        subject_screening = self.get_subject_screening()
-        subject_consent = self.get_subject_consent(subject_screening)
+        subject_screening = subject_screening or self.get_subject_screening()
+        subject_consent = subject_consent or self.get_subject_consent(subject_screening)
         subject_identifier = subject_consent.subject_identifier
 
         appointment = Appointment.objects.get(

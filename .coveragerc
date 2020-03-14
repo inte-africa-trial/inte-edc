@@ -1,4 +1,4 @@
 [run]
-include = inte_edc/*
-omit = inte_edc/tests/*
+include = inte_*
+omit = inte_*/tests/*
 branch = 1

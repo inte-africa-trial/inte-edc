@@ -4,6 +4,7 @@ import sys
 
 from django.core.exceptions import ImproperlyConfigured
 from edc_sites import get_site_id
+from edc_utils import get_datetime_from_env
 from inte_sites import inte_sites
 from pathlib import Path
 
@@ -18,7 +19,7 @@ class DisableMigrations:
 
 # simple version check
 try:
-    assert (3, 6) <= (sys.version_info.major, sys.version_info.minor) <= (3, 7)
+    assert (3, 7) <= (sys.version_info.major, sys.version_info.minor) <= (3, 8)
 except AssertionError:
     raise ImproperlyConfigured(
         "Incorrect python version. Expected 3.6 or 3.7. Check your environment."
@@ -52,7 +53,7 @@ env = environ.Env(
 )
 
 # copy your .env file from .envs/ to BASE_DIR
-if "test" in sys.argv:
+if "runtests.py" in sys.argv:
     env.read_env(os.path.join(BASE_DIR, ".env-tests"))
     print(f"Reading env from {os.path.join(BASE_DIR, '.env-tests')}")
 else:
@@ -326,6 +327,7 @@ LABEL_TEMPLATE_FOLDER = env.str("DJANGO_LABEL_TEMPLATE_FOLDER") or os.path.join(
 )
 CUPS_SERVERS = env.dict("DJANGO_CUPS_SERVERS")
 
+SUBJECT_SCREENING_MODEL = env.str("DJANGO_SUBJECT_SCREENING_MODEL")
 SUBJECT_CONSENT_MODEL = env.str("DJANGO_SUBJECT_CONSENT_MODEL")
 SUBJECT_REQUISITION_MODEL = env.str("DJANGO_SUBJECT_REQUISITION_MODEL")
 SUBJECT_VISIT_MODEL = env.str("DJANGO_SUBJECT_VISIT_MODEL")
@@ -338,9 +340,6 @@ DASHBOARD_URL_NAMES = env.dict("DJANGO_DASHBOARD_URL_NAMES")
 DASHBOARD_BASE_TEMPLATES = env.dict("DJANGO_DASHBOARD_BASE_TEMPLATES")
 LAB_DASHBOARD_BASE_TEMPLATES = env.dict("DJANGO_LAB_DASHBOARD_BASE_TEMPLATES")
 LAB_DASHBOARD_URL_NAMES = env.dict("DJANGO_LAB_DASHBOARD_URL_NAMES")
-
-# is this needed?
-SUBJECT_REQUISITION_MODEL = env.str("DJANGO_SUBJECT_REQUISITION_MODEL")
 
 # edc_facility
 HOLIDAY_FILE = env.str("DJANGO_HOLIDAY_FILE")
@@ -393,12 +392,29 @@ DATA_DICTIONARY_APP_LABELS = [
     "edc_appointment",
 ]
 
+# edc_protocol
+EDC_PROTOCOL = env.str("EDC_PROTOCOL")
+EDC_PROTOCOL_INSTITUTION_NAME = env.str("EDC_PROTOCOL_INSTITUTION_NAME")
+EDC_PROTOCOL_NUMBER = env.str("EDC_PROTOCOL_NUMBER")
+EDC_PROTOCOL_PROJECT_NAME = env.str("EDC_PROTOCOL_PROJECT_NAME")
+EDC_PROTOCOL_STUDY_OPEN_DATETIME = get_datetime_from_env(
+    *env.list("EDC_PROTOCOL_STUDY_OPEN_DATETIME")
+)
+EDC_PROTOCOL_STUDY_CLOSE_DATETIME = get_datetime_from_env(
+    *env.list("EDC_PROTOCOL_STUDY_CLOSE_DATETIME")
+)
+EDC_PROTOCOL_TITLE = env.str("EDC_PROTOCOL_TITLE")
+
 # edc_randomization
 EDC_RANDOMIZATION_LIST_PATH = env.str("EDC_RANDOMIZATION_LIST_PATH")
 EDC_RANDOMIZATION_UNBLINDED_USERS = env.list("EDC_RANDOMIZATION_UNBLINDED_USERS")
 EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER = env(
     "EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER"
 )
+
+# django-simple-history
+SIMPLE_HISTORY_REVERT_ENABLED = False
+
 # static
 if env("AWS_ENABLED"):
     # see
