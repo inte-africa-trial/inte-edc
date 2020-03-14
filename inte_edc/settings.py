@@ -19,7 +19,7 @@ class DisableMigrations:
 
 # simple version check
 try:
-    assert (3, 6) <= (sys.version_info.major, sys.version_info.minor) <= (3, 7)
+    assert (3, 7) <= (sys.version_info.major, sys.version_info.minor) <= (3, 8)
 except AssertionError:
     raise ImproperlyConfigured(
         "Incorrect python version. Expected 3.6 or 3.7. Check your environment."
