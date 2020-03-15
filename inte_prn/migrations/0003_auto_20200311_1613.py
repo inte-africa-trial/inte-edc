@@ -6,18 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('inte_prn', '0002_auto_20200220_2308'),
+        ("inte_prn", "0002_auto_20200220_2308"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='historicallosstofollowup',
-            name='loss_category',
-            field=models.CharField(choices=[], max_length=25, verbose_name='Category of loss to follow up'),
+            model_name="historicallosstofollowup",
+            name="loss_category",
+            field=models.CharField(
+                choices=[], max_length=25, verbose_name="Category of loss to follow up"
+            ),
         ),
         migrations.AlterField(
-            model_name='losstofollowup',
-            name='loss_category',
-            field=models.CharField(choices=[], max_length=25, verbose_name='Category of loss to follow up'),
+            model_name="losstofollowup",
+            name="loss_category",
+            field=models.CharField(
+                choices=[], max_length=25, verbose_name="Category of loss to follow up"
+            ),
         ),
     ]
