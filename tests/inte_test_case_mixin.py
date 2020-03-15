@@ -1,3 +1,6 @@
+import string
+from random import choices
+
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
@@ -61,14 +64,16 @@ class InteTestCaseMixin(SiteTestCaseMixin):
                 user.groups.add(group)
         return self.client.force_login(user or self.user)
 
-    def get_subject_screening(self, report_datetime=None, eligibility_datetime=None, **kwargs):
+    def get_subject_screening(
+        self, report_datetime=None, eligibility_datetime=None, **kwargs
+    ):
         data = {
             "screening_consent": YES,
             "age_in_years": 25,
             "clinic_type": HIV_CLINIC,
             "gender": MALE,
             "hospital_identifier": "13343322",
-            "initials": "EW",
+            "initials": "".join(choices(string.ascii_uppercase, k=2)),
             "lives_nearby": YES,
             "qualifying_condition": YES,
             "report_datetime": report_datetime or get_utcnow(),
@@ -101,14 +106,16 @@ class InteTestCaseMixin(SiteTestCaseMixin):
             screening_identifier=subject_screening.screening_identifier,
             initials=subject_screening.initials,
             dob=get_utcnow().date()
-                - relativedelta(years=subject_screening.age_in_years),
+            - relativedelta(years=subject_screening.age_in_years),
             site=Site.objects.get(name=site_name),
             clinic_type=HIV_CLINIC,
         )
         options.update(**kwargs)
         return baker.make_recipe("inte_consent.subjectconsent", **options)
 
-    def get_subject_visit(self, visit_code=None, subject_screening=None, subject_consent=None):
+    def get_subject_visit(
+        self, visit_code=None, subject_screening=None, subject_consent=None
+    ):
         visit_code = visit_code or DAY1
         subject_screening = subject_screening or self.get_subject_screening()
         subject_consent = subject_consent or self.get_subject_consent(subject_screening)
