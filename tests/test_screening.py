@@ -41,7 +41,7 @@ class TestForms(TestCase):
 
         data = self.get_data()
 
-        responses = dict(age_in_years=17, )
+        responses = dict(age_in_years=17,)
 
         for k, v in responses.items():
             with self.subTest(k=v):

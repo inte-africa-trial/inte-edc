@@ -16,13 +16,14 @@ def get_now():
 
 
 class TestBaselineCareStatus(InteTestCaseMixin, TestCase):
-
     def setUp(self):
         super().setUp()
         subject_screening = self.get_subject_screening(
-            report_datetime=get_utcnow(), clinic_type=HIV_CLINIC)
+            report_datetime=get_utcnow(), clinic_type=HIV_CLINIC
+        )
         self.consent = self.get_subject_consent(
-            subject_screening=subject_screening, clinic_type=HIV_CLINIC)
+            subject_screening=subject_screening, clinic_type=HIV_CLINIC
+        )
 
         # set up condition in HIV clinic, no co-morbidity
         self.data = {
@@ -48,8 +49,9 @@ class TestBaselineCareStatus(InteTestCaseMixin, TestCase):
         self.data.update(
             subject_visit=self.subject_visit.pk,
             report_datetime=self.subject_visit.report_datetime,
-            hiv_clinic_next_appt_date=(self.subject_visit.report_datetime
-                                       + relativedelta(months=1)),
+            hiv_clinic_next_appt_date=(
+                self.subject_visit.report_datetime + relativedelta(months=1)
+            ),
         )
 
     def test_form_ok(self):
@@ -61,8 +63,8 @@ class TestBaselineCareStatus(InteTestCaseMixin, TestCase):
     def test_form_hiv_next_appt_date_required(self):
         self.data.update(
             hiv_clinic_next_appt_date=(
-                    self.subject_visit.report_datetime
-                    + relativedelta(months=1))
+                self.subject_visit.report_datetime + relativedelta(months=1)
+            )
         )
         form = BaselineCareStatusForm(data=self.data)
         form.is_valid()
@@ -71,8 +73,8 @@ class TestBaselineCareStatus(InteTestCaseMixin, TestCase):
     def test_form_ncd_next_appt_date_not_required(self):
         self.data.update(
             ncd_clinic_next_appt_date=(
-                    self.subject_visit.report_datetime
-                    + relativedelta(months=1))
+                self.subject_visit.report_datetime + relativedelta(months=1)
+            )
         )
         form = BaselineCareStatusForm(data=self.data)
         form.is_valid()
@@ -81,8 +83,8 @@ class TestBaselineCareStatus(InteTestCaseMixin, TestCase):
     def test_form_hiv_next_appt_date_is_future(self):
         self.data.update(
             hiv_clinic_next_appt_date=(
-                    self.subject_visit.report_datetime
-                    - relativedelta(months=1))
+                self.subject_visit.report_datetime - relativedelta(months=1)
+            )
         )
         form = BaselineCareStatusForm(data=self.data)
         form.is_valid()
@@ -91,16 +93,17 @@ class TestBaselineCareStatus(InteTestCaseMixin, TestCase):
     def test_form_ncd_next_appt_date_is_future(self):
         self.data.update(
             hiv_clinic_next_appt_date=(
-                    self.subject_visit.report_datetime
-                    + relativedelta(months=1)),
+                self.subject_visit.report_datetime + relativedelta(months=1)
+            ),
             diabetic=YES,
             receives_care_at_ncd_clinic=YES,
             attends_this_ncd_clinic=YES,
             ncd_clinic_willing_to_transfer=NOT_APPLICABLE,
             ncdh_clinic_other_is_study_clinic=NOT_APPLICABLE,
             ncd_clinic_other=None,
-            ncd_next_appt_date=(self.subject_visit.report_datetime
-                                - relativedelta(months=1)),
+            ncd_next_appt_date=(
+                self.subject_visit.report_datetime - relativedelta(months=1)
+            ),
         )
         form = BaselineCareStatusForm(data=self.data)
         form.is_valid()
@@ -141,12 +144,14 @@ class TestBaselineCareStatus(InteTestCaseMixin, TestCase):
 
     def test_validator_ncd_attending_must_have_one_condition(self):
         subject_screening = self.get_subject_screening(
-            report_datetime=get_utcnow(), clinic_type=NCD_CLINIC)
+            report_datetime=get_utcnow(), clinic_type=NCD_CLINIC
+        )
         subject_consent = self.get_subject_consent(
-            subject_screening=subject_screening, clinic_type=NCD_CLINIC)
+            subject_screening=subject_screening, clinic_type=NCD_CLINIC
+        )
         subject_visit = self.get_subject_visit(
-            subject_screening=subject_screening,
-            subject_consent=subject_consent)
+            subject_screening=subject_screening, subject_consent=subject_consent
+        )
 
         user_input = {
             "subject_visit": subject_visit,

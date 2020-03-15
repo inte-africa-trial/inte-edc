@@ -191,9 +191,7 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
         page = add_screening_page.form.submit()
 
         # redirects back to listboard
-        self.assertRedirects(
-            page, reverse(f"inte_dashboard:screening_listboard_url")
-        )
+        self.assertRedirects(page, reverse(f"inte_dashboard:screening_listboard_url"))
 
         # new screened subject is available
         obj = SubjectScreening.objects.all().last()
@@ -223,7 +221,7 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
             "inte_subject.subjectconsent",
             screening_identifier=subject_screening.screening_identifier,
             dob=(
-                    get_utcnow() - relativedelta(years=subject_screening.age_in_years)
+                get_utcnow() - relativedelta(years=subject_screening.age_in_years)
             ).date(),
             first_name="Melissa",
             last_name="Rodriguez",
