@@ -3,9 +3,21 @@
 import os
 import sys
 
+from django.core.management import color_style
+
+style = color_style()
+
 
 def main():
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "inte_edc.settings")
+    default = "inte_edc.settings.defaults"
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "inte_edc.settings.defaults")
+    if os.environ.get("DJANGO_SETTINGS_MODULE") == default:
+        sys.stderr.write(
+            style.ERROR(
+                f"DJANGO_SETTINGS_MODULE not set. Using `{default}`. "
+                f"Assuming a test environment (manage.py).\n"
+            )
+        )
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

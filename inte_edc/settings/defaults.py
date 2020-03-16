@@ -1,11 +1,11 @@
+from importlib import import_module
+
 import environ
 import os
 import sys
 
-from django.core.exceptions import ImproperlyConfigured
-from edc_sites import get_site_id
+from edc_sites import get_site_from_environment
 from edc_utils import get_datetime_from_env
-from inte_sites import inte_sites
 from pathlib import Path
 
 
@@ -17,15 +17,8 @@ class DisableMigrations:
         return None
 
 
-# simple version check
-try:
-    assert (3, 7) <= (sys.version_info.major, sys.version_info.minor) <= (3, 8)
-except AssertionError:
-    raise ImproperlyConfigured(
-        "Incorrect python version. Expected 3.6 or 3.7. Check your environment."
-    )
-
-BASE_DIR = str(Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+BASE_DIR = str(Path(os.path.dirname(os.path.abspath(__file__))).parent.parent)
+ENV_DIR = str(Path(os.path.dirname(os.path.abspath(__file__))).parent.parent)
 
 env = environ.Env(
     AWS_ENABLED=(bool, False),
@@ -52,18 +45,28 @@ env = environ.Env(
     TWILIO_ENABLED=(bool, False),
 )
 
-# copy your .env file from .envs/ to BASE_DIR
+# copy your .env file from .envs/ to ENV_DIR
 if "runtests.py" in sys.argv:
-    env.read_env(os.path.join(BASE_DIR, ".env-tests"))
-    print(f"Reading env from {os.path.join(BASE_DIR, '.env-tests')}")
+    env.read_env(os.path.join(ENV_DIR, ".env-tests"))
+    print(f"Reading env from {os.path.join(ENV_DIR, '.env-tests')}")
 else:
-    env.read_env(os.path.join(BASE_DIR, ".env"))
+    env.read_env(os.path.join(ENV_DIR, ".env"))
 
 DEBUG = env("DJANGO_DEBUG")
 
 SECRET_KEY = env.str("DJANGO_SECRET_KEY")
 
 APP_NAME = env.str("DJANGO_APP_NAME")
+
+# extract country and sitename from DJANGO_SETTINGS_MODULE environment variable
+EDC_SITES_MODULE_NAME = env.str("EDC_SITES_MODULE_NAME")
+COUNTRY, SITE_ID = get_site_from_environment(
+    default_site_name="kinoni",
+    default_country="uganda",
+    app_name=APP_NAME,
+    sites_module_name=EDC_SITES_MODULE_NAME,
+)
+
 
 LIVE_SYSTEM = env.str("DJANGO_LIVE_SYSTEM")
 
@@ -451,15 +454,6 @@ else:
     if env("DJANGO_LOGGING_ENABLED"):
         from .logging.standard import LOGGING  # noqa
 
-# read SITE specific variables from separate .env file
-env.read_env(os.path.join(BASE_DIR, ".env-site"))
-COUNTRY = env.str("DJANGO_COUNTRY")
-# get site ID from more familiar town name
-DJANGO_SITE_NAME = env.str("DJANGO_SITE_NAME")
-if DJANGO_SITE_NAME:
-    SITE_ID = get_site_id(DJANGO_SITE_NAME, sites=inte_sites)
-else:
-    SITE_ID = env.int("DJANGO_SITE_ID")
 
 # if running tests ...
 if "test" in sys.argv or "runtests" in sys.argv:

@@ -4,8 +4,9 @@ from django.apps import AppConfig as DjangoAppConfig
 from django.apps import apps as django_apps
 from django.core.management.color import color_style
 from django.db.models.signals import post_migrate
+from edc_sites import get_sites_by_country
 
-from .sites import inte_sites, fqdn
+from .sites import fqdn
 
 style = color_style()
 
@@ -15,7 +16,7 @@ def post_migrate_update_sites(sender=None, **kwargs):
 
     sys.stdout.write(style.MIGRATE_HEADING("Updating sites:\n"))
     add_or_update_django_sites(
-        apps=django_apps, sites=inte_sites, fqdn=fqdn, verbose=True
+        apps=django_apps, sites=get_sites_by_country(), fqdn=fqdn, verbose=True
     )
     sys.stdout.write("Done.\n")
     sys.stdout.flush()

@@ -15,7 +15,7 @@ from edc_dashboard.url_names import url_names
 from edc_sites import add_or_update_django_sites
 from edc_utils import get_utcnow
 from inte_screening.models.subject_screening import SubjectScreening
-from inte_sites.sites import inte_sites, fqdn
+from inte_sites.sites import get_sites_by_country, fqdn
 from model_bakery import baker
 from unittest import skip
 
@@ -205,7 +205,9 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
         self.assertEqual(add_subjectconsent_page.status_code, 200)
 
     def test_to_subject_dashboard(self):
-        add_or_update_django_sites(apps=django_apps, sites=inte_sites, fqdn=fqdn)
+        add_or_update_django_sites(
+            apps=django_apps, sites=get_sites_by_country("uganda"), fqdn=fqdn
+        )
         self.login(superuser=False, groups=[EVERYONE, CLINIC, PII])
         subject_screening = self.get_subject_screening()
         home_page = self.client.get(reverse("home_url"))

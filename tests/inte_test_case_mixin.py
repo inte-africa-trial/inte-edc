@@ -21,7 +21,7 @@ from inte_auth.codenames_by_group import get_codenames_by_group
 from inte_screening.constants import NCD_CLINIC, HIV_CLINIC
 from inte_screening.forms import SubjectScreeningForm
 from inte_screening.models import SubjectScreening
-from inte_sites.sites import fqdn, inte_sites
+from inte_sites.sites import fqdn, get_sites_by_country
 from inte_subject.models import SubjectVisit
 from model_bakery import baker
 
@@ -29,7 +29,7 @@ from model_bakery import baker
 class InteTestCaseMixin(SiteTestCaseMixin):
     fqdn = fqdn
 
-    default_sites = inte_sites
+    default_sites = get_sites_by_country("uganda")
 
     site_names = [s[1] for s in default_sites]
 
@@ -39,7 +39,7 @@ class InteTestCaseMixin(SiteTestCaseMixin):
     def setUpClass(cls):
         super().setUpClass()
         import_holidays(test=True)
-        add_or_update_django_sites(sites=inte_sites, fqdn=fqdn)
+        add_or_update_django_sites(sites=get_sites_by_country("uganda"), fqdn=fqdn)
         site_list_data.autodiscover()
         GroupPermissionsUpdater(
             codenames_by_group=get_codenames_by_group(), verbose=True

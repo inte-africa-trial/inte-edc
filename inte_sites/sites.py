@@ -1,9 +1,10 @@
-from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
+from django.core.management import color_style
+
+style = color_style()
 
 fqdn = "inte.clinicedc.org"
 
-all_inte_sites = {
+all_sites = {
     "uganda": (
         (100, "kinoni", "Kinoni"),
         (110, "bugamba", "Bugamba"),
@@ -22,11 +23,3 @@ all_inte_sites = {
         (250, "kasangati", "Kasangati"),
     )
 }
-
-try:
-    country = settings.COUNTRY
-except ImproperlyConfigured:
-    country = None
-    inte_sites = []
-else:
-    inte_sites = all_inte_sites[country]
