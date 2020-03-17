@@ -1,4 +1,5 @@
 import sys
+
 from dateutil.relativedelta import relativedelta
 from django.apps import apps as django_apps
 from django.contrib.auth import get_user_model
@@ -12,10 +13,10 @@ from edc_appointment.constants import IN_PROGRESS_APPT, SCHEDULED_APPT
 from edc_appointment.models import Appointment
 from edc_auth import TMG, EVERYONE, AUDITOR, CLINIC, PII, EXPORT, LAB
 from edc_dashboard.url_names import url_names
-from edc_sites import add_or_update_django_sites
+from edc_sites import add_or_update_django_sites, get_sites_by_country
 from edc_utils import get_utcnow
 from inte_screening.models.subject_screening import SubjectScreening
-from inte_sites.sites import get_sites_by_country, fqdn
+from inte_sites.sites import fqdn
 from model_bakery import baker
 from unittest import skip
 

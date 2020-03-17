@@ -1,6 +1,11 @@
 Changes
 =======
 
+0.1.4
+-----
+- add support for multi-site/country deployment in settings, gunicorn and nginx files
+  (inte-sites, inte-edc). Add `make_files.py` and templates in these folders.
+
 0.1.3
 -----
 - use model and model form mixins from `edc-crf`

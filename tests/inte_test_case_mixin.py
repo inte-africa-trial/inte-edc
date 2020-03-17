@@ -12,7 +12,7 @@ from edc_facility.import_holidays import import_holidays
 from edc_facility.models import Holiday
 from edc_list_data.site_list_data import site_list_data
 from edc_randomization.randomization_list_importer import RandomizationListImporter
-from edc_sites import add_or_update_django_sites
+from edc_sites import add_or_update_django_sites, get_sites_by_country
 from edc_sites.tests.site_test_case_mixin import SiteTestCaseMixin
 from edc_utils.date import get_utcnow
 from edc_visit_schedule.constants import DAY1
@@ -21,7 +21,7 @@ from inte_auth.codenames_by_group import get_codenames_by_group
 from inte_screening.constants import NCD_CLINIC, HIV_CLINIC
 from inte_screening.forms import SubjectScreeningForm
 from inte_screening.models import SubjectScreening
-from inte_sites.sites import fqdn, get_sites_by_country
+from inte_sites.sites import fqdn
 from inte_subject.models import SubjectVisit
 from model_bakery import baker
 

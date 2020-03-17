@@ -20,6 +20,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
     APP_NAME=app_name,
     SITE_ID=100,
     COUNTRY="uganda",
+    EDC_SITES_MODULE_NAME="inte_sites.sites",
     SUBJECT_VISIT_MODEL="inte_subject.subjectvisit",
     SUBJECT_CONSENT_MODEL="inte_consent.subjectconsent",
     SUBJECT_REQUISITION_MODEL=f"inte_subject.subjectrequisition",

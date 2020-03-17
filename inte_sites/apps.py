@@ -16,7 +16,10 @@ def post_migrate_update_sites(sender=None, **kwargs):
 
     sys.stdout.write(style.MIGRATE_HEADING("Updating sites:\n"))
     add_or_update_django_sites(
-        apps=django_apps, sites=get_sites_by_country(), fqdn=fqdn, verbose=True
+        apps=django_apps,
+        sites=get_sites_by_country(sites_module_name="inte_sites.sites"),
+        fqdn=fqdn,
+        verbose=True,
     )
     sys.stdout.write("Done.\n")
     sys.stdout.flush()
