@@ -26,7 +26,7 @@ class RiskFactors(CrfModelMixin, BaseUuidModel):
         ),
     )
 
-    smoker_quit_ago_months = models.IntegerField(editable=False, )
+    smoker_quit_ago_months = models.IntegerField(editable=False,)
 
     alcohol = models.CharField(
         verbose_name="Do you drink alcohol?", max_length=15, choices=YES_NO,

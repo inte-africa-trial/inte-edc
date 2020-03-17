@@ -35,7 +35,7 @@ class PatientHistory(CrfModelMixin, BaseUuidModel):
         help_text="If yes, indicate below",
     )
 
-    weight = edc_models.WeightField(null=True, blank=True, )
+    weight = edc_models.WeightField(null=True, blank=True,)
 
     bp_measured = models.CharField(
         verbose_name="Was the blood pressure measured?",

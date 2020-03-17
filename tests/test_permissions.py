@@ -30,7 +30,6 @@ from edc_auth.codenames import (
     get_rando,
     tmg,
 )
-
 from inte_auth.codenames import (
     auditor,
     clinic,

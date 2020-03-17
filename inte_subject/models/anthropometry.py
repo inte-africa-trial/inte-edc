@@ -18,13 +18,13 @@ class Anthropometry(CrfModelMixin, BaseUuidModel):
 
     waist_circumference = edc_models.WaistCircumferenceField()
 
-    sys_blood_pressure_r1 = edc_models.SystolicPressureField(null=True, blank=False, )
+    sys_blood_pressure_r1 = edc_models.SystolicPressureField(null=True, blank=False,)
 
-    dia_blood_pressure_r1 = edc_models.DiastolicPressureField(null=True, blank=False, )
+    dia_blood_pressure_r1 = edc_models.DiastolicPressureField(null=True, blank=False,)
 
-    sys_blood_pressure_r2 = edc_models.SystolicPressureField(null=True, blank=False, )
+    sys_blood_pressure_r2 = edc_models.SystolicPressureField(null=True, blank=False,)
 
-    dia_blood_pressure_r2 = edc_models.DiastolicPressureField(null=True, blank=False, )
+    dia_blood_pressure_r2 = edc_models.DiastolicPressureField(null=True, blank=False,)
 
     def save(self, *args, **kwargs):
         self.bmi = round((float(self.weight) / (float(self.height) / 100.0)), 2)

@@ -1,4 +1,5 @@
 import sys
+
 from dateutil.relativedelta import relativedelta
 from django.apps import apps as django_apps
 from django.contrib.auth import get_user_model
@@ -12,10 +13,10 @@ from edc_appointment.constants import IN_PROGRESS_APPT, SCHEDULED_APPT
 from edc_appointment.models import Appointment
 from edc_auth import TMG, EVERYONE, AUDITOR, CLINIC, PII, EXPORT, LAB
 from edc_dashboard.url_names import url_names
-from edc_sites import add_or_update_django_sites
+from edc_sites import add_or_update_django_sites, get_sites_by_country
 from edc_utils import get_utcnow
 from inte_screening.models.subject_screening import SubjectScreening
-from inte_sites.sites import inte_sites, fqdn
+from inte_sites.sites import fqdn
 from model_bakery import baker
 from unittest import skip
 
@@ -191,9 +192,7 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
         page = add_screening_page.form.submit()
 
         # redirects back to listboard
-        self.assertRedirects(
-            page, reverse(f"inte_dashboard:screening_listboard_url")
-        )
+        self.assertRedirects(page, reverse(f"inte_dashboard:screening_listboard_url"))
 
         # new screened subject is available
         obj = SubjectScreening.objects.all().last()
@@ -207,7 +206,9 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
         self.assertEqual(add_subjectconsent_page.status_code, 200)
 
     def test_to_subject_dashboard(self):
-        add_or_update_django_sites(apps=django_apps, sites=inte_sites, fqdn=fqdn)
+        add_or_update_django_sites(
+            apps=django_apps, sites=get_sites_by_country("uganda"), fqdn=fqdn
+        )
         self.login(superuser=False, groups=[EVERYONE, CLINIC, PII])
         subject_screening = self.get_subject_screening()
         home_page = self.client.get(reverse("home_url"))
@@ -223,7 +224,7 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
             "inte_subject.subjectconsent",
             screening_identifier=subject_screening.screening_identifier,
             dob=(
-                    get_utcnow() - relativedelta(years=subject_screening.age_in_years)
+                get_utcnow() - relativedelta(years=subject_screening.age_in_years)
             ).date(),
             first_name="Melissa",
             last_name="Rodriguez",

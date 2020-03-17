@@ -1,6 +1,15 @@
 Changes
 =======
 
+0.1.4
+-----
+- add util to generate a dummy rando list. In this trial, randomization is by site, not individual.
+  However, the edc still needs randomization slots per patient, even if they are meaningless.
+- skip randomization list checks -- run these manually on-demand.
+- add support for multi-site/country deployment in settings, gunicorn and nginx files
+  (inte-sites, inte-edc). Add `make_files.py` and templates in these folders.
+- bump up edc==0.1.12
+
 0.1.3
 -----
 - use model and model form mixins from `edc-crf`
