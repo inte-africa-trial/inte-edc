@@ -18,7 +18,7 @@ from edc_utils.date import get_utcnow
 from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.constants import SCHEDULED
 from inte_auth.codenames_by_group import get_codenames_by_group
-from inte_screening.constants import NCD_CLINIC, HIV_CLINIC
+from inte_screening.constants import HIV_CLINIC
 from inte_screening.forms import SubjectScreeningForm
 from inte_screening.models import SubjectScreening
 from inte_sites.sites import fqdn

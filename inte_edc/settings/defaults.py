@@ -1,5 +1,3 @@
-from importlib import import_module
-
 import environ
 import os
 import sys
@@ -60,7 +58,7 @@ APP_NAME = env.str("DJANGO_APP_NAME")
 
 # extract country and sitename from DJANGO_SETTINGS_MODULE environment variable
 EDC_SITES_MODULE_NAME = env.str("EDC_SITES_MODULE_NAME")
-COUNTRY, SITE_ID = get_site_from_environment(
+COUNTRY, SITE_ID, _ = get_site_from_environment(
     default_site_name="kinoni",
     default_country="uganda",
     app_name=APP_NAME,
@@ -111,13 +109,16 @@ INSTALLED_APPS = [
     "edc_visit_schedule.apps.AppConfig",
     "edc_dashboard.apps.AppConfig",
     "edc_data_manager.apps.AppConfig",
+    "edc_device.apps.AppConfig",
     "edc_export.apps.AppConfig",
     "edc_fieldsets.apps.AppConfig",
     "edc_form_validators.apps.AppConfig",
+    "edc_identifier.apps.AppConfig",
     "edc_lab_dashboard.apps.AppConfig",
     "edc_label.apps.AppConfig",
     "edc_list_data.apps.AppConfig",
     "edc_locator.apps.AppConfig",
+    "edc_metadata.apps.AppConfig",
     "edc_metadata_rules.apps.AppConfig",
     "edc_model_admin.apps.AppConfig",
     "edc_navbar.apps.AppConfig",
@@ -125,6 +126,7 @@ INSTALLED_APPS = [
     "edc_offstudy.apps.AppConfig",
     "edc_pharmacy.apps.AppConfig",
     "edc_pdutils.apps.AppConfig",
+    "edc_protocol.apps.AppConfig",
     "edc_prn.apps.AppConfig",
     "edc_randomization.apps.AppConfig",
     "edc_reference.apps.AppConfig",
@@ -135,6 +137,7 @@ INSTALLED_APPS = [
     "edc_sites.apps.AppConfig",
     "edc_subject_dashboard.apps.AppConfig",
     "edc_timepoint.apps.AppConfig",
+    "edc_visit_tracking.apps.AppConfig",
     "inte_consent.apps.AppConfig",
     "inte_lists.apps.AppConfig",
     "inte_dashboard.apps.AppConfig",
@@ -150,12 +153,6 @@ INSTALLED_APPS = [
     "inte_export.apps.AppConfig",
     "inte_screening.apps.AppConfig",
     "inte_sites.apps.AppConfig",
-    # "inte_edc.apps.EdcAppointmentAppConfig",
-    "inte_edc.apps.EdcDeviceAppConfig",
-    "inte_edc.apps.EdcIdentifierAppConfig",
-    "inte_edc.apps.EdcMetadataAppConfig",
-    "inte_edc.apps.EdcProtocolAppConfig",
-    "inte_edc.apps.EdcVisitTrackingAppConfig",
     "inte_edc.apps.EdcFacilityAppConfig",
     "inte_edc.apps.AppConfig",
 ]
@@ -414,7 +411,7 @@ EDC_RANDOMIZATION_UNBLINDED_USERS = env.list("EDC_RANDOMIZATION_UNBLINDED_USERS"
 EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER = env(
     "EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER"
 )
-
+EDC_RANDOMIZATION_SKIP_VERIFY_CHECKS = True
 # django-simple-history
 SIMPLE_HISTORY_REVERT_ENABLED = False
 
