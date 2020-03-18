@@ -7,8 +7,8 @@ Generate country index html file that displays links for each site
 * copy the template file and make file into the tmp folder
 * run
 
-Usage: python make_html.py <country> <country_code>
-Example: python make_html.py uganda ug
+Usage: python make_sites_html.py <country> <country_code>
+Example: python make_sites_html.py uganda ug
 """
 
 import sys
@@ -29,9 +29,9 @@ def main():
             sites_anchors.append(
                 f'<a href="https://{site}.{country_code}.{fqdn}/" class="list-group-item">{country.title()}</a>'
             )
-    with open(f"index_country.template") as f:
+    with open(f"country_sites.html.template") as f:
         index_str = f.read()
-    with open(os.path.join(path, f"index_{country_code}.html"), "w+") as f:
+    with open(os.path.join(path, f"{country_code}_sites.html"), "w+") as f:
         f.write(index_str.format(sites_anchors="\n         ".join(sites_anchors)))
     sys.exit()
 
