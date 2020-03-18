@@ -15,7 +15,7 @@ ExecStart=/home/edc/miniconda3/envs/edc/bin/gunicorn \
     --workers 3 \
     --timeout=300 \
     --bind unix:/run/gunicorn.{site}.sock \
-    inte_edc.wsgi.{site}:application
+    inte_edc.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
