@@ -30,7 +30,7 @@ def main():
     for site in sites:
         if site:
             with open(os.path.join(path, f"gunicorn.{site}.{systemd_type}"), "w+") as f:
-                f.write(template_str.format(site=site))
+                f.write(template_str.format(site=site, country=country))
     sys.exit()
 
 

@@ -28,7 +28,10 @@ def main():
     for site in sites:
         if site:
             with open(os.path.join(os.getcwd(), country, f"{site}.py"), "w+") as f:
-                f.write("from ..defaults import *  # noqa\n")
+                f.write(
+                    "print(f'Settings file {__file__}')  # noqa\n"
+                    f"from ..defaults import *  # noqa\n"
+                )
     sys.exit()
 
 
