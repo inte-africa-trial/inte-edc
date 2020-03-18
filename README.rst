@@ -32,7 +32,7 @@ Create a virtualenv, clone the main repo and checkout master
 
 .. code-block:: bash
 
-  conda create -n edc python=3.7
+  conda create -n edc python=3.8
   conda activate edc
 
 
@@ -40,10 +40,10 @@ Clone the main repo and checkout master
 
 .. code-block:: bash
 
-  mkdir ~/projects
-  cd projects
+  mkdir ~/app
+  cd app
   https://github.com/inte-africa-trial/inte-edc.git
-  cd ~/projects/inte-edc
+  cd ~/app/inte-edc
   git checkout master
 
 
@@ -51,7 +51,7 @@ Copy the test environment file
 
 .. code-block:: bash
 
-  cd ~/projects/inte-edc
+  cd ~/app/inte-edc
   git checkout master
   cp .env.tests .env
 
@@ -68,7 +68,7 @@ Continue with the installation
 
 .. code-block:: bash
 
-  cd ~/projects/inte-edc
+  cd ~/app/inte-edc
   git checkout master
   pip install .
   pip install -U -r requirements/stable-v0.X.X.txt
@@ -81,7 +81,7 @@ Create a user and start up `runserver`
 
 .. code-block:: bash
 
-  cd ~/projects/inte-edc
+  cd ~/app/inte-edc
   git checkout master
   python manage.py createsuperuser
   python manage.py runserver
