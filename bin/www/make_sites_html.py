@@ -14,7 +14,7 @@ Example: python make_sites_html.py uganda ug
 import sys
 import os
 
-from inte_sites.sites import all_inte_sites, fqdn
+from inte_sites.sites import all_sites, fqdn
 
 
 def main():
@@ -22,7 +22,7 @@ def main():
     path = os.getcwd()
     country = sys.argv[1]
     country_code = sys.argv[2]
-    sites = [site[2].lower() for site in all_inte_sites[country]]
+    sites = [site[2].lower() for site in all_sites[country]]
     sites.sort()
     for site in sites:
         if site:

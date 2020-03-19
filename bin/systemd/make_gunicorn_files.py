@@ -16,7 +16,7 @@ Example:
 import sys
 import os
 
-from inte_sites.sites import all_inte_sites
+from inte_sites.sites import all_sites
 
 
 def main():
@@ -33,7 +33,7 @@ def main():
             "    python make_gunicorn_file.py socket uganda\n\n"
         )
     else:
-        sites = [site[2].lower() for site in all_inte_sites[country]]
+        sites = [site[2].lower() for site in all_sites[country]]
         sites.sort()
         with open(f"gunicorn.{systemd_type}.template") as template_file:
             template_str = template_file.read()

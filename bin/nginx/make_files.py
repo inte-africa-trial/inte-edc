@@ -13,7 +13,7 @@ Example:
 
 import sys
 import os
-from inte_sites.sites import all_inte_sites, fqdn
+from inte_sites.sites import all_sites, fqdn
 from string import Template
 
 
@@ -21,7 +21,7 @@ def main():
     template_file = "nginx.template"
     country = sys.argv[1]
     country_code = sys.argv[2]
-    sites = [site[2].lower() for site in all_inte_sites[country]]
+    sites = [site[2].lower() for site in all_sites[country]]
     sites.sort()
     path = os.getcwd()
     with open(template_file) as template_file:
