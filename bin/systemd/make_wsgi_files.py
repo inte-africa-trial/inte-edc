@@ -23,7 +23,7 @@ def main():
         template_str = template_file.read()
     for site in sites:
         if site:
-            with open(os.path.join(path, f"wsgi.{site}.py"), "w+") as f:
+            with open(os.path.join(path, f"wsgi_{site}.py"), "w+") as f:
                 f.write(template_str.format(site=site, country=country))
     sys.exit()
 
