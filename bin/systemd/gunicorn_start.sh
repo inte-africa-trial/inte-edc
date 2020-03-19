@@ -1,8 +1,3 @@
-
-
-sudo mv ~/app/bin/systemd/gunicorn.*.service /etc/systemd/system/
-sudo mv ~/app/bin/systemd/gunicorn.*.socket /etc/systemd/system/
-
 sudo systemctl daemon-reload && \
 sudo systemctl start gunicorn.bugamba.socket && \
 sudo systemctl start gunicorn.bukulula.socket && \
