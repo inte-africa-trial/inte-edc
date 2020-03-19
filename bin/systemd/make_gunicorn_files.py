@@ -73,7 +73,7 @@ def main():
                         )
                 f.write(f"echo Done.\n")
     print("Now copy the files to the /etc/systemd/system folder, for example:")
-    print(f"sudo mv gunicorn.*.{systemd_type} /etc/systemd/system")
+    print(f"sudo mv gunicorn-*.{systemd_type} /etc/systemd/system")
     print(
         "You also need to start and enable each service by running `gunicorn_enable.sh`."
     )
