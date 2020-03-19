@@ -2,7 +2,7 @@
 
 [Unit]
 Description=gunicorn {site} daemon
-Requires=gunicorn.{site}.socket
+Requires=gunicorn-{site}.socket
 After=network.target
 
 [Service]
@@ -14,7 +14,7 @@ ExecStart=/home/edc/miniconda3/envs/edc/bin/gunicorn \
     --access-logfile - \
     --workers 3 \
     --timeout=300 \
-    --bind unix:/run/gunicorn.{site}.sock \
+    --bind unix:/run/gunicorn-{site}.sock \
     inte_edc.wsgi:application
 
 [Install]

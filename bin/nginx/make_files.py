@@ -18,9 +18,16 @@ from string import Template
 
 
 def main():
+    """
+    sudo find /etc/nginx/sites-available -name \*.ug.conf -exec ln -vs "{}" /etc/nginx/sites-enabled ';'
+    """
+
     template_file = "nginx.template"
     country = sys.argv[1]
     country_code = sys.argv[2]
+    uat_or_live = sys.argv[3]
+    uat_or_live = "uat" if uat_or_live == "uat" else ""
+
     sites = [site[2].lower() for site in all_sites[country]]
     sites.sort()
     path = os.getcwd()
@@ -29,8 +36,8 @@ def main():
     for site in sites:
         if site:
             with open(os.path.join(path, f"{site}.{country_code}.conf"), "w+") as f:
-                server_name = f"{site}.{country_code}.{fqdn}"
-                proxy_pass = f"http://unix:/run/gunicorn-{country_code}-{site}.sock"
+                server_name = f"{site}.{uat_or_live}.{country_code}.{fqdn}"
+                proxy_pass = f"http://unix:/run/gunicorn-{site}.sock"
                 f.write(
                     Template(template_str).substitute(
                         server_name=server_name, proxy_pass=proxy_pass
