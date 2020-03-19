@@ -44,7 +44,9 @@ def main():
                 ) as f:
                     f.write(template_str.format(site=site, country=country))
     print("Now copy the files to the /etc/systemd/system folder, for example:")
-    print(f"mv gunicorn.*.{systemd_type} /etc/systemd/system")
+    print(f"sudo mv gunicorn.*.{systemd_type} /etc/systemd/system")
+    print("sudo systemctl daemon-reload")
+    print("You also need to start each ")
     sys.exit()
 
 
