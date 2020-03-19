@@ -20,20 +20,25 @@ from inte_sites.sites import all_sites
 
 
 def main():
+    msg = (
+        "\n\nGenerate systemd gunicorn `service` and `socket` for each site\n"
+        "Usage: python make_gunicorn_file.py <systemd_type> <country>\n"
+        "Example:\n"
+        "    python make_gunicorn_file.py service uganda\n"
+        "    python make_gunicorn_file.py socket uganda\n\n"
+    )
     path = os.getcwd()
     try:
         systemd_type = sys.argv[1]
         country = sys.argv[2]
     except KeyError:
-        sys.stdout.write(
-            "\n\nGenerate systemd gunicorn `service` and `sockets` for each site\n"
-            "Usage: python make_gunicorn_file.py <systemd_type> <country>\n"
-            "Example:\n"
-            "    python make_gunicorn_file.py service uganda\n"
-            "    python make_gunicorn_file.py socket uganda\n\n"
-        )
+        sys.stdout.write(msg)
     else:
-        print("Creating gunicorn systemd socket and service files.")
+        if systemd_type not in ["service", "socket"]:
+            sys.stdout.write(msg)
+        if country not in ["uganda", "tanzania"]:
+            sys.stdout.write(msg)
+        print(f"Creating gunicorn systemd {systemd_type} files.")
         sites = [site[2].lower() for site in all_sites[country]]
         sites.sort()
         with open(f"gunicorn.{systemd_type}.template") as template_file:
@@ -45,25 +50,28 @@ def main():
                 ) as f:
                     f.write(template_str.format(site=site, country=country))
 
-        print("Creating `gunicorn_enable.sh`.")
-        with open(os.path.join(path, f"gunicorn_enable.sh"), "w+") as f:
-            f.write("#!/bin/bash\n")
-            f.write("#A script to start and enable all gunicorn sockets.\n\n")
-            f.write("sudo systemctl daemon-reload && \\")
-            for site in sites:
-                if site:
-                    f.write(f"sudo systemctl start gunicorn.{site}.socket && \\")
-                    f.write(f"sudo systemctl enable gunicorn.{site}.socket && \\")
-            f.write(f"echo Done.")
-        print("Creating `gunicorn_start.sh`.")
-        with open(os.path.join(path, f"gunicorn_start.sh"), "w+") as f:
-            f.write("#!/bin/bash\n")
-            f.write("#A script to start and enable all gunicorn sockets.\n\n")
-            f.write("sudo systemctl daemon-reload && \\")
-            for site in sites:
-                if site:
-                    f.write(f"sudo systemctl restart gunicorn.{site}.socket && \\")
-            f.write(f"echo Done.")
+        if systemd_type == "socket":
+            print("Creating `gunicorn_enable.sh`.")
+            with open(os.path.join(path, f"gunicorn_enable.sh"), "w+") as f:
+                f.write("#!/bin/bash\n")
+                f.write("# A script to start and enable all gunicorn sockets.\n\n")
+                f.write("sudo systemctl daemon-reload && \\")
+                for site in sites:
+                    if site:
+                        f.write(f"sudo systemctl start gunicorn.{site}.socket && \\")
+                        f.write(f"sudo systemctl enable gunicorn.{site}.socket && \\")
+                f.write(f"echo Done.")
+            print("Creating `gunicorn_start.sh`.")
+            with open(os.path.join(path, f"gunicorn_start.sh"), "w+") as f:
+                f.write("#!/bin/bash\n")
+                f.write("#A script to start and enable all gunicorn sockets.\n\n")
+                f.write("sudo systemctl daemon-reload && \\\n")
+                for site in sites:
+                    if site:
+                        f.write(
+                            f"sudo systemctl restart gunicorn.{site}.socket && \\\n"
+                        )
+                f.write(f"echo Done.\n")
     print("Now copy the files to the /etc/systemd/system folder, for example:")
     print(f"sudo mv gunicorn.*.{systemd_type} /etc/systemd/system")
     print(
