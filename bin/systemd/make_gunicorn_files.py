@@ -61,6 +61,18 @@ def main():
                         f.write(f"sudo systemctl start gunicorn-{site}.socket && \\\n")
                         f.write(f"sudo systemctl enable gunicorn-{site}.socket && \\\n")
                 f.write(f"echo Done.")
+            print("Creating `gunicorn_disable.sh`.")
+            with open(os.path.join(path, f"gunicorn_disable.sh"), "w+") as f:
+                f.write("#!/bin/bash\n")
+                f.write("# A script to stop and disable all gunicorn sockets.\n\n")
+                f.write("sudo systemctl daemon-reload && \\\n")
+                for site in sites:
+                    if site:
+                        f.write(f"sudo systemctl stop gunicorn-{site}.socket && \\\n")
+                        f.write(
+                            f"sudo systemctl disable gunicorn-{site}.socket && \\\n"
+                        )
+                f.write(f"echo Done.")
             print("Creating `gunicorn_start.sh`.")
             with open(os.path.join(path, f"gunicorn_start.sh"), "w+") as f:
                 f.write("#!/bin/bash\n")
