@@ -13,7 +13,7 @@
 <body>
 
 <div class="jumbotron text-center">
-  <h2>INTE Africa Sites</h2>
+  <h2>{title}</h2>
   <p>Select a site to continue</p> 
 </div>
 
@@ -22,8 +22,9 @@
   <div class="col-sm-2"></div>
   <div class="col-sm-8">
     <div class="panel panel-{panel_color}">
-      <div class="panel-heading">INTE Africa Sites</div>
+      <div class="panel-heading">{title}</div>
       <div class="list-group">
+         {home_anchor}
          {sites_anchors}
       </div>
     </div>
