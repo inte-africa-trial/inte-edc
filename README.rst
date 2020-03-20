@@ -71,7 +71,7 @@ Continue with the installation
   cd ~/app/inte-edc
   git checkout master
   pip install .
-  pip install -U -r requirements/stable-v0.X.X.txt
+  pip install -U -r requirements
   python manage.py migrate
   python manage.py import_randomization_list
   python manage.py import_holidays
