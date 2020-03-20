@@ -34,7 +34,12 @@ def main():
     with open(f"country_index.html.template") as f:
         index_str = f.read()
     with open(os.path.join(path, f"index.html"), "w+") as f:
-        f.write(index_str.format(sites_anchors="\n         ".join(sites_anchors)))
+        f.write(
+            index_str.format(
+                panel_color="danger" if uat_or_live else "success",
+                sites_anchors="\n         ".join(sites_anchors),
+            )
+        )
     sys.exit()
 
 
