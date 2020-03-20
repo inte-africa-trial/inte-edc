@@ -19,8 +19,8 @@
 
 <div class="container">
 <div class="row">
-  <div class="col-sm-2"></div>
-  <div class="col-sm-8">
+  <div class="col-sm-4"></div>
+  <div class="col-sm-4">
     <div class="panel panel-{panel_color}">
       <div class="panel-heading">{title}</div>
       <div class="list-group">
@@ -29,7 +29,7 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-2"></div>
+  <div class="col-sm-4"></div>
 </div>
 </body>
 </html>
