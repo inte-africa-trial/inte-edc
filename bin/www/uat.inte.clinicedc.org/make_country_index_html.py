@@ -25,7 +25,8 @@ def main():
     uat_or_live = sys.argv[3]
     uat_or_live = "uat" if uat_or_live == "uat" else ""
     title = "INTE Africa UAT Sites" if uat_or_live else "INTE Africa Sites"
-    home_anchor = f'<a href="https://{fqdn}/" class="list-group-item">Home</a>'
+    home = f"{uat_or_live}.{fqdn}" if uat_or_live else fqdn
+    home_anchor = f'<a href="https://{home}/" class="list-group-item">Home</a>'
     sites = [site[2].lower() for site in all_sites[country]]
     sites.sort()
     for site in sites:
