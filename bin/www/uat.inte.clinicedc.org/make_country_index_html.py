@@ -22,16 +22,18 @@ def main():
     path = os.getcwd()
     country = sys.argv[1]
     country_code = sys.argv[2]
+    uat_or_live = sys.argv[3]
+    uat_or_live = "uat" if uat_or_live == "uat" else ""
     sites = [site[2].lower() for site in all_sites[country]]
     sites.sort()
     for site in sites:
         if site:
             sites_anchors.append(
-                f'<a href="https://{site}.{country_code}.{fqdn}/" class="list-group-item">{country.title()}</a>'
+                f'<a href="https://{site}.{uat_or_live}.{country_code}.{fqdn}/" class="list-group-item">{site.title()}</a>'
             )
-    with open(f"country_sites.html.template") as f:
+    with open(f"country_index.html.template") as f:
         index_str = f.read()
-    with open(os.path.join(path, f"{country_code}_sites.html"), "w+") as f:
+    with open(os.path.join(path, f"index.html"), "w+") as f:
         f.write(index_str.format(sites_anchors="\n         ".join(sites_anchors)))
     sys.exit()
 
