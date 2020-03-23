@@ -6,6 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
@@ -13,22 +14,23 @@
 <body>
 
 <div class="jumbotron text-center">
-  <h2>INTE Africa Sites</h2>
+  <h2>{title}</h2>
   <p>Select a site to continue</p> 
 </div>
 
 <div class="container">
 <div class="row">
-  <div class="col-sm-2"></div>
-  <div class="col-sm-8">
-    <div class="panel panel-success">
-      <div class="panel-heading">INTE Africa Sites</div>
+  <div class="col-sm-4"></div>
+  <div class="col-sm-4">
+    <div class="panel panel-{panel_color}">
+      <div class="panel-heading">{title}</div>
       <div class="list-group">
+         <i class="fas fa-reply fa-fw" aria-hidden="true"></i> {home_anchor}
          {sites_anchors}
       </div>
     </div>
   </div>
-  <div class="col-sm-2"></div>
+  <div class="col-sm-4"></div>
 </div>
 </body>
 </html>

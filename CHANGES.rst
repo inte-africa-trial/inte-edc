@@ -1,6 +1,13 @@
 Changes
 =======
 
+0.1.5
+-----
+- bump up edc==0.1.13
+- change approach to multi-country, multi-site deployments, see edc CHANGES
+- use separate settings for `uat` and `live`
+- hard-code ALLOWED_HOSTS for Uganda.
+
 0.1.4
 -----
 - add util to generate a dummy rando list. In this trial, randomization is by site, not individual.

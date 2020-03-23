@@ -1,28 +1,139 @@
 from django.core.management import color_style
+from edc_sites.single_site import SingleSite
 
 style = color_style()
 
 fqdn = "inte.clinicedc.org"
 
+
+# site_id, name, **kwargs
 all_sites = {
     "uganda": (
-        (101, "bugamba", "Bugamba"),
-        (102, "bwizibwera", "Bwizibwera"),
-        (103, "kinoni", "Kinoni"),
-        (104, "ruhoko", "Ruhoko"),
-        (105, "kyazanga", "Kyazanga"),
-        (106, "bukulula", "Bukulula"),
-        (107, "kojja", "Kojja"),
-        (108, "mpigi", "Mpigi"),
-        (109, "namayumba", "Namayumba"),
-        (110, "buwambo", "Buwambo"),
-        (111, "kajjansi", "Kajjansi"),
-        (112, "tikalu", "Tikalu"),
-        (113, "namulonge", "Namulonge"),
-        (114, "kasanje", "Kasanje"),
-        (115, "kasangati", "Kasangati"),
-        (116, "sekiwunga", "Sekiwunga"),
-        (117, "muduma", "Muduma"),
-        (118, "kyamulibwa", "Kyamulibwa"),
+        SingleSite(
+            101,
+            "bugamba",
+            country_code="ug",
+            country="uganda",
+            domain=f"bugamba.ug.{fqdn}",
+        ),
+        SingleSite(
+            102,
+            "bwizibwera",
+            country_code="ug",
+            country="uganda",
+            domain=f"bwizibwera.ug.{fqdn}",
+        ),
+        SingleSite(
+            103,
+            "kinoni",
+            country_code="ug",
+            country="uganda",
+            domain=f"kinoni.ug.{fqdn}",
+        ),
+        SingleSite(
+            104,
+            "ruhoko",
+            country_code="ug",
+            country="uganda",
+            domain=f"ruhoko.ug.{fqdn}",
+        ),
+        SingleSite(
+            105,
+            "kyazanga",
+            country_code="ug",
+            country="uganda",
+            domain=f"kyazanga.ug.{fqdn}",
+        ),
+        SingleSite(
+            106,
+            "bukulula",
+            country_code="ug",
+            country="uganda",
+            domain=f"bukulula.ug.{fqdn}",
+        ),
+        SingleSite(
+            107,
+            "kojja",
+            country_code="ug",
+            country="uganda",
+            domain=f"kojja.ug.{fqdn}",
+        ),
+        SingleSite(
+            108,
+            "mpigi",
+            country_code="ug",
+            country="uganda",
+            domain=f"mpigi.ug.{fqdn}",
+        ),
+        SingleSite(
+            109,
+            "namayumba",
+            country_code="ug",
+            country="uganda",
+            domain=f"namayumba.ug.{fqdn}",
+        ),
+        SingleSite(
+            110,
+            "buwambo",
+            country_code="ug",
+            country="uganda",
+            domain=f"buwambo.ug.{fqdn}",
+        ),
+        SingleSite(
+            111,
+            "kajjansi",
+            country_code="ug",
+            country="uganda",
+            domain=f"kajjansi.ug.{fqdn}",
+        ),
+        SingleSite(
+            112,
+            "tikalu",
+            country_code="ug",
+            country="uganda",
+            domain=f"tikalu.ug.{fqdn}",
+        ),
+        SingleSite(
+            113,
+            "namulonge",
+            country_code="ug",
+            country="uganda",
+            domain=f"namulonge.ug.{fqdn}",
+        ),
+        SingleSite(
+            114,
+            "kasanje",
+            country_code="ug",
+            country="uganda",
+            domain=f"kasanje.ug.{fqdn}",
+        ),
+        SingleSite(
+            115,
+            "kasangati",
+            country_code="ug",
+            country="uganda",
+            domain=f"kasangati.ug.{fqdn}",
+        ),
+        SingleSite(
+            116,
+            "sekiwunga",
+            country_code="ug",
+            country="uganda",
+            domain=f"sekiwunga.ug.{fqdn}",
+        ),
+        SingleSite(
+            117,
+            "muduma",
+            country_code="ug",
+            country="uganda",
+            domain=f"muduma.ug.{fqdn}",
+        ),
+        SingleSite(
+            118,
+            "kyamulibwa",
+            country_code="ug",
+            country="uganda",
+            domain=f"kyamulibwa.ug.{fqdn}",
+        ),
     )
 }
