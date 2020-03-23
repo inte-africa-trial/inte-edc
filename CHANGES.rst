@@ -1,6 +1,10 @@
 Changes
 =======
 
+0.1.6
+-----
+- bug fixes, bump up edc==0.1.14
+
 0.1.5
 -----
 - bump up edc==0.1.13
