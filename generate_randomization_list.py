@@ -68,11 +68,6 @@ def main(
 
 if __name__ == "__main__":
 
-    try:
-        etc_dir = os.path.expanduser(sys.argv[1])
-    except IndexError:
-        etc_dir = settings.ETC_DIR
-
     # point the settings module to a bare-bones settings file.
     settings_module = os.environ.setdefault(
         "DJANGO_SETTINGS_MODULE", "inte_edc.settings.minimal"
@@ -82,6 +77,10 @@ if __name__ == "__main__":
     django.setup()
 
     # get filename, raise if exists
+    try:
+        etc_dir = os.path.expanduser(sys.argv[1])
+    except IndexError:
+        etc_dir = settings.ETC_DIR
     randomization_list_file = os.path.join(etc_dir, "randomization_list.csv")
     if os.path.exists(randomization_list_file):
         raise FileExistsError(randomization_list_file)
