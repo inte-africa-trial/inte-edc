@@ -10,6 +10,7 @@ from edc_test_utils import DefaultTestSettings
 from os.path import abspath, dirname, join
 
 from edc_utils import get_datetime_from_env
+from multisite import SiteID
 
 app_name = "inte_edc"
 base_dir = dirname(abspath(__file__))
@@ -18,8 +19,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
     calling_file=__file__,
     BASE_DIR=base_dir,
     APP_NAME=app_name,
-    SITE_ID=101,
-    COUNTRY="uganda",
+    SITE_ID=SiteID(default=101),
     EDC_SITES_MODULE_NAME="inte_sites.sites",
     SUBJECT_VISIT_MODEL="inte_subject.subjectvisit",
     SUBJECT_CONSENT_MODEL="inte_consent.subjectconsent",

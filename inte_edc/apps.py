@@ -1,7 +1,6 @@
 from dateutil.relativedelta import MO, TU, WE, TH, FR, SA, SU
 from django.apps import AppConfig as DjangoAppConfig
 from django.apps import apps as django_apps
-from django.conf import settings
 from django.core.management.color import color_style
 from django.db.backends.signals import connection_created
 from django.db.models.signals import post_migrate
@@ -35,7 +34,6 @@ class AppConfigForTests(DjangoAppConfig):
 
 
 class EdcFacilityAppConfig(BaseEdcFacilityAppConfig):
-    country = settings.COUNTRY
     definitions = {
         "7-day-clinic": dict(
             days=[MO, TU, WE, TH, FR, SA, SU], slots=[100, 100, 100, 100, 100, 100, 100]

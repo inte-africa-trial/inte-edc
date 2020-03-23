@@ -2,7 +2,6 @@ import environ
 import os
 import sys
 
-from edc_sites import get_site_from_environment
 from edc_utils import get_datetime_from_env
 from pathlib import Path
 
@@ -58,25 +57,12 @@ APP_NAME = env.str("DJANGO_APP_NAME")
 
 # extract country and sitename from DJANGO_SETTINGS_MODULE environment variable
 EDC_SITES_MODULE_NAME = env.str("EDC_SITES_MODULE_NAME")
-COUNTRY, SITE_ID, _ = get_site_from_environment(
-    default_site_name="kinoni",
-    default_country="uganda",
-    app_name=APP_NAME,
-    sites_module_name=EDC_SITES_MODULE_NAME,
-)
-
 
 LIVE_SYSTEM = env.str("DJANGO_LIVE_SYSTEM")
 
 ETC_DIR = env.str("DJANGO_ETC_FOLDER")
 
 TEST_DIR = os.path.join(BASE_DIR, APP_NAME, "tests")
-
-ALLOWED_HOSTS = ["*"]  # env.list('DJANGO_ALLOWED_HOSTS')
-
-ENFORCE_RELATED_ACTION_ITEM_EXISTS = False
-
-DEFAULT_APPOINTMENT_TYPE = "hospital"
 
 REVIEWER_SITE_ID = env.int("DJANGO_REVIEWER_SITE_ID")
 
@@ -92,6 +78,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    "multisite",
     "django_crypto_fields.apps.AppConfig",
     "django_revision.apps.AppConfig",
     "django_extensions",
@@ -161,6 +148,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "multisite.middleware.DynamicSiteMiddleware",
     "django.contrib.sites.middleware.CurrentSiteMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -186,12 +174,12 @@ TEMPLATES = [
         "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
-            "context_processors": [
+            "context_processors": (
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-            ]
+            ),
         },
     }
 ]
@@ -302,6 +290,13 @@ DATETIME_FORMAT = "j N Y H:i"
 SHORT_DATE_FORMAT = "d/m/Y"
 SHORT_DATETIME_FORMAT = "d/m/Y H:i"
 
+# edc-action-item
+ENFORCE_RELATED_ACTION_ITEM_EXISTS = False
+
+# edc-appointment
+DEFAULT_APPOINTMENT_TYPE = "hospital"
+
+
 # edc-pdutils
 EXPORT_FILENAME_TIMESTAMP_FORMAT = "%Y%m%d"
 
@@ -334,7 +329,7 @@ SUBJECT_VISIT_MODEL = env.str("DJANGO_SUBJECT_VISIT_MODEL")
 
 EDC_NAVBAR_DEFAULT = env("EDC_NAVBAR_DEFAULT")
 
-# dashboards
+# edc dashboards
 EDC_BOOTSTRAP = env("DJANGO_EDC_BOOTSTRAP")
 DASHBOARD_URL_NAMES = env.dict("DJANGO_DASHBOARD_URL_NAMES")
 DASHBOARD_BASE_TEMPLATES = env.dict("DJANGO_DASHBOARD_BASE_TEMPLATES")
@@ -414,6 +409,9 @@ EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER = env(
 EDC_RANDOMIZATION_SKIP_VERIFY_CHECKS = True
 # django-simple-history
 SIMPLE_HISTORY_REVERT_ENABLED = False
+
+# django-multisite
+CACHE_MULTISITE_KEY_PREFIX = APP_NAME
 
 # static
 if env("AWS_ENABLED"):

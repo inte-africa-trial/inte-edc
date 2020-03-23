@@ -31,7 +31,7 @@ class InteTestCaseMixin(SiteTestCaseMixin):
 
     default_sites = get_sites_by_country("uganda")
 
-    site_names = [s[1] for s in default_sites]
+    site_names = [s.name for s in default_sites]
 
     import_randomization_list = True
 
@@ -39,7 +39,7 @@ class InteTestCaseMixin(SiteTestCaseMixin):
     def setUpClass(cls):
         super().setUpClass()
         import_holidays(test=True)
-        add_or_update_django_sites(sites=get_sites_by_country("uganda"), fqdn=fqdn)
+        add_or_update_django_sites(sites=get_sites_by_country("uganda"))
         site_list_data.autodiscover()
         GroupPermissionsUpdater(
             codenames_by_group=get_codenames_by_group(), verbose=True
