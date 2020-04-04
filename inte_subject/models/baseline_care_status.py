@@ -89,7 +89,9 @@ class BaselineCareStatus(CrfModelMixin, BaseUuidModel):
     )
 
     ncd_clinic_other = models.CharField(
-        verbose_name="If not attending the NCD clinic in this facility, where do you attend?",
+        verbose_name=mark_safe(
+            "If not attending the NCD clinic in <u>this facility</u>, where do you attend?"
+        ),
         max_length=50,
         null=True,
         blank=True,
@@ -103,7 +105,7 @@ class BaselineCareStatus(CrfModelMixin, BaseUuidModel):
     )
 
     ncd_clinic_other_is_study_clinic = models.CharField(
-        verbose_name="If not attending the NCD clinic in this facility, is this NCD clinic an INTE study clinic?",
+        verbose_name="If not attending the NCD clinic in <u>this facility</u>, is the NCD clinic an INTE study clinic?",
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
