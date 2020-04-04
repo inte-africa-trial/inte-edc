@@ -38,7 +38,7 @@ class BaselineCareStatusFormValidator(CrfFormValidatorMixin, FormValidator):
                 }
             )
         if self.primary_enrolment_clinic_type == NCD_CLINIC:
-            self.validate_care_against_primary_enrolment_clinic()
+            self.validate_care_against_primary_enrolment_clinic(NCD_CLINIC)
         self.applicable_if_true(
             (
                 self.cleaned_data.get("diabetic") == YES
