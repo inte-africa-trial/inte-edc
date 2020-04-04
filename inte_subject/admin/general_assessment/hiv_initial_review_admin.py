@@ -18,7 +18,7 @@ class HivInitialReviewAdmin(
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
-            "Review",
+            "Diagnosis and Treatment",
             {
                 "fields": (
                     "diagnosis_date",

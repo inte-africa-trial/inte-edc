@@ -21,7 +21,7 @@ class HypertensionInitialReviewAdmin(
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
-            None,
+            "Diagnosis and Treatment",
             {
                 "fields": (
                     "diagnosis_date",
