@@ -31,6 +31,18 @@ class DiabetesInitialReviewAdmin(
             },
         ),
         (
+            "Glucose",
+            {
+                "fields": (
+                    "fasted",
+                    "glucose",
+                    "glucose_quantifier",
+                    "glucose_units",
+                    "glucose_datetime",
+                ),
+            },
+        ),
+        (
             "Complications",
             {
                 "fields": (
@@ -48,6 +60,9 @@ class DiabetesInitialReviewAdmin(
     filter_horizontal = ("treatment",)
 
     radio_fields = {
+        "fasted": admin.VERTICAL,
+        "glucose_quantifier": admin.VERTICAL,
+        "glucose_units": admin.VERTICAL,
         "diagnosis_date_estimated": admin.VERTICAL,
         "on_treatment": admin.VERTICAL,
         "visual_problems": admin.VERTICAL,

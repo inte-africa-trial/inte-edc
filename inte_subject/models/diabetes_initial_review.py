@@ -4,10 +4,12 @@ from edc_crf.model_mixins import CrfModelMixin
 from edc_model.models.base_uuid_model import BaseUuidModel
 from inte_lists.models import DiabetesTreatment
 
-from ..model_mixins import ReviewModelMixin
+from ..model_mixins import ReviewModelMixin, GlucoseTestModelMixin
 
 
-class DiabetesInitialReview(ReviewModelMixin, CrfModelMixin, BaseUuidModel):
+class DiabetesInitialReview(
+    ReviewModelMixin, GlucoseTestModelMixin, CrfModelMixin, BaseUuidModel
+):
     diagnosis_date = models.DateField(
         verbose_name="When was the patient diagnosed with diabetes?",
     )

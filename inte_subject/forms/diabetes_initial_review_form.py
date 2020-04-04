@@ -7,7 +7,20 @@ from ..models import DiabetesInitialReview
 
 
 class DiabetesInitialReviewFormValidator(FormValidator):
-    pass
+    def clean(self):
+
+        self.required_if_true(
+            self.cleaned_data.get("glucose"), field_required="glucose_units",
+        )
+        self.required_if_true(
+            self.cleaned_data.get("glucose"), field_required="glucose_quantifier",
+        )
+        self.required_if_true(
+            self.cleaned_data.get("glucose"), field_required="glucose_datetime",
+        )
+        self.required_if_true(
+            self.cleaned_data.get("glucose_datetime"), field_required="glucose",
+        )
 
 
 class DiabetesInitialReviewForm(
