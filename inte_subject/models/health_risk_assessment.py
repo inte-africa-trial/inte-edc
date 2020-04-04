@@ -26,7 +26,7 @@ class HealthRiskAssessment(CrfModelMixin, BaseUuidModel):
         ),
     )
 
-    smoker_quit_ago_months = models.IntegerField(editable=False,)
+    smoker_quit_ago_months = models.IntegerField(editable=False, null=True)
 
     alcohol = models.CharField(
         verbose_name="Do you drink alcohol?", max_length=15, choices=YES_NO,
@@ -40,6 +40,7 @@ class HealthRiskAssessment(CrfModelMixin, BaseUuidModel):
     )
 
     def save(self, *args, **kwargs):
+        # TODO: calculate smoker quit months
         super().save(*args, **kwargs)
 
     class Meta(CrfModelMixin.Meta):
