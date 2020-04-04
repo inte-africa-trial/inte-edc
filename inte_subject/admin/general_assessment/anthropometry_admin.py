@@ -17,10 +17,7 @@ class AnthropometryAdmin(
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
-        (
-            "Weight and Height",
-            {"fields": ("weight", "height", "waist_circumference", "bmi")},
-        ),
+        ("Weight and Height", {"fields": ("weight", "height", "bmi")},),
         (
             "Blood Pressure: Reading 1",
             {"fields": ("sys_blood_pressure_r1", "dia_blood_pressure_r1",)},

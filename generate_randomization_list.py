@@ -36,12 +36,14 @@ def main(
     slots=None,
     write_header=None,
     filename=None,
+    assignment_map=None,
 ):
     """
-    Adds sots to  a dummy `randomisation` list file where all assignments are the same
+    Adds slots to  a dummy `randomisation` list file where all assignments are the same
     for each slot.
     """
-    if assignment not in ["intervention", "control"]:
+    assignment_map = assignment_map or ["intervention", "control"]
+    if assignment not in assignment_map:
         raise ValueError(f"Invalid assignment. Got {assignment}")
 
     # get site ID and write the file

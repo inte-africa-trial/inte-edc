@@ -6,6 +6,3 @@ class AppConfig(DjangoAppConfig):
     verbose_name = "INTE: Subject (CRFs)"
     include_in_administration_section = True
     has_exportable_data = True
-
-
-102

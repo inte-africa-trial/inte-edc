@@ -112,7 +112,7 @@ class BaselineCareStatusFormValidator(CrfFormValidatorMixin, FormValidator):
     def is_diabetic_or_hypertensive(self):
         return (
             self.cleaned_data.get("diabetes") == YES
-            or self.cleaned_data.get("hypertension") == YES
+            or self.cleaned_data.get("hypertensive") == YES
         )
 
     def validate_care_and_clinic_attendance(self, clinic_type):

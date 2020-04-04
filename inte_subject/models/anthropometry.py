@@ -16,8 +16,6 @@ class Anthropometry(CrfModelMixin, BaseUuidModel):
         help_text="kg/mm^2 (Note: this field is read only. The value is calculated)",
     )
 
-    waist_circumference = edc_models.WaistCircumferenceField()
-
     sys_blood_pressure_r1 = edc_models.SystolicPressureField(null=True, blank=False,)
 
     dia_blood_pressure_r1 = edc_models.DiastolicPressureField(null=True, blank=False,)
