@@ -25,9 +25,6 @@ class DiabetesInitialReviewAdmin(
                 "fields": (
                     "diagnosis_date",
                     "diagnosis_date_estimated",
-                    "treatment_start_date",
-                    "treatment_start_date_estimated",
-                    "lifestyle_management",
                     "on_treatment",
                     "treatment",
                 ),
@@ -51,9 +48,7 @@ class DiabetesInitialReviewAdmin(
     filter_horizontal = ("treatment",)
 
     radio_fields = {
-        "lifestyle_management": admin.VERTICAL,
         "diagnosis_date_estimated": admin.VERTICAL,
-        "treatment_start_date_estimated": admin.VERTICAL,
         "on_treatment": admin.VERTICAL,
         "visual_problems": admin.VERTICAL,
         "kidney_problems": admin.VERTICAL,

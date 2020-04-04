@@ -7,17 +7,6 @@ from edc_model import models as edc_models
 
 class ReviewModelMixin(models.Model):
 
-    lifestyle_management = models.CharField(
-        verbose_name=mark_safe(
-            "Did the patient receive lifestyle management "
-            "<u>counsel</u> before starting medicine?"
-        ),
-        max_length=15,
-        choices=YES_NO,
-        null=True,
-        blank=True,
-    )
-
     diagnosis_date_estimated = edc_models.IsDateEstimatedFieldNa(
         verbose_name="Is the dignosis date estimated",
         default=NOT_ESTIMATED,

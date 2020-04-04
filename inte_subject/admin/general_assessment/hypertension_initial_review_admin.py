@@ -25,13 +25,9 @@ class HypertensionInitialReviewAdmin(
             {
                 "fields": (
                     "diagnosis_date",
-                    "treatment_start_date",
-                    "treatment_start_date_estimated",
-                    "lifestyle_management",
+                    "diagnosis_date_estimated",
                     "on_treatment",
                     "treatment",
-                    # "stroke",
-                    # "chest_pain",
                     "family_history",
                 ),
             },
@@ -42,10 +38,7 @@ class HypertensionInitialReviewAdmin(
     filter_horizontal = ("treatment",)
 
     radio_fields = {
-        "lifestyle_management": admin.VERTICAL,
-        "treatment_start_date_estimated": admin.VERTICAL,
+        "diagnosis_date_estimated": admin.VERTICAL,
         "on_treatment": admin.VERTICAL,
-        # "stroke": admin.VERTICAL,
-        # "chest_pain": admin.VERTICAL,
         "family_history": admin.VERTICAL,
     }
