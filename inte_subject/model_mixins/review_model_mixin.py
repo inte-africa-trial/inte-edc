@@ -8,7 +8,7 @@ from edc_model import models as edc_models
 class ReviewModelMixin(models.Model):
 
     diagnosis_date_estimated = edc_models.IsDateEstimatedFieldNa(
-        verbose_name="Is the dignosis date estimated",
+        verbose_name="Is the diagnosis date estimated",
         default=NOT_ESTIMATED,
         null=True,
         blank=True,
