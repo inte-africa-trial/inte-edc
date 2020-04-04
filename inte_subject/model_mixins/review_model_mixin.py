@@ -29,8 +29,6 @@ class ReviewModelMixin(models.Model):
         verbose_name="Is the patient currently taking medicines for control?",
         max_length=15,
         choices=YES_NO,
-        null=True,
-        blank=True,
     )
 
     class Meta:
