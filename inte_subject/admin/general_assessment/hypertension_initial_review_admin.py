@@ -28,6 +28,7 @@ class HypertensionInitialReviewAdmin(
                     "diagnosis_date_estimated",
                     "on_treatment",
                     "treatment",
+                    "other_treatment",
                     "family_history",
                 ),
             },

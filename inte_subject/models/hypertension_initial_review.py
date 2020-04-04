@@ -1,13 +1,16 @@
 from django.db import models
 from edc_constants.choices import YES_NO, YES_NO_DONT_KNOW
 from edc_crf.model_mixins import CrfModelMixin
-from edc_model.models.base_uuid_model import BaseUuidModel
+from edc_model import models as edc_models
+
 from inte_lists.models import HypertensionTreatment
 
 from ..model_mixins import ReviewModelMixin
 
 
-class HypertensionInitialReview(ReviewModelMixin, CrfModelMixin, BaseUuidModel):
+class HypertensionInitialReview(
+    ReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel
+):
     diagnosis_date = models.DateField(
         verbose_name="When was the patient diagnosed with hypertension?"
     )
@@ -18,6 +21,8 @@ class HypertensionInitialReview(ReviewModelMixin, CrfModelMixin, BaseUuidModel):
         HypertensionTreatment,
         verbose_name="If yes, what type of medicine is the patient currently taking?",
     )
+
+    other_treatment = edc_models.OtherCharField()
 
     stroke = models.CharField(
         verbose_name="Has the patient suffered a stroke in the past?",
