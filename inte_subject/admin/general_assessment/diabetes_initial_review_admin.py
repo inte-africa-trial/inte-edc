@@ -34,11 +34,13 @@ class DiabetesInitialReviewAdmin(
             "Blood Sugar Measurement",
             {
                 "fields": (
+                    "glucose_measurement_taken",
+                    "glucose_measurement_reason_not_taken",
+                    "glucose_datetime",
                     "fasted",
                     "glucose",
                     "glucose_quantifier",
                     "glucose_units",
-                    "glucose_datetime",
                 ),
             },
         ),
@@ -60,6 +62,7 @@ class DiabetesInitialReviewAdmin(
     filter_horizontal = ("treatment",)
 
     radio_fields = {
+        "glucose_measurement_taken": admin.VERTICAL,
         "fasted": admin.VERTICAL,
         "glucose_quantifier": admin.VERTICAL,
         "glucose_units": admin.VERTICAL,

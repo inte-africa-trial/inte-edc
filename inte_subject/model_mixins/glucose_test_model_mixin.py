@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.safestring import mark_safe
-from edc_constants.choices import YES_NO
+from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_lab.choices import RESULT_QUANTIFIER
 from edc_lab.constants import EQ
 
@@ -8,12 +8,27 @@ from ..choices import GLUCOSE_UNITS
 
 
 class GlucoseTestModelMixin(models.Model):
+    glucose_measurement_taken = models.CharField(
+        verbose_name="Was a glucose measurement taken?", max_length=15, choices=YES_NO,
+    )
+
+    glucose_measurement_reason_not_taken = models.TextField(
+        verbose_name="If the glucose measurement was not taken, explain?",
+        max_length=250,
+        null=True,
+    )
+
+    glucose_datetime = models.DateTimeField(
+        verbose_name=mark_safe("<u>Time</u> glucose <u>level</u> measured"),
+        null=True,
+        blank=True,
+    )
+
     fasted = models.CharField(
         verbose_name="Has the participant fasted?",
         max_length=15,
-        choices=YES_NO,
+        choices=YES_NO_NA,
         null=True,
-        blank=False,
     )
 
     glucose = models.DecimalField(
@@ -34,12 +49,6 @@ class GlucoseTestModelMixin(models.Model):
         choices=GLUCOSE_UNITS,
         blank=True,
         null=True,
-    )
-
-    glucose_datetime = models.DateTimeField(
-        verbose_name=mark_safe("<u>Time</u> glucose <u>level</u> measured"),
-        null=True,
-        blank=True,
     )
 
     class Meta:
