@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO, YES_NO_NA
+from edc_constants.constants import NOT_APPLICABLE
 from edc_lab.choices import RESULT_QUANTIFIER
 from edc_lab.constants import EQ
 
@@ -30,6 +31,7 @@ class GlucoseTestModelMixin(models.Model):
         max_length=15,
         choices=YES_NO_NA,
         null=True,
+        default=NOT_APPLICABLE,
     )
 
     glucose = models.DecimalField(
@@ -48,8 +50,7 @@ class GlucoseTestModelMixin(models.Model):
         verbose_name="Units (glucose)",
         max_length=15,
         choices=GLUCOSE_UNITS,
-        blank=True,
-        null=True,
+        default=NOT_APPLICABLE,
     )
 
     class Meta:
