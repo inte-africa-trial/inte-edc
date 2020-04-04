@@ -16,6 +16,7 @@ class GlucoseTestModelMixin(models.Model):
         verbose_name="If the glucose measurement was not taken, explain?",
         max_length=250,
         null=True,
+        blank=True,
     )
 
     glucose_datetime = models.DateTimeField(
