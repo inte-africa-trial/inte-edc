@@ -2,7 +2,7 @@ from edc_constants.constants import SMOKER, YES
 from edc_form_validators.form_validator import FormValidator
 
 
-class RiskFactorsFormValidator(FormValidator):
+class HealthRiskAssessmentFormValidator(FormValidator):
     def clean(self):
 
         self.required_if(
