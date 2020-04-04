@@ -31,7 +31,7 @@ class DiabetesInitialReviewAdmin(
             },
         ),
         (
-            "Glucose",
+            "Blood Sugar Measurement",
             {
                 "fields": (
                     "fasted",
