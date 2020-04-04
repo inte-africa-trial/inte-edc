@@ -20,12 +20,6 @@ class GlucoseTestModelMixin(models.Model):
         blank=True,
     )
 
-    glucose_datetime = models.DateTimeField(
-        verbose_name=mark_safe("<u>Time</u> glucose <u>level</u> measured"),
-        null=True,
-        blank=True,
-    )
-
     fasted = models.CharField(
         verbose_name="Has the participant fasted?",
         max_length=15,

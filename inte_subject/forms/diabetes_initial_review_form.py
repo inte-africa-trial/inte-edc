@@ -17,10 +17,6 @@ class DiabetesInitialReviewFormValidator(FormValidator):
         )
 
         self.required_if(
-            YES, field="glucose_measurement_taken", field_required="glucose_datetime"
-        )
-
-        self.required_if(
             YES, field="glucose_measurement_taken", field_required="glucose"
         )
         self.required_if(

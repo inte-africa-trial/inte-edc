@@ -36,7 +36,6 @@ class DiabetesInitialReviewAdmin(
                 "fields": (
                     "glucose_measurement_taken",
                     "glucose_measurement_reason_not_taken",
-                    "glucose_datetime",
                     "fasted",
                     "glucose",
                     "glucose_quantifier",
