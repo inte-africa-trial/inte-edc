@@ -20,7 +20,7 @@ class DiabetesInitialReviewAdmin(
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
-            None,
+            "Diagnosis and Treatment",
             {
                 "fields": (
                     "diagnosis_date",
@@ -30,6 +30,13 @@ class DiabetesInitialReviewAdmin(
                     "lifestyle_management",
                     "on_treatment",
                     "treatment",
+                ),
+            },
+        ),
+        (
+            "Complications",
+            {
+                "fields": (
                     "visual_problems",
                     "kidney_problems",
                     "foot_ulcers",
