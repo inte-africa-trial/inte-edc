@@ -2,10 +2,10 @@ from django.conf import settings
 from edc_constants.constants import OTHER, UNKNOWN, DEAD, NONE, NOT_APPLICABLE
 from edc_list_data import PreloadData
 from inte_prn.constants import (
-    WITHDRAWAL,
-    TRANSFERRED,
     LATE_EXCLUSION,
     OTHER_RX_DISCONTINUATION,
+    TRANSFERRED,
+    WITHDRAWAL,
 )
 
 list_data = {
@@ -32,14 +32,22 @@ list_data = {
             "Other condition that justifies the discontinuation of "
             "treatment in the clinician’s opinion (specify below)",
         ),
-        (OTHER, ("Other reason (specify below)"),),
+        (OTHER, "Other reason (specify below)",),
     ],
     "inte_lists.hypertensiontreatment": [
-        ("thiazide_diuretics", "Thiazide diuretics"),
-        ("angiotensin_2", "Angiotensin 2 Receptor Blocker"),
-        ("ace_inhibitor", "ACE inhibitor"),
-        ("beta_blocker", "Beta blocker"),
-        ("calcium_channel_blocker", "Calcium channel blocker"),
+        ("bendroflumethiazide", "Bendroflumethiazide"),
+        ("captopril", "Captopril"),
+        ("enalapril", "Enalapril"),
+        ("ramipril", "Ramipril"),
+        ("frusemide", "Frusemide"),
+        ("losartan", "Losartan"),
+        ("nifedipine", "Nifedipine"),
+        ("amlodipine", "Amlodipine"),
+        ("atenolol", "Atenolol"),
+        ("metoprolol", "Metoprolol"),
+        ("carvedilol", "Carvedilol"),
+        ("valsartan", "Valsartan"),
+        ("simvastatin", "Simvastatin"),
         (NOT_APPLICABLE, "Not applicable"),
         (UNKNOWN, "Unknown"),
         (OTHER, "Other treatment (specify below)"),
