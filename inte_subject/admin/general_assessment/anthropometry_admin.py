@@ -24,11 +24,13 @@ class AnthropometryAdmin(
         ),
         (
             "Blood Pressure: Reading 2",
-            {"fields": ("sys_blood_pressure_r2", "dia_blood_pressure_r2",)},
+            {"fields": ("r2_taken", "sys_blood_pressure_r2", "dia_blood_pressure_r2",)},
         ),
         audit_fieldset_tuple,
     )
 
-    radio_fields = {}
+    radio_fields = {
+        "r2_taken": admin.VERTICAL,
+    }
 
     readonly_fields = ["bmi"]
