@@ -1,11 +1,11 @@
-from django.test import TestCase, tag
+from django.test import TestCase, tag  # noqa
 from edc_constants.constants import SMOKER, NONSMOKER, NOT_APPLICABLE, NO
-from inte_subject.forms import RiskFactorsForm
+from inte_subject.forms import HealthRiskAssessmentForm
 
 from ..inte_test_case_mixin import InteTestCaseMixin
 
 
-class TestRiskFactors(InteTestCaseMixin, TestCase):
+class TestHealthRiskAssessment(InteTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
         self.data = {
@@ -23,12 +23,12 @@ class TestRiskFactors(InteTestCaseMixin, TestCase):
         )
 
     def test_ok(self):
-        form = RiskFactorsForm(data=self.data)
+        form = HealthRiskAssessmentForm(data=self.data)
         form.is_valid()
         self.assertEqual(form._errors, {})
 
-    def test_risk_factors_non_smoker(self):
+    def test_health_risk_assessment_non_smoker(self):
         self.data.update({"smoking_status": NONSMOKER, "smoker_quit_ago_str": None})
-        form = RiskFactorsForm(data=self.data)
+        form = HealthRiskAssessmentForm(data=self.data)
         form.is_valid()
         self.assertEqual(form._errors, {})

@@ -81,7 +81,6 @@ class TestSubjectConsent(InteTestCaseMixin, TestCase):
         except forms.ValidationError:
             self.fail("ValidationError unexpectedly raised")
 
-    @tag("1")
     def test_model_consent(self):
         subject_screening = self.get_subject_screening(clinic_type=HIV_CLINIC)
         subject_consent = self.get_subject_consent(
