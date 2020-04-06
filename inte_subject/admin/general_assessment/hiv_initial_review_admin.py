@@ -18,25 +18,27 @@ class HivInitialReviewAdmin(
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
-            "Review",
+            "Diagnosis and Treatment",
             {
                 "fields": (
                     "diagnosis_date",
-                    "treatment_start_date",
-                    "treatment_start_date_estimated",
-                    "lifestyle_management",
+                    "diagnosis_date_estimated",
                     "on_treatment",
-                    "treatment",
+                    "arv_initiation_date",
+                    "viral_load",
+                    "viral_load_date",
+                    "cd4",
+                    "cd4_date",
+                    "current_arv_regimen",
+                    "other_current_arv_regimen",
                 ),
             },
         ),
         audit_fieldset_tuple,
     )
 
-    filter_horizontal = ("treatment",)
-
     radio_fields = {
-        "lifestyle_management": admin.VERTICAL,
-        "treatment_start_date_estimated": admin.VERTICAL,
+        "diagnosis_date_estimated": admin.VERTICAL,
         "on_treatment": admin.VERTICAL,
+        "current_arv_regimen": admin.VERTICAL,
     }

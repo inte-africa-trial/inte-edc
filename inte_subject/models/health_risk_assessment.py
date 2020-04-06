@@ -8,7 +8,7 @@ from edc_model.validators import ym_validator
 from ..choices import ALCOHOL_CONSUMPTION, SMOKER_STATUS
 
 
-class RiskFactors(CrfModelMixin, BaseUuidModel):
+class HealthRiskAssessment(CrfModelMixin, BaseUuidModel):
     smoking_status = models.CharField(
         verbose_name="Which of these options describes you",
         max_length=15,
@@ -26,7 +26,7 @@ class RiskFactors(CrfModelMixin, BaseUuidModel):
         ),
     )
 
-    smoker_quit_ago_months = models.IntegerField(editable=False,)
+    smoker_quit_ago_months = models.IntegerField(editable=False, null=True)
 
     alcohol = models.CharField(
         verbose_name="Do you drink alcohol?", max_length=15, choices=YES_NO,
@@ -40,8 +40,9 @@ class RiskFactors(CrfModelMixin, BaseUuidModel):
     )
 
     def save(self, *args, **kwargs):
+        # TODO: calculate smoker quit months
         super().save(*args, **kwargs)
 
     class Meta(CrfModelMixin.Meta):
-        verbose_name = "Alcohol and Smoking"
-        verbose_name_plural = "Alcohol and Smoking"
+        verbose_name = "Health Risk Assessment"
+        verbose_name_plural = "Health Risk Assessments"

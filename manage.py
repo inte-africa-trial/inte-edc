@@ -9,17 +9,8 @@ style = color_style()
 
 
 def main():
-    default = "inte_edc.settings.defaults"
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "inte_edc.settings.uat")
-    if os.environ.get("DJANGO_SETTINGS_MODULE") == default:
-        sys.stderr.write(
-            style.ERROR(
-                f"DJANGO_SETTINGS_MODULE not set. Using `{default}`. "
-                f"Assuming a test environment (manage.py).\n"
-            )
-        )
-    else:
-        print(f"DJANGO_SETTINGS_MODULE={os.environ.get('DJANGO_SETTINGS_MODULE')}")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "inte_edc.settings.debug")
+    print(f"DJANGO_SETTINGS_MODULE={os.environ.get('DJANGO_SETTINGS_MODULE')}")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

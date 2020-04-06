@@ -38,7 +38,7 @@ class BaselineCareStatusFormValidator(CrfFormValidatorMixin, FormValidator):
                 }
             )
         if self.primary_enrolment_clinic_type == NCD_CLINIC:
-            self.validate_care_against_primary_enrolment_clinic()
+            self.validate_care_against_primary_enrolment_clinic(NCD_CLINIC)
         self.applicable_if_true(
             (
                 self.cleaned_data.get("diabetic") == YES
@@ -112,7 +112,7 @@ class BaselineCareStatusFormValidator(CrfFormValidatorMixin, FormValidator):
     def is_diabetic_or_hypertensive(self):
         return (
             self.cleaned_data.get("diabetes") == YES
-            or self.cleaned_data.get("hypertension") == YES
+            or self.cleaned_data.get("hypertensive") == YES
         )
 
     def validate_care_and_clinic_attendance(self, clinic_type):

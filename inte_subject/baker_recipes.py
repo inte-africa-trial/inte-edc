@@ -4,10 +4,10 @@ from edc_constants.constants import YES, NO, MOBILE_NUMBER
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import SCHEDULED
 from faker import Faker
+from inte_consent.models import SubjectConsent
+from inte_consent.models import SubjectReconsent
 from model_bakery.recipe import Recipe, seq
 
-from .models import SubjectReconsent
-from .models import SubjectConsent
 from .models import SubjectRequisition
 from .models import SubjectVisit
 

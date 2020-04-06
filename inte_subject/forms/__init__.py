@@ -2,10 +2,10 @@ from .anthropometry_form import AnthropometryForm
 from .baseline_care_status_form import BaselineCareStatusForm
 from .diabetes_initial_review_form import DiabetesInitialReviewForm
 from .health_economics_form import HealthEconomicsForm
+from .health_risk_assessment_form import HealthRiskAssessmentForm
 from .hiv_initial_review_form import HivInitialReviewForm
 from .hypertension_initial_review_form import HypertensionInitialReviewForm
 from .next_appointment_form import NextAppointmentForm
 from .physical_activity_form import PhysicalActivityForm
-from .risk_factors_form import RiskFactorsForm
 from .subject_requisition_form import SubjectRequisitionForm
 from .subject_visit_form import SubjectVisitForm

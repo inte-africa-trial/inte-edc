@@ -20,15 +20,33 @@ class DiabetesInitialReviewAdmin(
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
-            None,
+            "Diagnosis and Treatment",
             {
                 "fields": (
                     "diagnosis_date",
-                    "treatment_start_date",
-                    "treatment_start_date_estimated",
-                    "lifestyle_management",
+                    "diagnosis_date_estimated",
                     "on_treatment",
                     "treatment",
+                ),
+            },
+        ),
+        (
+            "Blood Sugar Measurement",
+            {
+                "fields": (
+                    "glucose_measurement_taken",
+                    "glucose_measurement_reason_not_taken",
+                    "fasted",
+                    "glucose",
+                    "glucose_quantifier",
+                    "glucose_units",
+                ),
+            },
+        ),
+        (
+            "Complications",
+            {
+                "fields": (
                     "visual_problems",
                     "kidney_problems",
                     "foot_ulcers",
@@ -43,8 +61,11 @@ class DiabetesInitialReviewAdmin(
     filter_horizontal = ("treatment",)
 
     radio_fields = {
-        "lifestyle_management": admin.VERTICAL,
-        "treatment_start_date_estimated": admin.VERTICAL,
+        "glucose_measurement_taken": admin.VERTICAL,
+        "fasted": admin.VERTICAL,
+        "glucose_quantifier": admin.VERTICAL,
+        "glucose_units": admin.VERTICAL,
+        "diagnosis_date_estimated": admin.VERTICAL,
         "on_treatment": admin.VERTICAL,
         "visual_problems": admin.VERTICAL,
         "kidney_problems": admin.VERTICAL,

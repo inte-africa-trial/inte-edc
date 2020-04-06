@@ -25,8 +25,8 @@ crfs_d1 = FormsCollection(
     Crf(show_order=120, model="inte_subject.hivinitialreview"),
     Crf(show_order=130, model="inte_subject.diabetesinitialreview"),
     Crf(show_order=140, model="inte_subject.hypertensioninitialreview"),
-    Crf(show_order=150, model="inte_subject.physicalactivity"),
-    Crf(show_order=160, model="inte_subject.riskfactors"),
+    # Crf(show_order=150, model="inte_subject.physicalactivity"),
+    Crf(show_order=160, model="inte_subject.healthriskassessment"),
     name="day1",
 )
 crfs_1m = FormsCollection(name="1m")
@@ -39,8 +39,8 @@ crfs_6m = FormsCollection(
     Crf(show_order=120, model="inte_subject.hivinitialreview"),
     Crf(show_order=130, model="inte_subject.diabetesinitialreview"),
     Crf(show_order=140, model="inte_subject.hypertensioninitialreview"),
-    Crf(show_order=150, model="inte_subject.physicalactivity"),
-    Crf(show_order=160, model="inte_subject.riskfactors"),
+    # Crf(show_order=150, model="inte_subject.physicalactivity"),
+    Crf(show_order=160, model="inte_subject.healthriskassessment"),
     Crf(show_order=200, model="inte_subject.healtheconomics"),
     name="6m",
 )
@@ -54,8 +54,8 @@ crfs_12m = FormsCollection(
     Crf(show_order=120, model="inte_subject.hivinitialreview"),
     Crf(show_order=130, model="inte_subject.diabetesinitialreview"),
     Crf(show_order=140, model="inte_subject.hypertensioninitialreview"),
-    Crf(show_order=150, model="inte_subject.physicalactivity"),
-    Crf(show_order=160, model="inte_subject.riskfactors"),
+    # Crf(show_order=150, model="inte_subject.physicalactivity"),
+    Crf(show_order=160, model="inte_subject.healthriskassessment"),
     Crf(show_order=200, model="inte_subject.healtheconomics"),
     name="12m",
 )

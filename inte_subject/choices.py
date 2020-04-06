@@ -47,9 +47,10 @@ VISIT_REASON = (
 )
 
 ALCOHOL_CONSUMPTION = (
-    ("1_day_per_wk", "About once a week"),
-    ("2-3_day_per_wk", "2-3 days every week"),
-    ("most_days_per_month", "Most days in a month"),
+    ("ocassionally", "Ocassionally"),
+    ("1_2_per_week", "1-2 times a week"),
+    ("3_4_per_week", "3-4 times a week"),
+    ("daily", "Daily"),
     (NOT_APPLICABLE, "Not applicable"),
 )
 
@@ -80,6 +81,7 @@ PHYSICAL_ACTIVITY_HOURS = (
 GLUCOSE_UNITS = (
     (MILLIGRAMS_PER_DECILITER, MILLIGRAMS_PER_DECILITER),
     (MILLIMOLES_PER_LITER, MILLIMOLES_PER_LITER),
+    (NOT_APPLICABLE, "Not applicable"),
 )
 
 PAYEE_CHOICES = (
