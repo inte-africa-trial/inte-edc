@@ -1,6 +1,16 @@
 Changes
 =======
 
+0.1.8
+-----
+- change prompt on ``baslinecarestatus`` to clarify that ``hiv_clinic_other_is_study_clinic``
+  refers to ``hiv_clinic_other``.
+- bump up edc==0.1.18
+
+0.1.7
+-----
+- bump up edc==0.1.17
+
 0.1.6
 -----
 - bug fixes, bump up edc==0.1.14
