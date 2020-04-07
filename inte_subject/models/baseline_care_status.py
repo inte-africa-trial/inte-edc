@@ -38,7 +38,10 @@ class BaselineCareStatus(CrfModelMixin, BaseUuidModel):
     )
 
     hiv_clinic_other_is_study_clinic = models.CharField(
-        verbose_name="Is this HIV clinic an INTE study clinic?",
+        verbose_name=(
+            "If not attending the HIV clinic in <u>this facility</u>, "
+            "is this HIV clinic an INTE study clinic?"
+        ),
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
