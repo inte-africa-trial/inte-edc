@@ -111,7 +111,7 @@ class BaselineCareStatusFormValidator(CrfFormValidatorMixin, FormValidator):
     @property
     def is_diabetic_or_hypertensive(self):
         return (
-            self.cleaned_data.get("diabetes") == YES
+            self.cleaned_data.get("diabetic") == YES
             or self.cleaned_data.get("hypertensive") == YES
         )
 

@@ -49,7 +49,6 @@ list_data = {
         ("valsartan", "Valsartan"),
         ("simvastatin", "Simvastatin"),
         (NOT_APPLICABLE, "Not applicable"),
-        (UNKNOWN, "Unknown"),
         (OTHER, "Other treatment (specify below)"),
     ],
     "inte_lists.arvregimens": [
