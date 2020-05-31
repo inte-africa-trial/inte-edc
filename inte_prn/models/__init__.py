@@ -5,3 +5,4 @@ from .protocol_deviation_violation import ProtocolDeviationViolation
 from .unblinding_request import UnblindingRequest
 from .unblinding_user import UnblindingReviewerUser, UnblindingRequestorUser
 from .unblinding_review import UnblindingReview
+from .final_clinical_review import FinalClinicalReview
