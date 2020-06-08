@@ -15,6 +15,9 @@ Liverpool School of Tropical Medicine
 http://www.isrctn.com/
 
 
+See also https://github.com/clinicedc/edc
+
+
 
 Installation
 ------------
