@@ -8,6 +8,7 @@ from edc_constants.constants import (
 from edc_reportable import (
     MILLIGRAMS_PER_DECILITER,
     MILLIMOLES_PER_LITER,
+    MILLIMOLES_PER_LITER_DISPLAY,
 )
 from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED, MISSED_VISIT
 
@@ -80,7 +81,7 @@ PHYSICAL_ACTIVITY_HOURS = (
 
 GLUCOSE_UNITS = (
     (MILLIGRAMS_PER_DECILITER, MILLIGRAMS_PER_DECILITER),
-    (MILLIMOLES_PER_LITER, MILLIMOLES_PER_LITER),
+    (MILLIMOLES_PER_LITER, MILLIMOLES_PER_LITER_DISPLAY),
     (NOT_APPLICABLE, "Not applicable"),
 )
 
@@ -90,12 +91,6 @@ PAYEE_CHOICES = (
     ("relative", "Relative of others paying"),
     ("free", "Free drugs from the pharmacy"),
     (NOT_APPLICABLE, "Not applicable"),
-)
-
-SMOKER_STATUS = (
-    (SMOKER, "Currently smoke"),
-    (FORMER_SMOKER, "Used to smoke but stopped"),
-    (NONSMOKER, "Never smoked"),
 )
 
 TRANSPORT_CHOICES = (

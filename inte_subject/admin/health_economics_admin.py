@@ -1,14 +1,18 @@
 from django.contrib import admin
 from django_audit_fields.admin import audit_fieldset_tuple
+from edc_form_label import FormLabelModelAdminMixin
+from edc_model_admin import SimpleHistoryAdmin
 
 from ..admin_site import inte_subject_admin
 from ..forms import HealthEconomicsForm
 from ..models import HealthEconomics
-from .modeladmin import CrfModelAdmin
+from .modeladmin import CrfModelAdminMixin
 
 
 @admin.register(HealthEconomics, site=inte_subject_admin)
-class HealthEconomicsAdmin(CrfModelAdmin):
+class HealthEconomicsAdmin(
+    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
+):
     form = HealthEconomicsForm
 
     fieldsets = (

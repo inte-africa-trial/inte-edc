@@ -1,14 +1,18 @@
 from django.contrib import admin
 from django_audit_fields import audit_fieldset_tuple
+from edc_form_label import FormLabelModelAdminMixin
+from edc_model_admin import SimpleHistoryAdmin
 
 from ..forms import NextAppointmentForm
 from ..models import NextAppointment
 from ..admin_site import inte_subject_admin
-from .modeladmin import CrfModelAdmin
+from .modeladmin import CrfModelAdminMixin
 
 
 @admin.register(NextAppointment, site=inte_subject_admin)
-class NextAppointmentAdmin(CrfModelAdmin):
+class NextAppointmentAdmin(
+    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
+):
     form = NextAppointmentForm
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),

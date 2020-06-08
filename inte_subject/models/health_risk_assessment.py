@@ -1,11 +1,11 @@
 from django.db import models
-from edc_constants.choices import YES_NO
+from edc_constants.choices import YES_NO, SMOKER_STATUS
 from edc_constants.constants import NOT_APPLICABLE
 from edc_crf.model_mixins import CrfModelMixin
 from edc_model.models import BaseUuidModel
 from edc_model.validators import ym_validator
 
-from ..choices import ALCOHOL_CONSUMPTION, SMOKER_STATUS
+from ..choices import ALCOHOL_CONSUMPTION
 
 
 class HealthRiskAssessment(CrfModelMixin, BaseUuidModel):
