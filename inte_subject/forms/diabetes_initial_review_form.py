@@ -1,5 +1,4 @@
 from django import forms
-from django.core.exceptions import ObjectDoesNotExist
 from edc_action_item.forms.action_item_form_mixin import ActionItemFormMixin
 from edc_constants.constants import YES, NO
 from edc_crf.modelform_mixins import CrfModelFormMixin
@@ -7,7 +6,7 @@ from edc_form_validators.form_validator import FormValidator
 from inte_subject.forms.care_status_exists_or_raise import care_status_exists_or_raise
 
 from ..constants import INSULIN, DRUGS
-from ..models import DiabetesInitialReview, CareStatus
+from ..models import DiabetesInitialReview
 
 
 class DiabetesInitialReviewFormValidator(FormValidator):

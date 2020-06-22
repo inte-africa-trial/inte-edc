@@ -19,7 +19,9 @@ class HivInitialReviewFormValidator(CrfFormValidatorMixin, FormValidator):
         ):
             raise forms.ValidationError(
                 {
-                    "receives_care": "Patient was screened from an HIV clinic, expected `Yes`.",
+                    "receives_care": (
+                        "Patient was screened from an HIV clinic, expected `Yes`."
+                    ),
                 }
             )
 

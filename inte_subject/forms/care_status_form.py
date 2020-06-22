@@ -40,7 +40,9 @@ class CareStatusFormValidator(CrfFormValidatorMixin, FormValidator):
         ):
             raise forms.ValidationError(
                 {
-                    "hiv_result": "Patient was screened from an HIV clinic, expected `Positive`.",
+                    "hiv_result": (
+                        "Patient was screened from an HIV clinic, expected `Positive`."
+                    ),
                 }
             )
 
@@ -52,7 +54,7 @@ class CareStatusFormValidator(CrfFormValidatorMixin, FormValidator):
             raise forms.ValidationError(
                 {
                     "hypertensive_tested": (
-                        f"Patient was screened from an Hypertension clinic, expected `Yes`."
+                        "Patient was screened from an Hypertension clinic, expected `Yes`."
                     ),
                 }
             )
@@ -63,7 +65,7 @@ class CareStatusFormValidator(CrfFormValidatorMixin, FormValidator):
             raise forms.ValidationError(
                 {
                     "hypertensive_tested": (
-                        f"Patient was screened from an Hypertension clinic, expected `Yes`."
+                        "Patient was screened from an Hypertension clinic, expected `Yes`."
                     ),
                 }
             )
@@ -76,7 +78,7 @@ class CareStatusFormValidator(CrfFormValidatorMixin, FormValidator):
             raise forms.ValidationError(
                 {
                     "diabetic_tested": (
-                        f"Patient was screened from a Diabetes clinic, expected `Yes`."
+                        "Patient was screened from a Diabetes clinic, expected `Yes`."
                     ),
                 }
             )
@@ -87,7 +89,7 @@ class CareStatusFormValidator(CrfFormValidatorMixin, FormValidator):
             raise forms.ValidationError(
                 {
                     "diabetic_tested": (
-                        f"Patient was screened from a Diabetes clinic, expected `Yes`."
+                        "Patient was screened from a Diabetes clinic, expected `Yes`."
                     ),
                 }
             )
@@ -99,7 +101,7 @@ class CareStatusFormValidator(CrfFormValidatorMixin, FormValidator):
             and self.cleaned_data.get("hypertensive_tested") != YES
         ):
             raise forms.ValidationError(
-                f"Patient was screened from an NCD clinic, expected to "
+                "Patient was screened from an NCD clinic, expected to "
                 "have tested for either Hypertension and/or Diabetes."
             )
         if (
@@ -108,7 +110,7 @@ class CareStatusFormValidator(CrfFormValidatorMixin, FormValidator):
             and self.cleaned_data.get("hypertensive") != YES
         ):
             raise forms.ValidationError(
-                f"Patient was screened from an NCD clinic, expected to "
+                "Patient was screened from an NCD clinic, expected to "
                 "have been diagnosed with either Hypertension and/or Diabetes."
             )
 

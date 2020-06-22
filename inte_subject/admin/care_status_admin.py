@@ -31,7 +31,7 @@ class CareStatusAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistor
                 ),
             },
         ),
-        ("Other", {"fields": ("health_insurance", "patient_club",),},),
+        ("Other", {"fields": ("health_insurance", "patient_club",)}),
         audit_fieldset_tuple,
     )
 

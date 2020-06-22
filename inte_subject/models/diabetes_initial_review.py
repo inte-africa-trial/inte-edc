@@ -40,7 +40,9 @@ class DiabetesInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     glucose_performed = models.CharField(
-        verbose_name="Has the patient had their fasting glucose measured in the last few months?",
+        verbose_name=(
+            "Has the patient had their fasting glucose measured in the last few months?"
+        ),
         max_length=15,
         choices=YES_NO,
     )
