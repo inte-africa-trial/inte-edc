@@ -1,32 +1,28 @@
 from django.db import models
-from edc_constants.choices import YES_NO, SMOKER_STATUS
-from edc_constants.constants import NOT_APPLICABLE
+from edc_constants.choices import YES_NO, SMOKER_STATUS_SIMPLE
+from edc_constants.constants import NOT_APPLICABLE, SMOKER
 from edc_crf.model_mixins import CrfModelMixin
-from edc_model.models import BaseUuidModel
-from edc_model.validators import ym_validator
+from edc_model import models as edc_models
 
 from ..choices import ALCOHOL_CONSUMPTION
 
 
-class HealthRiskAssessment(CrfModelMixin, BaseUuidModel):
+class HealthRiskAssessment(CrfModelMixin, edc_models.BaseUuidModel):
     smoking_status = models.CharField(
         verbose_name="Which of these options describes you",
         max_length=15,
-        choices=SMOKER_STATUS,
+        choices=SMOKER_STATUS_SIMPLE,
     )
 
-    smoker_quit_ago_str = models.CharField(
+    smoker_quit_ago = edc_models.DurationYearMonthField(
         verbose_name="If you used to smoke but stopped, how long ago did you stop",
-        max_length=8,
-        validators=[ym_validator],
         null=True,
         blank=True,
-        help_text=(
-            "Duration since last smoked. Format is `YYyMMm`. For example 1y11m, 12y7m, etc"
-        ),
     )
 
-    smoker_quit_ago_months = models.IntegerField(editable=False, null=True)
+    smoker_quit_estimated_date = models.DateField(
+        verbose_name="Estimated date smoker quit?", null=True, editable=False,
+    )
 
     alcohol = models.CharField(
         verbose_name="Do you drink alcohol?", max_length=15, choices=YES_NO,
@@ -40,7 +36,10 @@ class HealthRiskAssessment(CrfModelMixin, BaseUuidModel):
     )
 
     def save(self, *args, **kwargs):
-        # TODO: calculate smoker quit months
+        if self.smoker_quit_ago:
+            self.smoker_quit_estimated_date = edc_models.duration_to_date(
+                self.smoker_quit_ago, self.report_datetime
+            )
         super().save(*args, **kwargs)
 
     class Meta(CrfModelMixin.Meta):

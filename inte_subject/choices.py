@@ -1,10 +1,4 @@
-from edc_constants.constants import (
-    SMOKER,
-    FORMER_SMOKER,
-    NONSMOKER,
-    NOT_APPLICABLE,
-    OTHER,
-)
+from edc_constants.constants import NEG, NEVER, NOT_APPLICABLE, OTHER, POS
 from edc_reportable import (
     MILLIGRAMS_PER_DECILITER,
     MILLIMOLES_PER_LITER,
@@ -12,9 +6,26 @@ from edc_reportable import (
 )
 from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED, MISSED_VISIT
 
-from .constants import SITTING, GTE_3HRS
+from .constants import DIET_LIFESTYLE, DRUGS, INSULIN, SITTING, GTE_3HRS, THIS_CLINIC
 
+CARE_ACCESS = (
+    (THIS_CLINIC, "Patient comes to this facility for their care"),
+    (OTHER, "Patient goes to a different clinic"),
+    (NOT_APPLICABLE, "Not applicable"),
+)
 
+HYPERTENSION_MANAGEMENT = (
+    (DRUGS, "Drugs / Medicine"),
+    (DIET_LIFESTYLE, "Diet and lifestyle alone"),
+)
+
+DIABETES_MANAGEMENT = (
+    (INSULIN, "Insulin injections"),
+    (DRUGS, "Oral drugs"),
+    (DIET_LIFESTYLE, "Diet and lifestyle alone"),
+)
+
+# *********************************
 ACTIVITY_CHOICES = (
     ("working", "Working"),
     ("studying", "Studying"),

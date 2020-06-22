@@ -1,5 +1,12 @@
 from django.conf import settings
-from edc_constants.constants import OTHER, UNKNOWN, DEAD, NONE, NOT_APPLICABLE
+from edc_constants.constants import (
+    LOST_TO_FOLLOWUP,
+    OTHER,
+    UNKNOWN,
+    DEAD,
+    NONE,
+    NOT_APPLICABLE,
+)
 from edc_list_data import PreloadData
 from inte_prn.constants import (
     LATE_EXCLUSION,
@@ -16,22 +23,11 @@ list_data = {
     ],
     "inte_lists.offstudyreasons": [
         ("completed_followup", "Patient completed 12 months of follow-up"),
-        ("clinical_endpoint", "Patient reached a clinical endpoint"),
-        ("toxicity", "Patient experienced an unacceptable toxicity"),
-        (
-            "intercurrent_illness",
-            "Intercurrent illness which prevents further treatment",
-        ),
-        ("lost_to_followup", "Patient lost to follow-up"),
+        (LOST_TO_FOLLOWUP, "Patient lost to follow-up"),
         (DEAD, "Patient reported/known to have died"),
         (WITHDRAWAL, "Patient withdrew consent to participate further"),
         (LATE_EXCLUSION, "Patient fulfilled late exclusion criteria*"),
         (TRANSFERRED, "Patient has been transferred to another health centre"),
-        (
-            OTHER_RX_DISCONTINUATION,
-            "Other condition that justifies the discontinuation of "
-            "treatment in the clinician’s opinion (specify below)",
-        ),
         (OTHER, "Other reason (specify below)",),
     ],
     "inte_lists.hypertensiontreatment": [
@@ -61,7 +57,6 @@ list_data = {
         ("ABC_3TC_LPV_r", "ABC + 3TC + LPV/r"),
         ("TDF_FTC_LPV_r", "TDF + FTC + LPV/r"),
         ("DTG_ABC/3TC_ATV_r", "DTG + (ABC/3TC) + ATV/r"),
-        (NOT_APPLICABLE, "Not applicable"),
         (OTHER, "Other, specify"),
     ],
     "inte_lists.visitreasons": [

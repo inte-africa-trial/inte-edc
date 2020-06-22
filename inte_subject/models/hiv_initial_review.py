@@ -1,45 +1,102 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from edc_constants.choices import YES_NO
+from django.utils.safestring import mark_safe
+from edc_constants.choices import YES_NO, YES_NO_NA
+from edc_constants.constants import NOT_APPLICABLE
 from edc_crf.model_mixins import CrfModelMixin
-from edc_model.models import OtherCharField
-from edc_model.models.base_uuid_model import BaseUuidModel
-from edc_model.validators.date import date_not_future
+from edc_model import models as edc_models
 from edc_reportable import CELLS_PER_MILLIMETER_CUBED_DISPLAY, COPIES_PER_MILLILITER
 from inte_lists.models import ArvRegimens
 
-from ..model_mixins import ReviewModelMixin
+from ..choices import CARE_ACCESS
 
 
-class HivInitialReview(ReviewModelMixin, CrfModelMixin, BaseUuidModel):
-    diagnosis_date = models.DateField(
-        verbose_name="When was the patient diagnosed with HIV?"
+class HivInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
+
+    dx_ago = edc_models.DurationYearMonthField(
+        verbose_name="How long ago was the patient diagnosed with HIV?",
     )
 
-    arv_initiation_date = models.DateField(
-        verbose_name="Date of start of antiretroviral therapy (ART)",
-        validators=[date_not_future],
+    dx_estimated_date = models.DateField(
+        verbose_name="Estimated DX Date",
+        null=True,
+        editable=False,
+        help_text="Calculated based on response to `dx_ago`",
+    )
+
+    receives_care = models.CharField(
+        verbose_name="Is the patient receiving care for HIV",
+        max_length=15,
+        choices=YES_NO,
+    )
+
+    clinic = models.CharField(
+        verbose_name="Where does the patient receive care for HIV",
+        max_length=15,
+        choices=CARE_ACCESS,
+        default=NOT_APPLICABLE,
+    )
+
+    clinic_other = models.CharField(
+        verbose_name=mark_safe(
+            "If <u>not</u> attending here, where does the patient attend?"
+        ),
+        max_length=50,
         null=True,
         blank=True,
     )
 
-    viral_load = models.IntegerField(
-        verbose_name="Last viral load",
+    clinic_next_appt_date = models.DateField(
+        verbose_name="When is the patient's next scheduled HIV appointment",
+        validators=[edc_models.date_is_future],
+        null=True,
+        blank=True,
+    )
+
+    arv_initiation_ago = edc_models.DurationYearMonthField(
+        verbose_name="How long ago did the patient start ART?", null=True, blank=True,
+    )
+
+    arv_initiation_estimated_date = models.DateField(
+        verbose_name="Date of start of antiretroviral therapy (ART)",
+        validators=[edc_models.date_not_future],
+        null=True,
+        editable=False,
+        help_text="Calculated based on response to `arv_initiation_ago`",
+    )
+
+    # Viral Load
+    has_vl = models.CharField(
+        verbose_name="Is the patient's most recent viral load result available?",
+        max_length=25,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
+    )
+    vl = models.IntegerField(
+        verbose_name="Most recent viral load",
         validators=[MinValueValidator(0), MaxValueValidator(9999999)],
         null=True,
         blank=True,
         help_text=COPIES_PER_MILLILITER,
     )
 
-    viral_load_date = models.DateField(
-        verbose_name="Date of last viral load",
-        validators=[date_not_future],
+    vl_date = models.DateField(
+        verbose_name="Date of most recent viral load",
+        validators=[edc_models.date_not_future],
         null=True,
         blank=True,
     )
 
+    # CD4
+    has_cd4 = models.CharField(
+        verbose_name="Is the patient's most recent CD4 result available?",
+        max_length=25,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
+    )
+
     cd4 = models.IntegerField(
-        verbose_name="Last CD4",
+        verbose_name="Most recent CD4",
         validators=[MinValueValidator(0), MaxValueValidator(3000)],
         null=True,
         blank=True,
@@ -47,8 +104,8 @@ class HivInitialReview(ReviewModelMixin, CrfModelMixin, BaseUuidModel):
     )
 
     cd4_date = models.DateField(
-        verbose_name="Date of last CD4",
-        validators=[date_not_future],
+        verbose_name="Date of most recent CD4",
+        validators=[edc_models.date_not_future],
         null=True,
         blank=True,
     )
@@ -61,10 +118,21 @@ class HivInitialReview(ReviewModelMixin, CrfModelMixin, BaseUuidModel):
             "Which antiretroviral therapy regimen is the patient currently on?"
         ),
         null=True,
-        blank=False,
+        blank=True,
     )
 
-    other_current_arv_regimen = OtherCharField(null=True, blank=True)
+    other_current_arv_regimen = edc_models.OtherCharField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.dx_ago:
+            self.dx_estimated_date = edc_models.duration_to_date(
+                self.dx_ago, self.report_datetime
+            )
+        if self.arv_initiation_ago:
+            self.arv_initiation_estimated_date = edc_models.duration_to_date(
+                self.arv_initiation_ago, self.report_datetime
+            )
+        super().save(*args, **kwargs)
 
     class Meta(CrfModelMixin.Meta):
         verbose_name = "HIV Initial Review"

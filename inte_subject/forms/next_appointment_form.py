@@ -1,8 +1,13 @@
 from django import forms
 from edc_crf.modelform_mixins import CrfModelFormMixin
+from edc_form_validators.form_validator import FormValidator
 
-from ..form_validators import NextAppointmentValidator
 from ..models import NextAppointment
+from .crf_form_validator_mixin import CrfFormValidatorMixin
+
+
+class NextAppointmentValidator(CrfFormValidatorMixin, FormValidator):
+    pass
 
 
 class NextAppointmentForm(CrfModelFormMixin, forms.ModelForm):

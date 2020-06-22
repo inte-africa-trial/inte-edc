@@ -1,46 +1,51 @@
 from django.db import models
-from edc_constants.choices import YES_NO, YES_NO_DONT_KNOW
+from edc_constants.constants import NOT_APPLICABLE
 from edc_crf.model_mixins import CrfModelMixin
 from edc_model import models as edc_models
 
-from inte_lists.models import HypertensionTreatment
-
-from ..model_mixins import ReviewModelMixin
+from ..choices import HYPERTENSION_MANAGEMENT
 
 
-class HypertensionInitialReview(
-    ReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel
-):
-    diagnosis_date = models.DateField(
-        verbose_name="When was the patient diagnosed with hypertension?"
+class HypertensionInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
+
+    dx_ago = edc_models.DurationYearMonthField(
+        verbose_name="How long ago was the patient diagnosed with hypertension?",
     )
 
-    treatment_start_date = models.DateField(null=True, blank=True)
-
-    treatment = models.ManyToManyField(
-        HypertensionTreatment,
-        verbose_name="If yes, what type of medicine is the patient currently taking?",
+    dx_estimated_date = models.DateField(
+        verbose_name="Estimated hypertension diagnoses date", null=True, editable=False,
     )
 
-    other_treatment = edc_models.OtherCharField()
-
-    stroke = models.CharField(
-        verbose_name="Has the patient suffered a stroke in the past?",
+    managed_by = models.CharField(
+        verbose_name="How is the patient's hypertension managed?",
         max_length=15,
-        choices=YES_NO,
+        choices=HYPERTENSION_MANAGEMENT,
+        default=NOT_APPLICABLE,
     )
 
-    chest_pain = models.CharField(
-        verbose_name="Has the patient suffered severe pain in the chest in the past?",
-        max_length=15,
-        choices=YES_NO,
+    med_start_ago = edc_models.DurationYearMonthField(
+        verbose_name=(
+            "If the patient is taking medicines for hypertension, "
+            "how long have they been taking these?"
+        ),
+        null=True,
+        blank=True,
     )
 
-    family_history = models.CharField(
-        verbose_name="Is there anyone in the patient’s family with hypertension?",
-        max_length=15,
-        choices=YES_NO_DONT_KNOW,
+    med_start_estimated_date = edc_models.DurationYearMonthField(
+        verbose_name="Estimated medication start date", null=True, editable=False,
     )
+
+    def save(self, *args, **kwargs):
+        if self.dx_ago:
+            self.dx_estimated_date = edc_models.duration_to_date(
+                self.dx_ago, self.report_datetime
+            )
+        if self.med_start_ago:
+            self.med_start_estimated_date = edc_models.duration_to_date(
+                self.med_start_ago, self.report_datetime
+            )
+        super().save(*args, **kwargs)
 
     class Meta(CrfModelMixin.Meta):
         verbose_name = "Hypertension Initial Review"

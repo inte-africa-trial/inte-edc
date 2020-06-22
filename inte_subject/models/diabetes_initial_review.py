@@ -1,57 +1,83 @@
 from django.db import models
+from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO
+from edc_constants.constants import NOT_APPLICABLE
 from edc_crf.model_mixins import CrfModelMixin
-from edc_model.models.base_uuid_model import BaseUuidModel
-from inte_lists.models import DiabetesTreatment
+from edc_lab.choices import RESULT_QUANTIFIER_NA
+from edc_model import models as edc_models
+from edc_model.models import date_not_future
+from inte_subject.choices import DIABETES_MANAGEMENT, GLUCOSE_UNITS
 
-from ..model_mixins import ReviewModelMixin, GlucoseTestModelMixin
 
+class DiabetesInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
 
-class DiabetesInitialReview(
-    ReviewModelMixin, GlucoseTestModelMixin, CrfModelMixin, BaseUuidModel
-):
-    diagnosis_date = models.DateField(
-        verbose_name="When was the patient diagnosed with diabetes?",
+    dx_ago = edc_models.DurationYearMonthField(
+        verbose_name="How long ago was the patient diagnosed with diabetes?",
     )
 
-    treatment = models.ManyToManyField(
-        DiabetesTreatment,
-        verbose_name="If yes, what type of medicine is the patient currently taking?",
+    dx_estimated_date = models.DateField(
+        verbose_name="Estimated diabetes diagnoses date", null=True, editable=False,
     )
 
-    visual_problems = models.CharField(
-        verbose_name="Has the patient experienced problems with vision linked to diabetes?",
+    managed_by = models.CharField(
+        verbose_name="How is the patient's diabetes managed?",
         max_length=15,
-        choices=YES_NO,
+        choices=DIABETES_MANAGEMENT,
+        default=NOT_APPLICABLE,
     )
-    kidney_problems = models.CharField(
+
+    med_start_ago = edc_models.DurationYearMonthField(
         verbose_name=(
-            "Has the patient experienced kidney problems since diagnosed with diabetes?"
+            "If the patient is taking medicines for diabetes, "
+            "how long have they been taking these?"
         ),
+        null=True,
+        blank=True,
+    )
+
+    med_start_estimated_date = edc_models.DurationYearMonthField(
+        verbose_name="Estimated medication start date", null=True, editable=False,
+    )
+
+    glucose_performed = models.CharField(
+        verbose_name="Has the patient had their fasting glucose measured in the last few months?",
         max_length=15,
         choices=YES_NO,
     )
 
-    foot_ulcers = models.CharField(
-        verbose_name="Has the patient experienced foot ulcers since diagnosed with diabetes?",
-        max_length=15,
-        choices=YES_NO,
+    glucose_date = models.DateField(
+        validators=[date_not_future], null=True, blank=True,
     )
 
-    numbness = models.CharField(
-        verbose_name=(
-            "Has the patient experienced numbness or burning sensation in "
-            "hands or feet since diagnosed with diabetes?"
-        ),
-        max_length=15,
-        choices=YES_NO,
+    glucose = models.DecimalField(
+        verbose_name=mark_safe("Fasting glucose result"),
+        max_digits=8,
+        decimal_places=2,
+        null=True,
+        blank=True,
     )
 
-    family_history = models.CharField(
-        verbose_name="Is there anyone in the patient’s family with diabetes?",
-        max_length=15,
-        choices=YES_NO,
+    glucose_quantifier = models.CharField(
+        max_length=10, choices=RESULT_QUANTIFIER_NA, default=NOT_APPLICABLE,
     )
+
+    glucose_units = models.CharField(
+        verbose_name="Units (glucose)",
+        max_length=15,
+        choices=GLUCOSE_UNITS,
+        default=NOT_APPLICABLE,
+    )
+
+    def save(self, *args, **kwargs):
+        if self.dx_ago:
+            self.dx_estimated_date = edc_models.duration_to_date(
+                self.dx_ago, self.report_datetime
+            )
+        if self.med_start_ago:
+            self.med_start_estimated_date = edc_models.duration_to_date(
+                self.med_start_ago, self.report_datetime
+            )
+        super().save(*args, **kwargs)
 
     class Meta(CrfModelMixin.Meta):
         verbose_name = "Diabetes Initial Review"
