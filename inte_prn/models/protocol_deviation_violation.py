@@ -10,8 +10,7 @@ from edc_identifier.model_mixins import (
     NonUniqueSubjectIdentifierFieldMixin,
 )
 from edc_model import REPORT_STATUS
-from edc_model.models import BaseUuidModel
-from edc_model.validators import datetime_not_future
+from edc_model import models as edc_models
 from edc_sites.models import SiteModelMixin
 from edc_utils import get_utcnow
 
@@ -24,7 +23,7 @@ class ProtocolDeviationViolation(
     SiteModelMixin,
     ActionModelMixin,
     TrackingModelMixin,
-    BaseUuidModel,
+    edc_models.BaseUuidModel,
 ):
 
     action_name = PROTOCOL_DEVIATION_VIOLATION_ACTION
@@ -74,7 +73,7 @@ class ProtocolDeviationViolation(
 
     violation_datetime = models.DateTimeField(
         verbose_name="Date violation occurred",
-        validators=[datetime_not_future],
+        validators=[edc_models.datetime_not_future],
         null=True,
         blank=True,
     )
@@ -108,7 +107,7 @@ class ProtocolDeviationViolation(
 
     corrective_action_datetime = models.DateTimeField(
         verbose_name="Corrective action date and time",
-        validators=[datetime_not_future],
+        validators=[edc_models.datetime_not_future],
         null=True,
         blank=True,
     )
@@ -119,7 +118,7 @@ class ProtocolDeviationViolation(
 
     preventative_action_datetime = models.DateTimeField(
         verbose_name="Preventative action date and time",
-        validators=[datetime_not_future],
+        validators=[edc_models.datetime_not_future],
         null=True,
         blank=True,
     )
@@ -139,8 +138,8 @@ class ProtocolDeviationViolation(
     report_closed_datetime = models.DateTimeField(
         blank=True,
         null=True,
-        validators=[datetime_not_future],
-        verbose_name=("Date and time report closed."),
+        validators=[edc_models.datetime_not_future],
+        verbose_name="Date and time report closed.",
     )
 
     on_site = ActionIdentifierSiteManager()

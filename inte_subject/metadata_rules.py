@@ -1,13 +1,13 @@
-from edc_constants.constants import YES
+from edc_constants.constants import POS, YES
 from edc_metadata import REQUIRED, NOT_REQUIRED
 from edc_metadata_rules import CrfRule, CrfRuleGroup, register, P
 
 
 @register()
-class BaselineCareStatusRuleGroup(CrfRuleGroup):
+class CareStatusRuleGroup(CrfRuleGroup):
 
     hiv = CrfRule(
-        predicate=P("hiv", "eq", YES),
+        predicate=P("hiv_result", "eq", POS),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
         target_models=["hivinitialreview"],
@@ -29,4 +29,4 @@ class BaselineCareStatusRuleGroup(CrfRuleGroup):
 
     class Meta:
         app_label = "inte_subject"
-        source_model = "baselinecarestatus"
+        source_model = "inte_subject.carestatus"

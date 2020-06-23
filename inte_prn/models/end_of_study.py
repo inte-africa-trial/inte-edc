@@ -3,8 +3,7 @@ from edc_action_item.models import ActionModelMixin
 from edc_constants.choices import YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_identifier.model_mixins import TrackingModelMixin
-from edc_model.models import BaseUuidModel
-from edc_model.validators.date import datetime_not_future, date_not_future
+from edc_model import models as edc_models
 from edc_visit_schedule.model_mixins import OffScheduleModelMixin
 from inte_lists.models import OffstudyReasons
 
@@ -12,7 +11,10 @@ from ..constants import END_OF_STUDY_ACTION
 
 
 class EndOfStudy(
-    OffScheduleModelMixin, ActionModelMixin, TrackingModelMixin, BaseUuidModel
+    OffScheduleModelMixin,
+    ActionModelMixin,
+    TrackingModelMixin,
+    edc_models.BaseUuidModel,
 ):
 
     action_name = END_OF_STUDY_ACTION
@@ -21,8 +23,15 @@ class EndOfStudy(
 
     offschedule_datetime = models.DateTimeField(
         verbose_name="Date patient was terminated from the study",
-        validators=[datetime_not_future],
+        validators=[edc_models.datetime_not_future],
         blank=False,
+        null=True,
+    )
+
+    last_study_fu_date = models.DateField(
+        verbose_name="Date of last research follow up (if different):",
+        validators=[edc_models.date_not_future],
+        blank=True,
         null=True,
     )
 
@@ -37,9 +46,16 @@ class EndOfStudy(
         verbose_name="If OTHER, please specify", max_length=500, blank=True, null=True
     )
 
+    ltfu_last_alive_date = models.DateField(
+        verbose_name="If lost to followup, date last known to be alive",
+        validators=[edc_models.date_not_future],
+        blank=True,
+        null=True,
+    )
+
     death_date = models.DateField(
-        verbose_name="Date of death, if applicable",
-        validators=[date_not_future],
+        verbose_name="If deceased, date of death",
+        validators=[edc_models.date_not_future],
         blank=True,
         null=True,
     )

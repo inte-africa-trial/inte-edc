@@ -3,7 +3,7 @@ from edc_action_item.managers import (
     ActionIdentifierSiteManager,
     ActionIdentifierManager,
 )
-from edc_model.validators.date import date_not_future
+from edc_model.models import date_not_future
 
 
 class BaseStudyTerminationConclusion(models.Model):

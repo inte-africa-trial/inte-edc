@@ -1,0 +1,46 @@
+from django.contrib import admin
+from django_audit_fields.admin import audit_fieldset_tuple
+from edc_form_label.form_label_modeladmin_mixin import FormLabelModelAdminMixin
+from edc_model_admin import SimpleHistoryAdmin
+
+from ..admin_site import inte_subject_admin
+from ..forms import CareStatusForm
+from ..models import CareStatus
+from .modeladmin import CrfModelAdminMixin
+
+
+@admin.register(CareStatus, site=inte_subject_admin)
+class CareStatusAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
+
+    form = CareStatusForm
+
+    fieldsets = (
+        (None, {"fields": ("subject_visit", "report_datetime")}),
+        ("HIV", {"fields": ("hiv_result", "hiv_result_ago",)}),
+        (
+            "Diabetes",
+            {"fields": ("diabetic_tested", "diabetic_tested_ago", "diabetic")},
+        ),
+        (
+            "Hypertension",
+            {
+                "fields": (
+                    "hypertensive_tested",
+                    "hypertensive_tested_ago",
+                    "hypertensive",
+                ),
+            },
+        ),
+        ("Other", {"fields": ("health_insurance", "patient_club",)}),
+        audit_fieldset_tuple,
+    )
+
+    radio_fields = {
+        "hiv_result": admin.VERTICAL,
+        "diabetic_tested": admin.VERTICAL,
+        "diabetic": admin.VERTICAL,
+        "hypertensive_tested": admin.VERTICAL,
+        "hypertensive": admin.VERTICAL,
+        "health_insurance": admin.VERTICAL,
+        "patient_club": admin.VERTICAL,
+    }

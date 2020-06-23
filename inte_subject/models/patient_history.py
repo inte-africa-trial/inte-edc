@@ -5,15 +5,14 @@ from edc_constants.choices import YES_NO
 from edc_crf.model_mixins import CrfModelMixin
 from edc_lab.choices import RESULT_QUANTIFIER
 from edc_lab.constants import EQ
-from edc_model.models import BaseUuidModel
-from edc_models import models as edc_models
+from edc_model import models as edc_models
 from edc_reportable.units import COPIES_PER_MILLILITER
 from inte_lists.models import VisitReasons
 
 from ..choices import GLUCOSE_UNITS
 
 
-class PatientHistory(CrfModelMixin, BaseUuidModel):
+class PatientHistory(CrfModelMixin, edc_models.BaseUuidModel):
     visit_reason = models.ManyToManyField(
         VisitReasons, verbose_name="Reason for this visit",
     )
@@ -112,6 +111,6 @@ class PatientHistory(CrfModelMixin, BaseUuidModel):
         verbose_name="Was there an Out-referral?", max_length=15, choices=YES_NO,
     )
 
-    class Meta(CrfModelMixin.Meta):
+    class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
         verbose_name = "PatientHistory"
         verbose_name_plural = "PatientHistory"

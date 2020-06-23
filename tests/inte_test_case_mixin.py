@@ -6,6 +6,7 @@ from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
 from edc_appointment.constants import IN_PROGRESS_APPT
 from edc_appointment.models import Appointment
+from edc_auth.fix_export_permissions import ExportPermissionsFixer
 from edc_auth.group_permissions_updater import GroupPermissionsUpdater
 from edc_constants.constants import YES, NOT_APPLICABLE, RANDOM_SAMPLING, MALE, NO
 from edc_facility.import_holidays import import_holidays
@@ -41,6 +42,8 @@ class InteTestCaseMixin(SiteTestCaseMixin):
         import_holidays(test=True)
         add_or_update_django_sites(sites=get_sites_by_country("uganda"))
         site_list_data.autodiscover()
+        fixer = ExportPermissionsFixer()
+        fixer.fix()
         GroupPermissionsUpdater(
             codenames_by_group=get_codenames_by_group(), verbose=True
         )

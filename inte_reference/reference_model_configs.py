@@ -5,7 +5,7 @@ site_reference_configs.register_from_visit_schedule(
 )
 
 configs = {
-    "inte_subject.baselinecarestatus": ["hiv", "diabetic", "hypertensive"],
+    "inte_subject.carestatus": ["hiv_result", "diabetic", "hypertensive"],
 }
 
 for reference_name, fields in configs.items():

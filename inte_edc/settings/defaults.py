@@ -88,6 +88,7 @@ INSTALLED_APPS = [
     "edc_appointment.apps.AppConfig",
     "edc_adverse_event.apps.AppConfig",
     "edc_auth.apps.AppConfig",
+    "edc_crf.apps.AppConfig",
     "edc_consent.apps.AppConfig",
     "edc_lab.apps.AppConfig",
     "edc_visit_schedule.apps.AppConfig",
@@ -126,7 +127,6 @@ INSTALLED_APPS = [
     "inte_lists.apps.AppConfig",
     "inte_dashboard.apps.AppConfig",
     "inte_labs.apps.AppConfig",
-    "inte_metadata_rules.apps.AppConfig",
     "inte_reference.apps.AppConfig",
     "inte_subject.apps.AppConfig",
     "inte_form_validators.apps.AppConfig",
@@ -198,7 +198,7 @@ if env.str("DJANGO_CACHE") == "redis":
     CACHES = {
         "default": {
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": f"redis://127.0.0.1:6379/1",
+            "LOCATION": "redis://127.0.0.1:6379/1",
             # "LOCATION": "unix://[:{DJANGO_REDIS_PASSWORD}]@/path/to/socket.sock?db=0",
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",

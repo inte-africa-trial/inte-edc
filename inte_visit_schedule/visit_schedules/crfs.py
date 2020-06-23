@@ -6,56 +6,73 @@ crfs_prn = FormsCollection(
     Crf(show_order=140, model="inte_subject.hypertensioninitialreview"),
     name="prn",
 )
-#
-# crfs_unscheduled = FormsCollection(
-#     Crf(show_order=10, model="inte_subject.bloodresultsglu"),
-#     Crf(show_order=20, model="inte_subject.bloodresultsfbc"),
-#     Crf(show_order=25, model="inte_subject.bloodresultslipid"),
-#     Crf(show_order=30, model="inte_subject.bloodresultslft"),
-#     Crf(show_order=40, model="inte_subject.bloodresultsrft"),
-#     Crf(show_order=50, model="inte_subject.malariatest"),
-#     Crf(show_order=60, model="inte_subject.urinedipsticktest"),
-#     name="unscheduled",
-# )
+
+crfs_unscheduled = FormsCollection(
+    Crf(show_order=110, model="inte_subject.indicators"),
+    Crf(show_order=120, model="inte_subject.hivinitialreview"),
+    Crf(show_order=130, model="inte_subject.diabetesinitialreview"),
+    Crf(show_order=140, model="inte_subject.hypertensioninitialreview"),
+    name="unscheduled",
+)
 
 
 crfs_d1 = FormsCollection(
-    Crf(show_order=100, model="inte_subject.baselinecarestatus"),
-    Crf(show_order=110, model="inte_subject.anthropometry"),
+    Crf(show_order=100, model="inte_subject.carestatus"),
+    Crf(show_order=110, model="inte_subject.indicators"),
     Crf(show_order=120, model="inte_subject.hivinitialreview"),
     Crf(show_order=130, model="inte_subject.diabetesinitialreview"),
     Crf(show_order=140, model="inte_subject.hypertensioninitialreview"),
-    # Crf(show_order=150, model="inte_subject.physicalactivity"),
-    Crf(show_order=160, model="inte_subject.healthriskassessment"),
+    Crf(show_order=160, model="inte_subject.otherbaselinedata"),
+    Crf(show_order=170, model="inte_subject.nextappointment"),
     name="day1",
 )
-crfs_1m = FormsCollection(name="1m")
-crfs_2m = FormsCollection(name="2m")
-crfs_3m = FormsCollection(name="3m")
-crfs_4m = FormsCollection(name="4m")
-crfs_5m = FormsCollection(name="5m")
+crfs_1m = FormsCollection(
+    Crf(show_order=170, model="inte_subject.nextappointment"), name="1m"
+)  # routine for NCD
+crfs_2m = FormsCollection(
+    Crf(show_order=170, model="inte_subject.nextappointment"), name="2m"
+)  # routine for NCD
+crfs_3m = FormsCollection(
+    Crf(show_order=170, model="inte_subject.nextappointment"), name="3m"
+)  # routine for NCD/HIV
+crfs_4m = FormsCollection(
+    Crf(show_order=170, model="inte_subject.nextappointment"), name="4m"
+)  # routine for NCD
+crfs_5m = FormsCollection(
+    Crf(show_order=170, model="inte_subject.nextappointment"), name="5m"
+)  # routine for NCD
 crfs_6m = FormsCollection(
-    Crf(show_order=110, model="inte_subject.anthropometry"),
+    Crf(show_order=100, model="inte_subject.carestatus"),
+    Crf(show_order=110, model="inte_subject.indicators"),
     Crf(show_order=120, model="inte_subject.hivinitialreview"),
     Crf(show_order=130, model="inte_subject.diabetesinitialreview"),
     Crf(show_order=140, model="inte_subject.hypertensioninitialreview"),
-    # Crf(show_order=150, model="inte_subject.physicalactivity"),
-    Crf(show_order=160, model="inte_subject.healthriskassessment"),
-    Crf(show_order=200, model="inte_subject.healtheconomics"),
+    Crf(show_order=160, model="inte_subject.otherbaselinedata"),
+    Crf(show_order=210, model="inte_subject.nextappointment"),
     name="6m",
 )
-crfs_7m = FormsCollection(name="7m")
-crfs_8m = FormsCollection(name="8m")
-crfs_9m = FormsCollection(name="9m")
-crfs_10m = FormsCollection(name="10m")
-crfs_11m = FormsCollection(name="11m")
+crfs_7m = FormsCollection(
+    Crf(show_order=170, model="inte_subject.nextappointment"), name="7m"
+)  # routine for NCD
+crfs_8m = FormsCollection(
+    Crf(show_order=170, model="inte_subject.nextappointment"), name="8m"
+)  # routine for NCD
+crfs_9m = FormsCollection(
+    Crf(show_order=170, model="inte_subject.nextappointment"), name="9m"
+)  # routine for NCD/HIV
+crfs_10m = FormsCollection(
+    Crf(show_order=170, model="inte_subject.nextappointment"), name="10m"
+)  # routine for NCD
+crfs_11m = FormsCollection(
+    Crf(show_order=170, model="inte_subject.nextappointment"), name="11m"
+)  # routine for NCD
 crfs_12m = FormsCollection(
-    Crf(show_order=110, model="inte_subject.anthropometry"),
+    Crf(show_order=100, model="inte_subject.carestatus"),
+    Crf(show_order=110, model="inte_subject.indicators"),
     Crf(show_order=120, model="inte_subject.hivinitialreview"),
     Crf(show_order=130, model="inte_subject.diabetesinitialreview"),
     Crf(show_order=140, model="inte_subject.hypertensioninitialreview"),
-    # Crf(show_order=150, model="inte_subject.physicalactivity"),
-    Crf(show_order=160, model="inte_subject.healthriskassessment"),
-    Crf(show_order=200, model="inte_subject.healtheconomics"),
+    Crf(show_order=160, model="inte_subject.otherbaselinedata"),
+    Crf(show_order=210, model="inte_subject.nextappointment"),
     name="12m",
 )

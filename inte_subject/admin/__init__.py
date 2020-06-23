@@ -1,13 +1,10 @@
-from .baseline_care_status_admin import BaselineCareStatusAdmin
-from .general_assessment import (
-    AnthropometryAdmin,
-    DiabetesInitialReviewAdmin,
-    HealthRiskAssessmentAdmin,
-    HivInitialReviewAdmin,
-    HypertensionInitialReviewAdmin,
-    PhysicalActivityAdmin,
-)
-from .health_economics_admin import HealthEconomicsAdmin
+from .autocomplete_admin import ArvRegimensAdmin
+from .care_status_admin import CareStatusAdmin
+from .diabetes_initial_review_admin import DiabetesInitialReviewAdmin
+from .hiv_initial_review_admin import HivInitialReviewAdmin
+from .hypertension_initial_review_admin import HypertensionInitialReviewAdmin
+from .indicators_admin import IndicatorsAdmin
 from .next_appointment_admin import NextAppointmentAdmin
+from .other_baseline_data_admin import OtherBaselineDataAdmin
 from .subject_requisition_admin import SubjectRequisitionAdmin
 from .subject_visit_admin import SubjectVisitAdmin

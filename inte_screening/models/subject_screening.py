@@ -43,7 +43,7 @@ class SubjectScreening(
     )
 
     clinic_type = models.CharField(
-        verbose_name="From which type of clinic was the patient selected",
+        verbose_name="From which type of clinic was the patient selected?",
         max_length=25,
         choices=CLINIC_CHOICES,
     )
