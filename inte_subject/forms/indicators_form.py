@@ -5,6 +5,7 @@ from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
 
 from ..models import Indicators
+from .care_status_modelform_mixin import CareStatusRequiredModelFormMixin
 
 
 class IndicatorsFormValidator(FormValidator):
@@ -15,7 +16,12 @@ class IndicatorsFormValidator(FormValidator):
         self.required_if(YES, field="r2_taken", field_required="dia_blood_pressure_r2")
 
 
-class IndicatorsForm(CrfModelFormMixin, ActionItemFormMixin, forms.ModelForm):
+class IndicatorsForm(
+    CareStatusRequiredModelFormMixin,
+    CrfModelFormMixin,
+    ActionItemFormMixin,
+    forms.ModelForm,
+):
     form_validator_cls = IndicatorsFormValidator
 
     class Meta:

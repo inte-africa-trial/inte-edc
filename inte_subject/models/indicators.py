@@ -34,6 +34,6 @@ class Indicators(CrfModelMixin, BaseUuidModel):
 
     dia_blood_pressure_r2 = edc_models.DiastolicPressureField(null=True, blank=True)
 
-    class Meta(CrfModelMixin.Meta):
+    class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
         verbose_name = "Indicators"
         verbose_name_plural = "Indicators"

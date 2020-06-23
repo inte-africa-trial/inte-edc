@@ -1,13 +1,32 @@
 from django.db import models
 from edc_constants.choices import YES_NO, SMOKER_STATUS_SIMPLE
-from edc_constants.constants import NOT_APPLICABLE, SMOKER
+from edc_constants.constants import NOT_APPLICABLE
 from edc_crf.model_mixins import CrfModelMixin
 from edc_model import models as edc_models
 
-from ..choices import ALCOHOL_CONSUMPTION
+from ..choices import ALCOHOL_CONSUMPTION, EDUCATION, EMPLOYMENT_STATUS, MARITAL_STATUS
 
 
-class HealthRiskAssessment(CrfModelMixin, edc_models.BaseUuidModel):
+class OtherBaselineData(CrfModelMixin, edc_models.BaseUuidModel):
+
+    employment_status = models.CharField(
+        verbose_name="What is the patient's employment status?",
+        max_length=25,
+        choices=EMPLOYMENT_STATUS,
+    )
+
+    education = models.CharField(
+        verbose_name="How much formal education does the patient have?",
+        max_length=25,
+        choices=EDUCATION,
+    )
+
+    marital_status = models.CharField(
+        verbose_name="How much formal education does the patient have?",
+        max_length=25,
+        choices=MARITAL_STATUS,
+    )
+
     smoking_status = models.CharField(
         verbose_name="Which of these options describes you",
         max_length=15,
@@ -42,6 +61,6 @@ class HealthRiskAssessment(CrfModelMixin, edc_models.BaseUuidModel):
             )
         super().save(*args, **kwargs)
 
-    class Meta(CrfModelMixin.Meta):
-        verbose_name = "Health Risk Assessment"
-        verbose_name_plural = "Health Risk Assessments"
+    class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
+        verbose_name = "Other Baseline Data"
+        verbose_name_plural = "Other Baseline Data"

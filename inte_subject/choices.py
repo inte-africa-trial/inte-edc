@@ -25,6 +25,36 @@ DIABETES_MANAGEMENT = (
     (DIET_LIFESTYLE, "Diet and lifestyle alone"),
 )
 
+ALCOHOL_CONSUMPTION = (
+    ("ocassionally", "Ocassionally"),
+    ("1_2_per_week", "1-2 times a week"),
+    ("3_4_per_week", "3-4 times a week"),
+    ("daily", "Daily"),
+    (NOT_APPLICABLE, "Not applicable"),
+)
+
+EMPLOYMENT_STATUS = (
+    ("professional", "Professional / office work / business"),
+    ("manual_work", "Skilled / Unskilled manual work"),
+    ("housewife", "Housewife"),
+    ("unemployed", "Not working / seeking work"),
+    ("retired", "Retired"),
+    (OTHER, "Other, please specify"),
+)
+
+EDUCATION = (
+    ("no_formal_education", "No Formal Education"),
+    ("primary", "Up to primary"),
+    ("secondary", "Up to secondary / high school"),
+    ("tertiary", "university educated"),
+)
+
+MARITAL_STATUS = (
+    ("married", "Married or living with someone"),
+    ("single", "Single"),
+    ("divorced", "Divorced"),
+    ("widowed", "Widow / Spinster"),
+)
 # *********************************
 ACTIVITY_CHOICES = (
     ("working", "Working"),
@@ -56,14 +86,6 @@ VISIT_REASON = (
     (SCHEDULED, "Scheduled visit"),
     (UNSCHEDULED, "Unscheduled visit"),
     (MISSED_VISIT, "Missed visit"),
-)
-
-ALCOHOL_CONSUMPTION = (
-    ("ocassionally", "Ocassionally"),
-    ("1_2_per_week", "1-2 times a week"),
-    ("3_4_per_week", "3-4 times a week"),
-    ("daily", "Daily"),
-    (NOT_APPLICABLE, "Not applicable"),
 )
 
 INFO_SOURCE = (

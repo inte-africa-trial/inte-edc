@@ -35,7 +35,7 @@ class DiabetesInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
         blank=True,
     )
 
-    med_start_estimated_date = edc_models.DurationYearMonthField(
+    med_start_estimated_date = models.DateField(
         verbose_name="Estimated medication start date", null=True, editable=False,
     )
 
@@ -81,6 +81,6 @@ class DiabetesInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
             )
         super().save(*args, **kwargs)
 
-    class Meta(CrfModelMixin.Meta):
+    class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
         verbose_name = "Diabetes Initial Review"
         verbose_name_plural = "Diabetes Initial Reviews"

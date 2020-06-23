@@ -147,6 +147,6 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
                 setattr(self, f"{complication}_estimated_date", duration)
         super().save(*args, **kwargs)
 
-    class Meta(CrfModelMixin.Meta):
+    class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
         verbose_name = "Complications"
         verbose_name_plural = "Complications"

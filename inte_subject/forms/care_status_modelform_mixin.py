@@ -12,3 +12,9 @@ def care_status_exists_or_raise(form):
             f"Complete the `{CareStatus._meta.verbose_name}` CRF first."
         )
     return True
+
+
+class CareStatusRequiredModelFormMixin:
+    def clean(self):
+        care_status_exists_or_raise(self)
+        return super().clean()

@@ -134,6 +134,6 @@ class HivInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
             )
         super().save(*args, **kwargs)
 
-    class Meta(CrfModelMixin.Meta):
+    class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
         verbose_name = "HIV Initial Review"
         verbose_name_plural = "HIV Initial Reviews"
