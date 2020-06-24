@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django_audit_fields.admin import audit_fieldset_tuple
+from edc_crf.admin import crf_status_fieldset_tuple
 from edc_form_label.form_label_modeladmin_mixin import FormLabelModelAdminMixin
 from edc_model_admin import SimpleHistoryAdmin
 
@@ -21,15 +22,7 @@ class HivInitialReviewAdmin(
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
             "Diagnosis and Care",
-            {
-                "fields": (
-                    "dx_ago",
-                    "receives_care",
-                    "clinic",
-                    "clinic_other",
-                    "clinic_next_appt_date",
-                ),
-            },
+            {"fields": ("dx_ago", "receives_care", "clinic", "clinic_other",),},
         ),
         (
             "Monitoring and Treatment",
@@ -47,10 +40,12 @@ class HivInitialReviewAdmin(
                 ),
             },
         ),
+        crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
 
     radio_fields = {
+        "crf_status": admin.VERTICAL,
         "receives_care": admin.VERTICAL,
         "clinic": admin.VERTICAL,
         "has_vl": admin.VERTICAL,

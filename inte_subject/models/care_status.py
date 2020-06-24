@@ -2,8 +2,9 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from edc_constants.choices import POS_NEG_NOTESTED, YES_NO, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
-from edc_crf.model_mixins import CrfModelMixin
 from edc_model import models as edc_models
+
+from ..model_mixins import CrfModelMixin
 
 
 class CareStatus(CrfModelMixin, edc_models.BaseUuidModel):
@@ -14,6 +15,7 @@ class CareStatus(CrfModelMixin, edc_models.BaseUuidModel):
         ),
         max_length=15,
         choices=POS_NEG_NOTESTED,
+        help_text="If positive, complete form `Hiv Initial Review`",
     )
 
     hiv_result_ago = edc_models.DurationYearMonthField(
@@ -46,6 +48,7 @@ class CareStatus(CrfModelMixin, edc_models.BaseUuidModel):
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
+        help_text="If yes, complete form `Hypertension Initial Review`",
     )
 
     hypertensive_tested_estimated_datetime = models.DateTimeField(
@@ -70,6 +73,7 @@ class CareStatus(CrfModelMixin, edc_models.BaseUuidModel):
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
+        help_text="If yes, complete form `Diabetes Initial Review`",
     )
 
     diabetes_tested_estimated_datetime = models.DateTimeField(

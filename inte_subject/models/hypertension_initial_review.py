@@ -1,9 +1,9 @@
 from django.db import models
 from edc_constants.constants import NOT_APPLICABLE
-from edc_crf.model_mixins import CrfModelMixin
 from edc_model import models as edc_models
 
 from ..choices import HYPERTENSION_MANAGEMENT
+from ..model_mixins import CrfModelMixin
 
 
 class HypertensionInitialReview(CrfModelMixin, edc_models.BaseUuidModel):

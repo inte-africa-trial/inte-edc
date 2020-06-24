@@ -1,3 +1,4 @@
 from .review_model_mixin import ReviewModelMixin
 from .search_slug_model_mixin import SearchSlugModelMixin
 from .glucose_test_model_mixin import GlucoseTestModelMixin
+from .crf_model_mixin import CrfModelMixin

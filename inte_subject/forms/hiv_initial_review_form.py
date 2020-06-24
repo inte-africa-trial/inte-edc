@@ -30,9 +30,6 @@ class HivInitialReviewFormValidator(
         self.applicable_if(YES, field="receives_care", field_applicable="clinic")
         self.required_if(OTHER, field="clinic", field_required="clinic_other")
         self.required_if(
-            YES, field="receives_care", field_required="clinic_next_appt_date"
-        )
-        self.required_if(
             YES, field="receives_care", field_required="arv_initiation_ago"
         )
 
