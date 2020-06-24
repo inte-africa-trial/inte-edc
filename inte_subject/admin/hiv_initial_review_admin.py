@@ -22,7 +22,7 @@ class HivInitialReviewAdmin(
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
             "Diagnosis and Care",
-            {"fields": ("dx_ago", "receives_care", "clinic", "clinic_other",),},
+            {"fields": ("dx_ago", "receives_care", "clinic", "clinic_other")},
         ),
         (
             "Monitoring and Treatment",
