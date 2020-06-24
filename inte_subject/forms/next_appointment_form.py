@@ -31,7 +31,9 @@ class NextAppointmentValidator(CrfFormValidatorMixin, FormValidator):
             ).exists()
         )
         self.required_if_true(condition, field_required="hiv_clinic_appt_date")
-
+        self.date_not_before(
+            "report_datetime", "hiv_clinic_appt_date", convert_to_date=True,
+        )
         ncd_condition = (
             DiabetesInitialReview.objects.filter(
                 subject_visit__appointment__subject_identifier=self.subject_identifier,
@@ -50,13 +52,22 @@ class NextAppointmentValidator(CrfFormValidatorMixin, FormValidator):
             ncd_condition and self.clinic_type == NCD_CLINIC,
             field_required="ncd_clinic_appt_date",
         )
+        self.date_not_before(
+            "report_datetime", "ncd_clinic_appt_date", convert_to_date=True,
+        )
         self.required_if_true(
             ncd_condition and self.clinic_type == DIABETES_CLINIC,
             field_required="diabetes_clinic_appt_date",
         )
+        self.date_not_before(
+            "report_datetime", "diabetes_clinic_appt_date", convert_to_date=True,
+        )
         self.required_if_true(
             ncd_condition and self.clinic_type == HYPERTENSION_CLINIC,
             field_required="hypertension_clinic_appt_date",
+        )
+        self.date_not_before(
+            "report_datetime", "hypertension_clinic_appt_date", convert_to_date=True,
         )
 
     @property

@@ -2,11 +2,12 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO
 from edc_constants.constants import NOT_APPLICABLE
-from edc_crf.model_mixins import CrfModelMixin
 from edc_lab.choices import RESULT_QUANTIFIER_NA
 from edc_model import models as edc_models
 from edc_model.models import date_not_future
 from inte_subject.choices import DIABETES_MANAGEMENT, GLUCOSE_UNITS
+
+from ..model_mixins import CrfModelMixin
 
 
 class DiabetesInitialReview(CrfModelMixin, edc_models.BaseUuidModel):

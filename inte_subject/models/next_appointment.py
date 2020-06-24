@@ -1,13 +1,13 @@
 from django.db import models
-from edc_crf.model_mixins import CrfModelMixin
 from edc_model import models as edc_models
+
+from ..model_mixins import CrfModelMixin
 
 
 class NextAppointment(CrfModelMixin, edc_models.BaseUuidModel):
 
     hiv_clinic_appt_date = models.DateField(
         verbose_name="HIV clinic: next scheduled routine appointment",
-        validators=[edc_models.date_is_future],
         null=True,
         blank=True,
         help_text="if applicable.",
@@ -15,7 +15,6 @@ class NextAppointment(CrfModelMixin, edc_models.BaseUuidModel):
 
     ncd_clinic_appt_date = models.DateField(
         verbose_name="NCD clinic: next scheduled routine appointment",
-        validators=[edc_models.date_is_future],
         null=True,
         blank=True,
         help_text="if applicable.",
@@ -23,7 +22,6 @@ class NextAppointment(CrfModelMixin, edc_models.BaseUuidModel):
 
     diabetes_clinic_appt_date = models.DateField(
         verbose_name="Diabetes-only clinic: next scheduled routine appointment",
-        validators=[edc_models.date_is_future],
         null=True,
         blank=True,
         help_text="if applicable.",
@@ -31,7 +29,6 @@ class NextAppointment(CrfModelMixin, edc_models.BaseUuidModel):
 
     hypertension_clinic_appt_date = models.DateField(
         verbose_name="Hypertension-only clinic: next scheduled routine appointment",
-        validators=[edc_models.date_is_future],
         null=True,
         blank=True,
         help_text="if applicable.",

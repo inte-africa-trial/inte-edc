@@ -23,6 +23,7 @@ crfs_d1 = FormsCollection(
     Crf(show_order=130, model="inte_subject.diabetesinitialreview"),
     Crf(show_order=140, model="inte_subject.hypertensioninitialreview"),
     Crf(show_order=160, model="inte_subject.otherbaselinedata"),
+    Crf(show_order=165, model="inte_subject.complications"),
     Crf(show_order=170, model="inte_subject.nextappointment"),
     name="day1",
 )

@@ -1,5 +1,6 @@
 from .autocomplete_admin import ArvRegimensAdmin
 from .care_status_admin import CareStatusAdmin
+from .complications_admin import ComplicationsAdmin
 from .diabetes_initial_review_admin import DiabetesInitialReviewAdmin
 from .hiv_initial_review_admin import HivInitialReviewAdmin
 from .hypertension_initial_review_admin import HypertensionInitialReviewAdmin

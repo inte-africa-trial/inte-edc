@@ -1,19 +1,24 @@
 from django.db import models
-from edc_constants.choices import YES_NO
+from edc_constants.choices import YES_NO, YES_NO_UNKNOWN
 from edc_constants.constants import NO
-from edc_crf.model_mixins import CrfModelMixin
 from edc_model import models as edc_models
+
+from ..model_mixins import CrfModelMixin
 
 
 class Complications(CrfModelMixin, edc_models.BaseUuidModel):
 
     # stroke
     stroke = models.CharField(
-        verbose_name="Stroke", max_length=25, choices=YES_NO, null=True, blank=True,
+        verbose_name="Stroke",
+        max_length=25,
+        choices=YES_NO_UNKNOWN,
+        null=True,
+        blank=False,
     )
 
     stroke_ago = edc_models.DurationYearMonthField(
-        verbose_name="If YES, how long ago", null=True, blank=True,
+        verbose_name="If yes, how long ago", null=True, blank=True,
     )
 
     stroke_estimated_date = models.DateField(
@@ -24,9 +29,9 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
     heart_attack = models.CharField(
         verbose_name="Heart attack / heart failure",
         max_length=25,
-        choices=YES_NO,
+        choices=YES_NO_UNKNOWN,
         null=True,
-        blank=True,
+        blank=False,
     )
 
     heart_attack_ago = edc_models.DurationYearMonthField(
@@ -44,9 +49,9 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
     renal_disease = models.CharField(
         verbose_name="Renal (kidney) disease",
         max_length=25,
-        choices=YES_NO,
+        choices=YES_NO_UNKNOWN,
         null=True,
-        blank=True,
+        blank=False,
     )
 
     renal_disease_ago = edc_models.DurationYearMonthField(
@@ -63,9 +68,9 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
     vision = models.CharField(
         verbose_name="Vision problems (e.g. blurred vision)",
         max_length=25,
-        choices=YES_NO,
+        choices=YES_NO_UNKNOWN,
         null=True,
-        blank=True,
+        blank=False,
     )
 
     vision_ago = edc_models.DurationYearMonthField(
@@ -83,9 +88,9 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
     numbness = models.CharField(
         verbose_name="Numbness / burning sensation",
         max_length=25,
-        choices=YES_NO,
+        choices=YES_NO_UNKNOWN,
         null=True,
-        blank=True,
+        blank=False,
     )
 
     numbness_ago = edc_models.DurationYearMonthField(
@@ -103,9 +108,9 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
     foot_ulcers = models.CharField(
         verbose_name="Foot ulcers",
         max_length=25,
-        choices=YES_NO,
+        choices=YES_NO_UNKNOWN,
         null=True,
-        blank=True,
+        blank=False,
     )
 
     foot_ulcers_ago = edc_models.DurationYearMonthField(
@@ -132,7 +137,7 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
 
     def save(self, *args, **kwargs):
         complications = [
-            "stroke_ago",
+            "stroke",
             "heart_attack",
             "renal_disease",
             "vision",
@@ -140,11 +145,12 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
             "foot_ulcers",
         ]
         for complication in complications:
-            if getattr(self, complication, None):
+            if getattr(self, f"{complication}_ago", None):
                 duration = edc_models.duration_to_date(
-                    self.stroke_ago, self.report_datetime
+                    getattr(self, f"{complication}_ago", None), self.report_datetime
                 )
                 setattr(self, f"{complication}_estimated_date", duration)
+
         super().save(*args, **kwargs)
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):

@@ -3,12 +3,12 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
-from edc_crf.model_mixins import CrfModelMixin
 from edc_model import models as edc_models
 from edc_reportable import CELLS_PER_MILLIMETER_CUBED_DISPLAY, COPIES_PER_MILLILITER
 from inte_lists.models import ArvRegimens
 
 from ..choices import CARE_ACCESS
+from ..model_mixins import CrfModelMixin
 
 
 class HivInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
@@ -42,13 +42,6 @@ class HivInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
             "If <u>not</u> attending here, where does the patient attend?"
         ),
         max_length=50,
-        null=True,
-        blank=True,
-    )
-
-    clinic_next_appt_date = models.DateField(
-        verbose_name="When is the patient's next scheduled HIV appointment",
-        validators=[edc_models.date_is_future],
         null=True,
         blank=True,
     )
