@@ -5,16 +5,23 @@ from edc_form_label.form_label_modeladmin_mixin import FormLabelModelAdminMixin
 from edc_model_admin import SimpleHistoryAdmin, TabularInlineMixin
 
 from ..admin_site import inte_subject_admin
-from ..forms import DrugRefillHivForm
+from ..forms import DrugRefillHivForm, DrugSupplyHivForm
 from ..models import DrugRefillHiv, DrugSupplyHiv
 from .modeladmin_mixins import CrfModelAdminMixin, DrugSupplyInlineMixin
 
 
-class DrugSupplyDiabetesInline(
+class DrugSupplyHivInline(
     TabularInlineMixin, DrugSupplyInlineMixin, admin.TabularInline
 ):
 
     model = DrugSupplyHiv
+    form = DrugSupplyHivForm
+    min_num = 1
+
+    def get_formset(self, request, obj=None, **kwargs):
+        formset = super().get_formset(request, obj=None, **kwargs)
+        formset.validate_min = True
+        return formset
 
 
 @admin.register(DrugRefillHiv, site=inte_subject_admin)
@@ -23,7 +30,7 @@ class DrugRefillHivAdmin(
 ):
     form = DrugRefillHivForm
 
-    inlines = [DrugSupplyDiabetesInline]
+    inlines = [DrugSupplyHivInline]
 
     autocomplete_fields = ["rx"]
 

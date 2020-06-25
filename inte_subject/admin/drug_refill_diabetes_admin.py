@@ -3,6 +3,7 @@ from django_audit_fields.admin import audit_fieldset_tuple
 from edc_crf.admin import crf_status_fieldset_tuple
 from edc_form_label.form_label_modeladmin_mixin import FormLabelModelAdminMixin
 from edc_model_admin import SimpleHistoryAdmin, TabularInlineMixin
+from inte_subject.forms import DrugSupplyDiabetesForm
 
 from ..admin_site import inte_subject_admin
 from ..forms import DrugRefillDiabetesForm
@@ -15,6 +16,13 @@ class DrugSupplyDiabetesInline(
 ):
 
     model = DrugSupplyDiabetes
+    form = DrugSupplyDiabetesForm
+    min_num = 1
+
+    def get_formset(self, request, obj=None, **kwargs):
+        formset = super().get_formset(request, obj=None, **kwargs)
+        formset.validate_min = True
+        return formset
 
 
 @admin.register(DrugRefillDiabetes, site=inte_subject_admin)
