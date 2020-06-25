@@ -4,7 +4,12 @@ from django.dispatch import receiver
 from edc_randomization.site_randomizers import site_randomizers
 from edc_visit_schedule import OnScheduleError
 from edc_visit_schedule.site_visit_schedules import site_visit_schedules
-from inte_screening.constants import HIV_CLINIC, NCD_CLINIC
+from inte_screening.constants import (
+    DIABETES_CLINIC,
+    HIV_CLINIC,
+    HYPERTENSION_CLINIC,
+    NCD_CLINIC,
+)
 from inte_screening.models import SubjectScreening
 from inte_subject.models import SubjectVisit
 
@@ -18,7 +23,7 @@ class InteSubjectConsentError(Exception):
 def get_onschedule_model_name(instance):
     if instance.clinic_type == HIV_CLINIC:
         onschedule_model_name = "inte_prn.onschedulehiv"
-    elif instance.clinic_type == NCD_CLINIC:
+    elif instance.clinic_type in [NCD_CLINIC, DIABETES_CLINIC, HYPERTENSION_CLINIC]:
         onschedule_model_name = "inte_prn.onschedulencd"
     else:
         raise OnScheduleError(

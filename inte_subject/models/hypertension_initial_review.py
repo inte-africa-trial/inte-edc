@@ -32,7 +32,7 @@ class HypertensionInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
         blank=True,
     )
 
-    med_start_estimated_date = edc_models.DurationYearMonthField(
+    med_start_estimated_date = models.DateField(
         verbose_name="Estimated medication start date", null=True, editable=False,
     )
 

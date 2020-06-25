@@ -1,0 +1,19 @@
+from django.db import models
+from edc_model import models as edc_models
+from inte_lists.models import HypertensionTreatments
+
+from ..model_mixins import CrfModelMixin, DrugRefillModelMixin
+
+
+class DrugRefillHypertension(
+    DrugRefillModelMixin, CrfModelMixin, edc_models.BaseUuidModel
+):
+
+    rx = models.ManyToManyField(
+        HypertensionTreatments,
+        verbose_name="Which medicine did the patient receive today?",
+    )
+
+    class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
+        verbose_name = "Drug Refill: Hypertension"
+        verbose_name_plural = "Drug Refills: Hypertension"

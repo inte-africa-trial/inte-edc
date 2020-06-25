@@ -7,7 +7,7 @@ from edc_model_admin import SimpleHistoryAdmin
 from ..admin_site import inte_subject_admin
 from ..forms import OtherBaselineDataForm
 from ..models import OtherBaselineData
-from .modeladmin import CrfModelAdminMixin
+from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(OtherBaselineData, site=inte_subject_admin)

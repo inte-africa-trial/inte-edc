@@ -251,7 +251,9 @@ visit12 = Visit(
 )
 
 schedule_hiv.add_visit(visit=visit00)
+schedule_hiv.add_visit(visit=visit03)
 schedule_hiv.add_visit(visit=visit06)
+schedule_hiv.add_visit(visit=visit09)
 schedule_hiv.add_visit(visit=visit12)
 
 schedule_ncd.add_visit(visit=visit00)

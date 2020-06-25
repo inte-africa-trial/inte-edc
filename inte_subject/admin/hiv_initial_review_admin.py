@@ -7,7 +7,7 @@ from edc_model_admin import SimpleHistoryAdmin
 from ..admin_site import inte_subject_admin
 from ..forms import HivInitialReviewForm
 from ..models import HivInitialReview
-from .modeladmin import CrfModelAdminMixin
+from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(HivInitialReview, site=inte_subject_admin)
@@ -22,7 +22,7 @@ class HivInitialReviewAdmin(
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
             "Diagnosis and Care",
-            {"fields": ("dx_ago", "receives_care", "clinic", "clinic_other",),},
+            {"fields": ("dx_ago", "receives_care", "clinic", "clinic_other")},
         ),
         (
             "Monitoring and Treatment",

@@ -4,6 +4,8 @@ auditor += [
     "inte_lists.view_arvregimens",
     "inte_lists.view_conditions",
     "inte_lists.view_offstudyreasons",
+    "inte_lists.view_healthservices",
+    "inte_lists.view_clinicservices",
     "inte_prn.view_endofstudy",
     "inte_prn.view_historicalendofstudy",
     "inte_prn.view_historicallosstofollowup",

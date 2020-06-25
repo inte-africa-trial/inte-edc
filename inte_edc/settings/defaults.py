@@ -434,18 +434,18 @@ else:
     STATIC_URL = env.str("DJANGO_STATIC_URL")
     STATIC_ROOT = env.str("DJANGO_STATIC_ROOT")
 
-SENTRY_DSN = None
+SENTRY_DSN = env("SENTRY_DSN")
 
-if SENTRY_ENABLED:
+if SENTRY_ENABLED and SENTRY_DSN:
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
 
     sentry_sdk.init(
         dsn=SENTRY_DSN, integrations=[DjangoIntegration()], send_default_pii=True
     )
-else:
-    if env("DJANGO_LOGGING_ENABLED"):
-        from .logging.standard import LOGGING  # noqa
+# else:
+#     if env("DJANGO_LOGGING_ENABLED"):
+#         from .logging.standard import LOGGING  # noqa
 
 
 # if running tests ...
