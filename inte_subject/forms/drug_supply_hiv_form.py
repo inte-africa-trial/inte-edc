@@ -13,7 +13,8 @@ class DrugSupplyHivForm(forms.ModelForm):
         ):
             raise forms.ValidationError(
                 f"Invalid. `{self.cleaned_data.get('drug').display_name}` "
-                f"not in current regimen `{self.cleaned_data.get('drug_refill').rx.display_name}`"
+                "not in current regimen "
+                f"`{self.cleaned_data.get('drug_refill').rx.display_name}`"
             )
         return cleaned_data
 
