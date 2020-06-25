@@ -7,7 +7,7 @@ from edc_model_admin import SimpleHistoryAdmin
 from ..admin_site import inte_subject_admin
 from ..forms import HypertensionInitialReviewForm
 from ..models import HypertensionInitialReview
-from .modeladmin import CrfModelAdminMixin
+from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(HypertensionInitialReview, site=inte_subject_admin)

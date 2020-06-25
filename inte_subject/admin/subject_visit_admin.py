@@ -6,7 +6,7 @@ from edc_visit_tracking.modeladmin_mixins import VisitModelAdminMixin
 from ..admin_site import inte_subject_admin
 from ..forms import SubjectVisitForm
 from ..models import SubjectVisit
-from .modeladmin import ModelAdminMixin
+from .modeladmin_mixins import ModelAdminMixin
 
 
 @admin.register(SubjectVisit, site=inte_subject_admin)

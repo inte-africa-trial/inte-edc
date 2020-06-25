@@ -7,7 +7,7 @@ from edc_model_admin import SimpleHistoryAdmin
 from ..forms import NextAppointmentForm
 from ..models import NextAppointment
 from ..admin_site import inte_subject_admin
-from .modeladmin import CrfModelAdminMixin
+from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(NextAppointment, site=inte_subject_admin)

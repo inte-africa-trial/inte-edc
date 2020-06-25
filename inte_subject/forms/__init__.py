@@ -6,5 +6,9 @@ from .hypertension_initial_review_form import HypertensionInitialReviewForm
 from .indicators_form import IndicatorsForm
 from .next_appointment_form import NextAppointmentForm
 from .other_baseline_data_form import OtherBaselineDataForm
+from .reason_for_visit_form import ReasonForVisitForm
 from .subject_requisition_form import SubjectRequisitionForm
 from .subject_visit_form import SubjectVisitForm
+from .drug_refill_hiv_form import DrugRefillHivForm
+from .drug_refill_diabetes_form import DrugRefillDiabetesForm
+from .drug_refill_hypertension_form import DrugRefillHypertensionForm

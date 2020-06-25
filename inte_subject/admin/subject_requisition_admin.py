@@ -13,7 +13,7 @@ from urllib.parse import parse_qs, urlsplit
 from ..admin_site import inte_subject_admin
 from ..models import SubjectRequisition
 from ..forms import SubjectRequisitionForm
-from .modeladmin import CrfModelAdmin
+from .modeladmin_mixins import CrfModelAdmin
 
 
 @admin.register(SubjectRequisition, site=inte_subject_admin)
