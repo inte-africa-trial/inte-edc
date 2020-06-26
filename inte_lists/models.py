@@ -61,6 +61,12 @@ class RxModificationReasons(ListModelMixin):
         verbose_name_plural = "Treatment Modification Reasons"
 
 
+class ReasonsForTesting(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Reasons for Testing"
+        verbose_name_plural = "Reasons for Testing"
+
+
 class VisitReasons(ListModelMixin):
     class Meta(ListModelMixin.Meta):
         verbose_name = "Visit Reasons"

@@ -68,9 +68,6 @@ class HivInitialReviewFormValidator(
         self.required_if(
             YES, field="receives_care", field_required="current_arv_regimen"
         )
-        self.validate_other_specify(
-            field="current_arv_regimen", other_specify_field="other_current_arv_regimen"
-        )
 
 
 class HivInitialReviewForm(

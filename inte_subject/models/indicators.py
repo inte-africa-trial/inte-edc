@@ -5,11 +5,14 @@ from edc_constants.constants import NOT_REQUIRED, YES
 from edc_model import models as edc_models
 from edc_model.models import BaseUuidModel
 
+from django.core.validators import MaxValueValidator, MinValueValidator
 from ..model_mixins import CrfModelMixin
 
 
 class Indicators(CrfModelMixin, BaseUuidModel):
-    weight = edc_models.WeightField()
+    weight = edc_models.WeightField(
+        validators=[MinValueValidator(45), MaxValueValidator(200)]
+    )
 
     height = edc_models.HeightField()
 

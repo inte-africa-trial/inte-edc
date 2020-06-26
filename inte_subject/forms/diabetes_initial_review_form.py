@@ -7,16 +7,18 @@ from edc_form_validators.form_validator import FormValidator
 from ..constants import INSULIN, DRUGS
 from ..models import DiabetesInitialReview
 from .care_status_modelform_mixin import CareStatusRequiredModelFormMixin
-from .mixins import EstimatedDateFromAgoFormMixin
+from .mixins import EstimatedDateFromAgoFormMixin, GlucoseFormValidatorMixin
 
 
-class DiabetesInitialReviewFormValidator(EstimatedDateFromAgoFormMixin, FormValidator):
+class DiabetesInitialReviewFormValidator(
+    GlucoseFormValidatorMixin, EstimatedDateFromAgoFormMixin, FormValidator
+):
     def clean(self):
         self.required_if(
             DRUGS, INSULIN, field="managed_by", field_required="med_start_ago",
         )
 
-        if self.cleaned_data.get("med_start_ago") and self.cleaned_data.get("dx_ago"):
+        if self.cleaned_data.get("dx_ago") and self.cleaned_data.get("med_start_ago"):
             if (
                 self.estimated_date_from_ago("dx_ago")
                 - self.estimated_date_from_ago("med_start_ago")
@@ -25,19 +27,7 @@ class DiabetesInitialReviewFormValidator(EstimatedDateFromAgoFormMixin, FormVali
                     {"med_start_ago": "Invalid. Cannot be before diagnosis."}
                 )
         self.required_if(YES, field="glucose_performed", field_required="glucose_date")
-        if self.cleaned_data.get("glucose_date") and self.cleaned_data.get("dx_ago"):
-            if (
-                self.estimated_date_from_ago("dx_ago")
-                - self.cleaned_data.get("glucose_date")
-            ).days > 1:
-                raise forms.ValidationError(
-                    {"glucose_date": "Invalid. Cannot be before diagnosis."}
-                )
-        self.required_if(YES, field="glucose_performed", field_required="glucose")
-        self.required_if(
-            YES, field="glucose_performed", field_required="glucose_quantifier"
-        )
-        self.required_if(YES, field="glucose_performed", field_required="glucose_units")
+        self.validate_glucose_test()
 
 
 class DiabetesInitialReviewForm(

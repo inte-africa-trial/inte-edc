@@ -7,7 +7,7 @@ from edc_model import models as edc_models
 from ..model_mixins import CrfModelMixin
 
 
-class CareStatus(CrfModelMixin, edc_models.BaseUuidModel):
+class CareStatusBaseline(CrfModelMixin, edc_models.BaseUuidModel):
 
     hiv_result = models.CharField(
         verbose_name=mark_safe(
@@ -110,5 +110,5 @@ class CareStatus(CrfModelMixin, edc_models.BaseUuidModel):
         super().save(*args, **kwargs)
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
-        verbose_name = "Care Status"
-        verbose_name_plural = "Care Status"
+        verbose_name = "Care Status: Baseline"
+        verbose_name_plural = "Care Status: Baseline"

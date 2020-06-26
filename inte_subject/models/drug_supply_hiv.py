@@ -17,5 +17,5 @@ class DrugSupplyHiv(DrugSupplyModelMixin, edc_models.BaseUuidModel):
         return self.drug_refill.rx.display_name
 
     class Meta(edc_models.BaseUuidModel.Meta):
-        verbose_name = "Drug Supply: Hypertension"
-        verbose_name_plural = "Drug Supply: Hypertension"
+        verbose_name = "Drug Supply: HIV"
+        verbose_name_plural = "Drug Supply: HIV"

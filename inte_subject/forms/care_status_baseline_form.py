@@ -9,11 +9,11 @@ from inte_screening.constants import (
     NCD_CLINIC,
 )
 
-from ..models import CareStatus
+from ..models import CareStatusBaseline
 from .crf_form_validator_mixin import CrfFormValidatorMixin
 
 
-class CareStatusFormValidator(CrfFormValidatorMixin, FormValidator):
+class CareStatusBaselineFormValidator(CrfFormValidatorMixin, FormValidator):
     def clean(self):
         self.raise_if_hiv_clinic_and_not_positive()
         self.required_if(POS, NEG, field="hiv_result", field_required="hiv_result_ago")
@@ -115,10 +115,10 @@ class CareStatusFormValidator(CrfFormValidatorMixin, FormValidator):
             )
 
 
-class CareStatusForm(CrfModelFormMixin, forms.ModelForm):
+class CareStatusBaselineForm(CrfModelFormMixin, forms.ModelForm):
 
-    form_validator_cls = CareStatusFormValidator
+    form_validator_cls = CareStatusBaselineFormValidator
 
     class Meta:
-        model = CareStatus
+        model = CareStatusBaseline
         fields = "__all__"

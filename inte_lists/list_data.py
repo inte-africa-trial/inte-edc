@@ -5,7 +5,6 @@ from edc_constants.constants import (
     HIV,
     HYPERTENSION,
     LOST_TO_FOLLOWUP,
-    NOT_APPLICABLE,
     OTHER,
     REFILL,
     ROUTINE_VISIT,
@@ -20,9 +19,15 @@ from inte_prn.constants import (
 
 list_data = {
     "inte_lists.conditions": [
-        ("diabetes", "Patient has high blood sugar (Diabetes)"),
-        ("hiv_infection", "Patient has HIV infection (HIV+)"),
-        ("hypertension", "Patient has high blood pressure (Hypertension)"),
+        (HYPERTENSION, "Patient has high blood pressure (Hypertension)"),
+        (DIABETES, "Patient has high blood sugar (Diabetes)"),
+        (HIV, "Patient has HIV infection (HIV+)"),
+    ],
+    "inte_lists.reasonsfortesting": [
+        ("patient_request", "Patient was well and made a request"),
+        ("patient_complication", "Patient had a clinical complication"),
+        ("signs_symptoms", "Patient had suggestive signs and symptoms"),
+        (OTHER, "Other reason (specify below)"),
     ],
     "inte_lists.offstudyreasons": [
         ("completed_followup", "Patient completed 12 months of follow-up"),

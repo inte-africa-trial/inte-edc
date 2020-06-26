@@ -5,29 +5,25 @@ from edc_form_label.form_label_modeladmin_mixin import FormLabelModelAdminMixin
 from edc_model_admin import SimpleHistoryAdmin
 
 from ..admin_site import inte_subject_admin
-from ..forms import DiabetesInitialReviewForm
-from ..models import DiabetesInitialReview
+from ..forms import DiabetesReviewForm
+from ..models import DiabetesReview
 from .modeladmin_mixins import CrfModelAdminMixin
 
 
-@admin.register(DiabetesInitialReview, site=inte_subject_admin)
-class DiabetesInitialReviewAdmin(
+@admin.register(DiabetesReview, site=inte_subject_admin)
+class DiabetesReviewAdmin(
     CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
 ):
 
-    form = DiabetesInitialReviewForm
+    form = DiabetesReviewForm
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
-        (
-            "Diagnosis and Treatment",
-            {"fields": ("dx_ago", "managed_by", "med_start_ago")},
-        ),
+        ("Testing and Diagnosis", {"fields": ("test_date", "dx")}),
         (
             "Blood Sugar Measurement",
             {
                 "fields": (
-                    "glucose_performed",
                     "glucose_fasted",
                     "glucose_date",
                     "glucose",
@@ -36,14 +32,15 @@ class DiabetesInitialReviewAdmin(
                 ),
             },
         ),
+        ("Care", {"fields": ("managed_by", "care_start_date")}),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
 
     radio_fields = {
+        "dx": admin.VERTICAL,
         "crf_status": admin.VERTICAL,
         "managed_by": admin.VERTICAL,
-        "glucose_performed": admin.VERTICAL,
         "glucose_fasted": admin.VERTICAL,
         "glucose_units": admin.VERTICAL,
     }
