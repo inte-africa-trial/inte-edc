@@ -68,7 +68,7 @@ class TestVisitSchedule(TestCase):
             "1005": [
                 "inte_subject.followupvitals",
                 "inte_subject.followup",
-                "inte_subject.carestatus",
+                "inte_subject.carestatusbaseline",
                 "inte_subject.medicationadherence",
             ],
             "1010": [

@@ -1,16 +1,13 @@
 from django.db import models
-from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO
 from edc_constants.constants import NOT_APPLICABLE
-from edc_lab.choices import RESULT_QUANTIFIER_NA
 from edc_model import models as edc_models
-from edc_model.models import date_not_future
-from inte_subject.choices import DIABETES_MANAGEMENT, GLUCOSE_UNITS
+from inte_subject.choices import DIABETES_MANAGEMENT
 
-from ..model_mixins import CrfModelMixin
+from ..model_mixins import CrfModelMixin, GlucoseModelMixin
 
 
-class DiabetesInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
+class DiabetesInitialReview(GlucoseModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
 
     dx_ago = edc_models.DurationYearMonthField(
         verbose_name="How long ago was the patient diagnosed with diabetes?",
@@ -22,7 +19,7 @@ class DiabetesInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
 
     managed_by = models.CharField(
         verbose_name="How is the patient's diabetes managed?",
-        max_length=15,
+        max_length=25,
         choices=DIABETES_MANAGEMENT,
         default=NOT_APPLICABLE,
     )
@@ -42,33 +39,10 @@ class DiabetesInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
 
     glucose_performed = models.CharField(
         verbose_name=(
-            "Has the patient had their fasting glucose measured in the last few months?"
+            "Has the patient had their glucose measured in the last few months?"
         ),
         max_length=15,
         choices=YES_NO,
-    )
-
-    glucose_date = models.DateField(
-        validators=[date_not_future], null=True, blank=True,
-    )
-
-    glucose = models.DecimalField(
-        verbose_name=mark_safe("Fasting glucose result"),
-        max_digits=8,
-        decimal_places=2,
-        null=True,
-        blank=True,
-    )
-
-    glucose_quantifier = models.CharField(
-        max_length=10, choices=RESULT_QUANTIFIER_NA, default=NOT_APPLICABLE,
-    )
-
-    glucose_units = models.CharField(
-        verbose_name="Units (glucose)",
-        max_length=15,
-        choices=GLUCOSE_UNITS,
-        default=NOT_APPLICABLE,
     )
 
     def save(self, *args, **kwargs):

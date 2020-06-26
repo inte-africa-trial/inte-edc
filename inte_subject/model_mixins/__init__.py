@@ -1,6 +1,6 @@
 from .crf_model_mixin import CrfModelMixin
 from .drug_refill_model_mixin import DrugRefillModelMixin
 from .drug_supply_model_mixin import DrugSupplyModelMixin
-from .glucose_test_model_mixin import GlucoseTestModelMixin
+from .glucose_model_mixin import GlucoseModelMixin
 from .review_model_mixin import ReviewModelMixin
 from .search_slug_model_mixin import SearchSlugModelMixin

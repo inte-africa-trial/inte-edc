@@ -5,7 +5,6 @@ from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
 from edc_reportable import CELLS_PER_MILLIMETER_CUBED_DISPLAY, COPIES_PER_MILLILITER
-from inte_lists.models import ArvRegimens
 
 from ..choices import CARE_ACCESS
 from ..model_mixins import CrfModelMixin
@@ -102,19 +101,6 @@ class HivInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
         null=True,
         blank=True,
     )
-
-    current_arv_regimen = models.ForeignKey(
-        ArvRegimens,
-        on_delete=models.PROTECT,
-        related_name="current_arv_regimen",
-        verbose_name=(
-            "Which antiretroviral therapy regimen is the patient currently on?"
-        ),
-        null=True,
-        blank=True,
-    )
-
-    other_current_arv_regimen = edc_models.OtherCharField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if self.dx_ago:

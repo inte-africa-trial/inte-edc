@@ -16,8 +16,6 @@ class HivInitialReviewAdmin(
 ):
     form = HivInitialReviewForm
 
-    autocomplete_fields = ["current_arv_regimen"]
-
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
@@ -35,8 +33,6 @@ class HivInitialReviewAdmin(
                     "has_cd4",
                     "cd4",
                     "cd4_date",
-                    "current_arv_regimen",
-                    "other_current_arv_regimen",
                 ),
             },
         ),
@@ -50,5 +46,4 @@ class HivInitialReviewAdmin(
         "clinic": admin.VERTICAL,
         "has_vl": admin.VERTICAL,
         "has_cd4": admin.VERTICAL,
-        "current_arv_regimen": admin.VERTICAL,
     }

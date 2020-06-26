@@ -4,7 +4,7 @@ from edc_metadata_rules import CrfRule, CrfRuleGroup, register, P
 
 
 @register()
-class CareStatusRuleGroup(CrfRuleGroup):
+class CareStatusBaselineRuleGroup(CrfRuleGroup):
 
     hiv = CrfRule(
         predicate=P("hiv_result", "eq", POS),
@@ -29,4 +29,33 @@ class CareStatusRuleGroup(CrfRuleGroup):
 
     class Meta:
         app_label = "inte_subject"
-        source_model = "inte_subject.carestatus"
+        source_model = "inte_subject.carestatusbaseline"
+
+
+@register()
+class InvestigationsRuleGroup(CrfRuleGroup):
+
+    hiv = CrfRule(
+        predicate=P("hiv_tested", "eq", YES),
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["hivreview"],
+    )
+
+    diabetic = CrfRule(
+        predicate=P("hypertension_tested", "eq", YES),
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["diabetesreview"],
+    )
+
+    hypertensive = CrfRule(
+        predicate=P("diabetic_tested", "eq", YES),
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["hypertensionreview"],
+    )
+
+    class Meta:
+        app_label = "inte_subject"
+        source_model = "inte_subject.investigations"
