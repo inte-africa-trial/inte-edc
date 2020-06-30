@@ -23,7 +23,7 @@ auditor += [
     "inte_subject.view_complications",
     "inte_subject.view_diabetesinitialreview",
     "inte_subject.view_diabetesreview",
-    "inte_subject.view_historicalcarestatus",
+    "inte_subject.view_historicalcarestatusbaseline",
     "inte_subject.view_historicalcomplications",
     "inte_subject.view_historicaldiabetesinitialreview",
     "inte_subject.view_historicaldiabetesreview",

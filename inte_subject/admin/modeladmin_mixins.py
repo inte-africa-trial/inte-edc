@@ -34,7 +34,7 @@ class DrugSupplyInlineMixin:
                     "did the participant receive from the pharmacy "
                     "and/or purchase themselves"
                 ),
-                "fields": ("drug", "supply_received_days", "supply_purchased_days",),
+                "fields": ("drug", "clinic_days", "club_days", "purchased_days"),
             },
         ],
     )

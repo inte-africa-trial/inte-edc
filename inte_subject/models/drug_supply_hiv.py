@@ -1,4 +1,3 @@
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from edc_model import models as edc_models
 from inte_lists.models import ArvDrugs

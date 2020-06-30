@@ -71,3 +71,9 @@ class VisitReasons(ListModelMixin):
     class Meta(ListModelMixin.Meta):
         verbose_name = "Visit Reasons"
         verbose_name_plural = "Visit Reasons"
+
+
+class SubjectVisitMissedReasons(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Subject Missed Visit Reasons"
+        verbose_name_plural = "Subject Missed Visit Reasons"

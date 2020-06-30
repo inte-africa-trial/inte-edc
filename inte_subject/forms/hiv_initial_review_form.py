@@ -65,9 +65,6 @@ class HivInitialReviewFormValidator(
                 raise forms.ValidationError(
                     {"cd4_date": "Invalid. Cannot be before HIV diagnosis"}
                 )
-        self.required_if(
-            YES, field="receives_care", field_required="current_arv_regimen"
-        )
 
 
 class HivInitialReviewForm(

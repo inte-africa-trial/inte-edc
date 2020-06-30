@@ -129,6 +129,15 @@ list_data = {
         ("feel_better", "Felt well and stopped/reduced drug prescription"),
         (OTHER, "Other, specify"),
     ],
+    "inte_lists.subjectvisitmissedreasons": [
+        ("forgot", "Forgot / Can’t remember being told about appointment"),
+        ("family_emergency", "Family emergency (e.g. funeral) and was away"),
+        ("travelling", "Away travelling/visiting"),
+        ("working_schooling", "Away working/schooling"),
+        ("too_sick", "Too sick or weak to come to the centre"),
+        ("lack_of_transport", "Transportation difficulty"),
+        (OTHER, "Other reason (specify below)",),
+    ],
 }
 
 if settings.APP_NAME != "inte_lists":
