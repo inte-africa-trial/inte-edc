@@ -5,8 +5,8 @@ from .constants import NCD_CLINIC, HIV_CLINIC, HYPERTENSION_CLINIC, DIABETES_CLI
 CLINIC_CHOICES = (
     (HIV_CLINIC, "HIV Clinic"),
     (NCD_CLINIC, "NCD Clinic (Joint Diabetes/Hypertension)"),
-    (HYPERTENSION_CLINIC, "Diabetes Clinic"),
-    (DIABETES_CLINIC, "Hypertension Clinic"),
+    (DIABETES_CLINIC, "Diabetes Clinic"),
+    (HYPERTENSION_CLINIC, "Hypertension Clinic"),
 )
 
 REFUSAL_REASONS = (
