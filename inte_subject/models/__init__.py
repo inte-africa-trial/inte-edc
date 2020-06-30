@@ -19,4 +19,5 @@ from .other_baseline_data import OtherBaselineData
 from .reason_for_visit import ReasonForVisit
 from .subject_requisition import SubjectRequisition
 from .subject_visit import SubjectVisit
+from .subject_visit_missed import SubjectVisitMissed
 from .utils import is_hiv_pos, is_hypertensive, is_diabetic

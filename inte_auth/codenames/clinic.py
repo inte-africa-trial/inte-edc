@@ -112,7 +112,7 @@ clinic += [
     "inte_subject.view_drugsupplydiabetes",
     "inte_subject.view_drugsupplyhypertension",
     "inte_subject.view_drugsupplyhiv",
-    "inte_subject.view_historicalcarestatus",
+    "inte_subject.view_historicalcarestatusbaseline",
     "inte_subject.view_historicaldiabetesinitialreview",
     "inte_subject.view_historicaldiabetesreview",
     "inte_subject.view_historicalhivinitialreview",

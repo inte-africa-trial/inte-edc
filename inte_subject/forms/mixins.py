@@ -1,3 +1,5 @@
+import pdb
+
 from django import forms
 from edc_constants.constants import OTHER, YES
 from edc_model import models as edc_models
@@ -36,16 +38,21 @@ class DrugRefillFormValidatorMixin:
 class DrugSupplyNcdFormMixin:
     def clean(self):
         cleaned_data = super().clean()
-        if self.cleaned_data.get("drug") and self.cleaned_data.get("drug").name not in [
-            obj.name for obj in self.cleaned_data.get("drug_refill").rx.all()
-        ]:
-            rx = " + ".join(
-                [obj.name for obj in self.cleaned_data.get("drug_refill").rx.all()]
-            )
-            raise forms.ValidationError(
-                f"Invalid. `{self.cleaned_data.get('drug').display_name}` "
-                f"not in current treatment of `{rx}`"
-            )
+        try:
+            if self.cleaned_data.get("drug") and self.cleaned_data.get(
+                "drug"
+            ).name not in [
+                obj.name for obj in self.cleaned_data.get("drug_refill").rx.all()
+            ]:
+                rx = " + ".join(
+                    [obj.name for obj in self.cleaned_data.get("drug_refill").rx.all()]
+                )
+                raise forms.ValidationError(
+                    f"Invalid. `{self.cleaned_data.get('drug').display_name}` "
+                    f"not in current treatment of `{rx}`"
+                )
+        except ValueError:
+            pass
         return cleaned_data
 
 
