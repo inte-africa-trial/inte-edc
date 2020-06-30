@@ -36,6 +36,7 @@ auditor += [
     "inte_subject.view_historicalotherbaselinedata",
     "inte_subject.view_historicalsubjectrequisition",
     "inte_subject.view_historicalsubjectvisit",
+    "inte_subject.view_historicalsubjectvisitmissed",
     "inte_subject.view_hivinitialreview",
     "inte_subject.view_hivreview",
     "inte_subject.view_hypertensioninitialreview",
@@ -45,5 +46,6 @@ auditor += [
     "inte_subject.view_otherbaselinedata",
     "inte_subject.view_subjectrequisition",
     "inte_subject.view_subjectvisit",
+    "inte_subject.view_subjectvisitmissed",
 ]
 auditor.sort()

@@ -136,7 +136,7 @@ list_data = {
         ("working_schooling", "Away working/schooling"),
         ("too_sick", "Too sick or weak to come to the centre"),
         ("lack_of_transport", "Transportation difficulty"),
-        (OTHER, "Other reason (specify below)",),
+        (OTHER, "Other reason (specify below)"),
     ],
 }
 

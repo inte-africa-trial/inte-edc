@@ -15,6 +15,9 @@ crfs_unscheduled = FormsCollection(
     name="unscheduled",
 )
 
+crfs_missed = FormsCollection(
+    Crf(show_order=10, model="inte_subject.subjectvisitmissed"), name="missed",
+)
 
 crfs_d1 = FormsCollection(
     Crf(show_order=100, model="inte_subject.carestatusbaseline"),
