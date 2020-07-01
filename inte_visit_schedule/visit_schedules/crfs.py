@@ -4,6 +4,9 @@ crfs_prn = FormsCollection(
     Crf(show_order=120, model="inte_subject.hivinitialreview"),
     Crf(show_order=130, model="inte_subject.diabetesinitialreview"),
     Crf(show_order=140, model="inte_subject.hypertensioninitialreview"),
+    # Crf(show_order=150, model="inte_subject.hivreview"),
+    # Crf(show_order=160, model="inte_subject.diabetesreview"),
+    # Crf(show_order=170, model="inte_subject.hypertensionreview"),
     name="prn",
 )
 

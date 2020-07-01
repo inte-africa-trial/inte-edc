@@ -49,7 +49,7 @@ class DrugRefillModelMixin(models.Model):
     return_in_days = models.IntegerField(
         verbose_name=(
             "In how many days has the patient been asked "
-            "to return to clinic for a drug refill"
+            "to return to clinic for a drug refill?"
         )
     )
 

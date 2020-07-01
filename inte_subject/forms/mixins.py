@@ -1,5 +1,3 @@
-import pdb
-
 from django import forms
 from edc_constants.constants import OTHER, YES
 from edc_model import models as edc_models
@@ -35,25 +33,88 @@ class DrugRefillFormValidatorMixin:
         )
 
 
+"""
+    list_model_cls = None
+    relation_label = None
+
+    def clean(self):
+        cleaned_data = super().clean()
+        total_forms = self.data.get(f"{self.relation_label}_set-TOTAL_FORMS")
+        for form_index in range(0, int(total_forms or 0)):
+            inline_rx_id = self.data.get(f"{self.relation_label}_set-{form_index}-drug")
+            if inline_rx_id not in self.data.get("rx"):
+                rx_qs = self.list_model_cls.objects.filter(id__in=self.data.get("rx"))
+                rx_obj = self.list_model_cls.objects.get(id=inline_rx_id)
+                raise forms.ValidationError(
+                    f"Invalid. Drug not in treatment listed above. "
+                    f"Got `{rx_obj.display_name}` not in "
+                    f"`{' + '.join([obj.display_name for obj in rx_qs])}`"
+                )
+        return cleaned_data
+"""
+
+
 class DrugSupplyNcdFormMixin:
     def clean(self):
         cleaned_data = super().clean()
-        try:
-            if self.cleaned_data.get("drug") and self.cleaned_data.get(
-                "drug"
-            ).name not in [
-                obj.name for obj in self.cleaned_data.get("drug_refill").rx.all()
-            ]:
-                rx = " + ".join(
-                    [obj.name for obj in self.cleaned_data.get("drug_refill").rx.all()]
-                )
-                raise forms.ValidationError(
-                    f"Invalid. `{self.cleaned_data.get('drug').display_name}` "
-                    f"not in current treatment of `{rx}`"
-                )
-        except ValueError:
-            pass
+        data = dict(self.data.lists())
+        rx = self.list_model_cls.objects.filter(id__in=data.get("rx"))
+        rx_names = [obj.display_name for obj in rx]
+        inline_drug_names = self.raise_on_duplicates()
+
+        # self.validate_total_days()
+        if (
+            self.cleaned_data.get("drug")
+            and self.cleaned_data.get("drug").display_name not in rx_names
+        ):
+            treatment = " + ".join(rx_names)
+            raise forms.ValidationError(
+                f"Invalid. `{self.cleaned_data.get('drug').display_name}` "
+                f"not in current treatment of `{treatment}`"
+            )
+
+        self.raise_on_missing_drug(rx_names, inline_drug_names)
+
         return cleaned_data
+
+    def raise_on_duplicates(self):
+        drug_names = []
+        total_forms = self.data.get(f"{self.relation_label}_set-TOTAL_FORMS")
+        for form_index in range(0, int(total_forms or 0)):
+            inline_rx_id = self.data.get(f"{self.relation_label}_set-{form_index}-drug")
+            if inline_rx_id:
+                rx_obj = self.list_model_cls.objects.get(id=int(inline_rx_id))
+                if rx_obj.display_name in drug_names:
+                    raise forms.ValidationError(f"Invalid. Duplicates not allowed")
+                drug_names.append(rx_obj.display_name)
+        return drug_names
+
+    @staticmethod
+    def raise_on_missing_drug(rx_names, inline_drug_names):
+        for display_name in rx_names:
+            if display_name not in inline_drug_names:
+                raise forms.ValidationError(
+                    f"Missing drug. Also expected {display_name}."
+                )
+
+    def validate_total_days(self):
+        if (
+            self.cleaned_data.get("clinic_days")
+            and self.cleaned_data.get("club_days")
+            and self.cleaned_data.get("purchased_days")
+            and int(self.data.get("return_in_days") or 0)
+        ):
+            total = (
+                self.cleaned_data.get("clinic_days")
+                or 0 + self.cleaned_data.get("club_days")
+                or 0 + self.cleaned_data.get("purchased_days")
+                or 0
+            )
+            if total != int(self.cleaned_data.get("return_in_days") or 0):
+                raise forms.ValidationError(
+                    f"Patient to return in {self.data.get('return_in_days')} days. "
+                    "Check that the total days matches."
+                )
 
 
 class GlucoseFormValidatorMixin:

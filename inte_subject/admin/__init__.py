@@ -17,3 +17,4 @@ from .other_baseline_data_admin import OtherBaselineDataAdmin
 from .reason_for_visit_admin import ReasonForVisitAdmin
 from .subject_requisition_admin import SubjectRequisitionAdmin
 from .subject_visit_admin import SubjectVisitAdmin
+from .subject_visit_missed_admin import SubjectVisitMissedAdmin

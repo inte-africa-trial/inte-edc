@@ -18,6 +18,7 @@ class DrugSupplyDiabetesInline(
     model = DrugSupplyDiabetes
     form = DrugSupplyDiabetesForm
     min_num = 1
+    insert_after = "return_in_days"
 
     def get_formset(self, request, obj=None, **kwargs):
         formset = super().get_formset(request, obj=None, **kwargs)
@@ -32,6 +33,9 @@ class DrugRefillDiabetesAdmin(
     form = DrugRefillDiabetesForm
 
     inlines = [DrugSupplyDiabetesInline]
+
+    add_form_template = "admin/custom_inline/change_form.html"
+    change_form_template = "admin/custom_inline/change_form.html"
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
