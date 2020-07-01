@@ -30,8 +30,9 @@ from .crfs import (
     crfs_10m,
     crfs_11m,
     crfs_12m,
-    #     crfs_prn as default_crfs_prn,
-    #     crfs_unscheduled as default_crfs_unscheduled,
+    crfs_missed,
+    crfs_prn as default_crfs_prn,
+    crfs_unscheduled as default_crfs_unscheduled,
 )
 from .requisitions import (
     requisitions_d1,
@@ -68,10 +69,11 @@ class Visit(BaseVisit):
     ):
         super().__init__(
             allow_unscheduled=True if allow_unscheduled is None else allow_unscheduled,
-            crfs_unscheduled=crfs_unscheduled,  # or default_crfs_unscheduled,
+            crfs_unscheduled=crfs_unscheduled or default_crfs_unscheduled,
             requisitions_unscheduled=requisitions_unscheduled or default_requisitions,
-            crfs_prn=crfs_prn,  # or default_crfs_prn,
+            crfs_prn=crfs_prn or default_crfs_prn,
             requisitions_prn=requisitions_prn,  # or default_requisitions_prn,
+            crfs_missed=crfs_missed,
             **kwargs
         )
 

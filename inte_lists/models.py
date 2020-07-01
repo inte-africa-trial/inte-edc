@@ -67,6 +67,12 @@ class ReasonsForTesting(ListModelMixin):
         verbose_name_plural = "Reasons for Testing"
 
 
+class RefillConditions(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Refill Conditions"
+        verbose_name_plural = "Refill Conditions"
+
+
 class VisitReasons(ListModelMixin):
     class Meta(ListModelMixin.Meta):
         verbose_name = "Visit Reasons"

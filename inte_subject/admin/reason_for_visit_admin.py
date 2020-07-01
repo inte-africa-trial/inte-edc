@@ -19,21 +19,18 @@ class ReasonForVisitAdmin(
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
         ("Health Services", {"fields": ("health_services",)}),
+        ("Clinic Services", {"fields": ("clinic_services", "clinic_services_other")}),
         (
-            "Hypertension",
-            {"fields": ("hypertension_services", "hypertension_services_other")},
+            "Drug Refills",
+            {"fields": ("refill_hypertension", "refill_diabetes", "refill_hiv")},
         ),
-        ("Diabetes", {"fields": ("diabetes_services", "diabetes_services_other")}),
-        ("HIV", {"fields": ("hiv_services", "hiv_services_other")}),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
 
     filter_horizontal = [
         "health_services",
-        "hypertension_services",
-        "diabetes_services",
-        "hiv_services",
+        "clinic_services",
     ]
 
     radio_fields = {

@@ -23,6 +23,11 @@ list_data = {
         (DIABETES, "Patient has high blood sugar (Diabetes)"),
         (HIV, "Patient has HIV infection (HIV+)"),
     ],
+    "inte_lists.refillconditions": [
+        (HYPERTENSION, "Hypertension"),
+        (DIABETES, "Diabetes"),
+        (HIV, "HIV"),
+    ],
     "inte_lists.reasonsfortesting": [
         ("patient_request", "Patient was well and made a request"),
         ("patient_complication", "Patient had a clinical complication"),
@@ -136,7 +141,7 @@ list_data = {
         ("working_schooling", "Away working/schooling"),
         ("too_sick", "Too sick or weak to come to the centre"),
         ("lack_of_transport", "Transportation difficulty"),
-        (OTHER, "Other reason (specify below)",),
+        (OTHER, "Other reason (specify below)"),
     ],
 }
 

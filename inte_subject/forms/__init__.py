@@ -19,3 +19,4 @@ from .other_baseline_data_form import OtherBaselineDataForm
 from .reason_for_visit_form import ReasonForVisitForm
 from .subject_requisition_form import SubjectRequisitionForm
 from .subject_visit_form import SubjectVisitForm
+from .subject_visit_missed_form import SubjectVisitMissedForm

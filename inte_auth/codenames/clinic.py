@@ -60,6 +60,7 @@ clinic += [
     "inte_subject.add_reasonforvisit",
     "inte_subject.add_subjectrequisition",
     "inte_subject.add_subjectvisit",
+    "inte_subject.add_subjectvisitmissed",
     "inte_subject.change_carestatusbaseline",
     "inte_subject.change_complications",
     "inte_subject.change_diabetesinitialreview",
@@ -81,6 +82,7 @@ clinic += [
     "inte_subject.change_reasonforvisit",
     "inte_subject.change_subjectrequisition",
     "inte_subject.change_subjectvisit",
+    "inte_subject.change_subjectvisitmissed",
     "inte_subject.delete_carestatusbaseline",
     "inte_subject.delete_complications",
     "inte_subject.delete_diabetesinitialreview",
@@ -102,6 +104,7 @@ clinic += [
     "inte_subject.delete_reasonforvisit",
     "inte_subject.delete_subjectrequisition",
     "inte_subject.delete_subjectvisit",
+    "inte_subject.delete_subjectvisitmissed",
     "inte_subject.view_carestatusbaseline",
     "inte_subject.view_complications",
     "inte_subject.view_diabetesinitialreview",
@@ -125,6 +128,7 @@ clinic += [
     "inte_subject.view_historicalreasonforvisit",
     "inte_subject.view_historicalsubjectrequisition",
     "inte_subject.view_historicalsubjectvisit",
+    "inte_subject.view_historicalsubjectvisitmissed",
     "inte_subject.view_hivinitialreview",
     "inte_subject.view_hivreview",
     "inte_subject.view_hypertensioninitialreview",
@@ -136,5 +140,6 @@ clinic += [
     "inte_subject.view_reasonforvisit",
     "inte_subject.view_subjectrequisition",
     "inte_subject.view_subjectvisit",
+    "inte_subject.view_subjectvisitmissed",
 ]
 clinic.sort()

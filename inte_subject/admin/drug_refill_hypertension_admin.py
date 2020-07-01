@@ -17,6 +17,7 @@ class DrugSupplyHypertensionInline(
     model = DrugSupplyHypertension
     form = DrugSupplyHypertensionForm
     min_num = 1
+    insert_after = "return_in_days"
 
     def get_formset(self, request, obj=None, **kwargs):
         formset = super().get_formset(request, obj=None, **kwargs)
@@ -31,6 +32,10 @@ class DrugRefillHypertensionAdmin(
     form = DrugRefillHypertensionForm
 
     inlines = [DrugSupplyHypertensionInline]
+    add_form_template = "admin/custom_inline/change_form.html"
+    change_form_template = "admin/custom_inline/change_form.html"
+
+    change_form_template = "admin/custom/change_form.html"
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),

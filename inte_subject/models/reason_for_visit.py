@@ -1,6 +1,8 @@
 from django.db import models
+from edc_constants.choices import YES_NO_NA
+from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
-from inte_lists.models import HealthServices, ClinicServices
+from inte_lists.models import HealthServices, ClinicServices, RefillConditions
 
 from ..model_mixins import CrfModelMixin
 
@@ -12,47 +14,36 @@ class ReasonForVisit(CrfModelMixin, edc_models.BaseUuidModel):
         verbose_name="Which health service(s) is the patient here for today?",
     )
 
-    hiv_services = models.ManyToManyField(
+    clinic_services = models.ManyToManyField(
         ClinicServices,
-        verbose_name="If HIV, why is the patient at the clinic?",
-        related_name="hiv_services",
+        verbose_name="Why is the patient at the clinic?",
+        related_name="clinic_services",
         blank=True,
     )
 
-    hiv_services_other = models.CharField(
-        verbose_name="If other, please specify reason",
-        max_length=150,
-        null=True,
-        blank=True,
+    clinic_services_other = edc_models.OtherCharField()
+
+    refill_hiv = models.CharField(
+        verbose_name="Is the patient refilling HIV medications?",
+        max_length=25,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
     )
 
-    hypertension_services = models.ManyToManyField(
-        ClinicServices,
-        verbose_name="If hypertension, why is the patient at the clinic?",
-        related_name="hypertension_services",
-        blank=True,
-    )
-    hypertension_services_other = models.CharField(
-        verbose_name="If other, please specify reason",
-        max_length=150,
-        null=True,
-        blank=True,
+    refill_diabetes = models.CharField(
+        verbose_name="Is the patient refilling Diabetes medications?",
+        max_length=25,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
     )
 
-    diabetes_services = models.ManyToManyField(
-        ClinicServices,
-        verbose_name="If diabetes, why is the patient at the clinic?",
-        related_name="diabetes_services",
-        blank=True,
-    )
-
-    diabetes_services_other = models.CharField(
-        verbose_name="If other, please specify reason",
-        max_length=150,
-        null=True,
-        blank=True,
+    refill_hypertension = models.CharField(
+        verbose_name="Is the patient refilling Hypertension medications?",
+        max_length=25,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
     )
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
         verbose_name = "Reason for Visit"
-        verbose_name_plural = "Reason for Visit"
+        verbose_name_plural = "Reason for Visits"
