@@ -1,9 +1,13 @@
 from django import forms
+from inte_lists.models import ArvRegimens
 
 from ..models import DrugSupplyHiv
 
 
 class DrugSupplyHivForm(forms.ModelForm):
+    list_model_cls = ArvRegimens
+    relation_label = "drugsupplyhiv"
+
     def clean(self):
         cleaned_data = super().clean()
         if (

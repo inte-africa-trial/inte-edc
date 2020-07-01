@@ -17,6 +17,7 @@ class DrugSupplyHivInline(
     model = DrugSupplyHiv
     form = DrugSupplyHivForm
     min_num = 1
+    insert_after = "return_in_days"
 
     def get_formset(self, request, obj=None, **kwargs):
         formset = super().get_formset(request, obj=None, **kwargs)
@@ -29,8 +30,6 @@ class DrugRefillHivAdmin(
     CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
 ):
     form = DrugRefillHivForm
-
-    inlines = [DrugSupplyHivInline]
 
     autocomplete_fields = ["rx"]
 
@@ -47,7 +46,17 @@ class DrugRefillHivAdmin(
                     "modifications_other",
                     "modifications_reason",
                     "modifications_reason_other",
+                )
+            },
+        ),
+        (
+            "Supply",
+            {
+                "fields": (
                     "return_in_days",
+                    "clinic_days",
+                    "club_days",
+                    "purchased_days",
                 )
             },
         ),
