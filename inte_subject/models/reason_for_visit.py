@@ -18,7 +18,6 @@ class ReasonForVisit(CrfModelMixin, edc_models.BaseUuidModel):
         ClinicServices,
         verbose_name="Why is the patient at the clinic?",
         related_name="clinic_services",
-        blank=True,
     )
 
     clinic_services_other = edc_models.OtherCharField()

@@ -35,4 +35,7 @@ class ReasonForVisitAdmin(
 
     radio_fields = {
         "crf_status": admin.VERTICAL,
+        "refill_hypertension": admin.VERTICAL,
+        "refill_diabetes": admin.VERTICAL,
+        "refill_hiv": admin.VERTICAL,
     }

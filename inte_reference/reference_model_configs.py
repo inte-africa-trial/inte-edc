@@ -6,6 +6,11 @@ site_reference_configs.register_from_visit_schedule(
 
 configs = {
     "inte_subject.carestatusbaseline": ["hiv_result", "diabetic", "hypertensive"],
+    "inte_subject.reasonforvisit": [
+        "refill_hypertension",
+        "refill_diabetes",
+        "refill_hiv",
+    ],
 }
 
 for reference_name, fields in configs.items():

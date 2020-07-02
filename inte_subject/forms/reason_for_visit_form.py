@@ -12,42 +12,22 @@ class ReasonForVisitFormValidator(CrfFormValidatorMixin, FormValidator):
         self.m2m_other_specify(
             OTHER, m2m_field="clinic_services", field_other="clinic_services_other",
         )
-        self.m2m_other_specify(
-            REFILL, m2m_field="clinic_services", field_other="refill_conditions",
-        )
 
-        self.m2m_other_specify(
-            REFILL, m2m_field="clinic_services", field_other="refill_conditions",
-        )
-
-        is_refill = REFILL in self.get_m2m_selected(m2m_field="health_services")
-        self.required_if_true(
+        is_refill = REFILL in self.get_m2m_selected(m2m_field="clinic_services")
+        self.applicable_if_true(
             is_refill
             and HYPERTENSION in self.get_m2m_selected(m2m_field="health_services"),
-            field_required="refill_hypertension",
+            field_applicable="refill_hypertension",
         )
-        self.required_if_true(
+        self.applicable_if_true(
             is_refill
             and DIABETES in self.get_m2m_selected(m2m_field="health_services"),
-            field_required="refill_diabetes",
+            field_applicable="refill_diabetes",
         )
-        self.required_if_true(
+        self.applicable_if_true(
             is_refill and HIV in self.get_m2m_selected(m2m_field="health_services"),
-            field_required="refill_hiv",
+            field_applicable="refill_hiv",
         )
-
-        # for condition_name, condition_display_name in self.get_m2m_selected(
-        #     m2m_field="refill_conditions"
-        # ).items():
-        #     if condition_name not in self.get_m2m_selected(m2m_field="health_services"):
-        #         self.m2m_selections_not_expected(
-        #             condition_name,
-        #             m2m_field="refill_conditions",
-        #             error_msg=(
-        #                 f"Invalid. `{condition_display_name}` not one of the "
-        #                 f"health services listed above."
-        #             ),
-        #         )
 
 
 class ReasonForVisitForm(CrfModelFormMixin, forms.ModelForm):
