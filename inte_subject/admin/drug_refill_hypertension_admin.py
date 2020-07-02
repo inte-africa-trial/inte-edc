@@ -35,8 +35,6 @@ class DrugRefillHypertensionAdmin(
     add_form_template = "admin/custom_inline/change_form.html"
     change_form_template = "admin/custom_inline/change_form.html"
 
-    change_form_template = "admin/custom/change_form.html"
-
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
