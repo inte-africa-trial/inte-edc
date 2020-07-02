@@ -68,12 +68,16 @@ def add_consent_button(context, model_wrapper):
     )
 
 
-def refusal_button(context, subject_refusal_model_wrapper):
+@register.inclusion_tag(
+    f"inte_dashboard/bootstrap{settings.EDC_BOOTSTRAP}/buttons/refusal_button.html",
+    takes_context=True,
+)
+def refusal_button(context, model_wrapper):
     title = ["Capture subject's primary reason for not joining."]
-
     return dict(
         perms=context["perms"],
-        href=subject_refusal_model_wrapper.href,
+        screening_identifier=model_wrapper.object.screening_identifier,
+        href=model_wrapper.refusal.href,
         title=" ".join(title),
     )
 

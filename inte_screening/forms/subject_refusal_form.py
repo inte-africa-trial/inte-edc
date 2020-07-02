@@ -37,9 +37,10 @@ class SubjectRefusalForm(
 ):
     form_validator_cls = SubjectRefusalFormValidator
 
-    def clean(self):
-        cleaned_data = super().clean()
-        return cleaned_data
+    screening_identifier = forms.CharField(
+        label="Screening identifier",
+        widget=forms.TextInput(attrs={"readonly": "readonly"}),
+    )
 
     class Meta:
         model = SubjectRefusal
