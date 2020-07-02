@@ -23,6 +23,7 @@ crfs_missed = FormsCollection(
 )
 
 crfs_d1 = FormsCollection(
+    Crf(show_order=90, model="inte_subject.reasonforvisit"),
     Crf(show_order=100, model="inte_subject.carestatusbaseline"),
     Crf(show_order=110, model="inte_subject.indicators"),
     Crf(show_order=120, model="inte_subject.hivinitialreview"),
@@ -33,7 +34,6 @@ crfs_d1 = FormsCollection(
     Crf(show_order=155, model="inte_subject.drugrefillhiv"),
     Crf(show_order=160, model="inte_subject.otherbaselinedata"),
     Crf(show_order=165, model="inte_subject.complications"),
-    Crf(show_order=166, model="inte_subject.reasonforvisit"),
     Crf(show_order=170, model="inte_subject.nextappointment"),
     name="day1",
 )

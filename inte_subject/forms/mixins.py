@@ -89,7 +89,7 @@ class DrugSupplyNcdFormMixin:
             if inline_rx_id:
                 rx_obj = self.list_model_cls.objects.get(id=int(inline_rx_id))
                 if rx_obj.display_name in drug_names:
-                    raise forms.ValidationError(f"Invalid. Duplicates not allowed")
+                    raise forms.ValidationError("Invalid. Duplicates not allowed")
                 drug_names.append(rx_obj.display_name)
         return drug_names
 
