@@ -20,6 +20,7 @@ class OtherBaselineDataAdmin(
         (None, {"fields": ("subject_visit", "report_datetime")}),
         ("Smoking", {"fields": ("smoking_status", "smoker_quit_ago")}),
         ("Alcohol", {"fields": ("alcohol", "alcohol_consumption")}),
+        ("Other", {"fields": ("employment_status", "education", "marital_status")}),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
@@ -29,4 +30,7 @@ class OtherBaselineDataAdmin(
         "smoking_status": admin.VERTICAL,
         "alcohol": admin.VERTICAL,
         "alcohol_consumption": admin.VERTICAL,
+        "employment_status": admin.VERTICAL,
+        "education": admin.VERTICAL,
+        "marital_status": admin.VERTICAL,
     }
