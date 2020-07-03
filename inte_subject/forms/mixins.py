@@ -5,7 +5,7 @@ from edc_visit_schedule.constants import DAY1
 
 
 def validate_total_days(form, return_in_days=None):
-    return_in_days = return_in_days or form.data.get("return_in_days")
+    return_in_days = return_in_days or form.cleaned_data.get("return_in_days")
     if (
         form.cleaned_data.get("clinic_days")
         and form.cleaned_data.get("club_days")
@@ -61,7 +61,7 @@ class DrugSupplyNcdFormMixin:
     def clean(self):
         cleaned_data = super().clean()
         data = dict(self.data.lists())
-        rx = self.list_model_cls.objects.filter(id__in=data.get("rx"))
+        rx = self.list_model_cls.objects.filter(id__in=data.get("rx") or [])
         rx_names = [obj.display_name for obj in rx]
         inline_drug_names = self.raise_on_duplicates()
 
