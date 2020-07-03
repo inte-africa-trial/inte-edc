@@ -2,7 +2,11 @@ from django.apps import apps as django_apps
 from django.core.exceptions import ObjectDoesNotExist
 from edc_consent import ConsentModelWrapperMixin
 from edc_model_wrapper import ModelWrapper
-from edc_subject_model_wrappers import SubjectConsentModelWrapper as BaseModelWrapper
+from edc_subject_model_wrappers import (
+    SubjectConsentModelWrapper as BaseModelWrapper,
+    SubjectRefusalModelWrapperMixin,
+    SubjectRefusalModelWrapper as BaseRefusalModelWrapper,
+)
 
 
 class SubjectConsentModelWrapper(BaseModelWrapper):
@@ -14,9 +18,23 @@ class SubjectConsentModelWrapper(BaseModelWrapper):
         )
 
 
-class SubjectScreeningModelWrapper(ConsentModelWrapperMixin, ModelWrapper):
+class SubjectRefusalModelWrapper(BaseRefusalModelWrapper):
+    model = "inte_screening.subjectrefusal"
+
+    @property
+    def querystring(self):
+        return (
+            f"cancel=inte_dashboard:screening_listboard_url,"
+            f"screening_identifier&{super().querystring}"
+        )
+
+
+class SubjectScreeningModelWrapper(
+    SubjectRefusalModelWrapperMixin, ConsentModelWrapperMixin, ModelWrapper
+):
 
     consent_model_wrapper_cls = SubjectConsentModelWrapper
+    refusal_model_wrapper_cls = SubjectRefusalModelWrapper
     model = "inte_screening.subjectscreening"
     next_url_attrs = ["screening_identifier"]
     next_url_name = "screening_listboard_url"

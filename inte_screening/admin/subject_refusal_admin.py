@@ -14,8 +14,6 @@ from ..models import SubjectRefusal
 class SubjectRefusalAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin):
     form = SubjectRefusalForm
 
-    autocomplete_fields = ["subject_screening"]
-
     post_url_on_delete_name = "screening_listboard_url"
     subject_listboard_url_name = "screening_listboard_url"
     subject_dashboard_url_name = "screening_listboard_url"
@@ -25,10 +23,11 @@ class SubjectRefusalAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin):
             None,
             {
                 "fields": (
-                    "subject_screening",
+                    "screening_identifier",
                     "report_datetime",
                     "reason",
                     "other_reason",
+                    "comment",
                 )
             },
         ],
@@ -36,20 +35,16 @@ class SubjectRefusalAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin):
     )
 
     list_display = (
-        "subject_screening",
+        "screening_identifier",
         "report_datetime",
         "reason",
         "user_created",
         "created",
     )
 
-    list_filter = ("report_datetime", "subject_screening__gender", "reason")
+    list_filter = ("report_datetime", "reason")
 
-    search_fields = (
-        "subject_screening__screening_identifier",
-        "subject_screening__hospital_identifier",
-        "subject_screening__initials",
-    )
+    search_fields = ("screening_identifier",)
 
     radio_fields = {"reason": admin.VERTICAL}
 

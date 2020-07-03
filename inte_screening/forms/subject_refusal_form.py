@@ -1,12 +1,18 @@
 from django import forms
 from django.urls.base import reverse
 from django.utils.safestring import mark_safe
+from edc_constants.constants import OTHER
 from edc_dashboard.url_names import url_names
+from edc_form_validators import FormValidator
 from edc_form_validators import FormValidatorMixin
 from edc_screening.modelform_mixins import AlreadyConsentedFormMixin
 
-from ..form_validators import SubjectRefusalFormValidator
 from ..models import SubjectRefusal, SubjectScreening
+
+
+class SubjectRefusalFormValidator(FormValidator):
+    def clean(self):
+        self.required_if(OTHER, field="reason", field_required="other_reason")
 
 
 class ScreeningFormMixin:
@@ -37,9 +43,10 @@ class SubjectRefusalForm(
 ):
     form_validator_cls = SubjectRefusalFormValidator
 
-    def clean(self):
-        cleaned_data = super().clean()
-        return cleaned_data
+    screening_identifier = forms.CharField(
+        label="Screening identifier",
+        widget=forms.TextInput(attrs={"readonly": "readonly"}),
+    )
 
     class Meta:
         model = SubjectRefusal

@@ -1,29 +1,21 @@
 from django.db import models
 from edc_model.models import BaseUuidModel
+from edc_model.models.historical_records import HistoricalRecords
+from edc_model_fields.fields.other_charfield import OtherCharField
+from edc_search.model_mixins import SearchSlugManager
 from edc_sites.models import SiteModelMixin, CurrentSiteManager
 from edc_utils import get_utcnow
-from edc_model_fields.fields.other_charfield import OtherCharField
-from edc_model.models.historical_records import HistoricalRecords
-from edc_search.model_mixins import SearchSlugManager
-from edc_identifier.model_mixins import NonUniqueSubjectIdentifierModelMixin
 
 from ..choices import REFUSAL_REASONS
-from .subject_screening import SubjectScreening
 
 
 class SubjectRefusalManager(SearchSlugManager, models.Manager):
-    def get_by_natural_key(self, subject_identifier):
-        return self.get(subject_identifier=subject_identifier)
+    def get_by_natural_key(self, screening_identifier):
+        return self.get(screening_identifier=screening_identifier)
 
 
-class SubjectRefusal(
-    NonUniqueSubjectIdentifierModelMixin, SiteModelMixin, BaseUuidModel
-):
-    subject_screening = models.ForeignKey(SubjectScreening, on_delete=models.PROTECT)
-
-    subject_identifier = models.CharField(max_length=50, editable=False)
-
-    screening_identifier = models.CharField(max_length=50, editable=False)
+class SubjectRefusal(SiteModelMixin, BaseUuidModel):
+    screening_identifier = models.CharField(max_length=50, unique=True)
 
     report_datetime = models.DateTimeField(
         verbose_name="Report Date and Time", default=get_utcnow
@@ -37,29 +29,25 @@ class SubjectRefusal(
 
     other_reason = OtherCharField()
 
+    comment = models.TextField(
+        verbose_name="Additional Comments", null=True, blank=True,
+    )
+
     on_site = CurrentSiteManager()
 
     objects = SubjectRefusalManager()
 
     history = HistoricalRecords()
 
-    def save(self, *args, **kwargs):
-        self.screening_identifier = self.subject_screening.screening_identifier
-        self.subject_identifier = self.subject_screening.subject_identifier
-        self.subject_identifier_as_pk = self.subject_screening.subject_identifier_as_pk
-        super().save(*args, **kwargs)
-
     def __str__(self):
-        return (
-            f"{self.screening_identifier} {self.subject_screening.gender} "
-            f"{self.subject_screening.age_in_years}"
-        )
+        return self.screening_identifier
 
     def natural_key(self):
-        return (self.subject_identifier,)
+        return (self.screening_identifier,)
 
-    def get_search_slug_fields(self):
-        return ["screening_identifier", "subject_identifier"]
+    @staticmethod
+    def get_search_slug_fields():
+        return ["screening_identifier"]
 
     class Meta:
         verbose_name = "Subject Refusal"

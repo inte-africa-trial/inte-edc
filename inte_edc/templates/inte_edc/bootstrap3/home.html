@@ -49,6 +49,11 @@
                            class="list-group-item"><i class="fas fa-calendar fa-lg fa-fw"></i>&nbsp;&nbsp;&nbsp;Subject
                             Review</a>
                     {% endif %}
+                    {% if perms.edc_dashboard.view_screening_listboard %}
+                        <a href="{% url 'inte_screening_admin:inte_screening_dailyclosinglog_changelist' %}"
+                           class="list-group-item"><i
+                                class="fas fa-newspaper fa-lg fa-fw"></i>&nbsp;Daily Closing Log</a>
+                    {% endif %}
                     {% if perms.edc_navbar.nav_ae_section %}
                         <a href="{% url 'edc_adverse_event:ae_home_url' %}" class="list-group-item"><i
                                 class="fas fa-heartbeat fa-lg fa-fw"></i>&nbsp;Adverse&nbsp;events</a>

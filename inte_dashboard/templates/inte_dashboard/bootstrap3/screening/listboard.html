@@ -41,7 +41,7 @@
         {% if result.consent %}
             {% dashboard_button result %}
         {% else %}
-            {% add_consent_button result %}
+            {% refusal_button result %}{% if not result.refusal %}{% add_consent_button result %}{% endif %}
         {% endif %}
     {% endif %}
     </div>
