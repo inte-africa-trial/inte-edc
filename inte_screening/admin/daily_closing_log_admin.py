@@ -71,7 +71,9 @@ class DailyClosingLogAdmin(
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "site":
-            kwargs["queryset"] = db_field.related_model.objects.filter(
-                pk=request.site.id
-            )
+            try:
+                site_id = request.site.id
+            except AttributeError:
+                site_id = None
+            kwargs["queryset"] = db_field.related_model.objects.filter(pk=site_id)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
