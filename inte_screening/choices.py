@@ -1,4 +1,5 @@
-from edc_constants.constants import OTHER
+from edc_constants.constants import OTHER, DIABETES, HIV, HYPERTENSION
+from inte_subject.constants import NCD, INTEGRATED
 
 from .constants import NCD_CLINIC, HIV_CLINIC, HYPERTENSION_CLINIC, DIABETES_CLINIC
 
@@ -19,4 +20,13 @@ REFUSAL_REASONS = (
     ("need_to_think_about_it", "I haven't had a chance to think about it"),
     ("moving", "I am moving to another area"),
     (OTHER, "Other, please specify"),
+)
+
+
+CLINIC_DAYS = (
+    (INTEGRATED, "Integrated care day (HIV, Diabetes, Hypertension)"),
+    (NCD, "NCD day (Diabetes + Hypertension)"),
+    (HIV, "HIV only day"),
+    (DIABETES, "Diabetes only day"),
+    (HYPERTENSION, "Hypertension only day"),
 )
