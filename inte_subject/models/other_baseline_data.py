@@ -22,9 +22,7 @@ class OtherBaselineData(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     marital_status = models.CharField(
-        verbose_name="How much formal education does the patient have?",
-        max_length=25,
-        choices=MARITAL_STATUS,
+        verbose_name="Personal status?", max_length=25, choices=MARITAL_STATUS,
     )
 
     smoking_status = models.CharField(
