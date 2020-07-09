@@ -123,6 +123,7 @@ INSTALLED_APPS = [
     "edc_subject_dashboard.apps.AppConfig",
     "edc_timepoint.apps.AppConfig",
     "edc_visit_tracking.apps.AppConfig",
+    "edc_form_describer.apps.AppConfig",
     "inte_consent.apps.AppConfig",
     "inte_lists.apps.AppConfig",
     "inte_dashboard.apps.AppConfig",

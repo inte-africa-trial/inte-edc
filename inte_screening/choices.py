@@ -1,7 +1,21 @@
-from edc_constants.constants import OTHER, DIABETES, HIV, HYPERTENSION
+from edc_constants.constants import (
+    OTHER,
+    DIABETES,
+    HIV,
+    HYPERTENSION,
+    PURPOSIVELY_SELECTED,
+    RANDOM_SAMPLING,
+)
 from inte_subject.constants import NCD, INTEGRATED
 
-from .constants import NCD_CLINIC, HIV_CLINIC, HYPERTENSION_CLINIC, DIABETES_CLINIC
+from .constants import (
+    NCD_CLINIC,
+    HIV_CLINIC,
+    HYPERTENSION_CLINIC,
+    DIABETES_CLINIC,
+    SEQUENTIAL,
+    SYSTEMATIC,
+)
 
 CLINIC_CHOICES = (
     (HIV_CLINIC, "HIV Clinic"),
@@ -29,4 +43,11 @@ CLINIC_DAYS = (
     (HIV, "HIV only day"),
     (DIABETES, "Diabetes only day"),
     (HYPERTENSION, "Hypertension only day"),
+)
+
+SELECTION_METHOD = (
+    (RANDOM_SAMPLING, "Random sampling"),
+    (SYSTEMATIC, "Systematically selected"),
+    (SEQUENTIAL, "Sequentially selected"),
+    (PURPOSIVELY_SELECTED, "Purposively selected"),
 )
