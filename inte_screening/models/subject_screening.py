@@ -5,12 +5,12 @@ from django.core.validators import (
 )
 from django.db import models
 from django_crypto_fields.fields import EncryptedCharField
-from edc_constants.choices import YES_NO, SELECTION_METHOD
+from edc_constants.choices import YES_NO
 from edc_model.models import BaseUuidModel
 from edc_screening.model_mixins import ScreeningModelMixin
 from edc_screening.screening_identifier import ScreeningIdentifier
 
-from ..choices import CLINIC_CHOICES
+from ..choices import CLINIC_CHOICES, SELECTION_METHOD
 from ..eligibility import check_eligible_final
 
 
