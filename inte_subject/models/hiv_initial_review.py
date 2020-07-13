@@ -1,8 +1,10 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.safestring import mark_safe
-from edc_constants.choices import YES_NO, YES_NO_NA
+from edc_constants.choices import YES_NO, YES_NO_PENDING_NA, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
+from edc_lab.choices import VL_QUANTIFIER_NA
+from edc_lab.constants import EQ
 from edc_model import models as edc_models
 from edc_reportable import CELLS_PER_MILLIMETER_CUBED_DISPLAY, COPIES_PER_MILLILITER
 
@@ -61,7 +63,7 @@ class HivInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
     has_vl = models.CharField(
         verbose_name="Is the patient's most recent viral load result available?",
         max_length=25,
-        choices=YES_NO_NA,
+        choices=YES_NO_PENDING_NA,
         default=NOT_APPLICABLE,
     )
     vl = models.IntegerField(
@@ -70,6 +72,10 @@ class HivInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
         null=True,
         blank=True,
         help_text=COPIES_PER_MILLILITER,
+    )
+
+    vl_quantifier = models.CharField(
+        max_length=10, choices=VL_QUANTIFIER_NA, null=True, blank=True,
     )
 
     vl_date = models.DateField(

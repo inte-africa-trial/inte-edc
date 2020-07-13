@@ -29,6 +29,7 @@ class HivInitialReviewAdmin(
                     "arv_initiation_ago",
                     "has_vl",
                     "vl",
+                    "vl_quantifier",
                     "vl_date",
                     "has_cd4",
                     "cd4",
@@ -41,9 +42,10 @@ class HivInitialReviewAdmin(
     )
 
     radio_fields = {
-        "crf_status": admin.VERTICAL,
-        "receives_care": admin.VERTICAL,
         "clinic": admin.VERTICAL,
-        "has_vl": admin.VERTICAL,
+        "crf_status": admin.VERTICAL,
         "has_cd4": admin.VERTICAL,
+        "has_vl": admin.VERTICAL,
+        "receives_care": admin.VERTICAL,
+        "vl_quantifier": admin.VERTICAL,
     }

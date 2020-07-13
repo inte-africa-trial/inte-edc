@@ -47,6 +47,7 @@ class HivInitialReviewFormValidator(
 
         self.required_if(YES, field="receives_care", field_required="has_vl")
         self.required_if(YES, field="has_vl", field_required="vl")
+        self.required_if(YES, field="has_vl", field_required="vl_quantifier")
         self.required_if(YES, field="has_vl", field_required="vl_date")
         if self.cleaned_data.get("vl_date") and self.cleaned_data.get("dx_ago"):
             if self.cleaned_data.get("vl_date") < self.estimated_date_from_ago(
