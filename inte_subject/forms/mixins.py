@@ -39,7 +39,8 @@ class EstimatedDateFromAgoFormMixin:
 class DrugRefillFormValidatorMixin:
     def clean(self):
         if (
-            self.cleaned_data.get("subject_visit").appointment.visit_code == DAY1
+            self.cleaned_data.get("subject_visit")
+            and self.cleaned_data.get("subject_visit").appointment.visit_code == DAY1
             and self.cleaned_data.get("rx_modified") == YES
         ):
             raise forms.ValidationError({"rx_modified": "Expected `No` at baseline."})

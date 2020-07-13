@@ -17,6 +17,8 @@ class DiabetesInitialReview(GlucoseModelMixin, CrfModelMixin, edc_models.BaseUui
         verbose_name="Estimated diabetes diagnoses date", null=True, editable=False,
     )
 
+    # TODO: change to m2m 10 JULY 2020
+    # remove "alone" ... allow select all that apply
     managed_by = models.CharField(
         verbose_name="How is the patient's diabetes managed?",
         max_length=25,
