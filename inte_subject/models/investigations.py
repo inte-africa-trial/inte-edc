@@ -35,7 +35,7 @@ class Investigations(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     reason = models.ManyToManyField(
-        ReasonsForTesting, verbose_name="Why was the patient tested?",
+        ReasonsForTesting, verbose_name="Why was the patient tested?", blank=True
     )
 
     reason_other = edc_models.OtherCharField()
