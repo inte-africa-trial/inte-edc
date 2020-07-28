@@ -15,6 +15,8 @@ class OtherBaselineData(CrfModelMixin, edc_models.BaseUuidModel):
         choices=EMPLOYMENT_STATUS,
     )
 
+    employment_status_other = edc_models.OtherCharField()
+
     education = models.CharField(
         verbose_name="How much formal education does the patient have?",
         max_length=25,

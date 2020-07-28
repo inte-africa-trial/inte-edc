@@ -1,6 +1,6 @@
 from django import forms
 from edc_crf.modelform_mixins import CrfModelFormMixin
-from edc_constants.constants import FORMER_SMOKER, YES
+from edc_constants.constants import FORMER_SMOKER, OTHER, YES
 from edc_form_validators.form_validator import FormValidator
 
 from ..models import OtherBaselineData
@@ -15,6 +15,12 @@ class OtherBaselineDataFormValidator(FormValidator):
         )
 
         self.applicable_if(YES, field="alcohol", field_applicable="alcohol_consumption")
+
+        self.validate_other_specify(
+            OTHER,
+            field="employment_status",
+            other_specify_field="employment_status_other",
+        )
 
 
 class OtherBaselineDataForm(
