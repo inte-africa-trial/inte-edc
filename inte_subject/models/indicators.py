@@ -11,7 +11,7 @@ from ..model_mixins import CrfModelMixin
 
 class Indicators(CrfModelMixin, BaseUuidModel):
     weight = edc_models.WeightField(
-        validators=[MinValueValidator(45), MaxValueValidator(200)]
+        validators=[MinValueValidator(25), MaxValueValidator(200)]
     )
 
     height = edc_models.HeightField()
