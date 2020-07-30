@@ -6,6 +6,7 @@ from .diabetes_review_admin import DiabetesReviewAdmin
 from .drug_refill_diabetes_admin import DrugRefillDiabetesAdmin
 from .drug_refill_hiv_admin import DrugRefillHivAdmin
 from .drug_refill_hypertension_admin import DrugRefillHypertensionAdmin
+from .health_economics_admin import HealthEconomicsAdmin
 from .hiv_initial_review_admin import HivInitialReviewAdmin
 from .hiv_review_admin import HivReviewAdmin
 from .hypertension_initial_review_admin import HypertensionInitialReviewAdmin
