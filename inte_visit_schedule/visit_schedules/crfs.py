@@ -39,6 +39,7 @@ crfs_d1 = FormsCollection(
 )
 crfs_1m = FormsCollection(
     Crf(show_order=100, model="inte_subject.reasonforvisit"),
+    Crf(show_order=105, model="inte_subject.indicators"),
     Crf(show_order=110, model="inte_subject.investigations"),
     Crf(show_order=120, model="inte_subject.hivreview"),
     Crf(show_order=130, model="inte_subject.diabetesreview"),
@@ -52,6 +53,7 @@ crfs_1m = FormsCollection(
 )  # routine for NCD
 crfs_2m = FormsCollection(
     Crf(show_order=100, model="inte_subject.reasonforvisit"),
+    Crf(show_order=105, model="inte_subject.indicators"),
     Crf(show_order=110, model="inte_subject.investigations"),
     Crf(show_order=120, model="inte_subject.hivreview"),
     Crf(show_order=130, model="inte_subject.diabetesreview"),
@@ -65,6 +67,7 @@ crfs_2m = FormsCollection(
 )  # routine for NCD
 crfs_3m = FormsCollection(
     Crf(show_order=100, model="inte_subject.reasonforvisit"),
+    Crf(show_order=105, model="inte_subject.indicators"),
     Crf(show_order=110, model="inte_subject.investigations"),
     Crf(show_order=120, model="inte_subject.hivreview"),
     Crf(show_order=130, model="inte_subject.diabetesreview"),
@@ -78,6 +81,7 @@ crfs_3m = FormsCollection(
 )  # routine for NCD/HIV
 crfs_4m = FormsCollection(
     Crf(show_order=100, model="inte_subject.reasonforvisit"),
+    Crf(show_order=105, model="inte_subject.indicators"),
     Crf(show_order=110, model="inte_subject.investigations"),
     Crf(show_order=120, model="inte_subject.hivreview"),
     Crf(show_order=130, model="inte_subject.diabetesreview"),
@@ -91,6 +95,7 @@ crfs_4m = FormsCollection(
 )  # routine for NCD
 crfs_5m = FormsCollection(
     Crf(show_order=100, model="inte_subject.reasonforvisit"),
+    Crf(show_order=105, model="inte_subject.indicators"),
     Crf(show_order=110, model="inte_subject.investigations"),
     Crf(show_order=120, model="inte_subject.hivreview"),
     Crf(show_order=130, model="inte_subject.diabetesreview"),
@@ -104,6 +109,7 @@ crfs_5m = FormsCollection(
 )  # routine for NCD
 crfs_6m = FormsCollection(
     Crf(show_order=100, model="inte_subject.reasonforvisit"),
+    Crf(show_order=105, model="inte_subject.indicators"),
     Crf(show_order=110, model="inte_subject.investigations"),
     Crf(show_order=120, model="inte_subject.indicators"),
     Crf(show_order=130, model="inte_subject.hivreview"),
@@ -118,6 +124,7 @@ crfs_6m = FormsCollection(
 )
 crfs_7m = FormsCollection(
     Crf(show_order=100, model="inte_subject.reasonforvisit"),
+    Crf(show_order=105, model="inte_subject.indicators"),
     Crf(show_order=110, model="inte_subject.investigations"),
     Crf(show_order=120, model="inte_subject.hivreview"),
     Crf(show_order=130, model="inte_subject.diabetesreview"),
@@ -131,6 +138,7 @@ crfs_7m = FormsCollection(
 )  # routine for NCD
 crfs_8m = FormsCollection(
     Crf(show_order=100, model="inte_subject.reasonforvisit"),
+    Crf(show_order=105, model="inte_subject.indicators"),
     Crf(show_order=110, model="inte_subject.investigations"),
     Crf(show_order=120, model="inte_subject.hivreview"),
     Crf(show_order=130, model="inte_subject.diabetesreview"),
@@ -144,6 +152,7 @@ crfs_8m = FormsCollection(
 )  # routine for NCD
 crfs_9m = FormsCollection(
     Crf(show_order=100, model="inte_subject.reasonforvisit"),
+    Crf(show_order=105, model="inte_subject.indicators"),
     Crf(show_order=110, model="inte_subject.investigations"),
     Crf(show_order=120, model="inte_subject.hivreview"),
     Crf(show_order=130, model="inte_subject.diabetesreview"),

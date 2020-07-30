@@ -1,14 +1,13 @@
-from django.db import models
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.core.validators import MinValueValidator
-from edc_constants.choices import SELECTION_METHOD
+from django.db import models
 from edc_model.models import BaseUuidModel
 from edc_model.models.historical_records import HistoricalRecords
 from edc_sites.models import SiteModelMixin, CurrentSiteManager
 from edc_utils import convert_php_dateformat, get_utcnow
 
-from django.contrib.sites.models import Site
-from ..choices import CLINIC_DAYS
+from ..choices import CLINIC_DAYS, SELECTION_METHOD
 
 
 class DailyClosingLogManager(models.Manager):
