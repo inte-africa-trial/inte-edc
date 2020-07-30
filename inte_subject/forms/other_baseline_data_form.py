@@ -22,7 +22,7 @@ class OtherBaselineDataFormValidator(
         self.applicable_if(YES, field="alcohol", field_applicable="alcohol_consumption")
 
         self.validate_other_specify(
-            OTHER, "employment_status", other_specify_field="employment_status_other",
+            field="employment_status", other_specify_field="employment_status_other"
         )
 
 
