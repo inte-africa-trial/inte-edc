@@ -49,6 +49,6 @@ class SubjectRefusal(SiteModelMixin, BaseUuidModel):
     def get_search_slug_fields():
         return ["screening_identifier"]
 
-    class Meta:
+    class Meta(BaseUuidModel.Meta):
         verbose_name = "Subject Refusal"
         verbose_name_plural = "Subject Refusals"

@@ -1,6 +1,7 @@
 from django import forms
 from edc_constants.constants import OTHER, YES
 from edc_model import models as edc_models
+from edc_model.models import InvalidFormat
 from edc_visit_schedule.constants import DAY1
 
 
@@ -27,12 +28,16 @@ def validate_total_days(form, return_in_days=None):
 
 class EstimatedDateFromAgoFormMixin:
     def estimated_date_from_ago(self, f1):
+        """Returns the estimated date using `duration_to_date` or None."""
         estimated_date = None
         if self.cleaned_data.get(f1):
-            estimated_date = edc_models.duration_to_date(
-                self.cleaned_data.get(f1),
-                self.cleaned_data.get("report_datetime").date(),
-            )
+            try:
+                estimated_date = edc_models.duration_to_date(
+                    self.cleaned_data.get(f1),
+                    self.cleaned_data.get("report_datetime").date(),
+                )
+            except InvalidFormat as e:
+                raise forms.ValidationError({f1: str(e)})
         return estimated_date
 
 

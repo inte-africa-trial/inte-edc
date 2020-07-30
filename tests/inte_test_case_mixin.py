@@ -42,7 +42,7 @@ class InteTestCaseMixin(SiteTestCaseMixin):
         import_holidays(test=True)
         add_or_update_django_sites(sites=get_sites_by_country("uganda"))
         site_list_data.autodiscover()
-        fixer = ExportPermissionsFixer()
+        fixer = ExportPermissionsFixer(warn_only=True)
         fixer.fix()
         GroupPermissionsUpdater(
             codenames_by_group=get_codenames_by_group(), verbose=True

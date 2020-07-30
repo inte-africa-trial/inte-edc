@@ -3,6 +3,12 @@ from edc_metadata import REQUIRED, NOT_REQUIRED
 from edc_metadata_rules import CrfRule, CrfRuleGroup, register, P
 
 
+from .predicates import Predicates
+
+
+pc = Predicates()
+
+
 @register()
 class CareStatusBaselineRuleGroup(CrfRuleGroup):
 
@@ -109,3 +115,18 @@ class ReasonForVisitRuleGroup(CrfRuleGroup):
     class Meta:
         app_label = "inte_subject"
         source_model = "inte_subject.reasonforvisit"
+
+
+@register()
+class HealthEconomicsRuleGroup(CrfRuleGroup):
+
+    econ = CrfRule(
+        predicate=pc.health_economics_required,
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["healtheconomics"],
+    )
+
+    class Meta:
+        app_label = "inte_subject"
+        source_model = "inte_subject.subjectvisit"

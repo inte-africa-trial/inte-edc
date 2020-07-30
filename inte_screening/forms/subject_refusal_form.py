@@ -1,11 +1,12 @@
 from django import forms
+from django.core.exceptions import ObjectDoesNotExist
 from django.urls.base import reverse
 from django.utils.safestring import mark_safe
 from edc_constants.constants import OTHER
 from edc_dashboard.url_names import url_names
 from edc_form_validators import FormValidator
 from edc_form_validators import FormValidatorMixin
-from edc_screening.modelform_mixins import AlreadyConsentedFormMixin
+from edc_registration.models import RegisteredSubject
 
 from ..models import SubjectRefusal, SubjectScreening
 
@@ -35,6 +36,28 @@ class ScreeningFormMixin:
                     f"{screening_identifier}</A>"
                 )
                 raise forms.ValidationError(msg)
+        return cleaned_data
+
+
+class AlreadyConsentedFormMixin:
+    def clean(self):
+        cleaned_data = super().clean()
+        try:
+            obj = RegisteredSubject.objects.get(
+                screening_identifier=self.instance.screening_identifier
+            )
+        except ObjectDoesNotExist:
+            pass
+        else:
+            url_name = url_names.get("subject_dashboard_url")
+            url = reverse(
+                url_name, kwargs={"subject_identifier": obj.subject_identifier},
+            )
+            msg = mark_safe(
+                "Not allowed. Subject has already consented. "
+                f'See subject <A href="{url}">{obj.subject_identifier}</A>'
+            )
+            raise forms.ValidationError(msg)
         return cleaned_data
 
 

@@ -5,8 +5,9 @@ from ..models import CareStatusBaseline
 
 
 def care_status_exists_or_raise(form, model_cls=None):
+    subject_identifier = form.cleaned_data.get("subject_visit").subject_identifier
     try:
-        model_cls.objects.get(subject_visit=form.cleaned_data.get("subject_visit"))
+        model_cls.objects.get(subject_visit__subject_identifier=subject_identifier)
     except ObjectDoesNotExist:
         raise forms.ValidationError(
             f"Complete the `{model_cls._meta.verbose_name}` CRF first."
@@ -15,6 +16,9 @@ def care_status_exists_or_raise(form, model_cls=None):
 
 
 class CareStatusRequiredModelFormMixin:
+    """Asserts Baseline Care Status exists"""
+
     def clean(self):
-        care_status_exists_or_raise(self, model_cls=CareStatusBaseline)
+        if self.cleaned_data.get("subject_visit"):
+            care_status_exists_or_raise(self, model_cls=CareStatusBaseline)
         return super().clean()

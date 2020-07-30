@@ -11,17 +11,22 @@ from inte_screening.constants import (
 
 from ..models import CareStatusBaseline
 from .crf_form_validator_mixin import CrfFormValidatorMixin
+from .mixins import EstimatedDateFromAgoFormMixin
 
 
-class CareStatusBaselineFormValidator(CrfFormValidatorMixin, FormValidator):
+class CareStatusBaselineFormValidator(
+    CrfFormValidatorMixin, EstimatedDateFromAgoFormMixin, FormValidator
+):
     def clean(self):
         self.raise_if_hiv_clinic_and_not_positive()
         self.required_if(POS, NEG, field="hiv_result", field_required="hiv_result_ago")
+        self.estimated_date_from_ago("hiv_result_ago")
 
         self.raise_if_clinic_and_not_hypertensive()
         self.required_if(
             YES, field="hypertensive_tested", field_required="hypertensive_tested_ago"
         )
+        self.estimated_date_from_ago("hypertensive_tested_ago")
         self.required_if(
             YES, field="hypertensive_tested", field_required="hypertensive"
         )
@@ -31,6 +36,7 @@ class CareStatusBaselineFormValidator(CrfFormValidatorMixin, FormValidator):
         self.required_if(
             YES, field="diabetic_tested", field_required="diabetic_tested_ago"
         )
+        self.estimated_date_from_ago("diabetic_tested_ago")
         self.required_if(YES, field="diabetic_tested", field_required="diabetic")
 
     def raise_if_hiv_clinic_and_not_positive(self):

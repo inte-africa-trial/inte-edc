@@ -5,21 +5,24 @@ from edc_form_validators.form_validator import FormValidator
 
 from ..models import OtherBaselineData
 from .care_status_modelform_mixin import CareStatusRequiredModelFormMixin
+from .crf_form_validator_mixin import CrfFormValidatorMixin
+from .mixins import EstimatedDateFromAgoFormMixin
 
 
-class OtherBaselineDataFormValidator(FormValidator):
+class OtherBaselineDataFormValidator(
+    CrfFormValidatorMixin, EstimatedDateFromAgoFormMixin, FormValidator
+):
     def clean(self):
 
         self.required_if(
             FORMER_SMOKER, field="smoking_status", field_required="smoker_quit_ago"
         )
+        self.estimated_date_from_ago("smoker_quit_ago")
 
         self.applicable_if(YES, field="alcohol", field_applicable="alcohol_consumption")
 
         self.validate_other_specify(
-            OTHER,
-            field="employment_status",
-            other_specify_field="employment_status_other",
+            OTHER, "employment_status", other_specify_field="employment_status_other",
         )
 
 
