@@ -128,8 +128,6 @@ INSTALLED_APPS = [
     "inte_lists.apps.AppConfig",
     "inte_dashboard.apps.AppConfig",
     "inte_labs.apps.AppConfig",
-    "inte_reference.apps.AppConfig",
-    "inte_metadata_rules.apps.AppConfig",
     "inte_subject.apps.AppConfig",
     "inte_form_validators.apps.AppConfig",
     "inte_visit_schedule.apps.AppConfig",

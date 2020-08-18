@@ -15,17 +15,24 @@ class IndicatorsAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistor
     form = IndicatorsForm
 
     fieldsets = (
-        (None, {"fields": ("subject_visit", "report_datetime")}),
+        (
+            None,
+            {
+                "description": "Provide if available",
+                "fields": ("subject_visit", "report_datetime"),
+            },
+        ),
         ("Weight and Height", {"fields": ("weight", "height")}),
         (
             "Blood Pressure: Reading 1",
             {
+                "description": "Provide if available",
                 "fields": (
                     "r1_taken",
                     "r1_reason_not_taken",
                     "sys_blood_pressure_r1",
                     "dia_blood_pressure_r1",
-                )
+                ),
             },
         ),
         (

@@ -12,6 +12,9 @@ class ComplicationsFormValidator(
     CrfFormValidatorMixin, EstimatedDateFromAgoFormMixin, FormValidator
 ):
     def clean(self):
+
+        # self.required_if(YES, field="has_complications", field_required="stroke_ago")
+
         self.required_if(YES, field="stroke", field_required="stroke_ago")
         self.estimated_date_from_ago("stroke_ago")
         self.required_if(YES, field="heart_attack", field_required="heart_attack_ago")

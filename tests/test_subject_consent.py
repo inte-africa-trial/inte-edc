@@ -5,8 +5,7 @@ from django import forms
 from django.test import TestCase, tag
 from edc_constants.constants import MALE, MOBILE_NUMBER, YES, NO, NOT_APPLICABLE
 from edc_utils import get_utcnow
-from inte_consent.form_validators import SubjectConsentFormValidator
-from inte_consent.forms import SubjectConsentForm
+from inte_consent.forms import SubjectConsentForm, SubjectConsentFormValidator
 from inte_consent.models import InteSubjectConsentError
 from inte_screening.constants import HIV_CLINIC, NCD_CLINIC
 from pytz import timezone
@@ -37,6 +36,7 @@ class TestSubjectConsent(InteTestCaseMixin, TestCase):
             identity="77777777",
             confirm_identity="77777777",
             gender=MALE,
+            clinic_type=HIV_CLINIC,
         )
         validator = SubjectConsentFormValidator(cleaned_data=cleaned_data,)
         validator.clean()
@@ -54,6 +54,7 @@ class TestSubjectConsent(InteTestCaseMixin, TestCase):
             identity="77777777",
             confirm_identity="77777777",
             gender=MALE,
+            clinic_type=HIV_CLINIC,
         )
         validator = SubjectConsentFormValidator(cleaned_data=cleaned_data,)
         self.assertRaises(forms.ValidationError, validator.clean)
@@ -74,6 +75,7 @@ class TestSubjectConsent(InteTestCaseMixin, TestCase):
             identity="77777777",
             confirm_identity="77777777",
             gender=MALE,
+            clinic_type=HIV_CLINIC,
         )
         validator = SubjectConsentFormValidator(cleaned_data=cleaned_data,)
         try:

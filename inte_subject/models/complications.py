@@ -1,12 +1,19 @@
 from django.db import models
 from edc_constants.choices import YES_NO, YES_NO_UNKNOWN
-from edc_constants.constants import NO
+from edc_constants.constants import NO, YES
 from edc_model import models as edc_models
 
 from ..model_mixins import CrfModelMixin
 
 
 class Complications(CrfModelMixin, edc_models.BaseUuidModel):
+
+    # has_complications = models.CharField(
+    #     verbose_name="Are there any complications to report?",
+    #     max_length=25,
+    #     choices=YES_NO,
+    #     default=YES,
+    # )
 
     # stroke
     stroke = models.CharField(

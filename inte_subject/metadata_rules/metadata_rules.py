@@ -2,9 +2,7 @@ from edc_constants.constants import POS, YES
 from edc_metadata import REQUIRED, NOT_REQUIRED
 from edc_metadata_rules import CrfRule, CrfRuleGroup, register, P
 
-
 from .predicates import Predicates
-
 
 pc = Predicates()
 
@@ -124,7 +122,22 @@ class HealthEconomicsRuleGroup(CrfRuleGroup):
         predicate=pc.health_economics_required,
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_models=["healtheconomics"],
+        target_models=["healtheconomicsrevised"],
+    )
+
+    class Meta:
+        app_label = "inte_subject"
+        source_model = "inte_subject.subjectvisit"
+
+
+@register()
+class FamilyHistoryRuleGroup(CrfRuleGroup):
+
+    econ = CrfRule(
+        predicate=pc.family_history_required,
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["familyhistory"],
     )
 
     class Meta:

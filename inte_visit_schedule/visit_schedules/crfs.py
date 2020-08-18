@@ -4,7 +4,7 @@ crfs_prn = FormsCollection(
     Crf(show_order=120, model="inte_subject.hivinitialreview"),
     Crf(show_order=130, model="inte_subject.diabetesinitialreview"),
     Crf(show_order=140, model="inte_subject.hypertensioninitialreview"),
-    Crf(show_order=150, model="inte_subject.healtheconomics"),
+    Crf(show_order=150, model="inte_subject.healtheconomicsrevised"),
     # Crf(show_order=160, model="inte_subject.diabetesreview"),
     # Crf(show_order=170, model="inte_subject.hypertensionreview"),
     name="prn",
@@ -47,7 +47,8 @@ crfs_1m = FormsCollection(
     Crf(show_order=150, model="inte_subject.drugrefillhypertension"),
     Crf(show_order=160, model="inte_subject.drugrefilldiabetes"),
     Crf(show_order=170, model="inte_subject.drugrefillhiv"),
-    Crf(show_order=175, model="inte_subject.healtheconomics"),
+    Crf(show_order=175, model="inte_subject.healtheconomicsrevised"),
+    Crf(show_order=178, model="inte_subject.familyhistory"),
     Crf(show_order=180, model="inte_subject.nextappointment"),
     name="1m",
 )  # routine for NCD
@@ -61,7 +62,8 @@ crfs_2m = FormsCollection(
     Crf(show_order=150, model="inte_subject.drugrefillhypertension"),
     Crf(show_order=160, model="inte_subject.drugrefilldiabetes"),
     Crf(show_order=170, model="inte_subject.drugrefillhiv"),
-    Crf(show_order=175, model="inte_subject.healtheconomics"),
+    Crf(show_order=175, model="inte_subject.healtheconomicsrevised"),
+    Crf(show_order=178, model="inte_subject.familyhistory"),
     Crf(show_order=180, model="inte_subject.nextappointment"),
     name="2m",
 )  # routine for NCD
@@ -75,7 +77,8 @@ crfs_3m = FormsCollection(
     Crf(show_order=150, model="inte_subject.drugrefillhypertension"),
     Crf(show_order=160, model="inte_subject.drugrefilldiabetes"),
     Crf(show_order=170, model="inte_subject.drugrefillhiv"),
-    Crf(show_order=175, model="inte_subject.healtheconomics"),
+    Crf(show_order=175, model="inte_subject.healtheconomicsrevised"),
+    Crf(show_order=178, model="inte_subject.familyhistory"),
     Crf(show_order=180, model="inte_subject.nextappointment"),
     name="3m",
 )  # routine for NCD/HIV
@@ -89,7 +92,8 @@ crfs_4m = FormsCollection(
     Crf(show_order=150, model="inte_subject.drugrefillhypertension"),
     Crf(show_order=160, model="inte_subject.drugrefilldiabetes"),
     Crf(show_order=170, model="inte_subject.drugrefillhiv"),
-    Crf(show_order=175, model="inte_subject.healtheconomics"),
+    Crf(show_order=175, model="inte_subject.healtheconomicsrevised"),
+    Crf(show_order=178, model="inte_subject.familyhistory"),
     Crf(show_order=180, model="inte_subject.nextappointment"),
     name="4m",
 )  # routine for NCD
@@ -103,7 +107,8 @@ crfs_5m = FormsCollection(
     Crf(show_order=150, model="inte_subject.drugrefillhypertension"),
     Crf(show_order=160, model="inte_subject.drugrefilldiabetes"),
     Crf(show_order=170, model="inte_subject.drugrefillhiv"),
-    Crf(show_order=175, model="inte_subject.healtheconomics"),
+    Crf(show_order=175, model="inte_subject.healtheconomicsrevised"),
+    Crf(show_order=178, model="inte_subject.familyhistory"),
     Crf(show_order=180, model="inte_subject.nextappointment"),
     name="5m",
 )  # routine for NCD
@@ -118,7 +123,8 @@ crfs_6m = FormsCollection(
     Crf(show_order=160, model="inte_subject.drugrefillhypertension"),
     Crf(show_order=170, model="inte_subject.drugrefilldiabetes"),
     Crf(show_order=180, model="inte_subject.drugrefillhiv"),
-    Crf(show_order=185, model="inte_subject.healtheconomics"),
+    Crf(show_order=185, model="inte_subject.healtheconomicsrevised"),
+    Crf(show_order=188, model="inte_subject.familyhistory"),
     Crf(show_order=190, model="inte_subject.nextappointment"),
     name="6m",
 )
@@ -132,7 +138,8 @@ crfs_7m = FormsCollection(
     Crf(show_order=150, model="inte_subject.drugrefillhypertension"),
     Crf(show_order=160, model="inte_subject.drugrefilldiabetes"),
     Crf(show_order=170, model="inte_subject.drugrefillhiv"),
-    Crf(show_order=175, model="inte_subject.healtheconomics"),
+    Crf(show_order=175, model="inte_subject.healtheconomicsrevised"),
+    Crf(show_order=178, model="inte_subject.familyhistory"),
     Crf(show_order=180, model="inte_subject.nextappointment"),
     name="7m",
 )  # routine for NCD
@@ -146,7 +153,8 @@ crfs_8m = FormsCollection(
     Crf(show_order=150, model="inte_subject.drugrefillhypertension"),
     Crf(show_order=160, model="inte_subject.drugrefilldiabetes"),
     Crf(show_order=170, model="inte_subject.drugrefillhiv"),
-    Crf(show_order=175, model="inte_subject.healtheconomics"),
+    Crf(show_order=175, model="inte_subject.healtheconomicsrevised"),
+    Crf(show_order=178, model="inte_subject.familyhistory"),
     Crf(show_order=180, model="inte_subject.nextappointment"),
     name="8m",
 )  # routine for NCD
@@ -160,7 +168,8 @@ crfs_9m = FormsCollection(
     Crf(show_order=150, model="inte_subject.drugrefillhypertension"),
     Crf(show_order=160, model="inte_subject.drugrefilldiabetes"),
     Crf(show_order=170, model="inte_subject.drugrefillhiv"),
-    Crf(show_order=175, model="inte_subject.healtheconomics"),
+    Crf(show_order=175, model="inte_subject.healtheconomicsrevised"),
+    Crf(show_order=178, model="inte_subject.familyhistory"),
     Crf(show_order=180, model="inte_subject.nextappointment"),
     name="9m",
 )  # routine for NCD/HIV
@@ -174,7 +183,8 @@ crfs_10m = FormsCollection(
     Crf(show_order=150, model="inte_subject.drugrefillhypertension"),
     Crf(show_order=160, model="inte_subject.drugrefilldiabetes"),
     Crf(show_order=170, model="inte_subject.drugrefillhiv"),
-    Crf(show_order=175, model="inte_subject.healtheconomics"),
+    Crf(show_order=175, model="inte_subject.healtheconomicsrevised"),
+    Crf(show_order=178, model="inte_subject.familyhistory"),
     Crf(show_order=180, model="inte_subject.nextappointment"),
     name="10m",
 )  # routine for NCD
@@ -187,7 +197,8 @@ crfs_11m = FormsCollection(
     Crf(show_order=150, model="inte_subject.drugrefillhypertension"),
     Crf(show_order=160, model="inte_subject.drugrefilldiabetes"),
     Crf(show_order=170, model="inte_subject.drugrefillhiv"),
-    Crf(show_order=175, model="inte_subject.healtheconomics"),
+    Crf(show_order=175, model="inte_subject.healtheconomicsrevised"),
+    Crf(show_order=178, model="inte_subject.familyhistory"),
     Crf(show_order=180, model="inte_subject.nextappointment"),
     name="11m",
 )  # routine for NCD
@@ -200,6 +211,7 @@ crfs_12m = FormsCollection(
     Crf(show_order=150, model="inte_subject.drugrefillhypertension"),
     Crf(show_order=160, model="inte_subject.drugrefilldiabetes"),
     Crf(show_order=170, model="inte_subject.drugrefillhiv"),
-    Crf(show_order=175, model="inte_subject.healtheconomics"),
+    Crf(show_order=175, model="inte_subject.healtheconomicsrevised"),
+    Crf(show_order=178, model="inte_subject.familyhistory"),
     name="12m",
 )

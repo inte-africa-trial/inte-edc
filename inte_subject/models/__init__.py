@@ -8,7 +8,9 @@ from .drug_refill_hypertension import DrugRefillHypertension
 from .drug_supply_diabetes import DrugSupplyDiabetes
 from .drug_supply_hiv import DrugSupplyHiv
 from .drug_supply_hypertension import DrugSupplyHypertension
+from .family_history import FamilyHistory
 from .health_economics import HealthEconomics
+from .health_economics_revised import HealthEconomicsRevised
 from .hiv_initial_review import HivInitialReview
 from .hiv_review import HivReview
 from .hypertension_initial_review import HypertensionInitialReview

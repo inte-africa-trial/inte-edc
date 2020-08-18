@@ -23,6 +23,9 @@ class CareStatusBaselineFormValidator(
         self.estimated_date_from_ago("hiv_result_ago")
 
         self.raise_if_clinic_and_not_hypertensive()
+        self.raise_if_clinic_and_not_diabetes()
+        self.raise_if_ncd_clinic_and_not_both()
+
         self.required_if(
             YES, field="hypertensive_tested", field_required="hypertensive_tested_ago"
         )
@@ -31,8 +34,6 @@ class CareStatusBaselineFormValidator(
             YES, field="hypertensive_tested", field_required="hypertensive"
         )
 
-        self.raise_if_clinic_and_not_diabetes()
-        self.raise_if_ncd_clinic_and_not_both()
         self.required_if(
             YES, field="diabetic_tested", field_required="diabetic_tested_ago"
         )
@@ -70,7 +71,7 @@ class CareStatusBaselineFormValidator(
         ):
             raise forms.ValidationError(
                 {
-                    "hypertensive_tested": (
+                    "hypertensive": (
                         "Patient was screened from an Hypertension clinic, expected `Yes`."
                     ),
                 }
@@ -94,7 +95,7 @@ class CareStatusBaselineFormValidator(
         ):
             raise forms.ValidationError(
                 {
-                    "diabetic_tested": (
+                    "diabetic": (
                         "Patient was screened from a Diabetes clinic, expected `Yes`."
                     ),
                 }
@@ -110,14 +111,19 @@ class CareStatusBaselineFormValidator(
                 "Patient was screened from an NCD clinic, expected to "
                 "have tested for either Hypertension and/or Diabetes."
             )
+
         if (
             self.subject_screening.clinic_type == NCD_CLINIC
+            and (
+                self.cleaned_data.get("diabetic_tested") == YES
+                or self.cleaned_data.get("hypertensive_tested") == YES
+            )
             and self.cleaned_data.get("diabetic") != YES
             and self.cleaned_data.get("hypertensive") != YES
         ):
             raise forms.ValidationError(
                 "Patient was screened from an NCD clinic, expected to "
-                "have been diagnosed with either Hypertension and/or Diabetes."
+                "have a diagnosis for either Hypertension and/or Diabetes."
             )
 
 

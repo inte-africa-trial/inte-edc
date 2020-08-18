@@ -1,4 +1,4 @@
-from edc_constants.constants import NEG, NEVER, NOT_APPLICABLE, OTHER, POS
+from edc_constants.constants import NEG, NEVER, NO, NOT_APPLICABLE, OTHER, POS
 from edc_reportable import (
     MILLIGRAMS_PER_DECILITER,
     MILLIMOLES_PER_LITER,
@@ -55,11 +55,21 @@ MARITAL_STATUS = (
     ("divorced", "Divorced"),
     ("widowed", "Widow / Spinster"),
 )
+
+HOUSEHOLD_YES_NO_CHOICES = (
+    (NO, "No"),
+    ("yes_spouse", "Yes, my spouse"),
+    ("yes_parents", "Yes, one of my parents living with me"),
+    ("yes_relative", "Yes, another relative living with me"),
+)
+
 # *********************************
 ACTIVITY_CHOICES = (
     ("working", "Working"),
     ("studying", "Studying"),
     ("caring_for_children", "Caring for children"),
+    ("house_maintenance", "House maintenance"),
+    ("nothing", "Nothing"),
     (OTHER, "Other, please specify"),
 )
 
@@ -117,6 +127,7 @@ GLUCOSE_UNITS = (
     (MILLIMOLES_PER_LITER, MILLIMOLES_PER_LITER_DISPLAY),
     (NOT_APPLICABLE, "Not applicable"),
 )
+
 
 PAYEE_CHOICES = (
     ("own_cash", "Own cash"),
