@@ -67,9 +67,9 @@ class LossToFollowup(
         blank=False,
     )
 
-    class Meta:
+    class Meta(BaseUuidModel.Meta):
         verbose_name = "Loss to Follow Up"
-        verbose_name = "Loss to Follow Ups"
+        verbose_name_plural = "Loss to Follow Ups"
         indexes = [
             models.Index(
                 fields=["subject_identifier", "action_identifier", "site", "id"]

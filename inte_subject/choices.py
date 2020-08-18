@@ -102,6 +102,7 @@ INFO_SOURCE = (
     ("hospital_notes", "Hospital notes"),
     ("outpatient_cards", "Outpatient cards"),
     ("patient", "Patient"),
+    ("patient_and_outpatient", "Patient, hospital notes and/or outpatient card"),
     ("collateral_history", "Collateral History from relative/guardian"),
     (OTHER, "Other"),
 )

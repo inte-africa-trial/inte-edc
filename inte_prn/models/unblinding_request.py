@@ -68,7 +68,7 @@ class UnblindingRequest(
     def natural_key(self):
         return (self.action_identifier,)
 
-    class Meta:
+    class Meta(BaseUuidModel.Meta):
         verbose_name = "Unblinding Request"
         verbose_name_plural = "Unblinding Requests"
         indexes = [
