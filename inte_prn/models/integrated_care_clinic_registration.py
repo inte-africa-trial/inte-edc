@@ -1,6 +1,7 @@
 from django.db import models
-from edc_model.models import HistoricalRecords
-from edc_model.models.base_uuid_model import BaseUuidModel
+from edc_model.models import date_not_future, HistoricalRecords
+from edc_model.models import BaseUuidModel
+from edc_protocol.validators import date_not_before_study_start
 from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_utils.date import get_utcnow
 
@@ -16,14 +17,17 @@ class IntegratedCareClinicRegistration(SiteModelMixin, BaseUuidModel):
         verbose_name="Report Date and Time", default=get_utcnow
     )
 
-    date_opened = models.DateField(verbose_name="Date integrated clinic opened")
+    date_opened = models.DateField(
+        verbose_name="Date integrated clinic opened",
+        validators=[date_not_future, date_not_before_study_start],
+    )
 
     comment = models.TextField(
         verbose_name=(
             "Please give a brief summary of the opportunities and challenges in getting this clinic open."
         ),
         null=True,
-        blank=False,
+        blank=True,
         help_text="Optional",
     )
 
