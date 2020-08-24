@@ -22,7 +22,9 @@ class TestOtherBaselineData(InteTestCaseMixin, TestCase):
 
         self.subject_visit = self.get_subject_visit()
 
-        baker.make("inte_subject.carestatusbaseline", subject_visit=self.subject_visit)
+        baker.make(
+            "inte_subject.clinicalreviewbaseline", subject_visit=self.subject_visit
+        )
 
         self.data.update(
             subject_visit=self.subject_visit.pk,

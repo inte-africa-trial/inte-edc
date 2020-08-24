@@ -84,17 +84,18 @@ CHILDCARE_CHOICES = (
 )
 
 VISIT_UNSCHEDULED_REASON = (
-    ("patient_unwell_outpatient", "Patient unwell (outpatient)"),
-    ("patient_hospitalised", "Patient hospitalised"),
     ("routine_non_study", "Routine appointment (non-study)"),
-    ("recurrence_symptoms", "Recurrence of symptoms"),
+    ("patient_unwell_outpatient", "Patient unwell"),
+    ("drug_refill", "Drug refill only"),
+    # ("patient_hospitalised", "Patient hospitalised"),
+    # ("recurrence_symptoms", "Recurrence of symptoms"),
     (OTHER, "Other"),
     (NOT_APPLICABLE, "Not applicable"),
 )
 
 VISIT_REASON = (
-    (SCHEDULED, "Scheduled visit"),
-    (UNSCHEDULED, "Unscheduled visit"),
+    (SCHEDULED, "Scheduled visit (study)"),
+    (UNSCHEDULED, "Routine / Unschedule visit (non-study)"),
     (MISSED_VISIT, "Missed visit"),
 )
 

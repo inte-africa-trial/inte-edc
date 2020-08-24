@@ -8,6 +8,7 @@ from edc_sites.models import CurrentSiteManager as BaseCurrentSiteManager
 from edc_sites.models import SiteModelMixin
 from edc_visit_tracking.managers import VisitModelManager
 from edc_visit_tracking.model_mixins import VisitModelMixin
+from inte_lists.models import ClinicServices, HealthServices
 
 from ..choices import INFO_SOURCE, VISIT_UNSCHEDULED_REASON, VISIT_REASON
 
@@ -33,6 +34,10 @@ class SubjectVisit(
         verbose_name="What is the reason for this visit report?",
         max_length=25,
         choices=VISIT_REASON,
+        help_text=(
+            "Only baseline (0m), 6m and 12m are considered "
+            "`scheduled` visits as per the INTE protocol."
+        ),
     )
 
     reason_unscheduled = models.CharField(
@@ -41,6 +46,22 @@ class SubjectVisit(
         choices=VISIT_UNSCHEDULED_REASON,
         default=NOT_APPLICABLE,
     )
+
+    clinic_services = models.ManyToManyField(
+        ClinicServices,
+        verbose_name="Why is the patient at the clinic today?",
+        related_name="visit_clinic_services",
+    )
+
+    clinic_services_other = edc_models.OtherCharField()
+
+    health_services = models.ManyToManyField(
+        HealthServices,
+        verbose_name="Which health service(s) is the patient here for today?",
+        related_name="visit_health_services",
+    )
+
+    clinic_services_other = edc_models.OtherCharField()
 
     info_source = models.CharField(
         verbose_name="What is the main source of this information?",

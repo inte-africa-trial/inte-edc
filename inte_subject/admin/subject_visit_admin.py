@@ -24,8 +24,11 @@ class SubjectVisitAdmin(VisitModelAdminMixin, ModelAdminMixin, SimpleHistoryAdmi
                     "appointment",
                     "report_datetime",
                     "reason",
-                    "reason_unscheduled",
-                    "reason_unscheduled_other",
+                    # "reason_unscheduled",
+                    # "reason_unscheduled_other",
+                    "clinic_services",
+                    "clinic_services_other",
+                    "health_services",
                     "info_source",
                     "info_source_other",
                     "comments",
@@ -41,3 +44,8 @@ class SubjectVisitAdmin(VisitModelAdminMixin, ModelAdminMixin, SimpleHistoryAdmi
         "reason_unscheduled": admin.VERTICAL,
         "info_source": admin.VERTICAL,
     }
+
+    filter_horizontal = [
+        "clinic_services",
+        "health_services",
+    ]

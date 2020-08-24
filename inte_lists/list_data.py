@@ -1,4 +1,3 @@
-from django.conf import settings
 from edc_constants.constants import (
     DEAD,
     DIABETES,
@@ -9,9 +8,9 @@ from edc_constants.constants import (
     OTHER,
     REFILL,
     ROUTINE_VISIT,
+    STUDY_DEFINED_TIMEPOINT,
     UNWELL_VISIT,
 )
-from edc_list_data import PreloadData
 from inte_prn.constants import (
     LATE_EXCLUSION,
     TRANSFERRED,
@@ -120,6 +119,7 @@ list_data = {
         (REFILL, "Drug refill"),
         (ROUTINE_VISIT, "Routine clinic review by a clinician"),
         (UNWELL_VISIT, "Feeling unwell"),
+        (STUDY_DEFINED_TIMEPOINT, "Scheduled study visit (0,6m,12m)"),
         (OTHER, "Other, specify"),
     ],
     "inte_lists.rxmodifications": [
@@ -167,5 +167,4 @@ list_data = {
     ],
 }
 
-if settings.APP_NAME != "inte_lists":
-    preload_data = PreloadData(list_data=list_data)
+# preload_data = PreloadData(list_data=list_data)

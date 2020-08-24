@@ -1,3 +1,5 @@
+import pdb
+
 from django.test import TestCase, tag
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_metadata import REQUIRED
@@ -60,7 +62,7 @@ class TestFamilyHistory(InteTestCaseMixin, TestCase):
         )
         self.assertIn("inte_subject.familyhistory", [o.model for o in crfs.all()])
 
-    @tag("fam")
+    @tag("fam1")
     def test_required_at_next_visit_if_not_completed_previously(self):
         self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
         self.subject_visit.appointment.save()

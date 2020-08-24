@@ -5,32 +5,40 @@ from edc_form_label.form_label_modeladmin_mixin import FormLabelModelAdminMixin
 from edc_model_admin import SimpleHistoryAdmin
 
 from ..admin_site import inte_subject_admin
-from ..forms import CareStatusBaselineForm
-from ..models import CareStatusBaseline
+from ..forms import ClinicalReviewBaselineForm
+from ..models import ClinicalReviewBaseline
 from .modeladmin_mixins import CrfModelAdminMixin
 
 
-@admin.register(CareStatusBaseline, site=inte_subject_admin)
-class CareStatusBaselineAdmin(
+@admin.register(ClinicalReviewBaseline, site=inte_subject_admin)
+class ClinicalReviewBaselineAdmin(
     CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
 ):
 
-    form = CareStatusBaselineForm
+    form = ClinicalReviewBaselineForm
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
-        ("HIV", {"fields": ("hiv_result", "hiv_result_ago",)}),
+        ("HIV", {"fields": ("hiv_tested", "hiv_tested_ago", "hiv_tested_date")}),
         (
             "Diabetes",
-            {"fields": ("diabetic_tested", "diabetic_tested_ago", "diabetic")},
+            {
+                "fields": (
+                    "diabetes_tested",
+                    "diabetes_tested_ago",
+                    "diabetes_tested_date",
+                    "diabetes_dx",
+                )
+            },
         ),
         (
             "Hypertension",
             {
                 "fields": (
-                    "hypertensive_tested",
-                    "hypertensive_tested_ago",
-                    "hypertensive",
+                    "hypertension_tested",
+                    "hypertension_tested_ago",
+                    "hypertension_tested_date",
+                    "hypertension_dx",
                 ),
             },
         ),
@@ -41,11 +49,11 @@ class CareStatusBaselineAdmin(
 
     radio_fields = {
         "crf_status": admin.VERTICAL,
-        "hiv_result": admin.VERTICAL,
-        "diabetic_tested": admin.VERTICAL,
-        "diabetic": admin.VERTICAL,
-        "hypertensive_tested": admin.VERTICAL,
-        "hypertensive": admin.VERTICAL,
+        "hiv_tested": admin.VERTICAL,
+        "diabetes_tested": admin.VERTICAL,
+        "diabetes_dx": admin.VERTICAL,
+        "hypertension_tested": admin.VERTICAL,
+        "hypertension_dx": admin.VERTICAL,
         "health_insurance": admin.VERTICAL,
         "patient_club": admin.VERTICAL,
     }

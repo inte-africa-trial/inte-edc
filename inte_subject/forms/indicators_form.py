@@ -2,17 +2,29 @@ from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from edc_action_item.forms.action_item_form_mixin import ActionItemFormMixin
 from edc_constants.constants import NO, NOT_REQUIRED, YES
-from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
 from inte_subject.models import HypertensionInitialReview
+from inte_visit_schedule.is_baseline import is_baseline
 
 from ..models import Indicators
-from .care_status_modelform_mixin import CareStatusRequiredModelFormMixin
-from .mixins import BPFormValidatorMixin
+from .mixins import BPFormValidatorMixin, CrfFormValidatorMixin, CrfModelFormMixin
 
 
-class IndicatorsFormValidator(BPFormValidatorMixin, FormValidator):
+class IndicatorsFormValidator(
+    BPFormValidatorMixin, CrfFormValidatorMixin, FormValidator
+):
     def clean(self):
+
+        self.required_if_true(
+            is_baseline(self.cleaned_data.get("subject_visit")),
+            field_required="weight",
+            inverse=False,
+        )
+        self.required_if_true(
+            is_baseline(self.cleaned_data.get("subject_visit")),
+            field_required="height",
+            inverse=False,
+        )
         self.required_if(YES, field="r1_taken", field_required="sys_blood_pressure_r1")
         self.required_if(NO, field="r1_taken", field_required="r1_reason_not_taken")
         self.required_if(YES, field="r1_taken", field_required="dia_blood_pressure_r1")
@@ -47,10 +59,7 @@ class IndicatorsFormValidator(BPFormValidatorMixin, FormValidator):
 
 
 class IndicatorsForm(
-    CareStatusRequiredModelFormMixin,
-    CrfModelFormMixin,
-    ActionItemFormMixin,
-    forms.ModelForm,
+    CrfModelFormMixin, ActionItemFormMixin, forms.ModelForm,
 ):
     form_validator_cls = IndicatorsFormValidator
 

@@ -5,11 +5,19 @@ site_reference_configs.register_from_visit_schedule(
 )
 
 configs = {
-    "inte_subject.carestatusbaseline": ["hiv_result", "diabetic", "hypertensive"],
-    "inte_subject.reasonforvisit": [
-        "refill_hypertension",
-        "refill_diabetes",
+    "inte_subject.clinicalreviewbaseline": [
+        "hiv_tested",
+        "diabetes_tested",
+        "hypertension_tested",
+        "hiv_dx",
+        "diabetes_dx",
+        "hypertension_dx",
+    ],
+    "inte_subject.clinicalreview": ["hiv_dx", "diabetes_dx", "hypertension_dx",],
+    "inte_subject.medications": [
         "refill_hiv",
+        "refill_diabetes",
+        "refill_hypertension",
     ],
 }
 

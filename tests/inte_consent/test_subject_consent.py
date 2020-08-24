@@ -10,7 +10,7 @@ from inte_consent.models import InteSubjectConsentError
 from inte_screening.constants import HIV_CLINIC, NCD_CLINIC
 from pytz import timezone
 
-from .inte_test_case_mixin import InteTestCaseMixin
+from ..inte_test_case_mixin import InteTestCaseMixin
 
 
 def get_now():
@@ -41,9 +41,10 @@ class TestSubjectConsent(InteTestCaseMixin, TestCase):
         validator = SubjectConsentFormValidator(cleaned_data=cleaned_data,)
         validator.clean()
 
+    @tag("1")
     def test_form_validator_consent_before_eligibility_datetime(self):
         consent_datetime = self.subject_screening.eligibility_datetime - relativedelta(
-            minutes=1
+            minutes=10
         )
         consent_datetime = consent_datetime.astimezone(timezone("Africa/Kampala"))
         cleaned_data = dict(
@@ -62,6 +63,7 @@ class TestSubjectConsent(InteTestCaseMixin, TestCase):
             validator.clean()
         self.assertIn("consent_datetime", str(cm.exception))
 
+    @tag("1")
     def test_form_validator_consent_after_eligibility_datetime(self):
         consent_datetime = self.subject_screening.eligibility_datetime + relativedelta(
             minutes=1

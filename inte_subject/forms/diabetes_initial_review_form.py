@@ -1,17 +1,22 @@
 from django import forms
-from edc_action_item.forms.action_item_form_mixin import ActionItemFormMixin
 from edc_constants.constants import YES
-from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
 
 from ..constants import INSULIN, DRUGS
 from ..models import DiabetesInitialReview
-from .care_status_modelform_mixin import CareStatusRequiredModelFormMixin
-from .mixins import EstimatedDateFromAgoFormMixin, GlucoseFormValidatorMixin
+from .mixins import (
+    EstimatedDateFromAgoFormMixin,
+    GlucoseFormValidatorMixin,
+    CrfModelFormMixin,
+    CrfFormValidatorMixin,
+)
 
 
 class DiabetesInitialReviewFormValidator(
-    GlucoseFormValidatorMixin, EstimatedDateFromAgoFormMixin, FormValidator
+    GlucoseFormValidatorMixin,
+    EstimatedDateFromAgoFormMixin,
+    CrfFormValidatorMixin,
+    FormValidator,
 ):
     def clean(self):
         self.required_if(
@@ -30,12 +35,7 @@ class DiabetesInitialReviewFormValidator(
         self.validate_glucose_test()
 
 
-class DiabetesInitialReviewForm(
-    CareStatusRequiredModelFormMixin,
-    CrfModelFormMixin,
-    ActionItemFormMixin,
-    forms.ModelForm,
-):
+class DiabetesInitialReviewForm(CrfModelFormMixin, forms.ModelForm):
     form_validator_cls = DiabetesInitialReviewFormValidator
 
     class Meta:

@@ -1,3 +1,8 @@
+from .clinical_review_model_mixins import (
+    ClinicalReviewHivModelMixin,
+    ClinicalReviewHypertensionModelMixin,
+    ClinicalReviewDiabetesModelMixin,
+)
 from .crf_model_mixin import CrfModelMixin
 from .drug_refill_model_mixin import DrugRefillModelMixin
 from .drug_supply_model_mixin import DrugSupplyModelMixin

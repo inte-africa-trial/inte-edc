@@ -1,9 +1,10 @@
+from django import forms
 from django.test import TestCase, tag
 from edc_appointment.constants import INCOMPLETE_APPT
-from edc_metadata import REQUIRED
-from edc_metadata.models import CrfMetadata
+from edc_constants.constants import INCOMPLETE
 from edc_utils import get_utcnow
 from inte_screening.constants import HIV_CLINIC
+from inte_subject.forms.indicators_form import IndicatorsFormValidator
 from tests.inte_test_case_mixin import InteTestCaseMixin
 from model_bakery import baker
 
@@ -21,11 +22,65 @@ class TestIndicators(InteTestCaseMixin, TestCase):
             subject_screening=self.subject_screening,
             subject_consent=self.subject_consent,
         )
+        baker.make(
+            "inte_subject.clinicalreviewbaseline", subject_visit=self.subject_visit
+        )
 
     @tag("fam")
     def test_weight_height_required_at_baseline(self):
-        self.fail("see tests")
+        data = {
+            "subject_visit": self.subject_visit,
+            "report_datetime": self.subject_visit.report_datetime,
+            "crf_status": INCOMPLETE,
+            "weight": None,
+            "height": None,
+        }
+        form_validator = IndicatorsFormValidator(cleaned_data=data)
+        try:
+            form_validator.validate()
+        except forms.ValidationError:
+            pass
+        self.assertIn("weight", form_validator._errors)
+
+        data.update({"weight": 65, "height": None})
+        form_validator = IndicatorsFormValidator(cleaned_data=data)
+        try:
+            form_validator.validate()
+        except forms.ValidationError:
+            pass
+        self.assertIn("height", form_validator._errors)
+
+        data.update({"weight": 65, "height": 120})
+        form_validator = IndicatorsFormValidator(cleaned_data=data)
+        try:
+            form_validator.validate()
+        except forms.ValidationError:
+            pass
+        self.assertNotIn("weight", form_validator._errors)
+        self.assertNotIn("height", form_validator._errors)
 
     @tag("fam")
     def test_weight_height_not_required_if_not_baseline(self):
-        self.fail("see tests")
+        self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
+        self.subject_visit.appointment.save()
+        self.subject_visit.appointment.refresh_from_db()
+
+        subject_visit = self.get_subject_visit(
+            subject_screening=self.subject_screening,
+            subject_consent=self.subject_consent,
+            visit_code=self.subject_visit.appointment.next.visit_code,
+        )
+        data = {
+            "subject_visit": subject_visit,
+            "report_datetime": subject_visit.report_datetime,
+            "crf_status": INCOMPLETE,
+            "weight": None,
+            "height": None,
+        }
+        form_validator = IndicatorsFormValidator(cleaned_data=data)
+        try:
+            form_validator.validate()
+        except forms.ValidationError:
+            pass
+        self.assertNotIn("weight", form_validator._errors)
+        self.assertNotIn("height", form_validator._errors)

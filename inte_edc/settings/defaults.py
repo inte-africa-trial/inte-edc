@@ -2,6 +2,7 @@ import environ
 import os
 import sys
 
+from edc_appointment.constants import SCHEDULED_APPT, UNSCHEDULED_APPT
 from edc_utils import get_datetime_from_env
 from pathlib import Path
 
@@ -373,7 +374,11 @@ DJANGO_LOG_FOLDER = env.str("DJANGO_LOG_FOLDER")
 # edc_adverse_event
 ADVERSE_EVENT_ADMIN_SITE = env.str("EDC_ADVERSE_EVENT_ADMIN_SITE")
 ADVERSE_EVENT_APP_LABEL = env.str("EDC_ADVERSE_EVENT_APP_LABEL")
-
+# edc_appointment
+EDC_APPOINTMENT_APPT_REASON = (
+    (SCHEDULED_APPT, "Scheduled visit (study)"),
+    (UNSCHEDULED_APPT, "Routine / Unscheduled (non-study)"),
+)
 # edc_data_manager
 DATA_DICTIONARY_APP_LABELS = [
     "inte_consent",

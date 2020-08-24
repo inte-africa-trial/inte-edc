@@ -31,7 +31,9 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             subject_screening=self.subject_screening,
             subject_consent=self.subject_consent,
         )
-        baker.make("inte_subject.carestatusbaseline", subject_visit=self.subject_visit)
+        baker.make(
+            "inte_subject.clinicalreviewbaseline", subject_visit=self.subject_visit
+        )
 
     @tag("he")
     def test_form_validator_education(self):
@@ -222,7 +224,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             pass
         self.assertDictEqual({}, form_validator._errors)
 
-    @tag("he")
+    @tag("1")
     def test_form_validator_recv_drugs_all_no(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,

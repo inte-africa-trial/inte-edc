@@ -1,10 +1,8 @@
 from django import forms
-from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
 
 from ..models import FamilyHistory
-from .care_status_modelform_mixin import CareStatusRequiredModelFormMixin
-from .crf_form_validator_mixin import CrfFormValidatorMixin
+from .mixins import CrfModelFormMixin, CrfFormValidatorMixin
 
 
 class FamilyHistoryFormValidator(CrfFormValidatorMixin, FormValidator):
@@ -12,9 +10,7 @@ class FamilyHistoryFormValidator(CrfFormValidatorMixin, FormValidator):
         pass
 
 
-class FamilyHistoryForm(
-    CareStatusRequiredModelFormMixin, CrfModelFormMixin, forms.ModelForm
-):
+class FamilyHistoryForm(CrfModelFormMixin, forms.ModelForm):
 
     form_validator_cls = FamilyHistoryFormValidator
 

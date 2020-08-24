@@ -4,6 +4,11 @@ from edc_model.models import BaseUuidModel
 from edc_protocol.validators import date_not_before_study_start
 from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_utils.date import get_utcnow
+from inte_sites.is_intervention_site import is_intervention_site
+
+
+class IntegratedCareClinicRegistrationError(Exception):
+    pass
 
 
 class IntegratedCareClinicRegistrationManager(models.Manager):
@@ -39,6 +44,13 @@ class IntegratedCareClinicRegistration(SiteModelMixin, BaseUuidModel):
 
     def __str__(self):
         return f"{self.site.name} opened on {self.date_opened}"
+
+    def save(self, *args, **kwargs):
+        if not is_intervention_site():
+            raise IntegratedCareClinicRegistrationError(
+                "Registyration failed. This is not an intervention site."
+            )
+        super().save(*args, **kwargs)
 
     def natural_key(self):
         return (self.site.name,)

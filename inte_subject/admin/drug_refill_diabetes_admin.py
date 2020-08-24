@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 from django_audit_fields.admin import audit_fieldset_tuple
 from edc_crf.admin import crf_status_fieldset_tuple
 from edc_form_label.form_label_modeladmin_mixin import FormLabelModelAdminMixin
@@ -31,6 +32,10 @@ class DrugRefillDiabetesAdmin(
     CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
 ):
     form = DrugRefillDiabetesForm
+
+    additional_instructions = mark_safe(
+        '<span style="color:orange">Note: Medications CRF must be completed first.</span>'
+    )
 
     inlines = [DrugSupplyDiabetesInline]
 

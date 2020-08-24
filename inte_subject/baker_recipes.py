@@ -6,7 +6,7 @@ from edc_visit_tracking.constants import SCHEDULED
 from faker import Faker
 from inte_consent.models import SubjectConsent
 from inte_consent.models import SubjectReconsent
-from inte_subject.models import CareStatusBaseline, HealthEconomicsRevised
+from inte_subject.models import ClinicalReviewBaseline, HealthEconomicsRevised
 from model_bakery.recipe import Recipe, seq
 
 from .models import SubjectRequisition
@@ -59,16 +59,16 @@ healtheconomicsrevised = Recipe(
     HealthEconomicsRevised, site=Site.objects.get_current(),
 )
 
-carestatusbaseline = Recipe(
-    CareStatusBaseline,
+clinicalreviewbaseline = Recipe(
+    ClinicalReviewBaseline,
     site=Site.objects.get_current(),
-    hiv_result=POS,
-    hiv_result_ago="5y",
-    hypertensive_tested=NO,
-    hypertensive=NOT_APPLICABLE,
-    diabetic_tested=NO,
-    diabetic_tested_ago=None,
-    diabetic=NOT_APPLICABLE,
+    hiv=POS,
+    hiv_tested_ago="5y",
+    hypertension_tested=NO,
+    hypertension=NOT_APPLICABLE,
+    diabetes_tested=NO,
+    diabetes_tested_ago=None,
+    diabetes=NOT_APPLICABLE,
     health_insurance=YES,
     patient_club=YES,
 )

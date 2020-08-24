@@ -1,16 +1,18 @@
 from django import forms
 from edc_action_item.forms.action_item_form_mixin import ActionItemFormMixin
-from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
 
 from ..constants import DRUGS
 from ..models import HypertensionInitialReview
-from .care_status_modelform_mixin import CareStatusRequiredModelFormMixin
-from .mixins import EstimatedDateFromAgoFormMixin
+from .mixins import (
+    EstimatedDateFromAgoFormMixin,
+    CrfModelFormMixin,
+    CrfFormValidatorMixin,
+)
 
 
 class HypertensionInitialReviewFormValidator(
-    EstimatedDateFromAgoFormMixin, FormValidator
+    EstimatedDateFromAgoFormMixin, CrfFormValidatorMixin, FormValidator
 ):
     def clean(self):
         self.required_if(DRUGS, field="managed_by", field_required="med_start_ago")
@@ -24,10 +26,7 @@ class HypertensionInitialReviewFormValidator(
 
 
 class HypertensionInitialReviewForm(
-    CareStatusRequiredModelFormMixin,
-    CrfModelFormMixin,
-    ActionItemFormMixin,
-    forms.ModelForm,
+    CrfModelFormMixin, ActionItemFormMixin, forms.ModelForm,
 ):
     form_validator_cls = HypertensionInitialReviewFormValidator
 

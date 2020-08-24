@@ -1,18 +1,21 @@
 from django import forms
-from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
 
 from ..models import DrugRefillDiabetes
-from .mixins import DrugRefillFormValidatorMixin
+from .mixins import (
+    DrugRefillFormValidatorMixin,
+    CrfModelFormMixin,
+    CrfFormValidatorMixin,
+)
 
 
-class DrugRefillDiabetesFormValidator(DrugRefillFormValidatorMixin, FormValidator):
+class DrugRefillDiabetesFormValidator(
+    DrugRefillFormValidatorMixin, CrfFormValidatorMixin, FormValidator
+):
     pass
 
 
-class DrugRefillDiabetesForm(
-    CrfModelFormMixin, forms.ModelForm,
-):
+class DrugRefillDiabetesForm(CrfModelFormMixin, forms.ModelForm):
     form_validator_cls = DrugRefillDiabetesFormValidator
 
     class Meta:

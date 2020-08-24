@@ -1,5 +1,4 @@
 from django import forms
-from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
 from inte_consent.models import SubjectConsent
 from inte_screening.constants import (
@@ -15,7 +14,7 @@ from ..models import (
     DiabetesInitialReview,
     HypertensionInitialReview,
 )
-from .crf_form_validator_mixin import CrfFormValidatorMixin
+from .mixins import CrfFormValidatorMixin, CrfModelFormMixin
 
 
 class NextAppointmentValidator(CrfFormValidatorMixin, FormValidator):

@@ -119,7 +119,7 @@ class HealthEconomics(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     # removed
-    diabetic_expenditure_month = models.IntegerField(
+    diabetes_expenditure_month = models.IntegerField(
         verbose_name="If YES, how much did you spend on Diabetic drugs",
         help_text="in Shilling",
         null=True,
@@ -128,21 +128,21 @@ class HealthEconomics(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     # removed
-    diabetic_payee = models.CharField(
+    diabetes_payee = models.CharField(
         verbose_name="If YES, how did you pay or who paid for these drugs",
         max_length=15,
         choices=PAYEE_CHOICES,
         # editable=False,
     )
 
-    hypertensive_expenditure_month = models.IntegerField(
+    hypertension_expenditure_month = models.IntegerField(
         verbose_name="If YES, how much did you spend on Hypertensive drugs",
         help_text="in Shilling",
         null=True,
         blank=True,
     )
 
-    hypertensive_payee = models.CharField(
+    hypertension_payee = models.CharField(
         verbose_name="If YES, how did you pay or who paid for these drugs",
         max_length=15,
         choices=PAYEE_CHOICES,

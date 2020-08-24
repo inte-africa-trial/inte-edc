@@ -1,12 +1,10 @@
 from django import forms
 from edc_constants.constants import FREE_OF_CHARGE, YES, NO
-from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
 from inte_lists.models import DrugPaySources
 
 from ..models import HealthEconomicsRevised
-from .care_status_modelform_mixin import CareStatusRequiredModelFormMixin
-from .crf_form_validator_mixin import CrfFormValidatorMixin
+from .mixins import CrfFormValidatorMixin, CrfModelFormMixin
 
 
 class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
@@ -144,9 +142,7 @@ class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
         )
 
 
-class HealthEconomicsRevisedForm(
-    CareStatusRequiredModelFormMixin, CrfModelFormMixin, forms.ModelForm
-):
+class HealthEconomicsRevisedForm(CrfModelFormMixin, forms.ModelForm):
 
     form_validator_cls = HealthEconomicsRevisedFormValidator
 

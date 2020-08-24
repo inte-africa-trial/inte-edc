@@ -17,7 +17,6 @@ class IntegratedCareClinicRegistrationForm(
 
     form_validator_cls = IntegratedCareClinicRegistrationFormValidator
 
-    @property
     def clean(self):
         cleaned_data = super().clean()
         if not is_intervention_site():

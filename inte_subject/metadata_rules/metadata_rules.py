@@ -1,4 +1,4 @@
-from edc_constants.constants import POS, YES
+from edc_constants.constants import YES
 from edc_metadata import REQUIRED, NOT_REQUIRED
 from edc_metadata_rules import CrfRule, CrfRuleGroup, register, P
 
@@ -8,111 +8,61 @@ pc = Predicates()
 
 
 @register()
-class CareStatusBaselineRuleGroup(CrfRuleGroup):
+class ClinicalReviewBaselineRuleGroup(CrfRuleGroup):
 
     hiv = CrfRule(
-        predicate=P("hiv_result", "eq", POS),
+        predicate=P("hiv_dx", "eq", YES),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
         target_models=["hivinitialreview"],
     )
 
-    diabetic = CrfRule(
-        predicate=P("diabetic", "eq", YES),
+    diabetes = CrfRule(
+        predicate=P("diabetes_dx", "eq", YES),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
         target_models=["diabetesinitialreview"],
     )
 
-    hypertensive = CrfRule(
-        predicate=P("hypertensive", "eq", YES),
+    hypertension = CrfRule(
+        predicate=P("hypertension_dx", "eq", YES),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
         target_models=["hypertensioninitialreview"],
     )
 
-    refill_hiv = CrfRule(
-        predicate=P("hiv_result", "eq", POS),
-        consequence=REQUIRED,
-        alternative=NOT_REQUIRED,
-        target_models=["drugrefillhiv"],
-    )
-
-    refill_diabetic = CrfRule(
-        predicate=P("diabetic", "eq", YES),
-        consequence=REQUIRED,
-        alternative=NOT_REQUIRED,
-        target_models=["drugrefilldiabetes"],
-    )
-
-    refill_hypertensive = CrfRule(
-        predicate=P("hypertensive", "eq", YES),
-        consequence=REQUIRED,
-        alternative=NOT_REQUIRED,
-        target_models=["drugrefillhypertension"],
-    )
-
     class Meta:
         app_label = "inte_subject"
-        source_model = "inte_subject.carestatusbaseline"
+        source_model = "inte_subject.clinicalreviewbaseline"
 
 
 @register()
-class InvestigationsRuleGroup(CrfRuleGroup):
+class ClinicalReviewRuleGroup(CrfRuleGroup):
 
     hiv = CrfRule(
-        predicate=P("hiv_tested", "eq", YES),
+        predicate=P("hiv_dx", "eq", YES),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_models=["hivreview"],
+        target_models=["hivinitialreview"],
     )
 
-    diabetic = CrfRule(
-        predicate=P("hypertension_tested", "eq", YES),
+    diabetes = CrfRule(
+        predicate=P("diabetes_dx", "eq", YES),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_models=["diabetesreview"],
+        target_models=["diabetesinitialreview"],
     )
 
-    hypertensive = CrfRule(
-        predicate=P("diabetic_tested", "eq", YES),
+    hypertension = CrfRule(
+        predicate=P("hypertension_dx", "eq", YES),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_models=["hypertensionreview"],
+        target_models=["hypertensioninitialreview"],
     )
 
     class Meta:
         app_label = "inte_subject"
-        source_model = "inte_subject.investigations"
-
-
-@register()
-class ReasonForVisitRuleGroup(CrfRuleGroup):
-
-    hiv = CrfRule(
-        predicate=P("refill_hiv", "eq", YES),
-        consequence=REQUIRED,
-        alternative=NOT_REQUIRED,
-        target_models=["drugrefillhiv"],
-    )
-
-    diabetic = CrfRule(
-        predicate=P("refill_diabetes", "eq", YES),
-        consequence=REQUIRED,
-        alternative=NOT_REQUIRED,
-        target_models=["drugrefilldiabetes"],
-    )
-
-    hypertensive = CrfRule(
-        predicate=P("refill_hypertension", "eq", YES),
-        consequence=REQUIRED,
-        alternative=NOT_REQUIRED,
-        target_models=["drugrefillhypertension"],
-    )
-
-    class Meta:
-        app_label = "inte_subject"
-        source_model = "inte_subject.reasonforvisit"
+        source_model = "inte_subject.clinicalreview"
 
 
 @register()
@@ -143,3 +93,32 @@ class FamilyHistoryRuleGroup(CrfRuleGroup):
     class Meta:
         app_label = "inte_subject"
         source_model = "inte_subject.subjectvisit"
+
+
+@register()
+class MedicationsRuleGroup(CrfRuleGroup):
+
+    refill_hiv = CrfRule(
+        predicate=P("refill_hiv", "eq", YES),
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["drugrefillhiv"],
+    )
+
+    refill_diabetes = CrfRule(
+        predicate=P("refill_diabetes", "eq", YES),
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["drugrefilldiabetes"],
+    )
+
+    refill_hypertension = CrfRule(
+        predicate=P("refill_hypertension", "eq", YES),
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["drugrefillhypertension"],
+    )
+
+    class Meta:
+        app_label = "inte_subject"
+        source_model = "inte_subject.medications"
