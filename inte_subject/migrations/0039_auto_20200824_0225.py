@@ -11,14 +11,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameField(
-            model_name="clinicalreviewbaseline", old_name="hiv", new_name="hiv_tested",
-        ),
-        migrations.RenameField(
-            model_name="historicalclinicalreviewbaseline",
-            old_name="hiv_result",
-            new_name="hiv_tested",
-        ),
         migrations.AlterField(
             model_name="clinicalreviewbaseline",
             name="diabetes_tested_estimated_datetime",

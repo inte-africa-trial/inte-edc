@@ -12,7 +12,9 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RenameField(
-            model_name="clinicalreviewbaseline", old_name="hiv_result", new_name="hiv",
+            model_name="clinicalreviewbaseline",
+            old_name="hiv_result",
+            new_name="hiv_tested",
         ),
         migrations.RenameField(
             model_name="clinicalreviewbaseline",
@@ -33,6 +35,11 @@ class Migration(migrations.Migration):
             model_name="clinicalreviewbaseline",
             old_name="hiv_result_estimated_datetime",
             new_name="hiv_tested_estimated_datetime",
+        ),
+        migrations.RenameField(
+            model_name="historicalclinicalreviewbaseline",
+            old_name="hiv_result",
+            new_name="hiv_tested",
         ),
         migrations.RenameField(
             model_name="historicalclinicalreviewbaseline",
@@ -69,20 +76,6 @@ class Migration(migrations.Migration):
                 blank=True,
                 null=True,
                 validators=[edc_model.models.validators.date.date_not_future],
-            ),
-        ),
-        migrations.AlterField(
-            model_name="historicalclinicalreviewbaseline",
-            name="hiv",
-            field=models.CharField(
-                choices=[
-                    ("POS", "Positive"),
-                    ("NEG", "Negative"),
-                    ("NEVER", "Never tested for HIV"),
-                ],
-                help_text="If positive, complete form `Hiv Initial Review`",
-                max_length=15,
-                verbose_name="What was the result of the patient's most recent HIV test",
             ),
         ),
         migrations.AlterField(
