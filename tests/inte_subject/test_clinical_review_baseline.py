@@ -19,7 +19,7 @@ def get_now():
     return get_utcnow().astimezone(timezone("Africa/Kampala"))
 
 
-class TestBaselineClinicalReview(InteTestCaseMixin, TestCase):
+class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
         # hiv clinic
