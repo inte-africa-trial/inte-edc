@@ -13,7 +13,7 @@ configs = {
         "diabetes_dx",
         "hypertension_dx",
     ],
-    "inte_subject.clinicalreview": ["hiv_dx", "diabetes_dx", "hypertension_dx",],
+    "inte_subject.clinicalreview": ["hiv_dx", "diabetes_dx", "hypertension_dx"],
     "inte_subject.medications": [
         "refill_hiv",
         "refill_diabetes",

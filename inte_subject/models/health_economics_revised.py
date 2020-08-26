@@ -264,7 +264,10 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
     #################################################
     # Loss of Productivity and Earnings
     missed_routine_activities = models.CharField(
-        verbose_name="What would you be doing if you had not come to the health facility today?",
+        verbose_name=(
+            "What would you be doing if you had not "
+            "come to the health facility today?"
+        ),
         max_length=25,
         choices=ACTIVITY_CHOICES,
     )
@@ -357,7 +360,10 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     food_cost = models.IntegerField(
-        verbose_name="How much did you spend on food while you were at the health care faility today?",
+        verbose_name=(
+            "How much did you spend on food while "
+            "you were at the health care faility today?"
+        ),
         validators=[MinValueValidator(0)],
         help_text="In local currency",
     )
@@ -378,12 +384,17 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
     rx_diabetes_paid_today = models.ManyToManyField(
         DrugPaySources,
         related_name="+",
-        verbose_name="If YES, received raised blood sugar (diabetes) drugs, how were these paid for?",
+        verbose_name=(
+            "If YES, received raised blood sugar "
+            "(diabetes) drugs, how were these paid for?"
+        ),
         blank=True,
     )
 
     rx_diabetes_cost_today = models.IntegerField(
-        verbose_name="If not free, how much did you pay for raised blood sugar (diabetes) drugs?",
+        verbose_name=(
+            "If not free, how much did you pay for raised blood sugar (diabetes) drugs?"
+        ),
         validators=[MinValueValidator(0)],
         null=True,
         blank=True,
@@ -399,12 +410,17 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
     rx_hypertension_paid_today = models.ManyToManyField(
         DrugPaySources,
         related_name="+",
-        verbose_name="If YES, received high blood pressure (Hypertension) drugs, how were these paid for?",
+        verbose_name=(
+            "If YES, received high blood pressure "
+            "(Hypertension) drugs, how were these paid for?"
+        ),
         blank=True,
     )
 
     rx_hypertension_cost_today = models.IntegerField(
-        verbose_name="If not free, how much did you pay for high blood pressure (Hypertension) drugs?",
+        verbose_name=(
+            "If not free, how much did you pay for high blood pressure (Hypertension) drugs?"
+        ),
         validators=[MinValueValidator(0)],
         null=True,
         blank=True,

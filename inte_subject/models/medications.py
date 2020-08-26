@@ -13,7 +13,10 @@ class Medications(CrfModelMixin, edc_models.BaseUuidModel):
         max_length=25,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
-        help_text="Select `not applicable` if subject has not been prescribed medication for HIV infection.",
+        help_text=(
+            "Select `not applicable` if subject has not "
+            "been prescribed medication for HIV infection."
+        ),
     )
 
     refill_diabetes = models.CharField(
@@ -21,7 +24,10 @@ class Medications(CrfModelMixin, edc_models.BaseUuidModel):
         max_length=25,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
-        help_text="Select `not applicable` if subject has not been prescribed medication for Diabetes.",
+        help_text=(
+            "Select `not applicable` if subject has not "
+            "been prescribed medication for Diabetes."
+        ),
     )
 
     refill_hypertension = models.CharField(
@@ -29,7 +35,10 @@ class Medications(CrfModelMixin, edc_models.BaseUuidModel):
         max_length=25,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
-        help_text="Select `not applicable` if subject has not been prescribed medication for Hypertension.",
+        help_text=(
+            "Select `not applicable` if subject has not "
+            "been prescribed medication for Hypertension."
+        ),
     )
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
