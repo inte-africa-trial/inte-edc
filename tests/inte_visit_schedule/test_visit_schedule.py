@@ -38,20 +38,14 @@ class TestVisitSchedule(InteTestCaseMixin, TestCase):
         )
 
         subject_visit = self.get_next_subject_visit(
-            subject_screening=self.subject_screening,
-            subject_consent=self.subject_consent,
-            subject_visit=subject_visit,
-            reason=SCHEDULED,
+            subject_visit=subject_visit, reason=SCHEDULED,
         )
 
         self.assertEqual("1060", subject_visit.appointment.visit_code)
         self.assertEqual(0, subject_visit.appointment.visit_code_sequence)
 
         subject_visit = self.get_next_subject_visit(
-            subject_screening=self.subject_screening,
-            subject_consent=self.subject_consent,
-            subject_visit=subject_visit,
-            reason=SCHEDULED,
+            subject_visit=subject_visit, reason=SCHEDULED,
         )
 
         self.assertEqual("1120", subject_visit.appointment.visit_code)
@@ -67,29 +61,20 @@ class TestVisitSchedule(InteTestCaseMixin, TestCase):
         )
 
         subject_visit = self.get_next_subject_visit(
-            subject_screening=self.subject_screening,
-            subject_consent=self.subject_consent,
-            subject_visit=subject_visit,
-            reason=UNSCHEDULED,
+            subject_visit=subject_visit, reason=UNSCHEDULED,
         )
         self.assertEqual("1000", subject_visit.appointment.visit_code)
         self.assertEqual(1, subject_visit.appointment.visit_code_sequence)
 
         subject_visit = self.get_next_subject_visit(
-            subject_screening=self.subject_screening,
-            subject_consent=self.subject_consent,
-            subject_visit=subject_visit,
-            reason=UNSCHEDULED,
+            subject_visit=subject_visit, reason=UNSCHEDULED,
         )
 
         self.assertEqual("1000", subject_visit.appointment.visit_code)
         self.assertEqual(2, subject_visit.appointment.visit_code_sequence)
 
         subject_visit = self.get_next_subject_visit(
-            subject_screening=self.subject_screening,
-            subject_consent=self.subject_consent,
-            subject_visit=subject_visit,
-            reason=SCHEDULED,
+            subject_visit=subject_visit, reason=SCHEDULED,
         )
 
         self.assertEqual("1060", subject_visit.appointment.visit_code)

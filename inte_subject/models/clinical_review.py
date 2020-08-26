@@ -15,7 +15,10 @@ class ClinicalReview(CrfModelMixin, edc_models.BaseUuidModel):
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
-        help_text="Select `not applicable` if previously diagnosed. `Since last seen` includes today.",
+        help_text=(
+            "Select `not applicable` if previously diagnosed. "
+            "`Since last seen` includes today."
+        ),
     )
 
     hiv_test_date = models.DateField(
@@ -45,7 +48,10 @@ class ClinicalReview(CrfModelMixin, edc_models.BaseUuidModel):
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
-        help_text="Select `not applicable` if previously diagnosed. `Since last seen` includes today.",
+        help_text=(
+            "Select `not applicable` if previously "
+            "diagnosed. `Since last seen` includes today."
+        ),
     )
 
     hypertension_test_date = models.DateField(
@@ -75,7 +81,10 @@ class ClinicalReview(CrfModelMixin, edc_models.BaseUuidModel):
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
-        help_text="Select `not applicable` if previously diagnosed. `Since last seen` includes today.",
+        help_text=(
+            "Select `not applicable` if previously diagnosed. "
+            "`Since last seen` includes today."
+        ),
     )
 
     diabetes_test_date = models.DateField(

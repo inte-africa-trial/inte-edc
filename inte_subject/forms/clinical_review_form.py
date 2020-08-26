@@ -9,10 +9,9 @@ from .mixins import (
 )
 
 
-class ClinicalReviewFormValidator(
-    CrfFormValidatorMixin, EstimatedDateFromAgoFormMixin, FormValidator
-):
-    pass
+class ClinicalReviewFormValidator(CrfFormValidatorMixin, FormValidator):
+    def clean(self):
+        pass
 
 
 class ClinicalReviewForm(CrfModelFormMixin, forms.ModelForm):
