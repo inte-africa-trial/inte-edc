@@ -29,7 +29,8 @@ class IntegratedCareClinicRegistration(SiteModelMixin, BaseUuidModel):
 
     comment = models.TextField(
         verbose_name=(
-            "Please give a brief summary of the opportunities and challenges in getting this clinic open."
+            "Please give a brief summary of the opportunities "
+            "and challenges in getting this clinic open."
         ),
         null=True,
         blank=True,

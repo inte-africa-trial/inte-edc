@@ -34,7 +34,10 @@ class MedicationsFormValidator(CrfFormValidatorMixin, FormValidator):
                 )
                 raise forms.ValidationError(
                     {
-                        fld: f"Invalid. Subject was not diagnosed with {dx} by {formatted_date}."
+                        fld: (
+                            "Invalid. Subject was not diagnosed with "
+                            f"{dx} by {formatted_date}."
+                        )
                     }
                 )
 
