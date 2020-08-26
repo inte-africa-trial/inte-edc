@@ -50,7 +50,7 @@ class Visit(BaseVisit):
 # schedule for new participants
 schedule_hiv = Schedule(
     name=SCHEDULE_HIV,
-    verbose_name="Day 1 to Month 12 HIV Follow-up",
+    verbose_name="Day 1 to Month 12",
     onschedule_model="inte_prn.onschedulehiv",
     offschedule_model="inte_prn.endofstudy",
     consent_model="inte_consent.subjectconsent",
@@ -59,7 +59,7 @@ schedule_hiv = Schedule(
 
 schedule_ncd = Schedule(
     name=SCHEDULE_NCD,
-    verbose_name="Day 1 to Month 12 NCD Follow-up",
+    verbose_name="Day 1 to Month 12",
     onschedule_model="inte_prn.onschedulencd",
     offschedule_model="inte_prn.endofstudy",
     consent_model="inte_consent.subjectconsent",
