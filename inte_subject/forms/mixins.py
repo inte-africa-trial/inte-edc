@@ -12,7 +12,7 @@ from inte_subject.models import Medications
 from ..models import ClinicalReviewBaseline
 
 
-def clinical_review_exists_or_raise(form, model_cls=None):
+def model_exists_or_raise(form, model_cls=None):
     subject_identifier = form.cleaned_data.get("subject_visit").subject_identifier
     try:
         model_cls.objects.get(subject_visit__subject_identifier=subject_identifier)
@@ -62,7 +62,7 @@ class ClinicalReviewBaselineRequiredModelFormMixin:
         if self._meta.model != ClinicalReviewBaseline and self.cleaned_data.get(
             "subject_visit"
         ):
-            clinical_review_exists_or_raise(self, model_cls=ClinicalReviewBaseline)
+            model_exists_or_raise(self, model_cls=ClinicalReviewBaseline)
         return super().clean()
 
 

@@ -49,7 +49,8 @@ class IntegratedCareClinicRegistration(SiteModelMixin, BaseUuidModel):
     def save(self, *args, **kwargs):
         if not is_intervention_site():
             raise IntegratedCareClinicRegistrationError(
-                "Registyration failed. This is not an intervention site."
+                "Registration failed. This is not an intervention site. "
+                "Perhaps catch this in the form validation."
             )
         super().save(*args, **kwargs)
 

@@ -1,8 +1,5 @@
-import pdb
-from pprint import pprint
-
 from django import forms
-from django.test import TestCase, tag  # noqa
+from django.test import override_settings, TestCase, tag  # noqa
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import (
     COMPLETE,
@@ -15,7 +12,11 @@ from edc_constants.constants import (
 from edc_metadata import REQUIRED
 from edc_metadata.models import CrfMetadata
 from inte_lists.models import DrugPaySources
-from inte_subject.forms import HealthEconomicsRevisedFormValidator
+from inte_prn.models import IntegratedCareClinicRegistration
+from inte_subject.forms import (
+    HealthEconomicsRevisedForm,
+    HealthEconomicsRevisedFormValidator,
+)
 from model_bakery import baker
 
 
@@ -33,6 +34,37 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         )
         baker.make(
             "inte_subject.clinicalreviewbaseline", subject_visit=self.subject_visit
+        )
+
+    @tag("he1")
+    @override_settings(SITE_ID=103)
+    def test_form_validator_requires_icc_registration_for_intervention(self):
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "crf_status": COMPLETE,
+            "report_datetime": self.subject_visit.report_datetime,
+        }
+        form = HealthEconomicsRevisedForm(data=cleaned_data)
+        form.is_valid()
+        self.assertIn("__all__", form._errors)
+        self.assertIn(
+            IntegratedCareClinicRegistration._meta.verbose_name,
+            ";".join(form._errors.get("__all__")),
+        )
+
+    @tag("he1")
+    @override_settings(SITE_ID=101)
+    def test_form_validator_does_not_require_icc_registration_for_control(self):
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "crf_status": COMPLETE,
+            "report_datetime": self.subject_visit.report_datetime,
+        }
+        form = HealthEconomicsRevisedForm(data=cleaned_data)
+        form.is_valid()
+        self.assertNotIn(
+            IntegratedCareClinicRegistration._meta.verbose_name,
+            ";".join(form._errors.get("__all__") or []),
         )
 
     @tag("he")
@@ -134,8 +166,10 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             pass
         self.assertIn("highest_earner", form_validator._errors)
 
-    @tag("he")
+    @tag("he1")
+    @override_settings(SITE_ID=103)
     def test_form_validator_expenditure(self):
+        baker.make("inte_prn.integratedcareclinicregistration")
         cleaned_data = {
             "subject_visit": self.subject_visit,
             "report_datetime": self.subject_visit.report_datetime,

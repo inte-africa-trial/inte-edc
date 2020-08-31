@@ -1,14 +1,20 @@
 from django import forms
+from django.contrib.sites.models import Site
+from django.core.exceptions import ObjectDoesNotExist
 from edc_constants.constants import FREE_OF_CHARGE, YES, NO
 from edc_form_validators.form_validator import FormValidator
 from inte_lists.models import DrugPaySources
+from inte_prn.models import IntegratedCareClinicRegistration
+from inte_sites.is_intervention_site import is_intervention_site
 
 from ..models import HealthEconomicsRevised
-from .mixins import CrfFormValidatorMixin, CrfModelFormMixin
+from .mixins import CrfFormValidatorMixin, CrfModelFormMixin, model_exists_or_raise
 
 
 class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
     def clean(self):
+        self.require_icc_registration()
+
         self.clean_education()
 
         self.required_if(NO, field="is_highest_earner", field_required="highest_earner")
@@ -45,6 +51,19 @@ class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
         )
 
         self.required_if(YES, field="patient_club", field_required="patient_club_cost")
+
+    @staticmethod
+    def require_icc_registration():
+        if is_intervention_site():
+            try:
+                IntegratedCareClinicRegistration.objects.get(
+                    site_id=Site.objects.get_current()
+                )
+            except ObjectDoesNotExist:
+                raise forms.ValidationError(
+                    "This is an intervention site. Complete the "
+                    f"`{IntegratedCareClinicRegistration._meta.verbose_name}` form first."
+                )
 
     def clean_education(self):
         condition = (
