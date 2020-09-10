@@ -1,5 +1,3 @@
-import pdb
-
 from django.test import TestCase, tag
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_metadata import REQUIRED

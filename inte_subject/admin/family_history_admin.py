@@ -20,13 +20,7 @@ class FamilyHistoryAdmin(
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
             "Part 1",
-            {
-                "fields": (
-                    "hypertension_in_household",
-                    "diabetes_in_household",
-                    "hiv_in_household",
-                )
-            },
+            {"fields": ("htn_in_household", "dm_in_household", "hiv_in_household")},
         ),
         (
             "Part 2",
@@ -37,11 +31,11 @@ class FamilyHistoryAdmin(
                     "salty_foods_tf",
                     "excercise_tf",
                     "take_medicine_tf",
-                    "stop_hypertension_meds_tf",
-                    "traditional_hypertension_tf",
-                    "stop_diabetes_meds_tf",
-                    "traditional_diabetes_tf",
-                    "diabetes_cause_tf",
+                    "stop_htn_meds_tf",
+                    "traditional_htn_tf",
+                    "stop_dm_meds_tf",
+                    "traditional_dm_tf",
+                    "dm_cause_tf",
                 )
             },
         ),
@@ -50,8 +44,8 @@ class FamilyHistoryAdmin(
     )
 
     radio_fields = {
-        "hypertension_in_household": admin.VERTICAL,
-        "diabetes_in_household": admin.VERTICAL,
+        "htn_in_household": admin.VERTICAL,
+        "dm_in_household": admin.VERTICAL,
         "crf_status": admin.VERTICAL,
         "hiv_in_household": admin.VERTICAL,
         "high_bp_bs_tf": admin.VERTICAL,
@@ -59,9 +53,9 @@ class FamilyHistoryAdmin(
         "salty_foods_tf": admin.VERTICAL,
         "excercise_tf": admin.VERTICAL,
         "take_medicine_tf": admin.VERTICAL,
-        "stop_hypertension_meds_tf": admin.VERTICAL,
-        "traditional_hypertension_tf": admin.VERTICAL,
-        "stop_diabetes_meds_tf": admin.VERTICAL,
-        "traditional_diabetes_tf": admin.VERTICAL,
-        "diabetes_cause_tf": admin.VERTICAL,
+        "stop_htn_meds_tf": admin.VERTICAL,
+        "traditional_htn_tf": admin.VERTICAL,
+        "stop_dm_meds_tf": admin.VERTICAL,
+        "traditional_dm_tf": admin.VERTICAL,
+        "dm_cause_tf": admin.VERTICAL,
     }

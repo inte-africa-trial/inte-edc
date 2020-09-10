@@ -151,13 +151,13 @@ class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
         self.required_if(
             YES,
             field=f"non_drug_activities_{duration}",
-            field_required=f"non_drug_activities_{duration}_detail",
+            field_required=f"non_drug_activities_detail_{duration}",
         )
 
         self.required_if(
             YES,
             field=f"non_drug_activities_{duration}",
-            field_required=f"non_drug_activities_{duration}_cost",
+            field_required=f"non_drug_activities_cost_{duration}",
         )
 
 

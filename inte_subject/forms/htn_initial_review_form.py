@@ -3,7 +3,7 @@ from edc_action_item.forms.action_item_form_mixin import ActionItemFormMixin
 from edc_form_validators.form_validator import FormValidator
 
 from ..constants import DRUGS
-from ..models import HypertensionInitialReview
+from ..models import HtnInitialReview
 from .mixins import (
     EstimatedDateFromAgoFormMixin,
     CrfModelFormMixin,
@@ -11,7 +11,7 @@ from .mixins import (
 )
 
 
-class HypertensionInitialReviewFormValidator(
+class HtnInitialReviewFormValidator(
     EstimatedDateFromAgoFormMixin, CrfFormValidatorMixin, FormValidator
 ):
     def clean(self):
@@ -25,11 +25,11 @@ class HypertensionInitialReviewFormValidator(
                 )
 
 
-class HypertensionInitialReviewForm(
+class HtnInitialReviewForm(
     CrfModelFormMixin, ActionItemFormMixin, forms.ModelForm,
 ):
-    form_validator_cls = HypertensionInitialReviewFormValidator
+    form_validator_cls = HtnInitialReviewFormValidator
 
     class Meta:
-        model = HypertensionInitialReview
+        model = HtnInitialReview
         fields = "__all__"

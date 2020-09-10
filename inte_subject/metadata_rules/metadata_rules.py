@@ -18,17 +18,17 @@ class ClinicalReviewBaselineRuleGroup(CrfRuleGroup):
     )
 
     diabetes = CrfRule(
-        predicate=P("diabetes_dx", "eq", YES),
+        predicate=P("dm_dx", "eq", YES),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_models=["diabetesinitialreview"],
+        target_models=["dminitialreview"],
     )
 
     hypertension = CrfRule(
-        predicate=P("hypertension_dx", "eq", YES),
+        predicate=P("htn_dx", "eq", YES),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_models=["hypertensioninitialreview"],
+        target_models=["htninitialreview"],
     )
 
     class Meta:
@@ -39,25 +39,46 @@ class ClinicalReviewBaselineRuleGroup(CrfRuleGroup):
 @register()
 class ClinicalReviewRuleGroup(CrfRuleGroup):
 
-    hiv = CrfRule(
+    hiv_dx = CrfRule(
         predicate=P("hiv_dx", "eq", YES),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
         target_models=["hivinitialreview"],
     )
 
-    diabetes = CrfRule(
-        predicate=P("diabetes_dx", "eq", YES),
+    dm_dx = CrfRule(
+        predicate=P("dm_dx", "eq", YES),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_models=["diabetesinitialreview"],
+        target_models=["dminitialreview"],
     )
 
-    hypertension = CrfRule(
-        predicate=P("hypertension_dx", "eq", YES),
+    htn_dx = CrfRule(
+        predicate=P("htn_dx", "eq", YES),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_models=["hypertensioninitialreview"],
+        target_models=["htninitialreview"],
+    )
+
+    hiv_test = CrfRule(
+        predicate=pc.hiv_review_required,
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["hivreview"],
+    )
+
+    dm_test = CrfRule(
+        predicate=pc.dm_review_required,
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["dmreview"],
+    )
+
+    htn_test = CrfRule(
+        predicate=pc.htn_review_required,
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["htnreview"],
     )
 
     class Meta:
@@ -105,18 +126,18 @@ class MedicationsRuleGroup(CrfRuleGroup):
         target_models=["drugrefillhiv"],
     )
 
-    refill_diabetes = CrfRule(
-        predicate=P("refill_diabetes", "eq", YES),
+    refill_dm = CrfRule(
+        predicate=P("refill_dm", "eq", YES),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_models=["drugrefilldiabetes"],
+        target_models=["drugrefilldm"],
     )
 
-    refill_hypertension = CrfRule(
-        predicate=P("refill_hypertension", "eq", YES),
+    refill_htn = CrfRule(
+        predicate=P("refill_htn", "eq", YES),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_models=["drugrefillhypertension"],
+        target_models=["drugrefillhtn"],
     )
 
     class Meta:

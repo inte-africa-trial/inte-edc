@@ -1,7 +1,7 @@
 from django import forms
 from edc_form_validators.form_validator import FormValidator
 
-from ..models import DiabetesReview
+from ..models import DmReview
 from .mixins import (
     GlucoseFormValidatorMixin,
     ReviewFormValidatorMixin,
@@ -10,7 +10,7 @@ from .mixins import (
 )
 
 
-class DiabetesReviewFormValidator(
+class DmReviewFormValidator(
     ReviewFormValidatorMixin,
     GlucoseFormValidatorMixin,
     CrfFormValidatorMixin,
@@ -21,9 +21,9 @@ class DiabetesReviewFormValidator(
         self.validate_glucose_test()
 
 
-class DiabetesReviewForm(CrfModelFormMixin, forms.ModelForm):
-    form_validator_cls = DiabetesReviewFormValidator
+class DmReviewForm(CrfModelFormMixin, forms.ModelForm):
+    form_validator_cls = DmReviewFormValidator
 
     class Meta:
-        model = DiabetesReview
+        model = DmReview
         fields = "__all__"

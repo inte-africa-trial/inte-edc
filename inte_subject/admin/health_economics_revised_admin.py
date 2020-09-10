@@ -61,12 +61,12 @@ class HealthEconomicsRevisedAdmin(
             {
                 "fields": (
                     "received_rx_month",
-                    "rx_diabetes_month",
-                    "rx_diabetes_paid_month",
-                    "rx_diabetes_cost_month",
-                    "rx_hypertension_month",
-                    "rx_hypertension_paid_month",
-                    "rx_hypertension_cost_month",
+                    "rx_dm_month",
+                    "rx_dm_paid_month",
+                    "rx_dm_cost_month",
+                    "rx_htn_month",
+                    "rx_htn_paid_month",
+                    "rx_htn_cost_month",
                     "rx_hiv_month",
                     "rx_hiv_paid_month",
                     "rx_hiv_cost_month",
@@ -81,8 +81,8 @@ class HealthEconomicsRevisedAdmin(
             {
                 "fields": (
                     "non_drug_activities_month",
-                    "non_drug_activities_month_detail",
-                    "non_drug_activities_month_cost",
+                    "non_drug_activities_detail_month",
+                    "non_drug_activities_cost_month",
                     "healthcare_expenditure_total_month",
                 )
             },
@@ -121,12 +121,12 @@ class HealthEconomicsRevisedAdmin(
             {
                 "fields": (
                     "received_rx_today",
-                    "rx_diabetes_today",
-                    "rx_diabetes_paid_today",
-                    "rx_diabetes_cost_today",
-                    "rx_hypertension_today",
-                    "rx_hypertension_paid_today",
-                    "rx_hypertension_cost_today",
+                    "rx_dm_today",
+                    "rx_dm_paid_today",
+                    "rx_dm_cost_today",
+                    "rx_htn_today",
+                    "rx_htn_paid_today",
+                    "rx_htn_cost_today",
                     "rx_hiv_today",
                     "rx_hiv_paid_today",
                     "rx_hiv_cost_today",
@@ -141,8 +141,8 @@ class HealthEconomicsRevisedAdmin(
             {
                 "fields": (
                     "non_drug_activities_today",
-                    "non_drug_activities_toay_detail",
-                    "non_drug_activities_today_cost",
+                    "non_drug_activities_detail_today",
+                    "non_drug_activities_cost_today",
                 )
             },
         ),
@@ -180,12 +180,12 @@ class HealthEconomicsRevisedAdmin(
         "primary_school": admin.VERTICAL,
         "received_rx_month": admin.VERTICAL,
         "received_rx_today": admin.VERTICAL,
-        "rx_diabetes_month": admin.VERTICAL,
-        "rx_diabetes_today": admin.VERTICAL,
+        "rx_dm_month": admin.VERTICAL,
+        "rx_dm_today": admin.VERTICAL,
         "rx_hiv_month": admin.VERTICAL,
         "rx_hiv_today": admin.VERTICAL,
-        "rx_hypertension_month": admin.VERTICAL,
-        "rx_hypertension_today": admin.VERTICAL,
+        "rx_htn_month": admin.VERTICAL,
+        "rx_htn_today": admin.VERTICAL,
         "rx_other_month": admin.VERTICAL,
         "rx_other_today": admin.VERTICAL,
         "transport": admin.VERTICAL,
@@ -194,13 +194,13 @@ class HealthEconomicsRevisedAdmin(
     }
 
     filter_horizontal = [
-        "rx_diabetes_paid_month",
-        "rx_hypertension_paid_month",
+        "rx_dm_paid_month",
+        "rx_htn_paid_month",
         "rx_hiv_paid_month",
         "rx_other_paid_month",
         "transport",
-        "rx_diabetes_paid_today",
-        "rx_hypertension_paid_today",
+        "rx_dm_paid_today",
+        "rx_htn_paid_today",
         "rx_hiv_paid_today",
         "rx_other_paid_today",
     ]

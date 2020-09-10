@@ -1,28 +1,22 @@
 from django.db import models
 from edc_constants.choices import YES_NO
-from edc_constants.constants import NOT_APPLICABLE
+from edc_constants.constants import NOT_APPLICABLE, YES
 from edc_model import models as edc_models
-from inte_subject.choices import DIABETES_MANAGEMENT
 
-from ..model_mixins import CrfModelMixin, GlucoseModelMixin
+from ..choices import DM_MANAGEMENT
+from ..model_mixins import CrfModelMixin, GlucoseModelMixin, InitialReviewModelMixin
 
 
-class DiabetesInitialReview(GlucoseModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
-
-    dx_ago = edc_models.DurationYearMonthField(
-        verbose_name="How long ago was the patient diagnosed with diabetes?",
-    )
-
-    dx_estimated_date = models.DateField(
-        verbose_name="Estimated diabetes diagnoses date", null=True, editable=False,
-    )
+class DmInitialReview(
+    InitialReviewModelMixin, GlucoseModelMixin, CrfModelMixin, edc_models.BaseUuidModel
+):
 
     # TODO: change to m2m 10 JULY 2020
     # remove "alone" ... allow select all that apply
     managed_by = models.CharField(
         verbose_name="How is the patient's diabetes managed?",
         max_length=25,
-        choices=DIABETES_MANAGEMENT,
+        choices=DM_MANAGEMENT,
         default=NOT_APPLICABLE,
     )
 
@@ -39,6 +33,14 @@ class DiabetesInitialReview(GlucoseModelMixin, CrfModelMixin, edc_models.BaseUui
         verbose_name="Estimated medication start date", null=True, editable=False,
     )
 
+    med_start_date_estimated = models.CharField(
+        verbose_name="Was the medication start date estimated?",
+        max_length=15,
+        choices=YES_NO,
+        default=YES,
+        editable=False,
+    )
+
     glucose_performed = models.CharField(
         verbose_name=(
             "Has the patient had their glucose measured in the last few months?"
@@ -48,10 +50,6 @@ class DiabetesInitialReview(GlucoseModelMixin, CrfModelMixin, edc_models.BaseUui
     )
 
     def save(self, *args, **kwargs):
-        if self.dx_ago:
-            self.dx_estimated_date = edc_models.duration_to_date(
-                self.dx_ago, self.report_datetime
-            )
         if self.med_start_ago:
             self.med_start_estimated_date = edc_models.duration_to_date(
                 self.med_start_ago, self.report_datetime

@@ -3,7 +3,7 @@ from edc_constants.constants import YES
 from edc_form_validators.form_validator import FormValidator
 
 from ..constants import INSULIN, DRUGS
-from ..models import DiabetesInitialReview
+from ..models import DmInitialReview
 from .mixins import (
     EstimatedDateFromAgoFormMixin,
     GlucoseFormValidatorMixin,
@@ -12,7 +12,7 @@ from .mixins import (
 )
 
 
-class DiabetesInitialReviewFormValidator(
+class DmInitialReviewFormValidator(
     GlucoseFormValidatorMixin,
     EstimatedDateFromAgoFormMixin,
     CrfFormValidatorMixin,
@@ -35,9 +35,9 @@ class DiabetesInitialReviewFormValidator(
         self.validate_glucose_test()
 
 
-class DiabetesInitialReviewForm(CrfModelFormMixin, forms.ModelForm):
-    form_validator_cls = DiabetesInitialReviewFormValidator
+class DmInitialReviewForm(CrfModelFormMixin, forms.ModelForm):
+    form_validator_cls = DmInitialReviewFormValidator
 
     class Meta:
-        model = DiabetesInitialReview
+        model = DmInitialReview
         fields = "__all__"

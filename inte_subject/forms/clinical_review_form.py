@@ -1,15 +1,11 @@
 from django import forms
-from edc_constants.constants import NO, NOT_APPLICABLE, YES
+from django.core.exceptions import ObjectDoesNotExist
+from edc_constants.constants import NO, YES
 from edc_form_validators.form_validator import FormValidator
-from inte_screening.constants import DIABETES_CLINIC, HIV_CLINIC, HYPERTENSION_CLINIC
+from inte_subject.models import ClinicalReviewBaseline
 
-from ..models import (
-    ClinicalReview,
-    DiabetesInitialReview,
-    HivInitialReview,
-    HypertensionInitialReview,
-)
-from ..morbidity import Morbidities
+from ..models import ClinicalReview
+from ..diagnoses import Diagnoses, InitialReviewRequired
 from .mixins import (
     CrfModelFormMixin,
     CrfFormValidatorMixin,
@@ -18,67 +14,71 @@ from .mixins import (
 
 class ClinicalReviewFormValidator(CrfFormValidatorMixin, FormValidator):
     def clean(self):
-        morbidities = Morbidities(
+        self.requires_clinical_review_at_baseline()
+
+        diagnoses = Diagnoses(
             subject_identifier=self.subject_identifier,
             report_datetime=self.report_datetime,
         )
 
-        clinic_type = self.subject_screening.clinic_type
-        if clinic_type == HYPERTENSION_CLINIC and not morbidities.is_hypertensive:
-            raise forms.ValidationError(
-                "Wait! Expected an Hypertension diagnosis at baseline. "
-                f"Was {HypertensionInitialReview._meta.verbose_name} CRF completed?"
-            )
-        elif clinic_type == DIABETES_CLINIC and not morbidities.is_diabetic:
-            raise forms.ValidationError(
-                "Wait! Expected a Diabetes diagnosis at baseline. "
-                f"Was {DiabetesInitialReview._meta.verbose_name} CRF completed?"
-            )
-        elif clinic_type == HIV_CLINIC and not morbidities.is_hiv_pos:
-            raise forms.ValidationError(
-                "Wait! Expected an HIV diagnosis at baseline. "
-                f"Was {HivInitialReview._meta.verbose_name} CRF completed?"
-            )
+        try:
+            diagnoses.initial_reviews
+        except InitialReviewRequired as e:
+            raise forms.ValidationError(e)
 
-        self.applicable_if_true(
-            not morbidities.is_hypertensive, field_applicable="hypertension_tested"
-        )
-        self.required_if(
-            YES, field="hypertension_tested", field_required="hypertension_tested_date"
-        )
-        self.required_if(
-            YES, field="hypertension_tested", field_required="hypertension_reason"
-        )
+        # htn
+        self.applicable_if_true(diagnoses.htn != YES, field_applicable="htn_test")
+        self.required_if(YES, field="htn_test", field_required="htn_test_date")
+        self.required_if(YES, field="htn_test", field_required="htn_reason")
         self.applicable_if(
-            YES, field="hypertension_tested", field_applicable="hypertension_dx"
+            YES,
+            field="htn_test",
+            field_applicable="htn_dx",
+            msg="This field is not applicable. Patient has been previously diagnosed with hypertension.",
         )
 
-        self.applicable_if_true(
-            not morbidities.is_diabetic, field_applicable="diabetes_tested"
+        # diabetes
+        self.applicable_if_true(diagnoses.dm != YES, field_applicable="dm_test")
+        self.required_if(YES, field="dm_test", field_required="dm_test_date")
+        self.required_if(YES, field="dm_test", field_required="dm_reason")
+        self.applicable_if(
+            YES,
+            field="dm_test",
+            field_applicable="diabetes_dx",
+            msg="This field is not applicable. Patient has been previously diagnosed with diabetes.",
         )
-        self.required_if(
-            YES, field="diabetes_tested", field_required="diabetes_tested_date"
-        )
-        self.required_if(YES, field="diabetes_tested", field_required="diabetes_reason")
-        self.applicable_if(YES, field="diabetes_tested", field_applicable="diabetes_dx")
 
-        self.applicable_if_true(
-            not morbidities.is_hiv_pos, field_applicable="hiv_tested"
+        # hiv
+        self.applicable_if_true(diagnoses.hiv != YES, field_applicable="hiv_test")
+        self.required_if(YES, field="hiv_test", field_required="hiv_test_date")
+        self.required_if(YES, field="hiv_test", field_required="hiv_reason")
+        self.applicable_if(
+            YES,
+            field="hiv_test",
+            field_applicable="hiv_dx",
+            msg="This field is not applicable. Patient has been previously diagnosed with HIV.",
         )
-        self.required_if(YES, field="hiv_tested", field_required="hiv_tested_date")
-        self.required_if(YES, field="hiv_tested", field_required="hiv_reason")
-        self.applicable_if(YES, field="hiv_tested", field_applicable="hiv_dx")
 
     def raise_if_dx_and_applicable(self, clinic, cond):
         if self.subject_screening.clinic_type in [clinic] and self.cleaned_data.get(
-            f"{cond}_tested"
+            f"{cond}_test"
         ) in [YES, NO]:
             raise forms.ValidationError(
                 {
-                    f"{cond}_tested": (
+                    f"{cond}_test": (
                         f"Not applicable. Patient was recruited from the {cond.title} clinic."
                     ),
                 }
+            )
+
+    def requires_clinical_review_at_baseline(self):
+        try:
+            ClinicalReviewBaseline.objects.get(
+                subject_visit__subject_identifier=self.subject_identifier
+            )
+        except ObjectDoesNotExist:
+            raise forms.ValidationError(
+                f"Please complete the {ClinicalReviewBaseline._meta.verbose_name} first."
             )
 
 

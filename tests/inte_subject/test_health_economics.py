@@ -36,7 +36,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             "inte_subject.clinicalreviewbaseline", subject_visit=self.subject_visit
         )
 
-    @tag("he1")
+    @tag("he")
     @override_settings(SITE_ID=103)
     def test_form_validator_requires_icc_registration_for_intervention(self):
         cleaned_data = {
@@ -52,7 +52,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             ";".join(form._errors.get("__all__")),
         )
 
-    @tag("he1")
+    @tag("he")
     @override_settings(SITE_ID=101)
     def test_form_validator_does_not_require_icc_registration_for_control(self):
         cleaned_data = {
@@ -201,40 +201,40 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             "accomodation_per_month": None,
             "large_expenditure_year": None,
             "received_rx_month": YES,
-            "rx_diabetes_month": NOT_APPLICABLE,
+            "rx_dm_month": NOT_APPLICABLE,
         }
         form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
         try:
             form_validator.validate()
         except forms.ValidationError:
             pass
-        self.assertIn("rx_diabetes_month", form_validator._errors)
+        self.assertIn("rx_dm_month", form_validator._errors)
 
         cleaned_data.update(
-            rx_diabetes_month=YES, rx_diabetes_paid_month=[],
+            rx_dm_month=YES, rx_dm_paid_month=[],
         )
         form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
         try:
             form_validator.validate()
         except forms.ValidationError:
             pass
-        self.assertIn("rx_diabetes_paid_month", form_validator._errors)
+        self.assertIn("rx_dm_paid_month", form_validator._errors)
 
         # check if "free of charge" then enforces a single selection
         cleaned_data.update(
-            rx_diabetes_month=YES, rx_diabetes_paid_month=DrugPaySources.objects.all(),
+            rx_dm_month=YES, rx_dm_paid_month=DrugPaySources.objects.all(),
         )
         form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
         try:
             form_validator.validate()
         except forms.ValidationError:
             pass
-        self.assertIn("rx_diabetes_paid_month", form_validator._errors)
+        self.assertIn("rx_dm_paid_month", form_validator._errors)
 
         # check if not "free of charge" then requires cost
         cleaned_data.update(
-            rx_diabetes_month=YES,
-            rx_diabetes_paid_month=DrugPaySources.objects.exclude(
+            rx_dm_month=YES,
+            rx_dm_paid_month=DrugPaySources.objects.exclude(
                 name__in=[FREE_OF_CHARGE, OTHER]
             ),
         )
@@ -243,13 +243,13 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             form_validator.validate()
         except forms.ValidationError:
             pass
-        self.assertIn("rx_diabetes_cost_month", form_validator._errors)
+        self.assertIn("rx_dm_cost_month", form_validator._errors)
 
         # check if not "free of charge" then requires cost
         cleaned_data.update(
-            rx_diabetes_month=YES,
-            rx_diabetes_paid_month=DrugPaySources.objects.exclude(name=FREE_OF_CHARGE),
-            rx_diabetes_cost_month=1000,
+            rx_dm_month=YES,
+            rx_dm_paid_month=DrugPaySources.objects.exclude(name=FREE_OF_CHARGE),
+            rx_dm_cost_month=1000,
         )
         form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
         try:
@@ -258,7 +258,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             pass
         self.assertDictEqual({}, form_validator._errors)
 
-    @tag("1")
+    @tag("he")
     def test_form_validator_recv_drugs_all_no(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -271,8 +271,8 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             "accomodation_per_month": None,
             "large_expenditure_year": None,
             "received_rx_month": NO,
-            "rx_diabetes_month": NOT_APPLICABLE,
-            "rx_hypertension_month": NOT_APPLICABLE,
+            "rx_dm_month": NOT_APPLICABLE,
+            "rx_htn_month": NOT_APPLICABLE,
             "rx_hiv_month": NOT_APPLICABLE,
             "rx_other_month": NOT_APPLICABLE,
         }
@@ -280,8 +280,8 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         cleaned_data.update(
             {
                 "received_rx_today": YES,
-                "rx_diabetes_today": NO,
-                "rx_hypertension_today": NO,
+                "rx_dm_today": NO,
+                "rx_htn_today": NO,
                 "rx_hiv_today": NO,
                 "rx_other_today": NO,
             }
@@ -296,8 +296,8 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         cleaned_data.update(
             {
                 "received_rx_today": YES,
-                "rx_diabetes_today": NOT_APPLICABLE,
-                "rx_hypertension_today": NO,
+                "rx_dm_today": NOT_APPLICABLE,
+                "rx_htn_today": NO,
                 "rx_hiv_today": NO,
                 "rx_other_today": NO,
             }
@@ -307,7 +307,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             form_validator.validate()
         except forms.ValidationError:
             pass
-        self.assertIn("rx_diabetes_today", form_validator._errors)
+        self.assertIn("rx_dm_today", form_validator._errors)
 
     @tag("he")
     def test_form_validator_non_drug_activities(self):
@@ -322,13 +322,13 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             "accomodation_per_month": None,
             "large_expenditure_year": None,
             "received_rx_month": NO,
-            "rx_diabetes_month": NOT_APPLICABLE,
-            "rx_hypertension_month": NOT_APPLICABLE,
+            "rx_dm_month": NOT_APPLICABLE,
+            "rx_htn_month": NOT_APPLICABLE,
             "rx_hiv_month": NOT_APPLICABLE,
             "rx_other_month": NOT_APPLICABLE,
             "received_rx_today": NO,
-            "rx_diabetes_today": NOT_APPLICABLE,
-            "rx_hypertension_today": NOT_APPLICABLE,
+            "rx_dm_today": NOT_APPLICABLE,
+            "rx_htn_today": NOT_APPLICABLE,
             "rx_hiv_today": NOT_APPLICABLE,
             "rx_other_today": NOT_APPLICABLE,
         }
@@ -336,8 +336,8 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         cleaned_data.update(
             {
                 "non_drug_activities_month": YES,
-                "non_drug_activities_month_detail": None,
-                "non_drug_activities_month_cost": None,
+                "non_drug_activities_detail_month": None,
+                "non_drug_activities_cost_month": None,
             }
         )
         form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
@@ -350,8 +350,8 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         cleaned_data.update(
             {
                 "non_drug_activities_month": YES,
-                "non_drug_activities_month_detail": "blah",
-                "non_drug_activities_month_cost": None,
+                "non_drug_activities_detail_month": "blah",
+                "non_drug_activities_cost_month": None,
             }
         )
         form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
@@ -364,8 +364,8 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         cleaned_data.update(
             {
                 "non_drug_activities_month": YES,
-                "non_drug_activities_month_detail": "blah",
-                "non_drug_activities_month_cost": 10,
+                "non_drug_activities_detail_month": "blah",
+                "non_drug_activities_cost_month": 10,
             }
         )
         form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)

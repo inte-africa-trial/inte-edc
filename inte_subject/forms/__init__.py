@@ -1,14 +1,14 @@
 from .clinical_review_form import ClinicalReviewForm
 from .clinical_review_baseline_form import ClinicalReviewBaselineForm
 from .complications_form import ComplicationsForm
-from .diabetes_initial_review_form import DiabetesInitialReviewForm
-from .diabetes_review_form import DiabetesReviewForm
-from .drug_refill_diabetes_form import DrugRefillDiabetesForm
+from .dm_initial_review_form import DmInitialReviewForm
+from .dm_review_form import DmReviewForm
+from .drug_refill_dm_form import DrugRefillDmForm
 from .drug_refill_hiv_form import DrugRefillHivForm
-from .drug_refill_hypertension_form import DrugRefillHypertensionForm
-from .drug_supply_diabetes_form import DrugSupplyDiabetesForm
+from .drug_refill_htn_form import DrugRefillHtnForm
+from .drug_supply_dm_form import DrugSupplyDmForm
 from .drug_supply_hiv_form import DrugSupplyHivForm
-from .drug_supply_hypertension_form import DrugSupplyHypertensionForm
+from .drug_supply_htn_form import DrugSupplyHtnForm
 from .family_history_form import FamilyHistoryForm
 from .health_economics_revised_form import (
     HealthEconomicsRevisedForm,
@@ -16,8 +16,8 @@ from .health_economics_revised_form import (
 )
 from .hiv_initial_review_form import HivInitialReviewForm
 from .hiv_review_form import HivReviewForm
-from .hypertension_initial_review_form import HypertensionInitialReviewForm
-from .hypertension_review_form import HypertensionReviewForm
+from .htn_initial_review_form import HtnInitialReviewForm
+from .htn_review_form import HtnReviewForm
 from .indicators_form import IndicatorsForm
 from .medications_form import MedicationsForm
 from .next_appointment_form import NextAppointmentForm

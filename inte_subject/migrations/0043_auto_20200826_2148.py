@@ -11,11 +11,11 @@ def update_appointments(apps, schema_editor):
     subject_visit_model_cls = apps.get_model("inte_subject.subjectvisit")
     for registered_subject in registered_subject_model_cls.objects.all():
         for index, appointment in enumerate(
-            appointment_model_cls._default_manager.filter(
+            appointment_model_cls.objects.filter(
                 subject_identifier=registered_subject.subject_identifier
             ).order_by("timepoint")
         ):
-            if appointment.timepoint == 0:
+            if appointment.timepoint in [0, 6, 12]:
                 continue
             elif appointment.timepoint < 6:
                 appointment.visit_code = "1000"
@@ -32,6 +32,9 @@ def update_appointments(apps, schema_editor):
                 else:
                     with DisableSignals(disabled_signals=[pre_save]):
                         subject_visit.save()
+            else:
+                appointment.delete()
+
     for appointment in appointment_model_cls._default_manager.all():
         try:
             subject_visit_model_cls.objects.get(appointment=appointment)

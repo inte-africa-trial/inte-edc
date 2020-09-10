@@ -5,32 +5,22 @@ from edc_form_label.form_label_modeladmin_mixin import FormLabelModelAdminMixin
 from edc_model_admin import SimpleHistoryAdmin
 
 from ..admin_site import inte_subject_admin
-from ..forms import DiabetesReviewForm
-from ..models import DiabetesReview
+from ..forms import HtnReviewForm
+from ..models import HtnReview
 from .modeladmin_mixins import CrfModelAdminMixin
 
 
-@admin.register(DiabetesReview, site=inte_subject_admin)
-class DiabetesReviewAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+@admin.register(HtnReview, site=inte_subject_admin)
+class HtnReviewAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
 
-    form = DiabetesReviewForm
+    form = HtnReviewForm
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
         ("Testing and Diagnosis", {"fields": ("test_date", "dx")}),
         (
-            "Blood Sugar Measurement",
-            {
-                "fields": (
-                    "glucose_fasted",
-                    "glucose_date",
-                    "glucose",
-                    "glucose_quantifier",
-                    "glucose_units",
-                ),
-            },
+            "Final Blood Pressure Measurement",
+            {"fields": ("sys_blood_pressure", "dia_blood_pressure",)},
         ),
         ("Care", {"fields": ("managed_by", "care_start_date")}),
         crf_status_fieldset_tuple,
@@ -41,6 +31,4 @@ class DiabetesReviewAdmin(
         "dx": admin.VERTICAL,
         "crf_status": admin.VERTICAL,
         "managed_by": admin.VERTICAL,
-        "glucose_fasted": admin.VERTICAL,
-        "glucose_units": admin.VERTICAL,
     }

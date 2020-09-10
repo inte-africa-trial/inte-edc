@@ -2,12 +2,12 @@ from django.db import models
 from edc_constants.choices import YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
-from inte_subject.choices import DIABETES_MANAGEMENT
+from inte_subject.choices import DM_MANAGEMENT
 
 from ..model_mixins import CrfModelMixin, GlucoseModelMixin
 
 
-class DiabetesReview(GlucoseModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
+class DmReview(GlucoseModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
 
     test_date = models.DateField(
         verbose_name="Date tested for diabetes", null=True, blank=True,
@@ -23,7 +23,7 @@ class DiabetesReview(GlucoseModelMixin, CrfModelMixin, edc_models.BaseUuidModel)
     managed_by = models.CharField(
         verbose_name="If diagnosed, how will this be managed in the next month or so?",
         max_length=25,
-        choices=DIABETES_MANAGEMENT,
+        choices=DM_MANAGEMENT,
         default=NOT_APPLICABLE,
     )
 

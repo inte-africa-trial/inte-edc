@@ -18,17 +18,14 @@ class MedicationsAdmin(
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
-        (
-            "New prescritions or refills",
-            {"fields": ("refill_hypertension", "refill_diabetes", "refill_hiv",)},
-        ),
+        ("Prescriptions", {"fields": ("refill_htn", "refill_dm", "refill_hiv")}),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
 
     radio_fields = {
-        "refill_hypertension": admin.VERTICAL,
-        "refill_diabetes": admin.VERTICAL,
+        "refill_htn": admin.VERTICAL,
+        "refill_dm": admin.VERTICAL,
         "refill_hiv": admin.VERTICAL,
         "crf_status": admin.VERTICAL,
     }

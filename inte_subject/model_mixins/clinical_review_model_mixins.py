@@ -6,9 +6,32 @@ from edc_model import models as edc_models
 from edc_model.models import date_not_future
 
 
+class ClinicalReviewModelMixin(models.Model):
+    def get_best_hiv_test_date(self):
+        return self.hiv_test_date or self.hiv_test_estimated_datetime
+
+    def get_best_dm_test_date(self):
+        self.dm_test_date or self.dm_test_estimated_datetime
+
+    def get_best_htn_test_date(self):
+        self.htn_test_date or self.htn_test_estimated_datetime
+
+    @property
+    def diagnoses(self):
+        return dict(hiv=self.hiv_dx, htn=self.htn_dx, dm=self.dm_dx)
+
+    @property
+    def diagnoses_labels(self):
+        return dict(hiv="HIV", htn="Hypertension", dm="Diabetes")
+
+    class Meta:
+        abstract = True
+
+
 class ClinicalReviewHivModelMixin(models.Model):
 
-    hiv_tested = models.CharField(
+    # TODO: change this to YES/NO/NA and use hiv_dx
+    hiv_test = models.CharField(
         verbose_name=mark_safe(
             "What was the result of the patient's most recent HIV test"
         ),
@@ -17,41 +40,44 @@ class ClinicalReviewHivModelMixin(models.Model):
         help_text="If positive, complete form `Hiv Initial Review`",
     )
 
-    hiv_tested_ago = edc_models.DurationYearMonthField(
+    hiv_test_ago = edc_models.DurationYearMonthField(
         verbose_name="How long ago was the patient's most recent HIV test?",
         null=True,
         blank=True,
         help_text="If positive, most recent HIV(+) test",
     )
 
-    hiv_tested_estimated_datetime = models.DateTimeField(
+    hiv_test_estimated_datetime = models.DateTimeField(
         null=True,
         blank=True,
         editable=False,
-        help_text="calculated by the EDC using `hiv_tested_ago`",
+        help_text="calculated by the EDC using `hiv_test_ago`",
     )
 
-    hiv_tested_date = models.DateField(
-        validators=[date_not_future], null=True, blank=True
+    hiv_test_date = models.DateField(
+        verbose_name="Date of patient's most recent HIV test?",
+        validators=[date_not_future],
+        null=True,
+        blank=True,
     )
 
     hiv_dx = models.CharField(
         verbose_name=mark_safe("Was the patient diagnosed with HIV infection?"),
         max_length=15,
-        choices=YES_NO,
+        choices=YES_NO_NA,
         null=True,
         editable=False,
     )
 
     def save(self, *args, **kwargs):
         # TODO: update hiv_dx on existing data
-        if self.hiv_tested == POS:
+        if self.hiv_test == POS:
             self.hiv_dx = YES
         else:
             self.hiv_dx = NO
-        if self.hiv_tested_ago:
-            self.hiv_tested_estimated_datetime = edc_models.duration_to_date(
-                self.hiv_tested_ago, self.report_datetime
+        if self.hiv_test_ago:
+            self.hiv_test_estimated_datetime = edc_models.duration_to_date(
+                self.hiv_test_ago, self.report_datetime
             )
         super().save(*args, **kwargs)
 
@@ -59,31 +85,32 @@ class ClinicalReviewHivModelMixin(models.Model):
         abstract = True
 
 
-class ClinicalReviewHypertensionModelMixin(models.Model):
+class ClinicalReviewHtnModelMixin(models.Model):
 
-    hypertension_tested = models.CharField(
+    htn_test = models.CharField(
         verbose_name="Has the patient ever tested for Hypertension?",
         max_length=15,
         choices=YES_NO,
     )
 
-    hypertension_tested_ago = edc_models.DurationYearMonthField(
+    htn_test_ago = edc_models.DurationYearMonthField(
         verbose_name="If Yes, how long ago was the patient tested for Hypertension?",
         null=True,
         blank=True,
     )
 
-    hypertension_tested_estimated_datetime = models.DateTimeField(
+    htn_test_estimated_datetime = models.DateTimeField(
+        null=True, blank=True, help_text="calculated by the EDC using `htn_test_ago`",
+    )
+
+    htn_test_date = models.DateField(
+        verbose_name="Date of patient's most recent Hypertension test?",
+        validators=[date_not_future],
         null=True,
         blank=True,
-        help_text="calculated by the EDC using `hypertension_tested_ago`",
     )
 
-    hypertension_tested_date = models.DateField(
-        validators=[date_not_future], null=True, blank=True
-    )
-
-    hypertension_dx = models.CharField(
+    htn_dx = models.CharField(
         verbose_name=mark_safe("Has the patient ever been diagnosed with Hypertension"),
         max_length=15,
         choices=YES_NO_NA,
@@ -92,9 +119,9 @@ class ClinicalReviewHypertensionModelMixin(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        if self.hypertension_tested_ago:
-            self.hypertension_tested_estimated_datetime = edc_models.duration_to_date(
-                self.hypertension_tested_ago, self.report_datetime
+        if self.htn_test_ago:
+            self.htn_test_estimated_datetime = edc_models.duration_to_date(
+                self.htn_test_ago, self.report_datetime
             )
         super().save(*args, **kwargs)
 
@@ -102,31 +129,32 @@ class ClinicalReviewHypertensionModelMixin(models.Model):
         abstract = True
 
 
-class ClinicalReviewDiabetesModelMixin(models.Model):
+class ClinicalReviewDmModelMixin(models.Model):
 
-    diabetes_tested = models.CharField(
+    dm_test = models.CharField(
         verbose_name="Has the patient ever tested for Diabetes?",
         max_length=15,
         choices=YES_NO,
     )
 
-    diabetes_tested_ago = edc_models.DurationYearMonthField(
+    dm_test_ago = edc_models.DurationYearMonthField(
         verbose_name="If Yes, how long ago was the patient tested for Diabetes?",
         null=True,
         blank=True,
     )
 
-    diabetes_tested_estimated_datetime = models.DateTimeField(
+    dm_test_estimated_datetime = models.DateTimeField(
+        null=True, blank=True, help_text="calculated by the EDC using `dm_test_ago`",
+    )
+
+    dm_test_date = models.DateField(
+        verbose_name="Date of patient's most recent Diabetes test?",
+        validators=[date_not_future],
         null=True,
         blank=True,
-        help_text="calculated by the EDC using `diabetes_tested_ago`",
     )
 
-    diabetes_tested_date = models.DateField(
-        validators=[date_not_future], null=True, blank=True
-    )
-
-    diabetes_dx = models.CharField(
+    dm_dx = models.CharField(
         verbose_name=mark_safe("Have you ever been diagnosed with Diabetes"),
         max_length=15,
         choices=YES_NO_NA,
@@ -135,9 +163,9 @@ class ClinicalReviewDiabetesModelMixin(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        if self.diabetes_tested_ago:
-            self.diabetes_tested_estimated_datetime = edc_models.duration_to_date(
-                self.diabetes_tested_ago, self.report_datetime
+        if self.dm_test_ago:
+            self.dm_test_estimated_datetime = edc_models.duration_to_date(
+                self.dm_test_ago, self.report_datetime
             )
         super().save(*args, **kwargs)
 

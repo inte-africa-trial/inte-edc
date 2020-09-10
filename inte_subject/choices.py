@@ -1,4 +1,4 @@
-from edc_constants.constants import NEG, NEVER, NO, NOT_APPLICABLE, OTHER, POS
+from edc_constants.constants import NO, NOT_APPLICABLE, OTHER
 from edc_reportable import (
     MILLIGRAMS_PER_DECILITER,
     MILLIMOLES_PER_LITER,
@@ -8,23 +8,6 @@ from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED, MISSED_VISIT
 
 from .constants import DIET_LIFESTYLE, DRUGS, INSULIN, SITTING, GTE_3HRS, THIS_CLINIC
 
-CARE_ACCESS = (
-    (THIS_CLINIC, "Patient comes to this facility for their care"),
-    (OTHER, "Patient goes to a different clinic"),
-    (NOT_APPLICABLE, "Not applicable"),
-)
-
-HYPERTENSION_MANAGEMENT = (
-    (DRUGS, "Drugs / Medicine"),
-    (DIET_LIFESTYLE, "Diet and lifestyle alone"),
-)
-
-DIABETES_MANAGEMENT = (
-    (INSULIN, "Insulin injections"),
-    (DRUGS, "Oral drugs"),
-    (DIET_LIFESTYLE, "Diet and lifestyle alone"),
-)
-
 ALCOHOL_CONSUMPTION = (
     ("ocassionally", "Ocassionally"),
     ("1_2_per_week", "1-2 times a week"),
@@ -32,6 +15,26 @@ ALCOHOL_CONSUMPTION = (
     ("daily", "Daily"),
     (NOT_APPLICABLE, "Not applicable"),
 )
+
+CARE_ACCESS = (
+    (THIS_CLINIC, "Patient comes to this facility for their care"),
+    (OTHER, "Patient goes to a different clinic"),
+    (NOT_APPLICABLE, "Not applicable"),
+)
+
+DM_MANAGEMENT = (
+    (INSULIN, "Insulin injections"),
+    (DRUGS, "Oral drugs"),
+    (DIET_LIFESTYLE, "Diet and lifestyle alone"),
+)
+
+EDUCATION = (
+    ("no_formal_education", "No Formal Education"),
+    ("primary", "Up to primary"),
+    ("secondary", "Up to secondary / high school"),
+    ("tertiary", "university educated"),
+)
+
 
 EMPLOYMENT_STATUS = (
     ("professional", "Professional / office work / business"),
@@ -42,12 +45,18 @@ EMPLOYMENT_STATUS = (
     (OTHER, "Other, please specify"),
 )
 
-EDUCATION = (
-    ("no_formal_education", "No Formal Education"),
-    ("primary", "Up to primary"),
-    ("secondary", "Up to secondary / high school"),
-    ("tertiary", "university educated"),
+HOUSEHOLD_YES_NO_CHOICES = (
+    (NO, "No"),
+    ("yes_spouse", "Yes, my spouse"),
+    ("yes_parents", "Yes, one of my parents living with me"),
+    ("yes_relative", "Yes, another relative living with me"),
 )
+
+HTN_MANAGEMENT = (
+    (DRUGS, "Drugs / Medicine"),
+    (DIET_LIFESTYLE, "Diet and lifestyle alone"),
+)
+
 
 MARITAL_STATUS = (
     ("married", "Married or living with someone"),
@@ -56,12 +65,6 @@ MARITAL_STATUS = (
     ("widowed", "Widow / Spinster"),
 )
 
-HOUSEHOLD_YES_NO_CHOICES = (
-    (NO, "No"),
-    ("yes_spouse", "Yes, my spouse"),
-    ("yes_parents", "Yes, one of my parents living with me"),
-    ("yes_relative", "Yes, another relative living with me"),
-)
 
 # *********************************
 ACTIVITY_CHOICES = (
@@ -83,20 +86,11 @@ CHILDCARE_CHOICES = (
     (OTHER, "Other, specify"),
 )
 
-VISIT_UNSCHEDULED_REASON = (
-    ("routine_non_study", "Routine appointment (non-study)"),
-    ("patient_unwell_outpatient", "Patient unwell"),
-    ("drug_refill", "Drug refill only"),
-    # ("patient_hospitalised", "Patient hospitalised"),
-    # ("recurrence_symptoms", "Recurrence of symptoms"),
-    (OTHER, "Other"),
-    (NOT_APPLICABLE, "Not applicable"),
-)
 
-VISIT_REASON = (
-    (SCHEDULED, "Scheduled visit (study)"),
-    (UNSCHEDULED, "Routine / Unschedule visit (non-study)"),
-    (MISSED_VISIT, "Missed visit"),
+GLUCOSE_UNITS = (
+    (MILLIGRAMS_PER_DECILITER, MILLIGRAMS_PER_DECILITER),
+    (MILLIMOLES_PER_LITER, MILLIMOLES_PER_LITER_DISPLAY),
+    (NOT_APPLICABLE, "Not applicable"),
 )
 
 INFO_SOURCE = (
@@ -107,6 +101,15 @@ INFO_SOURCE = (
     ("collateral_history", "Collateral History from relative/guardian"),
     (OTHER, "Other"),
 )
+
+PAYEE_CHOICES = (
+    ("own_cash", "Own cash"),
+    ("insurance", "Insurance"),
+    ("relative", "Relative of others paying"),
+    ("free", "Free drugs from the pharmacy"),
+    (NOT_APPLICABLE, "Not applicable"),
+)
+
 
 PHYSICAL_ACTIVITY = (
     ("retired", "Retired"),
@@ -124,21 +127,6 @@ PHYSICAL_ACTIVITY_HOURS = (
 )
 
 
-GLUCOSE_UNITS = (
-    (MILLIGRAMS_PER_DECILITER, MILLIGRAMS_PER_DECILITER),
-    (MILLIMOLES_PER_LITER, MILLIMOLES_PER_LITER_DISPLAY),
-    (NOT_APPLICABLE, "Not applicable"),
-)
-
-
-PAYEE_CHOICES = (
-    ("own_cash", "Own cash"),
-    ("insurance", "Insurance"),
-    ("relative", "Relative of others paying"),
-    ("free", "Free drugs from the pharmacy"),
-    (NOT_APPLICABLE, "Not applicable"),
-)
-
 TRANSPORT_CHOICES = (
     ("bus", "Bus"),
     ("train", "Train"),
@@ -151,4 +139,18 @@ TRANSPORT_CHOICES = (
     ("hired_bicycle", "Hired bicycle"),
     ("foot", "Foot"),
     (OTHER, "Other, specify"),
+)
+
+VISIT_UNSCHEDULED_REASON = (
+    ("routine_non_study", "Routine appointment (non-study)"),
+    ("patient_unwell_outpatient", "Patient unwell"),
+    ("drug_refill", "Drug refill only"),
+    (OTHER, "Other"),
+    (NOT_APPLICABLE, "Not applicable"),
+)
+
+VISIT_REASON = (
+    (SCHEDULED, "Scheduled visit (study)"),
+    (UNSCHEDULED, "Routine / Unschedule visit (non-study)"),
+    (MISSED_VISIT, "Missed visit"),
 )

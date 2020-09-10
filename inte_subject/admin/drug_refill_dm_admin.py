@@ -4,19 +4,20 @@ from django_audit_fields.admin import audit_fieldset_tuple
 from edc_crf.admin import crf_status_fieldset_tuple
 from edc_form_label.form_label_modeladmin_mixin import FormLabelModelAdminMixin
 from edc_model_admin import SimpleHistoryAdmin, TabularInlineMixin
-from inte_subject.forms import DrugSupplyHypertensionForm
+from inte_subject.forms import DrugSupplyDmForm
 
 from ..admin_site import inte_subject_admin
-from ..forms import DrugRefillHypertensionForm
-from ..models import DrugRefillHypertension, DrugSupplyHypertension
+from ..forms import DrugRefillDmForm
+from ..models import DrugRefillDm, DrugSupplyDm
 from .modeladmin_mixins import CrfModelAdminMixin, DrugSupplyInlineMixin
 
 
-class DrugSupplyHypertensionInline(
+class DrugSupplyDmInline(
     DrugSupplyInlineMixin, TabularInlineMixin, admin.TabularInline
 ):
-    model = DrugSupplyHypertension
-    form = DrugSupplyHypertensionForm
+
+    model = DrugSupplyDm
+    form = DrugSupplyDmForm
     min_num = 1
     insert_after = "return_in_days"
 
@@ -26,24 +27,25 @@ class DrugSupplyHypertensionInline(
         return formset
 
 
-@admin.register(DrugRefillHypertension, site=inte_subject_admin)
-class DrugRefillHypertensionAdmin(
+@admin.register(DrugRefillDm, site=inte_subject_admin)
+class DrugRefillDmAdmin(
     CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
 ):
-    form = DrugRefillHypertensionForm
+    form = DrugRefillDmForm
 
     additional_instructions = mark_safe(
         '<span style="color:orange">Note: Medications CRF must be completed first.</span>'
     )
 
-    inlines = [DrugSupplyHypertensionInline]
+    inlines = [DrugSupplyDmInline]
+
     add_form_template = "admin/custom_inline/change_form.html"
     change_form_template = "admin/custom_inline/change_form.html"
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
-            "Hypertension Drug Refill Today",
+            "Diabetes Drug Refill Today",
             {
                 "fields": (
                     "rx",

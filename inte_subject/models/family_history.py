@@ -8,17 +8,17 @@ from ..model_mixins import CrfModelMixin
 
 
 class FamilyHistory(CrfModelMixin, edc_models.BaseUuidModel):
-    hypertension_in_household = models.CharField(
+    htn_in_household = models.CharField(
         verbose_name=mark_safe(
-            "Do you know if anyone else in your household has <ul>high blood pressure</ul?"
+            "Do you know if anyone else in your household has <u>high blood pressure</u>?"
         ),
         max_length=25,
         choices=HOUSEHOLD_YES_NO_CHOICES,
     )
 
-    diabetes_in_household = models.CharField(
+    dm_in_household = models.CharField(
         verbose_name=mark_safe(
-            "Do you know if anyone else in your household has <ul>diabetes</ul?"
+            "Do you know if anyone else in your household has <u>diabetes</u>?"
         ),
         max_length=25,
         choices=HOUSEHOLD_YES_NO_CHOICES,
@@ -26,7 +26,7 @@ class FamilyHistory(CrfModelMixin, edc_models.BaseUuidModel):
 
     hiv_in_household = models.CharField(
         verbose_name=mark_safe(
-            "Do you know if anyone else in your household has <ul>HIV</ul?"
+            "Do you know if anyone else in your household has <u>HIV</u>?"
         ),
         max_length=25,
         choices=HOUSEHOLD_YES_NO_CHOICES,
@@ -57,8 +57,8 @@ class FamilyHistory(CrfModelMixin, edc_models.BaseUuidModel):
 
     excercise_tf = models.CharField(
         verbose_name=mark_safe(
-            "Regular exercise is important for people with <ul>high blood "
-            "pressure</ul> or <ul>high blood sugar</ul> even if they are taking "
+            "Regular exercise is important for people with <u>high blood "
+            "pressure</u> or <u>high blood sugar</u> even if they are taking "
             "medicines for these conditions."
         ),
         max_length=25,
@@ -67,49 +67,49 @@ class FamilyHistory(CrfModelMixin, edc_models.BaseUuidModel):
 
     take_medicine_tf = models.CharField(
         verbose_name=mark_safe(
-            "Drugs for <ul>blood sugar</ul> and <ul>blood pressure</ul> can make you unwell"
+            "Drugs for <u>blood sugar</u> and <u>blood pressure</u> can make you unwell"
         ),
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )
 
-    stop_hypertension_meds_tf = models.CharField(
+    stop_htn_meds_tf = models.CharField(
         verbose_name=mark_safe(
-            "It is best to stop taking <ul>blood pressure</ul> pills when "
+            "It is best to stop taking <u>blood pressure</u> pills when "
             "you feel better and start pill taking again when you feel sick"
         ),
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )
 
-    traditional_hypertension_tf = models.CharField(
+    traditional_htn_tf = models.CharField(
         verbose_name=mark_safe(
             "Herbs and traditional medicine are better for "
-            "managing <ul>blood pressure</ul> than pills and medicines"
+            "managing <u>blood pressure</u> than pills and medicines"
         ),
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )
 
-    stop_diabetes_meds_tf = models.CharField(
+    stop_dm_meds_tf = models.CharField(
         verbose_name=mark_safe(
-            "It is best to stop taking <ul>blood sugar</ul> medicines when "
+            "It is best to stop taking <u>blood sugar</u> medicines when "
             "you feel better and start pill taking again when you feel sick"
         ),
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )
 
-    traditional_diabetes_tf = models.CharField(
+    traditional_dm_tf = models.CharField(
         verbose_name=mark_safe(
             "Herbs and traditional medicine are better for managing "
-            "<ul>diabetes</ul> than pills and medicines"
+            "<u>diabetes</u> than pills and medicines"
         ),
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )
 
-    diabetes_cause_tf = models.CharField(
+    dm_cause_tf = models.CharField(
         verbose_name=mark_safe(
             "Having drinks with sugar (e.g. tea/coffee) causes diabetes"
         ),

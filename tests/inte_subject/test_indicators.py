@@ -26,7 +26,6 @@ class TestIndicators(InteTestCaseMixin, TestCase):
             "inte_subject.clinicalreviewbaseline", subject_visit=self.subject_visit
         )
 
-    @tag("fam")
     def test_weight_height_required_at_baseline(self):
         data = {
             "subject_visit": self.subject_visit,
@@ -59,7 +58,6 @@ class TestIndicators(InteTestCaseMixin, TestCase):
         self.assertNotIn("weight", form_validator._errors)
         self.assertNotIn("height", form_validator._errors)
 
-    @tag("fam")
     def test_weight_height_not_required_if_not_baseline(self):
         self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
         self.subject_visit.appointment.save()

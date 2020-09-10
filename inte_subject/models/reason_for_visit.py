@@ -30,14 +30,14 @@ class ReasonForVisit(CrfModelMixin, edc_models.BaseUuidModel):
         default=NOT_APPLICABLE,
     )
 
-    refill_diabetes = models.CharField(
+    refill_dm = models.CharField(
         verbose_name="Is the patient refilling Diabetes medications?",
         max_length=25,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
     )
 
-    refill_hypertension = models.CharField(
+    refill_htn = models.CharField(
         verbose_name="Is the patient refilling Hypertension medications?",
         max_length=25,
         choices=YES_NO_NA,

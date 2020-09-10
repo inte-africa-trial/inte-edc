@@ -1,13 +1,21 @@
 from dateutil.relativedelta import relativedelta
 from django.contrib.sites.models import Site
 from edc_constants.constants import NOT_APPLICABLE, POS, YES, NO, MOBILE_NUMBER
+from edc_lab.constants import LT
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import SCHEDULED
 from faker import Faker
 from inte_consent.models import SubjectConsent
 from inte_consent.models import SubjectReconsent
 from inte_prn.models import IntegratedCareClinicRegistration
-from inte_subject.models import ClinicalReviewBaseline, HealthEconomicsRevised
+from inte_subject.constants import THIS_CLINIC
+from inte_subject.models import (
+    ClinicalReview,
+    ClinicalReviewBaseline,
+    HealthEconomicsRevised,
+    HivInitialReview,
+    HtnInitialReview,
+)
 from model_bakery.recipe import Recipe, seq
 
 from .models import SubjectRequisition
@@ -63,13 +71,52 @@ healtheconomicsrevised = Recipe(
 clinicalreviewbaseline = Recipe(
     ClinicalReviewBaseline,
     site=Site.objects.get_current(),
-    hiv=POS,
-    hiv_tested_ago="5y",
-    hypertension_tested=NO,
+    hiv_test=POS,
+    hiv_test_ago="5y",
+    hiv_dx=YES,
+    htn_test=NO,
+    htn_test_ago=None,
     hypertension=NOT_APPLICABLE,
-    diabetes_tested=NO,
-    diabetes_tested_ago=None,
+    dm_test=NO,
+    dm_test_ago=None,
     diabetes=NOT_APPLICABLE,
     health_insurance=YES,
     patient_club=YES,
+)
+
+clinicalreview = Recipe(
+    ClinicalReview,
+    site=Site.objects.get_current(),
+    hiv_test=NOT_APPLICABLE,
+    hiv_test_date=None,
+    hiv_dx=NOT_APPLICABLE,
+    htn_test=NO,
+    htn_test_date=None,
+    htn_dx=NOT_APPLICABLE,
+    dm_test=NO,
+    dm_test_date=None,
+    dm_dx=NOT_APPLICABLE,
+    health_insurance=YES,
+    patient_club=YES,
+)
+
+hivinitialreview = Recipe(
+    HivInitialReview,
+    site=Site.objects.get_current(),
+    dx_ago="5y",
+    receives_care=YES,
+    clinic=THIS_CLINIC,
+    arv_initiation_ago="4y",
+    has_vl=YES,
+    vl=50,
+    vl_quantifier=LT,
+    has_cd4=NO,
+)
+
+htninitialreview = Recipe(
+    HtnInitialReview,
+    site=Site.objects.get_current(),
+    dx_ago="1y",
+    receives_care=YES,
+    clinic=THIS_CLINIC,
 )

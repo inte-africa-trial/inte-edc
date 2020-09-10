@@ -19,41 +19,24 @@ class ClinicalReviewBaselineAdmin(
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
-        ("HIV", {"fields": ("hiv_tested", "hiv_tested_ago", "hiv_tested_date")}),
-        (
-            "Diabetes",
-            {
-                "fields": (
-                    "diabetes_tested",
-                    "diabetes_tested_ago",
-                    "diabetes_tested_date",
-                    "diabetes_dx",
-                )
-            },
-        ),
+        ("HIV", {"fields": ("hiv_test", "hiv_test_ago", "hiv_test_date")}),
+        ("Diabetes", {"fields": ("dm_test", "dm_test_ago", "dm_test_date", "dm_dx")}),
         (
             "Hypertension",
-            {
-                "fields": (
-                    "hypertension_tested",
-                    "hypertension_tested_ago",
-                    "hypertension_tested_date",
-                    "hypertension_dx",
-                ),
-            },
+            {"fields": ("htn_test", "htn_test_ago", "htn_test_date", "htn_dx")},
         ),
-        ("Other", {"fields": ("health_insurance", "patient_club",)}),
+        ("Other", {"fields": ("health_insurance", "patient_club")}),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
 
     radio_fields = {
         "crf_status": admin.VERTICAL,
-        "hiv_tested": admin.VERTICAL,
-        "diabetes_tested": admin.VERTICAL,
-        "diabetes_dx": admin.VERTICAL,
-        "hypertension_tested": admin.VERTICAL,
-        "hypertension_dx": admin.VERTICAL,
+        "hiv_test": admin.VERTICAL,
+        "dm_test": admin.VERTICAL,
+        "dm_dx": admin.VERTICAL,
+        "htn_test": admin.VERTICAL,
+        "htn_dx": admin.VERTICAL,
         "health_insurance": admin.VERTICAL,
         "patient_club": admin.VERTICAL,
     }

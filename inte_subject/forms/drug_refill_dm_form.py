@@ -1,7 +1,7 @@
 from django import forms
 from edc_form_validators.form_validator import FormValidator
 
-from ..models import DrugRefillHypertension
+from ..models import DrugRefillDm
 from .mixins import (
     DrugRefillFormValidatorMixin,
     CrfModelFormMixin,
@@ -9,15 +9,15 @@ from .mixins import (
 )
 
 
-class DrugRefillHypertensionFormValidator(
+class DrugRefillDmFormValidator(
     DrugRefillFormValidatorMixin, CrfFormValidatorMixin, FormValidator
 ):
     pass
 
 
-class DrugRefillHypertensionForm(CrfModelFormMixin, forms.ModelForm):
-    form_validator_cls = DrugRefillHypertensionFormValidator
+class DrugRefillDmForm(CrfModelFormMixin, forms.ModelForm):
+    form_validator_cls = DrugRefillDmFormValidator
 
     class Meta:
-        model = DrugRefillHypertension
+        model = DrugRefillDm
         fields = "__all__"

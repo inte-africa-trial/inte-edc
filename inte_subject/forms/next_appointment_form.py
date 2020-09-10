@@ -11,8 +11,8 @@ from inte_screening.constants import (
 from ..models import (
     NextAppointment,
     HivInitialReview,
-    DiabetesInitialReview,
-    HypertensionInitialReview,
+    DmInitialReview,
+    HtnInitialReview,
 )
 from .mixins import CrfFormValidatorMixin, CrfModelFormMixin
 
@@ -34,13 +34,13 @@ class NextAppointmentValidator(CrfFormValidatorMixin, FormValidator):
             "report_datetime", "hiv_clinic_appt_date", convert_to_date=True,
         )
         ncd_condition = (
-            DiabetesInitialReview.objects.filter(
+            DmInitialReview.objects.filter(
                 subject_visit__appointment__subject_identifier=self.subject_identifier,
                 subject_visit__report_datetime__lte=self.cleaned_data.get(
                     "report_datetime"
                 ),
             ).exists()
-            or HypertensionInitialReview.objects.filter(
+            or HtnInitialReview.objects.filter(
                 subject_visit__appointment__subject_identifier=self.subject_identifier,
                 subject_visit__report_datetime__lte=self.cleaned_data.get(
                     "report_datetime"
@@ -56,17 +56,17 @@ class NextAppointmentValidator(CrfFormValidatorMixin, FormValidator):
         )
         self.required_if_true(
             ncd_condition and self.clinic_type == DIABETES_CLINIC,
-            field_required="diabetes_clinic_appt_date",
+            field_required="dm_clinic_appt_date",
         )
         self.date_not_before(
-            "report_datetime", "diabetes_clinic_appt_date", convert_to_date=True,
+            "report_datetime", "dm_clinic_appt_date", convert_to_date=True,
         )
         self.required_if_true(
             ncd_condition and self.clinic_type == HYPERTENSION_CLINIC,
-            field_required="hypertension_clinic_appt_date",
+            field_required="htn_clinic_appt_date",
         )
         self.date_not_before(
-            "report_datetime", "hypertension_clinic_appt_date", convert_to_date=True,
+            "report_datetime", "htn_clinic_appt_date", convert_to_date=True,
         )
 
     @property

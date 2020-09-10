@@ -1,7 +1,7 @@
 from django import forms
 from edc_form_validators.form_validator import FormValidator
 
-from ..models import HypertensionReview
+from ..models import HtnReview
 from .mixins import (
     ReviewFormValidatorMixin,
     BPFormValidatorMixin,
@@ -10,7 +10,7 @@ from .mixins import (
 )
 
 
-class HypertensionReviewFormValidator(
+class HtnReviewFormValidator(
     ReviewFormValidatorMixin, BPFormValidatorMixin, CrfFormValidatorMixin, FormValidator
 ):
     def clean(self):
@@ -20,9 +20,9 @@ class HypertensionReviewFormValidator(
         self.validate_test_and_care_dates()
 
 
-class HypertensionReviewForm(CrfModelFormMixin, forms.ModelForm):
-    form_validator_cls = HypertensionReviewFormValidator
+class HtnReviewForm(CrfModelFormMixin, forms.ModelForm):
+    form_validator_cls = HtnReviewFormValidator
 
     class Meta:
-        model = HypertensionReview
+        model = HtnReview
         fields = "__all__"

@@ -130,7 +130,7 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         help_text="not including today",
     )
 
-    rx_diabetes_month = models.CharField(
+    rx_dm_month = models.CharField(
         verbose_name=(
             "Did you receive drugs for raised blood sugar "
             "(diabetes) over the last month?"
@@ -140,14 +140,14 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         default=NOT_APPLICABLE,
         help_text="not including today",
     )
-    rx_diabetes_paid_month = models.ManyToManyField(
+    rx_dm_paid_month = models.ManyToManyField(
         DrugPaySources,
         related_name="+",
         verbose_name="If YES, how were these paid for?",
         blank=True,
     )
 
-    rx_diabetes_cost_month = models.IntegerField(
+    rx_dm_cost_month = models.IntegerField(
         verbose_name="If these drugs were not free, how much did you pay?",
         validators=[MinValueValidator(0)],
         null=True,
@@ -155,7 +155,7 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         help_text="In local currency",
     )
 
-    rx_hypertension_month = models.CharField(
+    rx_htn_month = models.CharField(
         verbose_name=(
             "Did you receive drugs for raised blood pressure "
             "(hypertension) over the last month?"
@@ -166,14 +166,14 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         help_text="not including today",
     )
 
-    rx_hypertension_paid_month = models.ManyToManyField(
+    rx_htn_paid_month = models.ManyToManyField(
         DrugPaySources,
         related_name="+",
         verbose_name="If YES, how were these paid for?",
         blank=True,
     )
 
-    rx_hypertension_cost_month = models.IntegerField(
+    rx_htn_cost_month = models.IntegerField(
         verbose_name="If these drugs were not free, how much did you pay?",
         validators=[MinValueValidator(0)],
         null=True,
@@ -238,11 +238,11 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         choices=YES_NO,
     )
 
-    non_drug_activities_month_detail = models.TextField(
+    non_drug_activities_detail_month = models.TextField(
         verbose_name="If YES, what was the activity", null=True, blank=True
     )
 
-    non_drug_activities_month_cost = models.IntegerField(
+    non_drug_activities_cost_month = models.IntegerField(
         verbose_name=(
             "If YES, how much was spent on other activities "
             "(not drugs) relating to your health?"
@@ -376,12 +376,12 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         choices=YES_NO,
     )
 
-    rx_diabetes_today = models.CharField(
+    rx_dm_today = models.CharField(
         verbose_name="Did you receive drugs for raised blood sugar (diabetes) today?",
         max_length=15,
         choices=YES_NO,
     )
-    rx_diabetes_paid_today = models.ManyToManyField(
+    rx_dm_paid_today = models.ManyToManyField(
         DrugPaySources,
         related_name="+",
         verbose_name=(
@@ -391,7 +391,7 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         blank=True,
     )
 
-    rx_diabetes_cost_today = models.IntegerField(
+    rx_dm_cost_today = models.IntegerField(
         verbose_name=(
             "If not free, how much did you pay for raised blood sugar (diabetes) drugs?"
         ),
@@ -401,13 +401,13 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         help_text="In local currency",
     )
 
-    rx_hypertension_today = models.CharField(
+    rx_htn_today = models.CharField(
         verbose_name="Did you receive raised blood pressure (hypertension) drugs today?",
         max_length=15,
         choices=YES_NO,
     )
 
-    rx_hypertension_paid_today = models.ManyToManyField(
+    rx_htn_paid_today = models.ManyToManyField(
         DrugPaySources,
         related_name="+",
         verbose_name=(
@@ -417,7 +417,7 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         blank=True,
     )
 
-    rx_hypertension_cost_today = models.IntegerField(
+    rx_htn_cost_today = models.IntegerField(
         verbose_name=(
             "If not free, how much did you pay for high blood pressure (Hypertension) drugs?"
         ),
@@ -479,11 +479,11 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         choices=YES_NO,
     )
 
-    non_drug_activities_toay_detail = models.TextField(
+    non_drug_activities_detail_today = models.TextField(
         verbose_name="If YES, what was the activity", null=True, blank=True
     )
 
-    non_drug_activities_today_cost = models.IntegerField(
+    non_drug_activities_cost_today = models.IntegerField(
         verbose_name="If YES, how much did you spend?",
         validators=[MinValueValidator(0)],
         help_text="In local currency",
@@ -491,7 +491,7 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         blank=True,
     )
 
-    healthcare_expenditure_total_month = models.IntegerField(
+    healthcare_expenditure_total_month_today = models.IntegerField(
         verbose_name=(
             "How much in total has been spent on your healthcare in the last month?"
         ),

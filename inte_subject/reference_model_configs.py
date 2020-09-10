@@ -6,19 +6,22 @@ site_reference_configs.register_from_visit_schedule(
 
 configs = {
     "inte_subject.clinicalreviewbaseline": [
-        "hiv_tested",
-        "diabetes_tested",
-        "hypertension_tested",
+        "hiv_test",
+        "dm_test",
+        "htn_test",
         "hiv_dx",
-        "diabetes_dx",
-        "hypertension_dx",
+        "dm_dx",
+        "htn_dx",
     ],
-    "inte_subject.clinicalreview": ["hiv_dx", "diabetes_dx", "hypertension_dx"],
-    "inte_subject.medications": [
-        "refill_hiv",
-        "refill_diabetes",
-        "refill_hypertension",
+    "inte_subject.clinicalreview": [
+        "hiv_test",
+        "dm_test",
+        "htn_test",
+        "hiv_dx",
+        "dm_dx",
+        "htn_dx",
     ],
+    "inte_subject.medications": ["refill_hiv", "refill_dm", "refill_htn"],
 }
 
 for reference_name, fields in configs.items():

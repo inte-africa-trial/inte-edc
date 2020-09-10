@@ -22,11 +22,11 @@ class ClinicalReviewAdmin(
             "HYPERTENSION",
             {
                 "fields": (
-                    "hypertension_tested",
-                    "hypertension_test_date",
-                    "hypertension_reason",
-                    "hypertension_reason_other",
-                    "hypertension_dx",
+                    "htn_test",
+                    "htn_test_date",
+                    "htn_reason",
+                    "htn_reason_other",
+                    "htn_dx",
                 )
             },
         ),
@@ -34,11 +34,11 @@ class ClinicalReviewAdmin(
             "DIABETES",
             {
                 "fields": (
-                    "diabetes_tested",
-                    "diabetes_test_date",
-                    "diabetes_reason",
-                    "diabetes_reason_other",
-                    "diabetes_dx",
+                    "dm_test",
+                    "dm_test_date",
+                    "dm_reason",
+                    "dm_reason_other",
+                    "dm_dx",
                 )
             },
         ),
@@ -46,7 +46,7 @@ class ClinicalReviewAdmin(
             "HIV",
             {
                 "fields": (
-                    "hiv_tested",
+                    "hiv_test",
                     "hiv_test_date",
                     "hiv_reason",
                     "hiv_reason_other",
@@ -59,17 +59,17 @@ class ClinicalReviewAdmin(
     )
 
     radio_fields = {
-        "hypertension_tested": admin.VERTICAL,
-        "diabetes_tested": admin.VERTICAL,
-        "hiv_tested": admin.VERTICAL,
-        "hypertension_dx": admin.VERTICAL,
-        "diabetes_dx": admin.VERTICAL,
+        "htn_test": admin.VERTICAL,
+        "dm_test": admin.VERTICAL,
+        "hiv_test": admin.VERTICAL,
+        "htn_dx": admin.VERTICAL,
+        "dm_dx": admin.VERTICAL,
         "hiv_dx": admin.VERTICAL,
         "crf_status": admin.VERTICAL,
     }
 
     filter_horizontal = [
-        "hypertension_reason",
-        "diabetes_reason",
+        "htn_reason",
+        "dm_reason",
         "hiv_reason",
     ]

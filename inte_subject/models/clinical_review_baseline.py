@@ -1,19 +1,26 @@
 from django.db import models
 from edc_constants.choices import YES_NO
 from edc_model import models as edc_models
+from edc_visit_schedule.constants import DAY1
 
 from ..model_mixins import (
     CrfModelMixin,
     ClinicalReviewHivModelMixin,
-    ClinicalReviewHypertensionModelMixin,
-    ClinicalReviewDiabetesModelMixin,
+    ClinicalReviewHtnModelMixin,
+    ClinicalReviewDmModelMixin,
+    ClinicalReviewModelMixin,
 )
+
+
+class ClinicalReviewBaselineError(Exception):
+    pass
 
 
 class ClinicalReviewBaseline(
     ClinicalReviewHivModelMixin,
-    ClinicalReviewHypertensionModelMixin,
-    ClinicalReviewDiabetesModelMixin,
+    ClinicalReviewHtnModelMixin,
+    ClinicalReviewDmModelMixin,
+    ClinicalReviewModelMixin,
     CrfModelMixin,
     edc_models.BaseUuidModel,
 ):
@@ -29,6 +36,16 @@ class ClinicalReviewBaseline(
         max_length=15,
         choices=YES_NO,
     )
+
+    def save(self, *args, **kwargs):
+        if (
+            self.subject_visit.visit_code != DAY1
+            and self.subject_visit.visit_code_sequence != 0
+        ):
+            raise ClinicalReviewBaselineError(
+                f"This model is only valid at baseline. Got `{self.subject_visit}`."
+            )
+        super().save(*args, **kwargs)
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
         verbose_name = "Clinical Review: Baseline"

@@ -32,17 +32,17 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             subject_consent=self.subject_consent_hiv,
         )
 
-        # hypertension clinic
-        self.subject_screening_hypertension = self.get_subject_screening(
+        # htn clinic
+        self.subject_screening_htn = self.get_subject_screening(
             report_datetime=get_utcnow(), clinic_type=HYPERTENSION_CLINIC
         )
-        self.subject_consent_hypertension = self.get_subject_consent(
-            subject_screening=self.subject_screening_hypertension,
+        self.subject_consent_htn = self.get_subject_consent(
+            subject_screening=self.subject_screening_htn,
             clinic_type=HYPERTENSION_CLINIC,
         )
-        self.subject_visit_hypertension = self.get_subject_visit(
-            subject_screening=self.subject_screening_hypertension,
-            subject_consent=self.subject_consent_hypertension,
+        self.subject_visit_htn = self.get_subject_visit(
+            subject_screening=self.subject_screening_htn,
+            subject_consent=self.subject_consent_htn,
         )
 
         # diabetes clinic
@@ -76,13 +76,13 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             "subject_visit": self.subject_visit_hiv.pk,
             "report_datetime": self.subject_visit_hiv.report_datetime,
             "crf_status": INCOMPLETE,
-            "hiv_tested": POS,
-            "hiv_tested_ago": "5y",
-            "hypertension_tested": NO,
-            "hypertension_dx": NOT_APPLICABLE,
-            "diabetes_tested": NO,
-            "diabetes_tested_ago": None,
-            "diabetes_dx": NOT_APPLICABLE,
+            "hiv_test": POS,
+            "hiv_test_ago": "5y",
+            "htn_test": NO,
+            "htn_dx": NOT_APPLICABLE,
+            "dm_test": NO,
+            "dm_test_ago": None,
+            "dm_dx": NOT_APPLICABLE,
             "health_insurance": YES,
             "patient_club": YES,
         }
@@ -93,17 +93,17 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
     @tag("crb")
     def test_form_ok_hypertensive(self):
         data = {
-            "subject_visit": self.subject_visit_hypertension.pk,
-            "report_datetime": self.subject_visit_hypertension.report_datetime,
+            "subject_visit": self.subject_visit_htn.pk,
+            "report_datetime": self.subject_visit_htn.report_datetime,
             "crf_status": INCOMPLETE,
-            "hiv_tested": NEVER,
-            "hiv_tested_ago": None,
-            "hypertension_tested": YES,
-            "hypertension_tested_ago": "1y1m",
-            "hypertension_dx": YES,
-            "diabetes_tested": NO,
-            "diabetes_tested_ago": None,
-            "diabetes_dx": NOT_APPLICABLE,
+            "hiv_test": NEVER,
+            "hiv_test_ago": None,
+            "htn_test": YES,
+            "htn_test_ago": "1y1m",
+            "htn_dx": YES,
+            "dm_test": NO,
+            "dm_test_ago": None,
+            "dm_dx": NOT_APPLICABLE,
             "health_insurance": YES,
             "patient_club": YES,
         }
@@ -117,14 +117,14 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             "subject_visit": self.subject_visit_diabetes.pk,
             "report_datetime": self.subject_visit_diabetes.report_datetime,
             "crf_status": INCOMPLETE,
-            "hiv_tested": NEVER,
-            "hiv_tested_ago": None,
-            "hypertension_tested": NO,
-            "hypertension_tested_ago": None,
-            "hypertension_dx": NOT_APPLICABLE,
-            "diabetes_tested": YES,
-            "diabetes_tested_ago": "1y1m",
-            "diabetes_dx": YES,
+            "hiv_test": NEVER,
+            "hiv_test_ago": None,
+            "htn_test": NO,
+            "htn_test_ago": None,
+            "htn_dx": NOT_APPLICABLE,
+            "dm_test": YES,
+            "dm_test_ago": "1y1m",
+            "dm_dx": YES,
             "health_insurance": YES,
             "patient_club": YES,
         }
@@ -140,78 +140,78 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             "crf_status": INCOMPLETE,
         }
         data.update(
-            hiv_tested=NEG, hiv_tested_ago=None,
+            hiv_test=NEG, hiv_test_ago=None,
         )
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
-        self.assertIn("hiv_tested", form._errors)
+        self.assertIn("hiv_test", form._errors)
 
         data.update(
-            hiv_tested=NEVER, hiv_tested_ago=None,
+            hiv_test=NEVER, hiv_test_ago=None,
         )
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
-        self.assertIn("hiv_tested", form._errors)
+        self.assertIn("hiv_test", form._errors)
 
-        data.update(hiv_tested=POS, hiv_tested_ago=None, hiv_tested_date=None)
+        data.update(hiv_test=POS, hiv_test_ago=None, hiv_test_date=None)
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
-        self.assertNotIn("hiv_tested", form._errors)
+        self.assertNotIn("hiv_test", form._errors)
         all = form._errors.get("__all__") or ""
         self.assertIn("Hiv", str(all))
 
-        data.update(hiv_tested=POS, hiv_tested_ago="10y", hiv_tested_date=None)
+        data.update(hiv_test=POS, hiv_test_ago="10y", hiv_test_date=None)
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
-        self.assertNotIn("hiv_tested", form._errors)
+        self.assertNotIn("hiv_test", form._errors)
         self.assertNotIn("__all__", form._errors)
-        self.assertNotIn("hiv_tested_ago", form._errors)
+        self.assertNotIn("hiv_test_ago", form._errors)
 
     @tag("crb")
-    def test_hypertension_if_hypertension_clinic(self):
+    def test_htn_if_htn_clinic(self):
         data = {
-            "subject_visit": self.subject_visit_hypertension.pk,
-            "report_datetime": self.subject_visit_hypertension.report_datetime,
+            "subject_visit": self.subject_visit_htn.pk,
+            "report_datetime": self.subject_visit_htn.report_datetime,
             "crf_status": INCOMPLETE,
-            "hiv_tested": NEVER,
-            "hiv_tested_ago": None,
-            "hypertension_tested": NO,
-            "hypertension_tested_ago": "1y",
-            "hypertension_dx": NOT_APPLICABLE,
+            "hiv_test": NEVER,
+            "hiv_test_ago": None,
+            "htn_test": NO,
+            "htn_test_ago": "1y",
+            "htn_dx": NOT_APPLICABLE,
         }
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
-        self.assertIn("hypertension_tested", form._errors)
+        self.assertIn("htn_test", form._errors)
 
         data.update(
-            hypertension_tested=YES, hypertension_dx=NOT_APPLICABLE,
+            htn_test=YES, htn_dx=NOT_APPLICABLE,
         )
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
-        self.assertNotIn("hypertension_tested", form._errors)
-        self.assertIn("hypertension_dx", form._errors)
+        self.assertNotIn("htn_test", form._errors)
+        self.assertIn("htn_dx", form._errors)
 
         data.update(
-            hypertension_tested=YES, hypertension_dx=YES,
+            htn_test=YES, htn_dx=YES,
         )
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
-        self.assertNotIn("hypertension_tested", form._errors)
-        self.assertNotIn("hypertension_dx", form._errors)
+        self.assertNotIn("htn_test", form._errors)
+        self.assertNotIn("htn_dx", form._errors)
 
     @tag("crb")
     def test_diabetes_if_ncd_clinic(self):
-        for cond in ["diabetes", "hypertension"]:
+        for cond in ["diabetes", "htn"]:
             data = {
                 "subject_visit": self.subject_visit_ncd.pk,
                 "report_datetime": self.subject_visit_ncd.report_datetime,
                 "crf_status": INCOMPLETE,
-                "hiv_tested": NEVER,
-                "hiv_tested_ago": None,
+                "hiv_test": NEVER,
+                "hiv_test_ago": None,
                 "diabetes_tested": NO,
                 "diabetes_dx": NOT_APPLICABLE,
-                "hypertension_tested": NO,
-                "hypertension_dx": NOT_APPLICABLE,
+                "htn_test": NO,
+                "htn_dx": NOT_APPLICABLE,
             }
             with self.subTest(cond=cond):
                 form = ClinicalReviewBaselineForm(data=data)
@@ -221,8 +221,8 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
 
                 data.update(
                     {
-                        f"{cond}_tested": YES,
-                        f"{cond}_tested_ago": "1y",
+                        f"{cond}_test": YES,
+                        f"{cond}_test_ago": "1y",
                         f"{cond}_dx": NOT_APPLICABLE,
                     }
                 )
@@ -232,14 +232,10 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                 self.assertIn("__all__", [k for k in form._errors.keys()])
 
                 data.update(
-                    {
-                        f"{cond}_tested": YES,
-                        f"{cond}_tested_ago": "1y",
-                        f"{cond}_dx": YES,
-                    }
+                    {f"{cond}_test": YES, f"{cond}_test_ago": "1y", f"{cond}_dx": YES,}
                 )
                 form = ClinicalReviewBaselineForm(data=data)
                 form.is_valid()
                 self.assertNotIn("__all__", [k for k in form._errors.keys()])
-                self.assertNotIn(f"{cond}_tested", form._errors)
+                self.assertNotIn(f"{cond}_test", form._errors)
                 self.assertNotIn(cond, form._errors)

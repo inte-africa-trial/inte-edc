@@ -41,7 +41,6 @@ class TestSubjectConsent(InteTestCaseMixin, TestCase):
         validator = SubjectConsentFormValidator(cleaned_data=cleaned_data,)
         validator.clean()
 
-    @tag("1")
     def test_form_validator_consent_before_eligibility_datetime(self):
         consent_datetime = self.subject_screening.eligibility_datetime - relativedelta(
             minutes=10
@@ -63,7 +62,6 @@ class TestSubjectConsent(InteTestCaseMixin, TestCase):
             validator.clean()
         self.assertIn("consent_datetime", str(cm.exception))
 
-    @tag("1")
     def test_form_validator_consent_after_eligibility_datetime(self):
         consent_datetime = self.subject_screening.eligibility_datetime + relativedelta(
             minutes=1

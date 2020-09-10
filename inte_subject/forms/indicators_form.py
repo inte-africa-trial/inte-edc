@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from edc_action_item.forms.action_item_form_mixin import ActionItemFormMixin
 from edc_constants.constants import NO, NOT_REQUIRED, YES
 from edc_form_validators.form_validator import FormValidator
-from inte_subject.models import HypertensionInitialReview
+from inte_subject.models import HtnInitialReview
 from inte_visit_schedule.is_baseline import is_baseline
 
 from ..models import Indicators
@@ -33,7 +33,7 @@ class IndicatorsFormValidator(
         )
         if (
             self.cleaned_data.get("r2_taken") == NOT_REQUIRED
-            and self.hypertension_initial_review
+            and self.htn_initial_review
         ):
             raise forms.ValidationError(
                 {"r2_taken": "Invalid. Expected YES or NO. Patient is hypertensive."}
@@ -46,9 +46,9 @@ class IndicatorsFormValidator(
         )
 
     @property
-    def hypertension_initial_review(self):
+    def htn_initial_review(self):
         try:
-            return HypertensionInitialReview.objects.get(
+            return HtnInitialReview.objects.get(
                 subject_visit__subject_identifier=self.cleaned_data.get(
                     "subject_visit"
                 ).subject_identifier,
@@ -58,9 +58,7 @@ class IndicatorsFormValidator(
             return None
 
 
-class IndicatorsForm(
-    CrfModelFormMixin, ActionItemFormMixin, forms.ModelForm,
-):
+class IndicatorsForm(CrfModelFormMixin, forms.ModelForm):
     form_validator_cls = IndicatorsFormValidator
 
     class Meta:

@@ -15,29 +15,29 @@ class Medications(CrfModelMixin, edc_models.BaseUuidModel):
         default=NOT_APPLICABLE,
         help_text=(
             "Select `not applicable` if subject has not "
-            "been prescribed medication for HIV infection."
+            "been diagnosed and prescribed medication for HIV infection."
         ),
     )
 
-    refill_diabetes = models.CharField(
+    refill_dm = models.CharField(
         verbose_name="Is the patient filling / refilling Diabetes medications?",
         max_length=25,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
         help_text=(
             "Select `not applicable` if subject has not "
-            "been prescribed medication for Diabetes."
+            "been diagnosed and prescribed medication for Diabetes."
         ),
     )
 
-    refill_hypertension = models.CharField(
+    refill_htn = models.CharField(
         verbose_name="Is the patient filling / refilling Hypertension medications?",
         max_length=25,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
         help_text=(
             "Select `not applicable` if subject has not "
-            "been prescribed medication for Hypertension."
+            "been diagnosed and prescribed medication for Hypertension."
         ),
     )
 

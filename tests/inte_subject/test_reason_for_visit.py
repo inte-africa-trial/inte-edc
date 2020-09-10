@@ -40,8 +40,8 @@
 #             "clinic_services": ClinicServices.objects.exclude(name__in=[REFILL, OTHER]),
 #             "clinic_services_other": None,
 #             "refill_hiv": YES,
-#             "refill_diabetes": NOT_APPLICABLE,
-#             "refill_hypertension": NOT_APPLICABLE,
+#             "refill_dm": NOT_APPLICABLE,
+#             "refill_htn": NOT_APPLICABLE,
 #             "health_services": HealthServices.objects.filter(name=HIV),
 #             "health_services_other": None,
 #         }
@@ -51,7 +51,6 @@
 #             report_datetime=self.subject_visit_hiv.report_datetime,
 #         )
 #
-#     @tag("1")
 #     def test_ok(self):
 #         form = ReasonForVisitForm(data=self.data)
 #         form.is_valid()

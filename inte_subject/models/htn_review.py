@@ -2,12 +2,12 @@ from django.db import models
 from edc_constants.choices import YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
-from inte_subject.choices import HYPERTENSION_MANAGEMENT
+from inte_subject.choices import HTN_MANAGEMENT
 
 from ..model_mixins import CrfModelMixin
 
 
-class HypertensionReview(CrfModelMixin, edc_models.BaseUuidModel):
+class HtnReview(CrfModelMixin, edc_models.BaseUuidModel):
 
     test_date = models.DateField(
         verbose_name="Date tested for Hypertension", null=True, blank=True,
@@ -27,7 +27,7 @@ class HypertensionReview(CrfModelMixin, edc_models.BaseUuidModel):
     managed_by = models.CharField(
         verbose_name="If diagnosed, how will this be managed in the next month or so?",
         max_length=25,
-        choices=HYPERTENSION_MANAGEMENT,
+        choices=HTN_MANAGEMENT,
         default=NOT_APPLICABLE,
     )
 

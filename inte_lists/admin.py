@@ -7,8 +7,8 @@ from .models import (
     ArvRegimens,
     ClinicServices,
     Conditions,
-    DiabetesTreatments,
-    HypertensionTreatments,
+    DmTreatments,
+    HtnTreatments,
     OffstudyReasons,
     VisitReasons,
     HealthServices,
@@ -27,8 +27,8 @@ class OffstudyReasonsAdmin(ListModelAdminMixin, admin.ModelAdmin):
     pass
 
 
-@admin.register(HypertensionTreatments, site=inte_lists_admin)
-class HypertensionTreatmentsAdmin(ListModelAdminMixin, admin.ModelAdmin):
+@admin.register(HtnTreatments, site=inte_lists_admin)
+class HtnTreatmentsAdmin(ListModelAdminMixin, admin.ModelAdmin):
     pass
 
 
@@ -42,8 +42,8 @@ class VisitReasonsAdmin(ListModelAdminMixin, admin.ModelAdmin):
     pass
 
 
-@admin.register(DiabetesTreatments, site=inte_lists_admin)
-class DiabetesTreatmentsAdmin(ListModelAdminMixin, admin.ModelAdmin):
+@admin.register(DmTreatments, site=inte_lists_admin)
+class DmTreatmentsAdmin(ListModelAdminMixin, admin.ModelAdmin):
     pass
 
 

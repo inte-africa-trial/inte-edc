@@ -16,6 +16,7 @@ from inte_prn.constants import (
     TRANSFERRED,
     WITHDRAWAL,
 )
+from inte_subject.constants import INTEGRATED, NCD
 
 list_data = {
     "inte_lists.conditions": [
@@ -43,7 +44,7 @@ list_data = {
         (TRANSFERRED, "Patient has been transferred to another health centre"),
         (OTHER, "Other reason (specify below)",),
     ],
-    "inte_lists.hypertensiontreatments": [
+    "inte_lists.htntreatments": [
         ("amlodipine", "Amlodipine"),
         ("atenolol", "Atenolol"),
         ("bendroflumethiazide", "Bendroflumethiazide"),
@@ -101,7 +102,7 @@ list_data = {
         ("unwell", "Feeling unwell (self referral)"),
         ("unscheduled", "Unscheduled"),
     ],
-    "inte_lists.diabetestreatments": [
+    "inte_lists.dmtreatments": [
         ("glibenclamide_s", "Glibenclamide (S)"),
         ("gliclazide_s", "Gliclazide (S)"),
         ("glimepiride_s", "Glimepiride (S)"),
@@ -111,15 +112,18 @@ list_data = {
         (OTHER, "Other, specify"),
     ],
     "inte_lists.healthservices": [
-        (HYPERTENSION, "Hypertension"),
-        (DIABETES, "Diabetes"),
-        (HIV, "HIV"),
+        (INTEGRATED, "Integrated care"),
+        (HYPERTENSION, "Hypertension (vertical)"),
+        (DIABETES, "Diabetes  (vertical)"),
+        (HIV, "HIV  (vertical)"),
+        (NCD, "NCD care (Diabetes/Hypertension)  (vertical)"),
     ],
     "inte_lists.clinicservices": [
-        (REFILL, "Drug refill"),
-        (ROUTINE_VISIT, "Routine clinic review by a clinician"),
-        (UNWELL_VISIT, "Feeling unwell"),
         (STUDY_DEFINED_TIMEPOINT, "Scheduled study visit (0,6m,12m)"),
+        (ROUTINE_VISIT, "Routine clinic review by a clinician"),
+        (REFILL, "Drug refill"),
+        (UNWELL_VISIT, "Feeling unwell"),
+        ("club_or_health_activity", "Patient club / Health Activity"),
         (OTHER, "Other, specify"),
     ],
     "inte_lists.rxmodifications": [

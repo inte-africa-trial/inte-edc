@@ -2,27 +2,18 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO, YES_NO_PENDING_NA, YES_NO_NA
-from edc_constants.constants import NOT_APPLICABLE
+from edc_constants.constants import NOT_APPLICABLE, YES
 from edc_lab.choices import VL_QUANTIFIER_NA
 from edc_model import models as edc_models
 from edc_reportable import CELLS_PER_MILLIMETER_CUBED_DISPLAY, COPIES_PER_MILLILITER
 
 from ..choices import CARE_ACCESS
-from ..model_mixins import CrfModelMixin
+from ..model_mixins import CrfModelMixin, InitialReviewModelMixin
 
 
-class HivInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
-
-    dx_ago = edc_models.DurationYearMonthField(
-        verbose_name="How long ago was the patient diagnosed with HIV?",
-    )
-
-    dx_estimated_date = models.DateField(
-        verbose_name="Estimated DX Date",
-        null=True,
-        editable=False,
-        help_text="Calculated based on response to `dx_ago`",
-    )
+class HivInitialReview(
+    InitialReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel
+):
 
     receives_care = models.CharField(
         verbose_name="Is the patient receiving care for HIV",
@@ -56,6 +47,14 @@ class HivInitialReview(CrfModelMixin, edc_models.BaseUuidModel):
         null=True,
         editable=False,
         help_text="Calculated based on response to `arv_initiation_ago`",
+    )
+
+    arv_initiation_date_estimated = models.CharField(
+        verbose_name="Was the date patient started ART estimated?",
+        max_length=15,
+        choices=YES_NO,
+        default=YES,
+        editable=False,
     )
 
     # Viral Load
