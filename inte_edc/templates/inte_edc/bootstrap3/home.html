@@ -43,6 +43,11 @@
                            href="{% url subject_listboard_url|default:'subject_listboard_url_cannot_be_none' %}"
                            class="list-group-item"><i class="fas fa-user-circle fa-lg fa-fw"></i>&nbsp;Subjects</a>
                     {% endif %}
+                    {% if perms.inte_prn.view_integratedcareclinicregistration and icc_registration_outstanding %}
+                        <a id="home_list_group_subject_listboard"
+                           href="{% url 'inte_prn_admin:inte_prn_integratedcareclinicregistration_changelist' %}"
+                           class="list-group-item"><i class="fas fa-dungeon fa-lg fa-fw"></i>&nbsp;ICC Registration</a>
+                    {% endif %}
                     {% if perms.edc_dashboard.view_subject_review_listboard %}
                         <a id="home_list_group_subject_review_listboard"
                            href="{% url subject_review_listboard_url|default:'subject_review_listboard_url_cannot_be_none' %}"

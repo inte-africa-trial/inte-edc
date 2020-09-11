@@ -1,9 +1,9 @@
 from django.db import models
 from edc_model import models as edc_models
 from inte_lists.models import ArvDrugs
-from inte_subject.models import DrugRefillHiv
 
 from ..model_mixins import DrugSupplyModelMixin
+from .drug_refill_hiv import DrugRefillHiv
 
 
 class DrugSupplyHiv(DrugSupplyModelMixin, edc_models.BaseUuidModel):

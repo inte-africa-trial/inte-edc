@@ -20,14 +20,14 @@ class NextAppointment(CrfModelMixin, edc_models.BaseUuidModel):
         help_text="if applicable.",
     )
 
-    diabetes_clinic_appt_date = models.DateField(
+    dm_clinic_appt_date = models.DateField(
         verbose_name="Diabetes-only clinic: next scheduled routine appointment",
         null=True,
         blank=True,
         help_text="if applicable.",
     )
 
-    hypertension_clinic_appt_date = models.DateField(
+    htn_clinic_appt_date = models.DateField(
         verbose_name="Hypertension-only clinic: next scheduled routine appointment",
         null=True,
         blank=True,

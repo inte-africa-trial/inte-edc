@@ -1,10 +1,10 @@
 from django import forms
-from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_lab.form_validators import RequisitionFormValidator
 from edc_lab.forms import RequisitionFormMixin
 from edc_metadata.constants import NOT_REQUIRED
 
 from ..models import SubjectRequisition
+from .mixins import CrfModelFormMixin
 
 
 class SubjectRequisitionForm(RequisitionFormMixin, CrfModelFormMixin, forms.ModelForm):

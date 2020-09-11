@@ -4,7 +4,11 @@ from random import choices
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
-from edc_appointment.constants import IN_PROGRESS_APPT
+from edc_appointment.constants import (
+    IN_PROGRESS_APPT,
+    INCOMPLETE_APPT,
+)
+from edc_appointment.creators import UnscheduledAppointmentCreator
 from edc_appointment.models import Appointment
 from edc_auth.fix_export_permissions import ExportPermissionsFixer
 from edc_auth.group_permissions_updater import GroupPermissionsUpdater
@@ -17,14 +21,17 @@ from edc_sites import add_or_update_django_sites, get_sites_by_country
 from edc_sites.tests.site_test_case_mixin import SiteTestCaseMixin
 from edc_utils.date import get_utcnow
 from edc_visit_schedule.constants import DAY1
-from edc_visit_tracking.constants import SCHEDULED
+from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED
 from inte_auth.codenames_by_group import get_codenames_by_group
+from inte_consent.models import SubjectConsent
 from inte_screening.constants import HIV_CLINIC
 from inte_screening.forms import SubjectScreeningForm
 from inte_screening.models import SubjectScreening
 from inte_sites.sites import fqdn
 from inte_subject.models import SubjectVisit
 from model_bakery import baker
+
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class InteTestCaseMixin(SiteTestCaseMixin):
@@ -117,16 +124,67 @@ class InteTestCaseMixin(SiteTestCaseMixin):
         return baker.make_recipe("inte_consent.subjectconsent", **options)
 
     def get_subject_visit(
-        self, visit_code=None, subject_screening=None, subject_consent=None
+        self,
+        visit_code=None,
+        visit_code_sequence=None,
+        subject_screening=None,
+        subject_consent=None,
+        reason=None,
     ):
         visit_code = visit_code or DAY1
+        visit_code_sequence = (
+            visit_code_sequence if visit_code_sequence is not None else 0
+        )
+        reason = reason or SCHEDULED
         subject_screening = subject_screening or self.get_subject_screening()
         subject_consent = subject_consent or self.get_subject_consent(subject_screening)
         subject_identifier = subject_consent.subject_identifier
 
         appointment = Appointment.objects.get(
-            subject_identifier=subject_identifier, visit_code=visit_code
+            subject_identifier=subject_identifier,
+            visit_code=visit_code,
+            visit_code_sequence=visit_code_sequence,
         )
+        if reason == UNSCHEDULED:
+            appointment.appt_status = INCOMPLETE_APPT
+            appointment.save()
+            appointment.refresh_from_db()
+            appt_creator = UnscheduledAppointmentCreator(
+                subject_identifier=subject_identifier,
+                visit_schedule_name=appointment.visit_schedule_name,
+                schedule_name=appointment.schedule_name,
+                visit_code=appointment.visit_code,
+                facility=appointment.facility,
+            )
+            appointment = appt_creator.appointment
         appointment.appt_status = IN_PROGRESS_APPT
         appointment.save()
-        return SubjectVisit.objects.create(appointment=appointment, reason=SCHEDULED)
+        appointment.refresh_from_db()
+        return SubjectVisit.objects.create(appointment=appointment, reason=reason)
+
+    def get_next_subject_visit(
+        self, subject_visit=None, reason=None,
+    ):
+        visit_code = (
+            subject_visit.appointment.visit_code
+            if reason == UNSCHEDULED
+            else subject_visit.appointment.next.visit_code
+        )
+        # visit_code_sequence will increment in get_subject_visit
+        visit_code_sequence = (
+            subject_visit.appointment.visit_code_sequence
+            if reason == UNSCHEDULED
+            else 0
+        )
+
+        return self.get_subject_visit(
+            visit_code=visit_code,
+            visit_code_sequence=visit_code_sequence,
+            reason=reason,
+            subject_screening=SubjectScreening.objects.get(
+                subject_identifier=subject_visit.subject_identifier
+            ),
+            subject_consent=SubjectConsent.objects.get(
+                subject_identifier=subject_visit.subject_identifier
+            ),
+        )

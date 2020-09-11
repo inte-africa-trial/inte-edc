@@ -1,14 +1,15 @@
 from django import forms
 from edc_action_item.forms.action_item_form_mixin import ActionItemFormMixin
 from edc_constants.constants import OTHER, YES
-from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
 from inte_screening.constants import HIV_CLINIC
 
 from ..models import HivInitialReview
-from .crf_form_validator_mixin import CrfFormValidatorMixin
-from .care_status_modelform_mixin import CareStatusRequiredModelFormMixin
-from .mixins import EstimatedDateFromAgoFormMixin
+from .mixins import (
+    EstimatedDateFromAgoFormMixin,
+    CrfFormValidatorMixin,
+    CrfModelFormMixin,
+)
 
 
 class HivInitialReviewFormValidator(
@@ -69,10 +70,7 @@ class HivInitialReviewFormValidator(
 
 
 class HivInitialReviewForm(
-    CareStatusRequiredModelFormMixin,
-    CrfModelFormMixin,
-    ActionItemFormMixin,
-    forms.ModelForm,
+    CrfModelFormMixin, ActionItemFormMixin, forms.ModelForm,
 ):
     form_validator_cls = HivInitialReviewFormValidator
 

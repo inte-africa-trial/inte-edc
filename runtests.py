@@ -52,6 +52,13 @@ DEFAULT_SETTINGS = DefaultTestSettings(
     LIVE_SYSTEM=False,
     EDC_RANDOMIZATION_LIST_PATH=join(base_dir, "tests", "etc"),
     EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER=False,
+    DATABASES={
+        # required for tests when acting as a server that deserializes
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(base_dir, "db.sqlite3"),
+        },
+    },
     INSTALLED_APPS=[
         "django.contrib.admin",
         "django.contrib.auth",
@@ -112,7 +119,6 @@ DEFAULT_SETTINGS = DefaultTestSettings(
         "inte_lists.apps.AppConfig",
         "inte_dashboard.apps.AppConfig",
         "inte_labs.apps.AppConfig",
-        "inte_reference.apps.AppConfig",
         "inte_subject.apps.AppConfig",
         "inte_form_validators.apps.AppConfig",
         "inte_visit_schedule.apps.AppConfig",
@@ -123,7 +129,8 @@ DEFAULT_SETTINGS = DefaultTestSettings(
         "inte_screening.apps.AppConfig",
         "inte_sites.apps.AppConfig",
         "inte_edc.apps.EdcFacilityAppConfig",
-        "inte_edc.apps.AppConfigForTests",
+        # "inte_edc.apps.AppConfigForTests",
+        "inte_edc.apps.AppConfig",
     ],
     add_dashboard_middleware=True,
     add_lab_dashboard_middleware=True,

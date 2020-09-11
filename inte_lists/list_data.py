@@ -1,21 +1,22 @@
-from django.conf import settings
 from edc_constants.constants import (
     DEAD,
     DIABETES,
+    FREE_OF_CHARGE,
     HIV,
     HYPERTENSION,
     LOST_TO_FOLLOWUP,
     OTHER,
     REFILL,
     ROUTINE_VISIT,
+    STUDY_DEFINED_TIMEPOINT,
     UNWELL_VISIT,
 )
-from edc_list_data import PreloadData
 from inte_prn.constants import (
     LATE_EXCLUSION,
     TRANSFERRED,
     WITHDRAWAL,
 )
+from inte_subject.constants import INTEGRATED, NCD
 
 list_data = {
     "inte_lists.conditions": [
@@ -43,7 +44,7 @@ list_data = {
         (TRANSFERRED, "Patient has been transferred to another health centre"),
         (OTHER, "Other reason (specify below)",),
     ],
-    "inte_lists.hypertensiontreatments": [
+    "inte_lists.htntreatments": [
         ("amlodipine", "Amlodipine"),
         ("atenolol", "Atenolol"),
         ("bendroflumethiazide", "Bendroflumethiazide"),
@@ -101,7 +102,7 @@ list_data = {
         ("unwell", "Feeling unwell (self referral)"),
         ("unscheduled", "Unscheduled"),
     ],
-    "inte_lists.diabetestreatments": [
+    "inte_lists.dmtreatments": [
         ("glibenclamide_s", "Glibenclamide (S)"),
         ("gliclazide_s", "Gliclazide (S)"),
         ("glimepiride_s", "Glimepiride (S)"),
@@ -111,14 +112,18 @@ list_data = {
         (OTHER, "Other, specify"),
     ],
     "inte_lists.healthservices": [
-        (HYPERTENSION, "Hypertension"),
-        (DIABETES, "Diabetes"),
-        (HIV, "HIV"),
+        (INTEGRATED, "Integrated care"),
+        (HYPERTENSION, "Hypertension (vertical)"),
+        (DIABETES, "Diabetes  (vertical)"),
+        (HIV, "HIV  (vertical)"),
+        (NCD, "NCD care (Diabetes/Hypertension)  (vertical)"),
     ],
     "inte_lists.clinicservices": [
-        (REFILL, "Drug refill"),
+        (STUDY_DEFINED_TIMEPOINT, "Scheduled study visit (0,6m,12m)"),
         (ROUTINE_VISIT, "Routine clinic review by a clinician"),
+        (REFILL, "Drug refill"),
         (UNWELL_VISIT, "Feeling unwell"),
+        ("club_or_health_activity", "Patient club / Health Activity"),
         (OTHER, "Other, specify"),
     ],
     "inte_lists.rxmodifications": [
@@ -143,7 +148,27 @@ list_data = {
         ("lack_of_transport", "Transportation difficulty"),
         (OTHER, "Other reason (specify below)"),
     ],
+    "inte_lists.drugpaysources": [
+        ("own_cash", "Own cash"),
+        ("insurance", "Insurance"),
+        ("club", "Patient support group / club"),
+        ("relative", "Relative or others paying"),
+        (FREE_OF_CHARGE, "Free drugs from the pharmacy"),
+        (OTHER, "Other reason (specify below)"),
+    ],
+    "inte_lists.transportchoices": [
+        ("bus", "Bus"),
+        ("train", "Train"),
+        ("ambulance", "Ambulance"),
+        ("private_taxi", "Private taxi"),
+        ("own_bicycle", "Own bicycle"),
+        ("hired_motorbike", "Hired motorbike"),
+        ("own_car", "Own car"),
+        ("own_motorbike", "Own motorbike"),
+        ("hired_bicycle", "Hired bicycle"),
+        ("foot", "Foot"),
+        (OTHER, "Other reason (specify below)"),
+    ],
 }
 
-if settings.APP_NAME != "inte_lists":
-    preload_data = PreloadData(list_data=list_data)
+# preload_data = PreloadData(list_data=list_data)

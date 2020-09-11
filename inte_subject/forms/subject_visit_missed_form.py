@@ -1,4 +1,4 @@
-from django import forms
+from django.forms import ValidationError, ModelForm
 from edc_constants.constants import NO, NOT_APPLICABLE, OTHER, YES
 from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators import FormValidator
@@ -17,7 +17,7 @@ class SubjectVisitMissedFormValidator(FormValidator):
                 "contact_attempts_count"
             ) and self.cleaned_data.get("contact_attempts_explained"):
 
-                raise forms.ValidationError(
+                raise ValidationError(
                     {"contact_attempts_explained": "This field is not required"}
                 )
             if (
@@ -25,7 +25,7 @@ class SubjectVisitMissedFormValidator(FormValidator):
                 and self.cleaned_data.get("contact_attempts_count") < 3
                 and not self.cleaned_data.get("contact_attempts_explained")
             ):
-                raise forms.ValidationError(
+                raise ValidationError(
                     {"contact_attempts_explained": "This field is required"}
                 )
 
@@ -34,7 +34,7 @@ class SubjectVisitMissedFormValidator(FormValidator):
                 and self.cleaned_data.get("contact_attempts_count") >= 3
                 and self.cleaned_data.get("contact_attempts_explained")
             ):
-                raise forms.ValidationError(
+                raise ValidationError(
                     {"contact_attempts_explained": "This field is not required"}
                 )
 
@@ -51,7 +51,7 @@ class SubjectVisitMissedFormValidator(FormValidator):
         )
 
 
-class SubjectVisitMissedForm(CrfModelFormMixin, forms.ModelForm):
+class SubjectVisitMissedForm(CrfModelFormMixin, ModelForm):
 
     form_validator_cls = SubjectVisitMissedFormValidator
 

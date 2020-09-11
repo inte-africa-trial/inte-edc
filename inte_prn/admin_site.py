@@ -8,6 +8,7 @@ class AdminSite(DjangoAdminSite):
     site_header = "INTE PRN"
     index_title = "INTE PRN"
     site_url = "/administration/"
+    enable_nav_sidebar = False  # DJ 3.1
 
     def each_context(self, request):
         context = super().each_context(request)

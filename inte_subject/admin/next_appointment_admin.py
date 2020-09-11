@@ -19,8 +19,8 @@ class NextAppointmentAdmin(
         (None, {"fields": ("subject_visit", "report_datetime")}),
         ("HIV", {"fields": ("hiv_clinic_appt_date",)},),
         ("NCD (Joint Diabetes/Hypertension)", {"fields": ("ncd_clinic_appt_date",)},),
-        ("Diabetes-only", {"fields": ("diabetes_clinic_appt_date",)},),
-        ("Hypertension-only", {"fields": ("hypertension_clinic_appt_date",)},),
+        ("Diabetes-only", {"fields": ("dm_clinic_appt_date",)},),
+        ("Hypertension-only", {"fields": ("htn_clinic_appt_date",)},),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )

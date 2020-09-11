@@ -11,10 +11,12 @@ from ..model_mixins import CrfModelMixin
 
 class Indicators(CrfModelMixin, BaseUuidModel):
     weight = edc_models.WeightField(
-        validators=[MinValueValidator(25), MaxValueValidator(200)]
+        validators=[MinValueValidator(25), MaxValueValidator(200)],
+        null=True,
+        blank=True,
     )
 
-    height = edc_models.HeightField()
+    height = edc_models.HeightField(null=True, blank=True,)
 
     r1_taken = models.CharField(
         verbose_name=mark_safe("Was a blood pressure reading taken"),

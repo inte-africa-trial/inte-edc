@@ -12,6 +12,7 @@ class SubjectConsentFormValidator(SubjectConsentFormValidatorMixin, FormValidato
     subject_screening_model = "inte_screening.subjectscreening"
 
     def clean(self):
+        super().clean()
         if self.cleaned_data.get("clinic_type") != self.subject_screening.clinic_type:
             raise forms.ValidationError(
                 {

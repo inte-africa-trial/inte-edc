@@ -8,6 +8,13 @@ from ..model_mixins import CrfModelMixin
 
 class Complications(CrfModelMixin, edc_models.BaseUuidModel):
 
+    # has_complications = models.CharField(
+    #     verbose_name="Are there any complications to report?",
+    #     max_length=25,
+    #     choices=YES_NO,
+    #     default=YES,
+    # )
+
     # stroke
     stroke = models.CharField(
         verbose_name="Stroke",

@@ -1,11 +1,13 @@
 from django import forms
 from edc_constants.constants import YES
-from edc_crf.modelform_mixins import CrfModelFormMixin
 from edc_form_validators.form_validator import FormValidator
 
 from ..models import Complications
-from .crf_form_validator_mixin import CrfFormValidatorMixin
-from .mixins import EstimatedDateFromAgoFormMixin
+from .mixins import (
+    EstimatedDateFromAgoFormMixin,
+    CrfModelFormMixin,
+    CrfFormValidatorMixin,
+)
 
 
 class ComplicationsFormValidator(

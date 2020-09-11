@@ -13,7 +13,7 @@
 #     except ObjectDoesNotExist:
 #         obj = SubjectConditionHistory.objects.create()
 #
-#     obj.diabetic =
+#     obj.diabetes =
 #
 #
 # @receiver(
