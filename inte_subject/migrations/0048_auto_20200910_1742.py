@@ -592,6 +592,16 @@ class Migration(migrations.Migration):
             old_name="hypertension_tested_estimated_datetime",
             new_name="htn_test_estimated_datetime",
         ),
+        migrations.RenameField(
+            model_name="historicalmedications",
+            old_name="refill_diabetes",
+            new_name="refill_dm",
+        ),
+        migrations.RenameField(
+            model_name="historicalmedications",
+            old_name="refill_hypertension",
+            new_name="refill_htn",
+        ),
         migrations.AddField(
             model_name="healtheconomicsrevised",
             name="healthcare_expenditure_total_month_today",
@@ -662,6 +672,28 @@ class Migration(migrations.Migration):
                 help_text="Select `not applicable` if subject has not been diagnosed and prescribed medication for HIV infection.",
                 max_length=25,
                 verbose_name="Is the patient filling / refilling HIV medications?",
+            ),
+        ),
+        migrations.AlterField(
+            model_name="historicalmedications",
+            name="refill_dm",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No"), ("N/A", "Not applicable")],
+                default="N/A",
+                help_text="Select `not applicable` if subject has not been diagnosed and prescribed medication for Diabetes.",
+                max_length=25,
+                verbose_name="Is the patient filling / refilling Diabetes medications?",
+            ),
+        ),
+        migrations.AlterField(
+            model_name="historicalmedications",
+            name="refill_htn",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No"), ("N/A", "Not applicable")],
+                default="N/A",
+                help_text="Select `not applicable` if subject has not been diagnosed and prescribed medication for Hypertension.",
+                max_length=25,
+                verbose_name="Is the patient filling / refilling Hypertension medications?",
             ),
         ),
         migrations.AddIndex(

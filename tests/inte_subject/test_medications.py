@@ -27,7 +27,7 @@ class TestMedications(InteTestCaseMixin, TestCase):
         baker.make(
             "inte_subject.clinicalreviewbaseline",
             subject_visit=self.subject_visit_baseline,
-            hiv_test=POS,
+            hiv_test=YES,
             hiv_dx=YES,
             hiv_test_ago="5y",
         )

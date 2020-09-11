@@ -29,11 +29,11 @@ class Diagnoses:
 
     def get_dx_by_model(self, instance):
         if isinstance(instance, self.hiv_initial_review_model_cls):
-            return self.hiv
+            dx = self.hiv
         elif isinstance(instance, self.htn_initial_review_model_cls):
-            return self.htn
+            dx = self.htn
         elif isinstance(instance, self.dm_initial_review_model_cls):
-            return self.dm
+            dx = self.dm
         else:
             models = [
                 self.hiv_initial_review_model_cls,
@@ -41,6 +41,7 @@ class Diagnoses:
                 self.dm_initial_review_model_cls,
             ]
             raise DiagnosesError(f"Invalid. Expected an instance of one of {models}")
+        return dx
 
     @property
     def dm_dx_date(self):

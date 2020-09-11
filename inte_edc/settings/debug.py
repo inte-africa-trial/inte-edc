@@ -14,8 +14,8 @@ ALLOWED_HOSTS = [
     "kinoni.ug.inte.clinicedc.org",  # 103
     "localhost",
 ]
-ETC_DIR = os.path.join(BASE_DIR, "tests", "etc")  # noqa
-KEY_PATH = os.path.join(ETC_DIR, "crypto_fields")  # noqa
+# ETC_DIR = os.path.join(BASE_DIR, "tests", "etc")  # noqa
+# KEY_PATH = os.path.join(ETC_DIR, "crypto_fields")  # noqa
 if os.path.exists(BASE_DIR) and not os.path.exists(KEY_PATH):  # noqa
     os.makedirs(KEY_PATH)
     AUTO_CREATE_KEYS = True

@@ -23,28 +23,6 @@ class Migration(migrations.Migration):
             ),
             preserve_default=False,
         ),
-        migrations.AddField(
-            model_name="historicalmedications",
-            name="refill_dm",
-            field=models.CharField(
-                choices=[("Yes", "Yes"), ("No", "No"), ("N/A", "Not applicable")],
-                default="N/A",
-                help_text="Select `not applicable` if subject has not been diagnosed and prescribed medication for Diabetes.",
-                max_length=25,
-                verbose_name="Is the patient filling / refilling Diabetes medications?",
-            ),
-        ),
-        migrations.AddField(
-            model_name="historicalmedications",
-            name="refill_htn",
-            field=models.CharField(
-                choices=[("Yes", "Yes"), ("No", "No"), ("N/A", "Not applicable")],
-                default="N/A",
-                help_text="Select `not applicable` if subject has not been diagnosed and prescribed medication for Hypertension.",
-                max_length=25,
-                verbose_name="Is the patient filling / refilling Hypertension medications?",
-            ),
-        ),
         migrations.AlterField(
             model_name="clinicalreview",
             name="dm_reason",

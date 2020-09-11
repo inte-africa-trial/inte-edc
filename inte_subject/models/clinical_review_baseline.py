@@ -5,9 +5,9 @@ from edc_visit_schedule.constants import DAY1
 
 from ..model_mixins import (
     CrfModelMixin,
-    ClinicalReviewHivModelMixin,
-    ClinicalReviewHtnModelMixin,
-    ClinicalReviewDmModelMixin,
+    ClinicalReviewBaselineHivModelMixin,
+    ClinicalReviewBaselineHtnModelMixin,
+    ClinicalReviewBaselineDmModelMixin,
     ClinicalReviewModelMixin,
 )
 
@@ -17,9 +17,9 @@ class ClinicalReviewBaselineError(Exception):
 
 
 class ClinicalReviewBaseline(
-    ClinicalReviewHivModelMixin,
-    ClinicalReviewHtnModelMixin,
-    ClinicalReviewDmModelMixin,
+    ClinicalReviewBaselineHivModelMixin,
+    ClinicalReviewBaselineHtnModelMixin,
+    ClinicalReviewBaselineDmModelMixin,
     ClinicalReviewModelMixin,
     CrfModelMixin,
     edc_models.BaseUuidModel,

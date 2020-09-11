@@ -1,5 +1,5 @@
 from django.test import TestCase, tag
-from edc_constants.constants import INCOMPLETE, NEG, NEVER, NOT_APPLICABLE, NO, POS, YES
+from edc_constants.constants import INCOMPLETE, NEG, NEVER, NOT_APPLICABLE, NO, YES
 from edc_utils import get_utcnow
 from inte_screening.constants import (
     DIABETES_CLINIC,
@@ -46,16 +46,15 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
         )
 
         # diabetes clinic
-        self.subject_screening_diabetes = self.get_subject_screening(
+        self.subject_screening_dm = self.get_subject_screening(
             report_datetime=get_utcnow(), clinic_type=DIABETES_CLINIC
         )
-        self.subject_consent_diabetes = self.get_subject_consent(
-            subject_screening=self.subject_screening_diabetes,
-            clinic_type=DIABETES_CLINIC,
+        self.subject_consent_dm = self.get_subject_consent(
+            subject_screening=self.subject_screening_dm, clinic_type=DIABETES_CLINIC,
         )
-        self.subject_visit_diabetes = self.get_subject_visit(
-            subject_screening=self.subject_screening_diabetes,
-            subject_consent=self.subject_consent_diabetes,
+        self.subject_visit_dm = self.get_subject_visit(
+            subject_screening=self.subject_screening_dm,
+            subject_consent=self.subject_consent_dm,
         )
 
         # NCD clinic
@@ -76,8 +75,9 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             "subject_visit": self.subject_visit_hiv.pk,
             "report_datetime": self.subject_visit_hiv.report_datetime,
             "crf_status": INCOMPLETE,
-            "hiv_test": POS,
+            "hiv_test": YES,
             "hiv_test_ago": "5y",
+            "hiv_dx": YES,
             "htn_test": NO,
             "htn_dx": NOT_APPLICABLE,
             "dm_test": NO,
@@ -96,8 +96,9 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             "subject_visit": self.subject_visit_htn.pk,
             "report_datetime": self.subject_visit_htn.report_datetime,
             "crf_status": INCOMPLETE,
-            "hiv_test": NEVER,
+            "hiv_test": NO,
             "hiv_test_ago": None,
+            "hiv_dx": NOT_APPLICABLE,
             "htn_test": YES,
             "htn_test_ago": "1y1m",
             "htn_dx": YES,
@@ -112,13 +113,14 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
         self.assertEqual(form._errors, {})
 
     @tag("crb")
-    def test_form_ok_diabetes(self):
+    def test_form_ok_dm(self):
         data = {
-            "subject_visit": self.subject_visit_diabetes.pk,
-            "report_datetime": self.subject_visit_diabetes.report_datetime,
+            "subject_visit": self.subject_visit_dm.pk,
+            "report_datetime": self.subject_visit_dm.report_datetime,
             "crf_status": INCOMPLETE,
-            "hiv_test": NEVER,
+            "hiv_test": NO,
             "hiv_test_ago": None,
+            "hiv_dx": NOT_APPLICABLE,
             "htn_test": NO,
             "htn_test_ago": None,
             "htn_dx": NOT_APPLICABLE,
@@ -140,32 +142,39 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             "crf_status": INCOMPLETE,
         }
         data.update(
-            hiv_test=NEG, hiv_test_ago=None,
+            hiv_test=NO, hiv_test_ago=None, hiv_dx=NOT_APPLICABLE,
         )
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
         self.assertIn("hiv_test", form._errors)
 
         data.update(
-            hiv_test=NEVER, hiv_test_ago=None,
+            hiv_test=YES, hiv_test_ago=None, hiv_dx=NO,
         )
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
-        self.assertIn("hiv_test", form._errors)
-
-        data.update(hiv_test=POS, hiv_test_ago=None, hiv_test_date=None)
-        form = ClinicalReviewBaselineForm(data=data)
-        form.is_valid()
         self.assertNotIn("hiv_test", form._errors)
-        all = form._errors.get("__all__") or ""
-        self.assertIn("Hiv", str(all))
-
-        data.update(hiv_test=POS, hiv_test_ago="10y", hiv_test_date=None)
-        form = ClinicalReviewBaselineForm(data=data)
-        form.is_valid()
-        self.assertNotIn("hiv_test", form._errors)
+        self.assertIn("hiv_test_ago", form._errors)
+        self.assertIn("hiv_dx", form._errors)
         self.assertNotIn("__all__", form._errors)
+
+        data.update(
+            hiv_test=YES, hiv_test_ago=None, hiv_test_date=None, hiv_dx=NOT_APPLICABLE
+        )
+        form = ClinicalReviewBaselineForm(data=data)
+        form.is_valid()
+        self.assertNotIn("hiv_test", form._errors)
+        self.assertIn("hiv_test_ago", form._errors)
+        self.assertIn("hiv_dx", form._errors)
+        self.assertNotIn("__all__", form._errors)
+
+        data.update(hiv_test=YES, hiv_test_ago="10y", hiv_test_date=None, hiv_dx=YES)
+        form = ClinicalReviewBaselineForm(data=data)
+        form.is_valid()
+        self.assertNotIn("hiv_test", form._errors)
         self.assertNotIn("hiv_test_ago", form._errors)
+        self.assertIn("hiv_dx", form._errors)
+        self.assertNotIn("__all__", form._errors)
 
     @tag("crb")
     def test_htn_if_htn_clinic(self):
@@ -173,8 +182,9 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             "subject_visit": self.subject_visit_htn.pk,
             "report_datetime": self.subject_visit_htn.report_datetime,
             "crf_status": INCOMPLETE,
-            "hiv_test": NEVER,
+            "hiv_test": NO,
             "hiv_test_ago": None,
+            "hiv_dx": NOT_APPLICABLE,
             "htn_test": NO,
             "htn_test_ago": "1y",
             "htn_dx": NOT_APPLICABLE,
@@ -200,16 +210,17 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
         self.assertNotIn("htn_dx", form._errors)
 
     @tag("crb")
-    def test_diabetes_if_ncd_clinic(self):
-        for cond in ["diabetes", "htn"]:
+    def test_dm_if_ncd_clinic(self):
+        for cond in ["dm", "htn"]:
             data = {
                 "subject_visit": self.subject_visit_ncd.pk,
                 "report_datetime": self.subject_visit_ncd.report_datetime,
                 "crf_status": INCOMPLETE,
-                "hiv_test": NEVER,
+                "hiv_test": NO,
                 "hiv_test_ago": None,
-                "diabetes_tested": NO,
-                "diabetes_dx": NOT_APPLICABLE,
+                "hiv_dx": NOT_APPLICABLE,
+                "dm_test": NO,
+                "dm_dx": NOT_APPLICABLE,
                 "htn_test": NO,
                 "htn_dx": NOT_APPLICABLE,
             }
@@ -232,7 +243,7 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                 self.assertIn("__all__", [k for k in form._errors.keys()])
 
                 data.update(
-                    {f"{cond}_test": YES, f"{cond}_test_ago": "1y", f"{cond}_dx": YES,}
+                    {f"{cond}_test": YES, f"{cond}_test_ago": "1y", f"{cond}_dx": YES}
                 )
                 form = ClinicalReviewBaselineForm(data=data)
                 form.is_valid()

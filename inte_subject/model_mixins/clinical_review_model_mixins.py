@@ -28,15 +28,14 @@ class ClinicalReviewModelMixin(models.Model):
         abstract = True
 
 
-class ClinicalReviewHivModelMixin(models.Model):
+class ClinicalReviewBaselineHivModelMixin(models.Model):
 
-    # TODO: change this to YES/NO/NA and use hiv_dx
     hiv_test = models.CharField(
         verbose_name=mark_safe(
             "What was the result of the patient's most recent HIV test"
         ),
         max_length=15,
-        choices=POS_NEG_NOTESTED,
+        choices=YES_NO,
         help_text="If positive, complete form `Hiv Initial Review`",
     )
 
@@ -62,19 +61,14 @@ class ClinicalReviewHivModelMixin(models.Model):
     )
 
     hiv_dx = models.CharField(
-        verbose_name=mark_safe("Was the patient diagnosed with HIV infection?"),
+        verbose_name=mark_safe("Has the patient ever tested positive for HIV?"),
         max_length=15,
         choices=YES_NO_NA,
-        null=True,
-        editable=False,
+        default=NOT_APPLICABLE,
+        help_text="If yes, complete form `HIV Initial Review`",
     )
 
     def save(self, *args, **kwargs):
-        # TODO: update hiv_dx on existing data
-        if self.hiv_test == POS:
-            self.hiv_dx = YES
-        else:
-            self.hiv_dx = NO
         if self.hiv_test_ago:
             self.hiv_test_estimated_datetime = edc_models.duration_to_date(
                 self.hiv_test_ago, self.report_datetime
@@ -85,7 +79,7 @@ class ClinicalReviewHivModelMixin(models.Model):
         abstract = True
 
 
-class ClinicalReviewHtnModelMixin(models.Model):
+class ClinicalReviewBaselineHtnModelMixin(models.Model):
 
     htn_test = models.CharField(
         verbose_name="Has the patient ever tested for Hypertension?",
@@ -129,7 +123,7 @@ class ClinicalReviewHtnModelMixin(models.Model):
         abstract = True
 
 
-class ClinicalReviewDmModelMixin(models.Model):
+class ClinicalReviewBaselineDmModelMixin(models.Model):
 
     dm_test = models.CharField(
         verbose_name="Has the patient ever tested for Diabetes?",

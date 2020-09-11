@@ -345,7 +345,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             form_validator.validate()
         except forms.ValidationError:
             pass
-        self.assertIn("non_drug_activities_month_detail", form_validator._errors)
+        self.assertIn("non_drug_activities_detail_month", form_validator._errors)
 
         cleaned_data.update(
             {
@@ -359,7 +359,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             form_validator.validate()
         except forms.ValidationError:
             pass
-        self.assertIn("non_drug_activities_month_cost", form_validator._errors)
+        self.assertIn("non_drug_activities_cost_month", form_validator._errors)
 
         cleaned_data.update(
             {

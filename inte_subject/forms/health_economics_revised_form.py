@@ -66,15 +66,12 @@ class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
                 )
 
     def clean_education(self):
-        condition = (
+        cond = (
             self.cleaned_data.get("education_in_years") is not None
             and self.cleaned_data.get("education_in_years") > 0
         )
 
-        if (
-            condition
-            and self.cleaned_data.get("education_in_years") > self.age_in_years
-        ):
+        if cond and self.cleaned_data.get("education_in_years") > self.age_in_years:
             raise forms.ValidationError(
                 {
                     "education_in_years": (
@@ -84,23 +81,23 @@ class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
                 }
             )
 
-        self.required_if_true(condition, field_required="education_certificate")
+        self.required_if_true(cond, field_required="education_certificate")
 
-        self.applicable_if_true(condition, field_applicable="primary_school")
+        self.applicable_if_true(cond, field_applicable="primary_school")
         self.required_if(
             YES,
             field="primary_school",
             field_required="primary_school_in_years",
             field_required_evaluate_as_int=True,
         )
-        self.applicable_if_true(condition, field_applicable="secondary_school")
+        self.applicable_if_true(cond, field_applicable="secondary_school")
         self.required_if(
             YES,
             field="secondary_school",
             field_required="secondary_school_in_years",
             field_required_evaluate_as_int=True,
         )
-        self.applicable_if_true(condition, field_applicable="higher_education")
+        self.applicable_if_true(cond, field_applicable="higher_education")
         self.required_if(
             YES,
             field="higher_education",
@@ -109,20 +106,20 @@ class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
         )
 
     def clean_recv_drugs_by_duration(self, duration):
-        conditions = ["diabetes", "hypertension", "hiv", "other"]
-        for condition in conditions:
+        conditions = ["dm", "htn", "hiv", "other"]
+        for cond in conditions:
             self.applicable_if(
                 YES,
                 field=f"received_rx_{duration}",
-                field_applicable=f"rx_{condition}_{duration}",
+                field_applicable=f"rx_{cond}_{duration}",
             )
             self.m2m_required_if(
                 response=YES,
-                field=f"rx_{condition}_{duration}",
-                m2m_field=f"rx_{condition}_paid_{duration}",
+                field=f"rx_{cond}_{duration}",
+                m2m_field=f"rx_{cond}_paid_{duration}",
             )
             self.m2m_single_selection_if(
-                FREE_OF_CHARGE, m2m_field=f"rx_{condition}_paid_{duration}"
+                FREE_OF_CHARGE, m2m_field=f"rx_{cond}_paid_{duration}"
             )
             self.m2m_other_specify(
                 *[
@@ -130,8 +127,8 @@ class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
                     for obj in DrugPaySources.objects.all()
                     if obj.name != FREE_OF_CHARGE
                 ],
-                m2m_field=f"rx_{condition}_paid_{duration}",
-                field_other=f"rx_{condition}_cost_{duration}",
+                m2m_field=f"rx_{cond}_paid_{duration}",
+                field_other=f"rx_{cond}_cost_{duration}",
             )
 
         responses = [self.cleaned_data.get(f"rx_{k}_{duration}") for k in conditions]

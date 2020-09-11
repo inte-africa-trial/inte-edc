@@ -1,5 +1,3 @@
-import pdb
-
 from django.test import TestCase, tag
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import NOT_APPLICABLE, POS, YES
@@ -43,7 +41,7 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         clinical_review_baseline = baker.make(
             "inte_subject.clinicalreviewbaseline",
             subject_visit=subject_visit_baseline,
-            hiv_test=POS,
+            hiv_test=YES,
             hiv_dx=YES,
             hiv_test_ago="5y",
         )
@@ -238,13 +236,12 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
             report_datetime=subject_visit.report_datetime,
             lte=True,
         )
-        pdb.set_trace()
         self.assertIsNotNone(diagnoses.hiv_dx_date)
         self.assertEqual(
-            diagnoses.hiv_dx_date, hiv_initial_review.get_dx_date().date(),
+            diagnoses.hiv_dx_date, hiv_initial_review.get_best_dx_date().date(),
         )
 
         self.assertEqual(
-            diagnoses.htn_dx_date, htn_initial_review.get_dx_date().date(),
+            diagnoses.htn_dx_date, htn_initial_review.get_best_dx_date().date(),
         )
         self.assertIsNotNone(diagnoses.htn_dx_date)

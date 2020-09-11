@@ -1,6 +1,7 @@
+from dateutil.relativedelta import relativedelta
 from django.test import TestCase, tag
 from edc_appointment.constants import INCOMPLETE_APPT
-from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, YES
+from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, POS, YES
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import UNSCHEDULED
 from inte_screening.constants import HIV_CLINIC
@@ -46,13 +47,14 @@ class TestClinicalReview(InteTestCaseMixin, TestCase):
         baker.make(
             "inte_subject.clinicalreviewbaseline",
             subject_visit=subject_visit_baseline,
+            hiv_test=YES,
+            hiv_test_date=get_utcnow() - relativedelta(years=5),
             hiv_dx=YES,
-            hiv_test_ago="5y",
         )
         baker.make(
             "inte_subject.hivinitialreview",
             subject_visit=subject_visit_baseline,
-            dx_ago="5y",
+            dx_date=get_utcnow() - relativedelta(years=5),
             arv_initiation_ago="4y",
         )
 

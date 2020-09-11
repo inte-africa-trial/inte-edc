@@ -71,7 +71,7 @@ healtheconomicsrevised = Recipe(
 clinicalreviewbaseline = Recipe(
     ClinicalReviewBaseline,
     site=Site.objects.get_current(),
-    hiv_test=POS,
+    hiv_test=YES,
     hiv_test_ago="5y",
     hiv_dx=YES,
     htn_test=NO,

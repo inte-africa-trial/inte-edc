@@ -20,7 +20,7 @@ class ClinicalReviewBaselineFormValidator(
     CrfFormValidatorMixin, EstimatedDateFromAgoFormMixin, FormValidator
 ):
     def clean(self):
-        self.raise_if_hiv_clinic_and_not_positive()
+        self.raise_if_hiv_clinic_and_hiv_pos()
         # self.required_if(POS, NEG, field="hiv", field_required="hiv_test_ago")
         self.estimated_date_from_ago("hiv_test_ago")
         self.when_tested_required(cond="hiv")
@@ -47,7 +47,7 @@ class ClinicalReviewBaselineFormValidator(
         self.required_if(YES, field="dm_test", field_required="dm_dx")
 
     def when_tested_required(self, cond=None):
-        if self.cleaned_data.get(f"{cond}_test") in [YES, POS]:
+        if self.cleaned_data.get(f"{cond}_test") == YES:
             if not self.cleaned_data.get(
                 f"{cond}_test_ago"
             ) and not self.cleaned_data.get(f"{cond}_test_date"):
@@ -56,15 +56,27 @@ class ClinicalReviewBaselineFormValidator(
                     "estimated time 'ago' or provide the exact date. See below."
                 )
 
-    def raise_if_hiv_clinic_and_not_positive(self):
+    def raise_if_hiv_clinic_and_hiv_pos(self):
         if (
-            self.subject_screening.clinic_type in [HIV_CLINIC]
-            and self.cleaned_data.get("hiv_test") != POS
+            self.subject_screening.clinic_type == HIV_CLINIC
+            and self.cleaned_data.get("hiv_test") != YES
         ):
             raise forms.ValidationError(
                 {
                     "hiv_test": (
-                        "Patient was screened from an HIV clinic, expected `Positive`."
+                        "Patient was screened from an HIV clinic, expected `Yes`."
+                    ),
+                }
+            )
+
+        if (
+            self.subject_screening.clinic_type == HIV_CLINIC
+            and self.cleaned_data.get("hiv_dx") != YES
+        ):
+            raise forms.ValidationError(
+                {
+                    "hiv_dx": (
+                        "Patient was screened from an HIV clinic, expected `Yes`."
                     ),
                 }
             )
