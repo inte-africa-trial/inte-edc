@@ -1,8 +1,9 @@
 Changes
 =======
 
-new release
------------
+0.1.36
+------
+- refactor field and variable naming using these prefixes: htn-> hypertension, dm->diabetes, hiv->hiv
 - change visit schedule to three study timepoints (0,6,12) only
 - interim / routine / unwell visits can be entered as 'unscheduled' as per the EDC
 - define CRF set for all interim visits
