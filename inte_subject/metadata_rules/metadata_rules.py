@@ -1,4 +1,4 @@
-from edc_constants.constants import YES
+from edc_constants.constants import NOT_APPLICABLE, YES
 from edc_metadata import REQUIRED, NOT_REQUIRED
 from edc_metadata_rules import CrfRule, CrfRuleGroup, register, P
 
@@ -61,24 +61,31 @@ class ClinicalReviewRuleGroup(CrfRuleGroup):
     )
 
     hiv_test = CrfRule(
-        predicate=pc.hiv_review_required,
+        predicate=P("hiv_test", "eq", NOT_APPLICABLE),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
         target_models=["hivreview"],
     )
 
     dm_test = CrfRule(
-        predicate=pc.dm_review_required,
+        predicate=P("dm_test", "eq", NOT_APPLICABLE),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
         target_models=["dmreview"],
     )
 
     htn_test = CrfRule(
-        predicate=pc.htn_review_required,
+        predicate=P("htn_test", "eq", NOT_APPLICABLE),
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
         target_models=["htnreview"],
+    )
+
+    complications = CrfRule(
+        predicate=P("complications", "eq", YES),
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["complicationsfollowup"],
     )
 
     class Meta:
