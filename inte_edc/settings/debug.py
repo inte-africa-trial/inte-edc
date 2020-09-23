@@ -5,10 +5,11 @@ from .defaults import *  # noqa
 
 print(f"Settings file {__file__}")  # noqa
 
-SITE_ID = SiteID(default=103)
+SITE_ID = SiteID(default=106)
 EDC_SITES_UAT_DOMAIN = False
 DEBUG = True
 ALLOWED_HOSTS = [
+    "bukulula.ug.inte.clinicedc.org",  # 106
     "bagamoyo.tz.inte.clinicedc.org",  # 201
     "bugamba.ug.inte.clinicedc.org",  # 101
     "kinoni.ug.inte.clinicedc.org",  # 103
