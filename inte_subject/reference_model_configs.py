@@ -20,6 +20,7 @@ configs = {
         "hiv_dx",
         "dm_dx",
         "htn_dx",
+        "complications",
     ],
     "inte_subject.medications": ["refill_hiv", "refill_dm", "refill_htn"],
 }
