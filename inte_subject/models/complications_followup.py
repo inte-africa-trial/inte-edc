@@ -6,7 +6,7 @@ from edc_model import models as edc_models
 from ..model_mixins import CrfModelMixin
 
 
-class Complications(CrfModelMixin, edc_models.BaseUuidModel):
+class ComplicationsFollowup(CrfModelMixin, edc_models.BaseUuidModel):
 
     # stroke
     stroke = models.CharField(verbose_name="Stroke", max_length=25, choices=YES_NO)
@@ -91,5 +91,5 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
-        verbose_name = "Complications"
-        verbose_name_plural = "Complications"
+        verbose_name = "Complications: Followup"
+        verbose_name_plural = "Complications: Followup"
