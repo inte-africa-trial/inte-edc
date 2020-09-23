@@ -6,7 +6,7 @@ from edc_model import models as edc_models
 from ..model_mixins import CrfModelMixin
 
 
-class Complications(CrfModelMixin, edc_models.BaseUuidModel):
+class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
 
     # has_complications = models.CharField(
     #     verbose_name="Are there any complications to report?",
@@ -17,11 +17,7 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
 
     # stroke
     stroke = models.CharField(
-        verbose_name="Stroke",
-        max_length=25,
-        choices=YES_NO_UNKNOWN,
-        null=True,
-        blank=False,
+        verbose_name="Stroke", max_length=25, choices=YES_NO, null=True, blank=False,
     )
 
     stroke_ago = edc_models.DurationYearMonthField(
@@ -36,7 +32,7 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
     heart_attack = models.CharField(
         verbose_name="Heart attack / heart failure",
         max_length=25,
-        choices=YES_NO_UNKNOWN,
+        choices=YES_NO,
         null=True,
         blank=False,
     )
@@ -56,7 +52,7 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
     renal_disease = models.CharField(
         verbose_name="Renal (kidney) disease",
         max_length=25,
-        choices=YES_NO_UNKNOWN,
+        choices=YES_NO,
         null=True,
         blank=False,
     )
@@ -75,7 +71,7 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
     vision = models.CharField(
         verbose_name="Vision problems (e.g. blurred vision)",
         max_length=25,
-        choices=YES_NO_UNKNOWN,
+        choices=YES_NO,
         null=True,
         blank=False,
     )
@@ -95,7 +91,7 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
     numbness = models.CharField(
         verbose_name="Numbness / burning sensation",
         max_length=25,
-        choices=YES_NO_UNKNOWN,
+        choices=YES_NO,
         null=True,
         blank=False,
     )
@@ -115,7 +111,7 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
     foot_ulcers = models.CharField(
         verbose_name="Foot ulcers",
         max_length=25,
-        choices=YES_NO_UNKNOWN,
+        choices=YES_NO,
         null=True,
         blank=False,
     )
@@ -161,5 +157,5 @@ class Complications(CrfModelMixin, edc_models.BaseUuidModel):
         super().save(*args, **kwargs)
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
-        verbose_name = "Complications"
-        verbose_name_plural = "Complications"
+        verbose_name = "Complications: Baseline"
+        verbose_name_plural = "Complications: Baseline"
