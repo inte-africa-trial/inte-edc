@@ -27,18 +27,18 @@ def update_from_reason_for_visit(apps, schema_editor):
         medications.hostname_modified = reason_for_visit.hostname_modified
         medications.device_created = reason_for_visit.device_created
         medications.device_modified = reason_for_visit.device_modified
-        medications.report_datetime = reason_for_visit.report_datetime
         medications.consent_model = reason_for_visit.consent_model
         medications.consent_version = reason_for_visit.consent_version
-        medications.crf_status = reason_for_visit.crf_status
-        medications.crf_status_comments = reason_for_visit.crf_status_comments
+        medications.site_id = reason_for_visit.site_id
         medications.subject_visit_id = reason_for_visit.subject_visit_id
+        medications.report_datetime = reason_for_visit.report_datetime
         medications.refill_hiv = reason_for_visit.refill_hiv
         medications.refill_diabetes = reason_for_visit.refill_diabetes
         medications.refill_hypertension = reason_for_visit.refill_hypertension
+        medications.crf_status = reason_for_visit.crf_status
+        medications.crf_status_comments = reason_for_visit.crf_status_comments
         with DisableSignals(disabled_signals=[pre_save]):
             medications.save()
-        with DisableSignals(disabled_signals=[pre_save]):
             subject_visit.save()
 
 

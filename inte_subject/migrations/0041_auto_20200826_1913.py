@@ -22,16 +22,16 @@ def convert_investigations_to_clinical_review(apps, schema_editor):
                 hostname_modified=obj.hostname_modified,
                 device_created=obj.device_created,
                 device_modified=obj.device_modified,
-                report_datetime=obj.report_datetime,
                 consent_model=obj.consent_model,
                 consent_version=obj.consent_version,
-                crf_status=obj.crf_status,
-                crf_status_comments=obj.crf_status_comments,
+                site_id=obj.site_id,
+                subject_visit_id=obj.subject_visit_id,
+                report_datetime=obj.report_datetime,
                 hiv_tested=obj.hiv_tested,
                 hypertension_tested=obj.hypertension_tested,
                 diabetes_tested=obj.diabetes_tested,
-                site_id=obj.site_id,
-                subject_visit_id=obj.subject_visit_id,
+                crf_status=obj.crf_status,
+                crf_status_comments=obj.crf_status_comments,
             )
             clinical_review = clinical_review_model_cls()
             for k, v in opts.items():

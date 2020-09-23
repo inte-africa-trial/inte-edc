@@ -3,10 +3,31 @@
 from django.db import migrations
 
 
+def update_metadata(apps, schema_editor):
+    crfmetadata_model_cls = apps.get_model("edc_metadata.crfmetadata")
+
+    renamed_models = {
+        "carestatusbaseline": "clinicalreviewbaseline",
+        "diabetesinitialreview": "dminitialreview",
+        "diabetesreview": "dmreview",
+        "hypertensioninitialreview": "htninitialreview",
+        "hypertensionreview": "htnreview",
+        "drugrefilldiabetes": "drugrefilldm",
+        "drugrefillhypertension": "drugrefillhtn",
+        "drugsupplydiabetes": "drugsupplydm",
+        "drugsupplyhypertension": "drugsupplyhtn",
+    }
+
+    for old, new in renamed_models.items():
+        crfmetadata_model_cls.objects.filter(model=f"inte_subject.{old}").update(
+            model=f"inte_subject.{new}"
+        )
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
         ("inte_subject", "0058_auto_20200912_1804"),
     ]
 
-    operations = []
+    operations = [migrations.RunPython(update_metadata)]

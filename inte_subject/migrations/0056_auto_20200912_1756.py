@@ -6,190 +6,164 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('inte_lists', '0007_auto_20200910_1742'),
-        ('inte_subject', '0055_auto_20200912_1751'),
+        ("inte_lists", "0007_auto_20200910_1742"),
+        ("inte_subject", "0055_auto_20200912_1751"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='complicationsbaseline',
-            options={'default_permissions': ('add', 'change', 'delete', 'view', 'export', 'import'), 'get_latest_by': 'modified', 'ordering': ('-modified', '-created'), 'verbose_name': 'Complications: Baseline', 'verbose_name_plural': 'Complications: Baseline'},
+            name="complicationsbaseline",
+            options={
+                "default_permissions": (
+                    "add",
+                    "change",
+                    "delete",
+                    "view",
+                    "export",
+                    "import",
+                ),
+                "get_latest_by": "modified",
+                "ordering": ("-modified", "-created"),
+                "verbose_name": "Complications: Baseline",
+                "verbose_name_plural": "Complications: Baseline",
+            },
         ),
         migrations.AlterModelOptions(
-            name='historicalcomplicationsbaseline',
-            options={'get_latest_by': 'history_date', 'ordering': ('-history_date', '-history_id'), 'verbose_name': 'historical Complications: Baseline'},
+            name="historicalcomplicationsbaseline",
+            options={
+                "get_latest_by": "history_date",
+                "ordering": ("-history_date", "-history_id"),
+                "verbose_name": "historical Complications: Baseline",
+            },
         ),
         migrations.RemoveIndex(
-            model_name='complicationsbaseline',
-            name='inte_subjec_subject_5de7e3_idx',
-        ),
-        migrations.RemoveField(
-            model_name='historicalinvestigations',
-            name='diabetes_dx',
-        ),
-        migrations.RemoveField(
-            model_name='historicalinvestigations',
-            name='diabetes_reason_other',
-        ),
-        migrations.RemoveField(
-            model_name='historicalinvestigations',
-            name='hiv_dx',
-        ),
-        migrations.RemoveField(
-            model_name='historicalinvestigations',
-            name='hiv_reason_other',
-        ),
-        migrations.RemoveField(
-            model_name='historicalinvestigations',
-            name='hypertension_dx',
-        ),
-        migrations.RemoveField(
-            model_name='historicalinvestigations',
-            name='hypertension_reason_other',
-        ),
-        migrations.RemoveField(
-            model_name='investigations',
-            name='diabetes_dx',
-        ),
-        migrations.RemoveField(
-            model_name='investigations',
-            name='diabetes_reason',
-        ),
-        migrations.RemoveField(
-            model_name='investigations',
-            name='diabetes_reason_other',
-        ),
-        migrations.RemoveField(
-            model_name='investigations',
-            name='hiv_dx',
-        ),
-        migrations.RemoveField(
-            model_name='investigations',
-            name='hiv_reason',
-        ),
-        migrations.RemoveField(
-            model_name='investigations',
-            name='hiv_reason_other',
-        ),
-        migrations.RemoveField(
-            model_name='investigations',
-            name='hypertension_dx',
-        ),
-        migrations.RemoveField(
-            model_name='investigations',
-            name='hypertension_reason',
-        ),
-        migrations.RemoveField(
-            model_name='investigations',
-            name='hypertension_reason_other',
+            model_name="complicationsbaseline", name="inte_subjec_subject_5de7e3_idx",
         ),
         migrations.AlterField(
-            model_name='complicationsbaseline',
-            name='foot_ulcers',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=25, null=True, verbose_name='Foot ulcers'),
+            model_name="complicationsbaseline",
+            name="foot_ulcers",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=25,
+                null=True,
+                verbose_name="Foot ulcers",
+            ),
         ),
         migrations.AlterField(
-            model_name='complicationsbaseline',
-            name='heart_attack',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=25, null=True, verbose_name='Heart attack / heart failure'),
+            model_name="complicationsbaseline",
+            name="heart_attack",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=25,
+                null=True,
+                verbose_name="Heart attack / heart failure",
+            ),
         ),
         migrations.AlterField(
-            model_name='complicationsbaseline',
-            name='numbness',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=25, null=True, verbose_name='Numbness / burning sensation'),
+            model_name="complicationsbaseline",
+            name="numbness",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=25,
+                null=True,
+                verbose_name="Numbness / burning sensation",
+            ),
         ),
         migrations.AlterField(
-            model_name='complicationsbaseline',
-            name='renal_disease',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=25, null=True, verbose_name='Renal (kidney) disease'),
+            model_name="complicationsbaseline",
+            name="renal_disease",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=25,
+                null=True,
+                verbose_name="Renal (kidney) disease",
+            ),
         ),
         migrations.AlterField(
-            model_name='complicationsbaseline',
-            name='stroke',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=25, null=True, verbose_name='Stroke'),
+            model_name="complicationsbaseline",
+            name="stroke",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=25,
+                null=True,
+                verbose_name="Stroke",
+            ),
         ),
         migrations.AlterField(
-            model_name='complicationsbaseline',
-            name='vision',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=25, null=True, verbose_name='Vision problems (e.g. blurred vision)'),
+            model_name="complicationsbaseline",
+            name="vision",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=25,
+                null=True,
+                verbose_name="Vision problems (e.g. blurred vision)",
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalcomplicationsbaseline',
-            name='foot_ulcers',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=25, null=True, verbose_name='Foot ulcers'),
+            model_name="historicalcomplicationsbaseline",
+            name="foot_ulcers",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=25,
+                null=True,
+                verbose_name="Foot ulcers",
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalcomplicationsbaseline',
-            name='heart_attack',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=25, null=True, verbose_name='Heart attack / heart failure'),
+            model_name="historicalcomplicationsbaseline",
+            name="heart_attack",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=25,
+                null=True,
+                verbose_name="Heart attack / heart failure",
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalcomplicationsbaseline',
-            name='numbness',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=25, null=True, verbose_name='Numbness / burning sensation'),
+            model_name="historicalcomplicationsbaseline",
+            name="numbness",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=25,
+                null=True,
+                verbose_name="Numbness / burning sensation",
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalcomplicationsbaseline',
-            name='renal_disease',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=25, null=True, verbose_name='Renal (kidney) disease'),
+            model_name="historicalcomplicationsbaseline",
+            name="renal_disease",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=25,
+                null=True,
+                verbose_name="Renal (kidney) disease",
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalcomplicationsbaseline',
-            name='stroke',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=25, null=True, verbose_name='Stroke'),
+            model_name="historicalcomplicationsbaseline",
+            name="stroke",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=25,
+                null=True,
+                verbose_name="Stroke",
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalcomplicationsbaseline',
-            name='vision',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=25, null=True, verbose_name='Vision problems (e.g. blurred vision)'),
-        ),
-        migrations.AlterField(
-            model_name='historicalinvestigations',
-            name='diabetes_tested',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], default='No', max_length=15, verbose_name='Was the patient tested for diabetes?'),
-        ),
-        migrations.AlterField(
-            model_name='historicalinvestigations',
-            name='hiv_tested',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], default='No', max_length=15, verbose_name='Was the patient tested for HIV infection?'),
-        ),
-        migrations.AlterField(
-            model_name='historicalinvestigations',
-            name='hypertension_tested',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], default='No', max_length=15, verbose_name='Was the patient tested for hypertension?'),
-        ),
-        migrations.AlterField(
-            model_name='historicalinvestigations',
-            name='test_date',
-            field=models.DateField(blank=True, null=True, verbose_name='Date test requested'),
-        ),
-        migrations.AlterField(
-            model_name='investigations',
-            name='diabetes_tested',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], default='No', max_length=15, verbose_name='Was the patient tested for diabetes?'),
-        ),
-        migrations.AlterField(
-            model_name='investigations',
-            name='hiv_tested',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], default='No', max_length=15, verbose_name='Was the patient tested for HIV infection?'),
-        ),
-        migrations.AlterField(
-            model_name='investigations',
-            name='hypertension_tested',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], default='No', max_length=15, verbose_name='Was the patient tested for hypertension?'),
-        ),
-        migrations.AlterField(
-            model_name='investigations',
-            name='reason',
-            field=models.ManyToManyField(blank=True, to='inte_lists.ReasonsForTesting', verbose_name='Why was the patient tested?'),
-        ),
-        migrations.AlterField(
-            model_name='investigations',
-            name='test_date',
-            field=models.DateField(blank=True, null=True, verbose_name='Date test requested'),
+            model_name="historicalcomplicationsbaseline",
+            name="vision",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=25,
+                null=True,
+                verbose_name="Vision problems (e.g. blurred vision)",
+            ),
         ),
         migrations.AddIndex(
-            model_name='complicationsbaseline',
-            index=models.Index(fields=['subject_visit', 'site', 'id'], name='inte_subjec_subject_246b6c_idx'),
+            model_name="complicationsbaseline",
+            index=models.Index(
+                fields=["subject_visit", "site", "id"],
+                name="inte_subjec_subject_246b6c_idx",
+            ),
         ),
     ]
