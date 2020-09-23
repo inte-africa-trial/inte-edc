@@ -2,18 +2,22 @@ from django import forms
 from edc_constants.constants import YES
 from edc_form_validators.form_validator import FormValidator
 
-from ..models import Complications
+from ..models import ComplicationsBaseline, ClinicalReviewBaseline
 from .mixins import (
     EstimatedDateFromAgoFormMixin,
     CrfModelFormMixin,
     CrfFormValidatorMixin,
+    model_exists_or_raise,
 )
 
 
-class ComplicationsFormValidator(
+class ComplicationsBaselineFormValidator(
     CrfFormValidatorMixin, EstimatedDateFromAgoFormMixin, FormValidator
 ):
     def clean(self):
+        model_exists_or_raise(
+            self.cleaned_data.get("subject_visit"), model_cls=ClinicalReviewBaseline
+        )
         self.required_if(YES, field="stroke", field_required="stroke_ago")
         self.estimated_date_from_ago("stroke_ago")
         self.required_if(YES, field="heart_attack", field_required="heart_attack_ago")
@@ -31,10 +35,10 @@ class ComplicationsFormValidator(
         )
 
 
-class ComplicationsForm(CrfModelFormMixin, forms.ModelForm):
+class ComplicationsBaselineForm(CrfModelFormMixin, forms.ModelForm):
 
-    form_validator_cls = ComplicationsFormValidator
+    form_validator_cls = ComplicationsBaselineFormValidator
 
     class Meta:
-        model = Complications
+        model = ComplicationsBaseline
         fields = "__all__"

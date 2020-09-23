@@ -9,6 +9,7 @@ from .mixins import (
     EstimatedDateFromAgoFormMixin,
     CrfFormValidatorMixin,
     CrfModelFormMixin,
+    raise_if_clinical_review_does_not_exist,
 )
 
 
@@ -16,6 +17,7 @@ class HivInitialReviewFormValidator(
     EstimatedDateFromAgoFormMixin, CrfFormValidatorMixin, FormValidator
 ):
     def clean(self):
+        raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
         if (
             self.subject_screening.clinic_type in [HIV_CLINIC]
             and self.cleaned_data.get("receives_care") != YES

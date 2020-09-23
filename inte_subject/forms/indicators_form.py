@@ -1,13 +1,17 @@
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist
-from edc_action_item.forms.action_item_form_mixin import ActionItemFormMixin
 from edc_constants.constants import NO, NOT_REQUIRED, YES
 from edc_form_validators.form_validator import FormValidator
 from inte_subject.models import HtnInitialReview
 from inte_visit_schedule.is_baseline import is_baseline
 
 from ..models import Indicators
-from .mixins import BPFormValidatorMixin, CrfFormValidatorMixin, CrfModelFormMixin
+from .mixins import (
+    BPFormValidatorMixin,
+    CrfFormValidatorMixin,
+    CrfModelFormMixin,
+    raise_if_clinical_review_does_not_exist,
+)
 
 
 class IndicatorsFormValidator(
@@ -15,6 +19,7 @@ class IndicatorsFormValidator(
 ):
     def clean(self):
 
+        raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
         self.required_if_true(
             is_baseline(self.cleaned_data.get("subject_visit")),
             field_required="weight",

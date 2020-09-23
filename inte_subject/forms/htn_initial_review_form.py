@@ -8,6 +8,7 @@ from .mixins import (
     EstimatedDateFromAgoFormMixin,
     CrfModelFormMixin,
     CrfFormValidatorMixin,
+    raise_if_clinical_review_does_not_exist,
 )
 
 
@@ -15,6 +16,7 @@ class HtnInitialReviewFormValidator(
     EstimatedDateFromAgoFormMixin, CrfFormValidatorMixin, FormValidator
 ):
     def clean(self):
+        raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
         self.required_if(DRUGS, field="managed_by", field_required="med_start_ago")
         if self.cleaned_data.get("med_start_ago") and self.cleaned_data.get("dx_ago"):
             if self.estimated_date_from_ago(

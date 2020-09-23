@@ -27,37 +27,46 @@ class ClinicalReviewFormValidator(CrfFormValidatorMixin, FormValidator):
             raise forms.ValidationError(e)
 
         # htn
-        self.applicable_if_true(diagnoses.htn != YES, field_applicable="htn_test")
+        self.applicable_if_true(
+            diagnoses.htn_dx != YES,
+            field_applicable="htn_test",
+            applicable_msg=(
+                "Patient was not previously diagnosed with hypertension. "
+                "Expected YES or NO."
+            ),
+            not_applicable_msg="Patient was previously diagnosed with hypertension.",
+        )
         self.required_if(YES, field="htn_test", field_required="htn_test_date")
         self.required_if(YES, field="htn_test", field_required="htn_reason")
-        self.applicable_if(
-            YES,
-            field="htn_test",
-            field_applicable="htn_dx",
-            msg="This field is not applicable. Patient has been previously diagnosed with hypertension.",
-        )
+        self.applicable_if(YES, field="htn_test", field_applicable="htn_dx")
 
         # diabetes
-        self.applicable_if_true(diagnoses.dm != YES, field_applicable="dm_test")
+        self.applicable_if_true(
+            diagnoses.dm_dx != YES,
+            field_applicable="dm_test",
+            applicable_msg=(
+                "Patient was not previously diagnosed with diabetes. "
+                "Expected YES or NO."
+            ),
+            not_applicable_msg="Patient was previously diagnosed with diabetes.",
+        )
         self.required_if(YES, field="dm_test", field_required="dm_test_date")
         self.required_if(YES, field="dm_test", field_required="dm_reason")
-        self.applicable_if(
-            YES,
-            field="dm_test",
-            field_applicable="diabetes_dx",
-            msg="This field is not applicable. Patient has been previously diagnosed with diabetes.",
-        )
+        self.applicable_if(YES, field="dm_test", field_applicable="dm_dx")
 
         # hiv
-        self.applicable_if_true(diagnoses.hiv != YES, field_applicable="hiv_test")
+        self.applicable_if_true(
+            diagnoses.hiv_dx != YES,
+            field_applicable="hiv_test",
+            applicable_msg=(
+                "Patient was not previously diagnosed with HIV infection. "
+                "Expected YES or NO."
+            ),
+            not_applicable_msg="Patient was previously diagnosed with HIV infection.",
+        )
         self.required_if(YES, field="hiv_test", field_required="hiv_test_date")
         self.required_if(YES, field="hiv_test", field_required="hiv_reason")
-        self.applicable_if(
-            YES,
-            field="hiv_test",
-            field_applicable="hiv_dx",
-            msg="This field is not applicable. Patient has been previously diagnosed with HIV.",
-        )
+        self.applicable_if(YES, field="hiv_test", field_applicable="hiv_dx")
 
     def raise_if_dx_and_applicable(self, clinic, cond):
         if self.subject_screening.clinic_type in [clinic] and self.cleaned_data.get(

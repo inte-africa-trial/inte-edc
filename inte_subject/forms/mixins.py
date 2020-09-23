@@ -8,12 +8,13 @@ from edc_model.models import InvalidFormat
 from edc_utils import age
 from edc_visit_schedule.constants import DAY1
 from inte_subject.models import Medications
+from inte_visit_schedule.is_baseline import is_baseline
 
-from ..models import ClinicalReviewBaseline
+from ..models import ClinicalReviewBaseline, ClinicalReview
 
 
-def model_exists_or_raise(form, model_cls=None):
-    subject_identifier = form.cleaned_data.get("subject_visit").subject_identifier
+def model_exists_or_raise(subject_visit, model_cls=None):
+    subject_identifier = subject_visit.subject_identifier
     try:
         model_cls.objects.get(subject_visit__subject_identifier=subject_identifier)
     except ObjectDoesNotExist:
@@ -21,6 +22,13 @@ def model_exists_or_raise(form, model_cls=None):
             f"Complete the `{model_cls._meta.verbose_name}` CRF first."
         )
     return True
+
+
+def raise_if_clinical_review_does_not_exist(subject_visit):
+    if is_baseline(subject_visit):
+        model_exists_or_raise(subject_visit, model_cls=ClinicalReviewBaseline)
+    else:
+        model_exists_or_raise(subject_visit, model_cls=ClinicalReview)
 
 
 def medications_exists_or_raise(subject_visit):
@@ -62,7 +70,9 @@ class ClinicalReviewBaselineRequiredModelFormMixin:
         if self._meta.model != ClinicalReviewBaseline and self.cleaned_data.get(
             "subject_visit"
         ):
-            model_exists_or_raise(self, model_cls=ClinicalReviewBaseline)
+            model_exists_or_raise(
+                self.cleaned_data.get("subject_visit"), model_cls=ClinicalReviewBaseline
+            )
         return super().clean()
 
 

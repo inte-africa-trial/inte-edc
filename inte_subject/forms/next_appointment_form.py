@@ -7,18 +7,26 @@ from inte_screening.constants import (
     HYPERTENSION_CLINIC,
     NCD_CLINIC,
 )
+from inte_visit_schedule.is_baseline import is_baseline
 
 from ..models import (
-    NextAppointment,
-    HivInitialReview,
+    ClinicalReview,
+    ClinicalReviewBaseline,
     DmInitialReview,
+    HivInitialReview,
     HtnInitialReview,
+    NextAppointment,
 )
-from .mixins import CrfFormValidatorMixin, CrfModelFormMixin
+from .mixins import (
+    CrfFormValidatorMixin,
+    CrfModelFormMixin,
+    raise_if_clinical_review_does_not_exist,
+)
 
 
 class NextAppointmentValidator(CrfFormValidatorMixin, FormValidator):
     def clean(self):
+        raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
         # hiv_clinic_appt_date
         condition = (
             self.clinic_type == HIV_CLINIC

@@ -8,11 +8,17 @@ from inte_prn.models import IntegratedCareClinicRegistration
 from inte_sites.is_intervention_site import is_intervention_site
 
 from ..models import HealthEconomicsRevised
-from .mixins import CrfFormValidatorMixin, CrfModelFormMixin, model_exists_or_raise
+from .mixins import (
+    CrfFormValidatorMixin,
+    CrfModelFormMixin,
+    raise_if_clinical_review_does_not_exist,
+)
 
 
 class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
     def clean(self):
+        raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
+
         self.require_icc_registration()
 
         self.clean_education()

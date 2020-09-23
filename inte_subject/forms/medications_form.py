@@ -3,14 +3,23 @@ from django.conf import settings
 from edc_constants.constants import NO, NOT_APPLICABLE, YES
 from edc_form_validators.form_validator import FormValidator
 from edc_utils import convert_php_dateformat
+from inte_visit_schedule.is_baseline import is_baseline
 
-from ..models import Medications
-from ..diagnoses import Diagnoses
-from .mixins import CrfModelFormMixin, CrfFormValidatorMixin
+from ..models import Medications, ClinicalReview, ClinicalReviewBaseline
+from ..diagnoses import Diagnoses, InitialReviewRequired
+from .mixins import CrfModelFormMixin, CrfFormValidatorMixin, model_exists_or_raise
 
 
 class MedicationsFormValidator(CrfFormValidatorMixin, FormValidator):
     def clean(self):
+        if not is_baseline(self.cleaned_data.get("subject_visit")):
+            model_exists_or_raise(
+                self.cleaned_data.get("subject_visit"), model_cls=ClinicalReview
+            )
+        else:
+            model_exists_or_raise(
+                self.cleaned_data.get("subject_visit"), model_cls=ClinicalReviewBaseline
+            )
         self.validate_diagnosis_before_refill()
 
     def validate_diagnosis_before_refill(self):
@@ -23,21 +32,37 @@ class MedicationsFormValidator(CrfFormValidatorMixin, FormValidator):
             report_datetime=self.report_datetime,
             lte=True,
         )
+
+        try:
+            diagnoses.initial_reviews
+        except InitialReviewRequired as e:
+            raise forms.ValidationError(e)
+
         options = [
-            ("refill_htn", diagnoses.htn, "hypertension"),
-            ("refill_dm", diagnoses.dm, "diabetes"),
-            ("refill_hiv", diagnoses.hiv, "HIV"),
+            ("refill_htn", diagnoses.htn_dx, diagnoses.htn_dx_date, "hypertension"),
+            ("refill_dm", diagnoses.dm_dx, diagnoses.dm_dx_date, "diabetes"),
+            ("refill_hiv", diagnoses.hiv_dx, diagnoses.hiv_dx_date, "HIV"),
         ]
-        for fld, dx, label in options:
-            if self.cleaned_data.get(fld) == NOT_APPLICABLE and dx == YES:
-                formatted_date = self.report_datetime.strftime(
-                    convert_php_dateformat(settings.DATETIME_FORMAT)
+        for fld, dx, dx_date, label in options:
+            if self.cleaned_data.get(fld) == NOT_APPLICABLE and dx:
+                formatted_date = dx_date.strftime(
+                    convert_php_dateformat(settings.DATE_FORMAT)
                 )
                 raise forms.ValidationError(
                     {
                         fld: (
-                            "Invalid. Subject was not diagnosed with "
-                            f"{label} by {formatted_date}."
+                            f"Invalid. Subject was previously diagnosed with {label} "
+                            f"on {formatted_date}. Expected YES/NO."
+                        )
+                    }
+                )
+            elif self.cleaned_data.get(fld) != NOT_APPLICABLE and not dx:
+                raise forms.ValidationError(
+                    {
+                        fld: (
+                            "Invalid. Subject has not been diagnosed with "
+                            f"{label}. Expected N/A. See also the "
+                            f"`{ClinicalReview._meta.verbose_name}` CRF."
                         )
                     }
                 )

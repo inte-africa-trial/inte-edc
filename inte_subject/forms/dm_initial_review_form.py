@@ -9,6 +9,7 @@ from .mixins import (
     GlucoseFormValidatorMixin,
     CrfModelFormMixin,
     CrfFormValidatorMixin,
+    raise_if_clinical_review_does_not_exist,
 )
 
 
@@ -19,6 +20,7 @@ class DmInitialReviewFormValidator(
     FormValidator,
 ):
     def clean(self):
+        raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
         self.required_if(
             DRUGS, INSULIN, field="managed_by", field_required="med_start_ago",
         )

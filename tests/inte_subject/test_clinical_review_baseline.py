@@ -1,5 +1,5 @@
 from django.test import TestCase, tag
-from edc_constants.constants import INCOMPLETE, NEG, NEVER, NOT_APPLICABLE, NO, YES
+from edc_constants.constants import INCOMPLETE, NOT_APPLICABLE, NO, YES
 from edc_utils import get_utcnow
 from inte_screening.constants import (
     DIABETES_CLINIC,
@@ -69,7 +69,6 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             subject_consent=self.subject_consent_ncd,
         )
 
-    @tag("crb")
     def test_form_ok_hiv(self):
         data = {
             "subject_visit": self.subject_visit_hiv.pk,
@@ -90,7 +89,6 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
         form.is_valid()
         self.assertEqual(form._errors, {})
 
-    @tag("crb")
     def test_form_ok_hypertensive(self):
         data = {
             "subject_visit": self.subject_visit_htn.pk,
@@ -112,7 +110,6 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
         form.is_valid()
         self.assertEqual(form._errors, {})
 
-    @tag("crb")
     def test_form_ok_dm(self):
         data = {
             "subject_visit": self.subject_visit_dm.pk,
@@ -134,7 +131,6 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
         form.is_valid()
         self.assertEqual(form._errors, {})
 
-    @tag("crb")
     def test_hiv_if_hiv_clinic(self):
         data = {
             "subject_visit": self.subject_visit_hiv.pk,
@@ -142,41 +138,68 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             "crf_status": INCOMPLETE,
         }
         data.update(
-            hiv_test=NO, hiv_test_ago=None, hiv_dx=NOT_APPLICABLE,
+            hiv_test=NO, hiv_test_ago=None, hiv_test_date=None, hiv_dx=NOT_APPLICABLE,
         )
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
         self.assertIn("hiv_test", form._errors)
 
         data.update(
-            hiv_test=YES, hiv_test_ago=None, hiv_dx=NO,
+            hiv_test=YES,
+            hiv_test_ago=None,
+            hiv_test_date=None,
+            hiv_dx=NO,
+            dm_test=NO,
+            htn_test=NO,
         )
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
         self.assertNotIn("hiv_test", form._errors)
-        self.assertIn("hiv_test_ago", form._errors)
         self.assertIn("hiv_dx", form._errors)
-        self.assertNotIn("__all__", form._errors)
 
         data.update(
-            hiv_test=YES, hiv_test_ago=None, hiv_test_date=None, hiv_dx=NOT_APPLICABLE
+            hiv_test=YES,
+            hiv_test_ago=None,
+            hiv_test_date=None,
+            hiv_dx=NOT_APPLICABLE,
+            dm_test=NO,
+            htn_test=NO,
         )
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
         self.assertNotIn("hiv_test", form._errors)
-        self.assertIn("hiv_test_ago", form._errors)
         self.assertIn("hiv_dx", form._errors)
+
+        data.update(
+            hiv_test=YES,
+            hiv_test_ago=None,
+            hiv_test_date=None,
+            hiv_dx=YES,
+            dm_test=NO,
+            htn_test=NO,
+        )
+        form = ClinicalReviewBaselineForm(data=data)
+        form.is_valid()
+        self.assertNotIn("hiv_test", form._errors)
+        self.assertNotIn("hiv_dx", form._errors)
+        self.assertIn("__all__", form._errors)
+
+        data.update(
+            hiv_test=YES, hiv_test_ago=None, hiv_test_date=get_utcnow(), hiv_dx=YES,
+        )
+        form = ClinicalReviewBaselineForm(data=data)
+        form.is_valid()
+        self.assertNotIn("hiv_test", form._errors)
+        self.assertNotIn("hiv_dx", form._errors)
         self.assertNotIn("__all__", form._errors)
 
         data.update(hiv_test=YES, hiv_test_ago="10y", hiv_test_date=None, hiv_dx=YES)
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
         self.assertNotIn("hiv_test", form._errors)
-        self.assertNotIn("hiv_test_ago", form._errors)
-        self.assertIn("hiv_dx", form._errors)
+        self.assertNotIn("hiv_dx", form._errors)
         self.assertNotIn("__all__", form._errors)
 
-    @tag("crb")
     def test_htn_if_htn_clinic(self):
         data = {
             "subject_visit": self.subject_visit_htn.pk,
@@ -209,7 +232,6 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
         self.assertNotIn("htn_test", form._errors)
         self.assertNotIn("htn_dx", form._errors)
 
-    @tag("crb")
     def test_dm_if_ncd_clinic(self):
         for cond in ["dm", "htn"]:
             data = {
