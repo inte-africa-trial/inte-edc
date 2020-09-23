@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.safestring import mark_safe
-from edc_constants.choices import YES_NO_NA
+from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
 from inte_lists.models import ReasonsForTesting
@@ -15,9 +15,11 @@ class ClinicalReview(ClinicalReviewModelMixin, CrfModelMixin, edc_models.BaseUui
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
-        help_text=(
-            "Select `not applicable` if previously diagnosed. "
-            "`Since last seen` includes today."
+        help_text=mark_safe(
+            "Note: Select `not applicable` if diagnosis previously reported. <BR>"
+            "`Since last seen` includes today.<BR>"
+            "If `yes', complete the initial review CRF<BR>"
+            "If `not applicable`, complete the review CRF."
         ),
     )
 
@@ -48,9 +50,11 @@ class ClinicalReview(ClinicalReviewModelMixin, CrfModelMixin, edc_models.BaseUui
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
-        help_text=(
-            "Select `not applicable` if previously "
-            "diagnosed. `Since last seen` includes today."
+        help_text=mark_safe(
+            "Note: Select `not applicable` if diagnosis previously reported. <BR>"
+            "`Since last seen` includes today.<BR>"
+            "If `yes', complete the initial review CRF<BR>"
+            "If `not applicable`, complete the review CRF."
         ),
     )
 
@@ -81,9 +85,11 @@ class ClinicalReview(ClinicalReviewModelMixin, CrfModelMixin, edc_models.BaseUui
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
-        help_text=(
-            "Select `not applicable` if previously diagnosed. "
-            "`Since last seen` includes today."
+        help_text=mark_safe(
+            "Note: Select `not applicable` if diagnosis previously reported. <BR>"
+            "`Since last seen` includes today.<BR>"
+            "If `yes', complete the initial review CRF<BR>"
+            "If `not applicable`, complete the review CRF."
         ),
     )
 
@@ -109,6 +115,12 @@ class ClinicalReview(ClinicalReviewModelMixin, CrfModelMixin, edc_models.BaseUui
         default=NOT_APPLICABLE,
     )
 
+    complications = models.CharField(
+        verbose_name="Since last seen, has the patient had any complications",
+        max_length=15,
+        choices=YES_NO,
+        help_text="If Yes, complete the `Complications` CRF",
+    )
     # QUESTION_RETIRED
     test_date = models.DateField(
         verbose_name="Date test requested",
