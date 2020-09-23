@@ -31,12 +31,9 @@ class ClinicalReviewModelMixin(models.Model):
 class ClinicalReviewBaselineHivModelMixin(models.Model):
 
     hiv_test = models.CharField(
-        verbose_name=mark_safe(
-            "What was the result of the patient's most recent HIV test"
-        ),
+        verbose_name="Has the patient ever tested for HIV infection?",
         max_length=15,
         choices=YES_NO,
-        help_text="If positive, complete form `Hiv Initial Review`",
     )
 
     hiv_test_ago = edc_models.DurationYearMonthField(
@@ -61,7 +58,9 @@ class ClinicalReviewBaselineHivModelMixin(models.Model):
     )
 
     hiv_dx = models.CharField(
-        verbose_name=mark_safe("Has the patient ever tested positive for HIV?"),
+        verbose_name=mark_safe(
+            "Has the patient ever tested <U>positive</U> for HIV infection?"
+        ),
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
