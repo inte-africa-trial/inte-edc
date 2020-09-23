@@ -94,7 +94,8 @@ class Diagnoses:
             )
         except ObjectDoesNotExist:
             raise ClinicalReviewBaselineRequired(
-                f"Please complete {self.clinical_review_baseline_model_cls._meta.verbose_name}."
+                "Please complete "
+                f"{self.clinical_review_baseline_model_cls._meta.verbose_name}."
             )
         return obj
 
@@ -171,7 +172,10 @@ class Diagnoses:
                     )
                 except ObjectDoesNotExist:
                     subject_visit = self.initial_diagnosis_visit(name)
-                    visit_label = f"{subject_visit.visit_code}.{subject_visit.visit_code_sequence}"
+                    visit_label = (
+                        f"{subject_visit.visit_code}."
+                        f"{subject_visit.visit_code_sequence}"
+                    )
                     raise InitialReviewRequired(
                         f"{description} was been reported on visit {visit_label}. "
                         f"Complete the `{initial_review_model_cls._meta.verbose_name}` "
