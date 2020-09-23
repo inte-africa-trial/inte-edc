@@ -4,7 +4,7 @@ from django.db import migrations
 from django.db.models.signals import pre_save
 from edc_constants.constants import NO, NOT_APPLICABLE, YES
 from edc_utils import DisableSignals
-from inte_subject.diagnoses import Diagnoses
+from inte_subject.diagnoses import ClinicalReviewBaselineRequired, Diagnoses
 
 
 def update_medications(apps, schema_editor):
@@ -17,25 +17,31 @@ def update_medications(apps, schema_editor):
     for subject_visit in subject_visit_model_cls.objects.filter(
         visit_code_sequence__gt=0
     ).order_by("subject_identifier", "visit_code", "visit_code_sequence"):
-        diagnoses = Diagnoses(subject_visit=subject_visit)
-        medications = get_obj(medications_model_cls, subject_visit)
-        opts = [
-            ("hiv_dx", "refill_hiv", refill_hiv_model_cls),
-            ("htn_dx", "refill_htn", refill_htn_model_cls),
-            ("dm_dx", "refill_dm", refill_dm_model_cls),
-        ]
-        if medications:
-            for dx_attr, refill_attr, refill_model_cls in opts:
-                if getattr(diagnoses, dx_attr):
-                    obj = get_obj(refill_model_cls, subject_visit)
-                    if obj:
-                        setattr(medications, refill_attr, YES)
+        try:
+            diagnoses = Diagnoses(subject_visit=subject_visit)
+        except ClinicalReviewBaselineRequired:
+            print(
+                f"{subject_visit.subject_identifier}: ClinicalReviewBaselineRequired (skipping) [0060]"
+            )
+        else:
+            medications = get_obj(medications_model_cls, subject_visit)
+            opts = [
+                ("hiv_dx", "refill_hiv", refill_hiv_model_cls),
+                ("htn_dx", "refill_htn", refill_htn_model_cls),
+                ("dm_dx", "refill_dm", refill_dm_model_cls),
+            ]
+            if medications:
+                for dx_attr, refill_attr, refill_model_cls in opts:
+                    if getattr(diagnoses, dx_attr):
+                        obj = get_obj(refill_model_cls, subject_visit)
+                        if obj:
+                            setattr(medications, refill_attr, YES)
+                        else:
+                            setattr(medications, refill_attr, NO)
                     else:
-                        setattr(medications, refill_attr, NO)
-                else:
-                    setattr(medications, refill_attr, NOT_APPLICABLE)
-                with DisableSignals([pre_save]):
-                    medications.save()
+                        setattr(medications, refill_attr, NOT_APPLICABLE)
+                    with DisableSignals([pre_save]):
+                        medications.save()
 
 
 def get_obj(model_cls, subject_visit):
