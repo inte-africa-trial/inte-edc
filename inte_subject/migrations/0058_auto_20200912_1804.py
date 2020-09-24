@@ -7,7 +7,8 @@ from edc_utils import DisableSignals
 
 
 def update_complications_from_baseline(apps, schema_editor):
-
+    """Splits the complications model into baseline and followup.
+    """
     complications_model_cls = apps.get_model("inte_subject.complicationsbaseline")
     complications_followup_model_cls = apps.get_model(
         "inte_subject.complicationsfollowup"
@@ -63,6 +64,7 @@ def update_complications_from_baseline(apps, schema_editor):
                 complications.delete()
         with DisableSignals(disabled_signals=[pre_save]):
             clinical_review.save()
+    print("\nDone. Remember to run the INTE managment command to update metadata.")
 
 
 class Migration(migrations.Migration):

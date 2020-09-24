@@ -21,7 +21,7 @@ def update_medications(apps, schema_editor):
             diagnoses = Diagnoses(subject_visit=subject_visit)
         except ClinicalReviewBaselineRequired:
             print(
-                f"{subject_visit.subject_identifier}: ClinicalReviewBaselineRequired (skipping) [0060]"
+                f"   * {subject_visit.subject_identifier}: ClinicalReviewBaselineRequired (skipping) [0060]"
             )
         else:
             medications = get_obj(medications_model_cls, subject_visit)
@@ -42,6 +42,7 @@ def update_medications(apps, schema_editor):
                         setattr(medications, refill_attr, NOT_APPLICABLE)
                     with DisableSignals([pre_save]):
                         medications.save()
+    print("\nDone. Remember to run the INTE managment command to update metadata.")
 
 
 def get_obj(model_cls, subject_visit):
