@@ -14,7 +14,7 @@ class TestDailyLog(InteTestCaseMixin, TestCase):
 
         self.data = {
             "site": Site.objects.get_current(),
-            "log_date": get_utcnow(),
+            "log_date": get_utcnow().date(),
             "clinic_services": INTEGRATED,
             "selection_method": SEQUENTIAL,
             "attended": 10,
@@ -30,7 +30,7 @@ class TestDailyLog(InteTestCaseMixin, TestCase):
         self.assertIn("clinic_services", form._errors)
 
         # register the site
-        IntegratedCareClinicRegistration.objects.create(date_opened=get_utcnow())
+        IntegratedCareClinicRegistration.objects.create(date_opened=get_utcnow().date())
         form = DailyClosingLogForm(data=self.data)
         form.is_valid()
         self.assertNotIn("clinic_services", form._errors)
@@ -45,7 +45,7 @@ class TestDailyLog(InteTestCaseMixin, TestCase):
     @tag("daily")
     @override_settings(SITE_ID=103)
     def test_numbers(self):
-        IntegratedCareClinicRegistration.objects.create(date_opened=get_utcnow())
+        IntegratedCareClinicRegistration.objects.create(date_opened=get_utcnow().date())
         data = {
             "site": Site.objects.get_current(),
             "log_date": get_utcnow(),
