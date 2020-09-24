@@ -1,7 +1,10 @@
 from edc_visit_schedule import FormsCollection, Crf
 
 crfs_prn = FormsCollection(
-    Crf(show_order=180, model="inte_subject.nextappointment"), name="prn",
+    Crf(show_order=175, model="inte_subject.healtheconomicsrevised"),
+    Crf(show_order=178, model="inte_subject.familyhistory"),
+    Crf(show_order=180, model="inte_subject.nextappointment"),
+    name="prn",
 )
 
 crfs_unscheduled = FormsCollection(
