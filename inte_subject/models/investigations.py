@@ -9,6 +9,8 @@ from ..model_mixins import CrfModelMixin
 
 class Investigations(CrfModelMixin, edc_models.BaseUuidModel):
 
+    """Model not used"""
+
     hiv_tested = models.CharField(
         verbose_name="Was the patient tested for HIV infection?",
         max_length=15,
