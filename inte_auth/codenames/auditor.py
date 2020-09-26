@@ -24,6 +24,7 @@ auditor += [
     "inte_screening.view_historicalsubjectscreening",
     "inte_screening.view_subjectrefusal",
     "inte_screening.view_subjectscreening",
+    "inte_subject.view_cd4result",
     "inte_subject.view_clinicalreview",
     "inte_subject.view_clinicalreviewbaseline",
     "inte_subject.view_complicationsbaseline",
@@ -31,7 +32,9 @@ auditor += [
     "inte_subject.view_dminitialreview",
     "inte_subject.view_dmreview",
     "inte_subject.view_familyhistory",
+    "inte_subject.view_glucose",
     "inte_subject.view_healtheconomicsrevised",
+    "inte_subject.view_historicalcd4result",
     "inte_subject.view_historicalclinicalreview",
     "inte_subject.view_historicalclinicalreviewbaseline",
     "inte_subject.view_historicalcomplicationsfollowup",
@@ -51,6 +54,7 @@ auditor += [
     "inte_subject.view_historicalsubjectrequisition",
     "inte_subject.view_historicalsubjectvisit",
     "inte_subject.view_historicalsubjectvisitmissed",
+    "inte_subject.view_historicalviralloadresult",
     "inte_subject.view_hivinitialreview",
     "inte_subject.view_hivreview",
     "inte_subject.view_htninitialreview",
@@ -62,5 +66,6 @@ auditor += [
     "inte_subject.view_subjectrequisition",
     "inte_subject.view_subjectvisit",
     "inte_subject.view_subjectvisitmissed",
+    "inte_subject.view_viralloadresult",
 ]
 auditor.sort()
