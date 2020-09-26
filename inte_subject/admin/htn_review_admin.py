@@ -17,9 +17,8 @@ class HtnReviewAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistory
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
-        ("Testing and Diagnosis", {"fields": ("test_date", "dx")}),
         (
-            "Final Blood Pressure Measurement",
+            "Blood Pressure Measurement",
             {"fields": ("sys_blood_pressure", "dia_blood_pressure",)},
         ),
         ("Care", {"fields": ("managed_by", "care_start_date")}),

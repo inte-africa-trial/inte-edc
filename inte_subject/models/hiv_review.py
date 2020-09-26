@@ -19,8 +19,17 @@ class HivReview(CrfModelMixin, edc_models.BaseUuidModel):
         default=NOT_APPLICABLE,
     )
 
-    care_start_date = models.DateField(
-        verbose_name="Date ART started", null=True, blank=False,
+    arv_initiated = models.CharField(
+        verbose_name="Has the patient started antiretroviral therapy (ART)?",
+        max_length=15,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
+        help_text="Select `not applicable` if previously reported.",
+    )
+    arv_initiation_actual_date = models.DateField(
+        verbose_name="Date started antiretroviral therapy (ART)",
+        null=True,
+        blank=False,
     )
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):

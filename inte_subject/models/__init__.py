@@ -1,3 +1,4 @@
+from .cd4_result import Cd4Result
 from .clinical_review import ClinicalReview
 from .clinical_review_baseline import ClinicalReviewBaseline
 from .complications_baseline import ComplicationsBaseline
@@ -11,6 +12,7 @@ from .drug_supply_dm import DrugSupplyDm
 from .drug_supply_hiv import DrugSupplyHiv
 from .drug_supply_htn import DrugSupplyHtn
 from .family_history import FamilyHistory
+from .glucose import Glucose
 from .health_economics import HealthEconomics
 from .health_economics_revised import HealthEconomicsRevised
 from .hiv_initial_review import HivInitialReview
@@ -26,3 +28,4 @@ from .reason_for_visit import ReasonForVisit
 from .subject_requisition import SubjectRequisition
 from .subject_visit import SubjectVisit
 from .subject_visit_missed import SubjectVisitMissed
+from .viral_load_result import ViralLoadResult

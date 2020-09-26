@@ -17,7 +17,6 @@ class DmReviewAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryA
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
-        ("Testing and Diagnosis", {"fields": ("test_date", "dx")}),
         (
             "Blood Sugar Measurement",
             {
@@ -30,7 +29,7 @@ class DmReviewAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryA
                 ),
             },
         ),
-        ("Care", {"fields": ("managed_by", "care_start_date")}),
+        ("Care", {"fields": ("managed_by",)}),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )

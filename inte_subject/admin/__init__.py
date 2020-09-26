@@ -1,4 +1,5 @@
 from .autocomplete_admin import ArvRegimensAdmin
+from .cd4_result_admin import Cd4ResultAdmin
 from .clinical_review_admin import ClinicalReviewAdmin
 from .clinical_review_baseline_admin import ClinicalReviewBaselineAdmin
 from .complications_baseline_admin import ComplicationsBaselineAdmin
@@ -9,6 +10,7 @@ from .drug_refill_dm_admin import DrugRefillDmAdmin
 from .drug_refill_hiv_admin import DrugRefillHivAdmin
 from .drug_refill_htn_admin import DrugRefillHtnAdmin
 from .family_history_admin import FamilyHistoryAdmin
+from .glucose_admin import GlucoseAdmin
 from .health_economics_revised_admin import HealthEconomicsRevisedAdmin
 from .hiv_initial_review_admin import HivInitialReviewAdmin
 from .hiv_review_admin import HivReviewAdmin
@@ -21,3 +23,4 @@ from .other_baseline_data_admin import OtherBaselineDataAdmin
 from .subject_requisition_admin import SubjectRequisitionAdmin
 from .subject_visit_admin import SubjectVisitAdmin
 from .subject_visit_missed_admin import SubjectVisitMissedAdmin
+from .viral_load_result_admin import ViralLoadResultAdmin

@@ -28,8 +28,8 @@ class InitialReviewModelMixin(models.Model):
     dx_estimated_date = models.DateField(
         verbose_name="Estimated diagnoses date",
         null=True,
-        editable=False,
         help_text="Calculated based on response to `dx_ago`",
+        editable=False,
     )
 
     dx_date_estimated = models.CharField(

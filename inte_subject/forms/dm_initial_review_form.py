@@ -1,6 +1,7 @@
 from django import forms
 from edc_constants.constants import YES
 from edc_form_validators.form_validator import FormValidator
+from inte_subject.forms.mixins import InitialReviewFormValidatorMixin
 
 from ..constants import INSULIN, DRUGS
 from ..models import DmInitialReview
@@ -14,6 +15,7 @@ from .mixins import (
 
 
 class DmInitialReviewFormValidator(
+    InitialReviewFormValidatorMixin,
     GlucoseFormValidatorMixin,
     EstimatedDateFromAgoFormMixin,
     CrfFormValidatorMixin,
@@ -21,6 +23,7 @@ class DmInitialReviewFormValidator(
 ):
     def clean(self):
         raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
+        self.raise_if_both_ago_and_actual_date()
         self.required_if(
             DRUGS, INSULIN, field="managed_by", field_required="med_start_ago",
         )

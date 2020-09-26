@@ -20,13 +20,23 @@ class HivInitialReviewAdmin(
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
             "Diagnosis and Care",
-            {"fields": ("dx_ago", "receives_care", "clinic", "clinic_other")},
+            {
+                "fields": (
+                    "dx_ago",
+                    "dx_date",
+                    "receives_care",
+                    "clinic",
+                    "clinic_other",
+                )
+            },
         ),
         (
             "Monitoring and Treatment",
             {
                 "fields": (
+                    "arv_initiated",
                     "arv_initiation_ago",
+                    "arv_initiation_actual_date",
                     "has_vl",
                     "vl",
                     "vl_quantifier",
@@ -42,6 +52,7 @@ class HivInitialReviewAdmin(
     )
 
     radio_fields = {
+        "arv_initiated": admin.VERTICAL,
         "clinic": admin.VERTICAL,
         "crf_status": admin.VERTICAL,
         "has_cd4": admin.VERTICAL,

@@ -21,7 +21,7 @@ class HtnInitialReviewAdmin(
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
             "Diagnosis and Treatment",
-            {"fields": ("dx_ago", "managed_by", "med_start_ago")},
+            {"fields": ("dx_ago", "dx_date", "managed_by", "med_start_ago",)},
         ),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,

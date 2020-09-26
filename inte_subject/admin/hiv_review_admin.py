@@ -17,8 +17,10 @@ class HivReviewAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistory
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
-        ("Testing and Diagnosis", {"fields": ("test_date", "dx")}),
-        ("Care", {"fields": ("care_start_date",)}),
+        (
+            "Anit-retroviral therapy (ART)",
+            {"fields": ("arv_initiated", "arv_initiation_actual_date")},
+        ),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
