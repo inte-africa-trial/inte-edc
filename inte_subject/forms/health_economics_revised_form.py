@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.sites.models import Site
 from django.core.exceptions import ObjectDoesNotExist
-from edc_constants.constants import FREE_OF_CHARGE, YES, NO
+from edc_constants.constants import FREE_OF_CHARGE, OTHER, YES, NO
 from edc_form_validators.form_validator import FormValidator
 from inte_lists.models import DrugPaySources
 from inte_prn.models import IntegratedCareClinicRegistration
@@ -126,6 +126,11 @@ class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
             )
             self.m2m_single_selection_if(
                 FREE_OF_CHARGE, m2m_field=f"rx_{cond}_paid_{duration}"
+            )
+            self.m2m_other_specify(
+                OTHER,
+                m2m_field=f"rx_{cond}_paid_{duration}",
+                field_other=f"rx_{cond}_paid_{duration}_other",
             )
             self.m2m_other_specify(
                 *[

@@ -8,7 +8,6 @@ from inte_lists.models import DrugPaySources, TransportChoices
 from ..choices import (
     ACTIVITY_CHOICES,
     CHILDCARE_CHOICES,
-    TRANSPORT_CHOICES,
 )
 from ..model_mixins import CrfModelMixin
 
@@ -147,6 +146,10 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         blank=True,
     )
 
+    rx_dm_paid_month_other = edc_models.OtherCharField(
+        verbose_name="If `other pay source`, please specify ... (DM)"
+    )
+
     rx_dm_cost_month = models.IntegerField(
         verbose_name="If these drugs were not free, how much did you pay?",
         validators=[MinValueValidator(0)],
@@ -173,6 +176,10 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         blank=True,
     )
 
+    rx_htn_paid_month_other = edc_models.OtherCharField(
+        verbose_name="If `other pay source`, please specify ...(HTN)"
+    )
+
     rx_htn_cost_month = models.IntegerField(
         verbose_name="If these drugs were not free, how much did you pay?",
         validators=[MinValueValidator(0)],
@@ -196,6 +203,10 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         blank=True,
     )
 
+    rx_hiv_paid_month_other = edc_models.OtherCharField(
+        verbose_name="If `other pay source`, please specify ... (HIV)"
+    )
+
     rx_hiv_cost_month = models.IntegerField(
         verbose_name="If these drugs were not free, how much did you pay?",
         validators=[MinValueValidator(0)],
@@ -205,7 +216,7 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     rx_other_month = models.CharField(
-        verbose_name="Did you receive 'other' drugs?",
+        verbose_name="Did you receive any 'other' drugs?",
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
@@ -216,6 +227,10 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         related_name="+",
         verbose_name="If YES, received 'other' drugs, how were these paid for?",
         blank=True,
+    )
+
+    rx_other_paid_month_other = edc_models.OtherCharField(
+        verbose_name="If `other pay source`, please specify ..."
     )
 
     rx_other_cost_month = models.IntegerField(
@@ -349,10 +364,11 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
             "Which form of transport did you take to get to the hospital today?"
         ),
         max_length=25,
-        choices=TRANSPORT_CHOICES,
     )
 
-    transport_other = edc_models.OtherCharField()
+    transport_other = edc_models.OtherCharField(
+        verbose_name="If `other reason`, please specify ..."
+    )
 
     transport_cost = models.IntegerField(
         verbose_name="How much did you spend on transport in total?",
@@ -391,6 +407,10 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         blank=True,
     )
 
+    rx_dm_paid_today_other = edc_models.OtherCharField(
+        verbose_name="If `other pay source`, please specify ..."
+    )
+
     rx_dm_cost_today = models.IntegerField(
         verbose_name=(
             "If not free, how much did you pay for raised blood sugar (diabetes) drugs?"
@@ -417,6 +437,9 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         blank=True,
     )
 
+    rx_htn_paid_today_other = edc_models.OtherCharField(
+        verbose_name="If `other pay source`, please specify ..."
+    )
     rx_htn_cost_today = models.IntegerField(
         verbose_name=(
             "If not free, how much did you pay for high blood pressure (Hypertension) drugs?"
@@ -439,6 +462,10 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         blank=True,
     )
 
+    rx_hiv_paid_today_other = edc_models.OtherCharField(
+        verbose_name="If `other pay source`, please specify ..."
+    )
+
     rx_hiv_cost_today = models.IntegerField(
         verbose_name="If not free, how much did you pay for ARV (HIV) drugs?",
         validators=[MinValueValidator(0)],
@@ -458,6 +485,10 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         related_name="+",
         verbose_name="If YES, received 'other' drugs, how were these paid for?",
         blank=True,
+    )
+
+    rx_other_paid_today_other = edc_models.OtherCharField(
+        verbose_name="If `other pay source`, please specify ..."
     )
 
     rx_other_cost_today = models.IntegerField(

@@ -58,18 +58,45 @@ class HealthEconomicsRevisedAdmin(
         ),
         (
             "Part 4: Previous Healthcare Expenses: Medication",
+            {"fields": ("received_rx_month",)},
+        ),
+        (
+            "Part 4a: Previous Healthcare Expenses: Medication (Diabetes - DM)",
             {
                 "fields": (
-                    "received_rx_month",
                     "rx_dm_month",
                     "rx_dm_paid_month",
+                    "rx_dm_paid_month_other",
                     "rx_dm_cost_month",
+                )
+            },
+        ),
+        (
+            "Part 4b: Previous Healthcare Expenses: Medication (Hypertension - HTN)",
+            {
+                "fields": (
                     "rx_htn_month",
                     "rx_htn_paid_month",
+                    "rx_htn_paid_month_other",
                     "rx_htn_cost_month",
+                )
+            },
+        ),
+        (
+            "Part 4c: Previous Healthcare Expenses: Medication (Hypertension - HTN)",
+            {
+                "fields": (
                     "rx_hiv_month",
                     "rx_hiv_paid_month",
+                    "rx_hiv_paid_month_other",
                     "rx_hiv_cost_month",
+                )
+            },
+        ),
+        (
+            "Part 4d: Previous Healthcare Expenses: Other Medications",
+            {
+                "fields": (
                     "rx_other_month",
                     "rx_other_paid_month",
                     "rx_other_cost_month",
@@ -118,20 +145,48 @@ class HealthEconomicsRevisedAdmin(
         ),
         (
             "Part 8: Current Visit Healthcare Expenses: Medications",
+            {"fields": ("received_rx_today",)},
+        ),
+        (
+            "Part 8a: Current Visit Healthcare Expenses: Medications (Diabetes - DM)",
             {
                 "fields": (
-                    "received_rx_today",
                     "rx_dm_today",
                     "rx_dm_paid_today",
+                    "rx_dm_paid_today_other",
                     "rx_dm_cost_today",
+                )
+            },
+        ),
+        (
+            "Part 8b: Current Visit Healthcare Expenses: Medications (Hypertension - HTN)",
+            {
+                "fields": (
                     "rx_htn_today",
                     "rx_htn_paid_today",
+                    "rx_htn_paid_today_other",
                     "rx_htn_cost_today",
+                )
+            },
+        ),
+        (
+            "Part 8c: Current Visit Healthcare Expenses: Medications (HIV)",
+            {
+                "fields": (
                     "rx_hiv_today",
                     "rx_hiv_paid_today",
+                    "rx_hiv_paid_today_other",
                     "rx_hiv_cost_today",
+                )
+            },
+        ),
+        (
+            "Part 8d: Current Visit Healthcare Expenses: Other Medications",
+            {
+                "fields": (
                     "rx_other_today",
                     "rx_other_paid_today",
+                    "rx_other_paid_today_other",
                     "rx_other_cost_today",
                 )
             },
@@ -143,6 +198,7 @@ class HealthEconomicsRevisedAdmin(
                     "non_drug_activities_today",
                     "non_drug_activities_detail_today",
                     "non_drug_activities_cost_today",
+                    "healthcare_expenditure_total_month_today",
                 )
             },
         ),
@@ -188,7 +244,6 @@ class HealthEconomicsRevisedAdmin(
         "rx_htn_today": admin.VERTICAL,
         "rx_other_month": admin.VERTICAL,
         "rx_other_today": admin.VERTICAL,
-        "transport": admin.VERTICAL,
         "secondary_school": admin.VERTICAL,
         "welfare": admin.VERTICAL,
     }
