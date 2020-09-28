@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.apps import apps as django_apps
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.signals import pre_save
@@ -19,12 +21,16 @@ def update_appointment_schedule(apps=None):
                 subject_identifier=registered_subject.subject_identifier,
             ).order_by("timepoint")
         ):
-            if appointment.timepoint in [0, 6, 12]:
+            if appointment.timepoint in [
+                Decimal("0.0"),
+                Decimal("6.0"),
+                Decimal("12.0"),
+            ]:
                 continue
-            elif appointment.timepoint < 6:
+            elif appointment.timepoint < Decimal("6.0"):
                 appointment.visit_code = "1000"
                 appointment.visit_code_sequence = index
-                appointment.timepoint = 0.0
+                appointment.timepoint = Decimal("0.0")
                 with DisableSignals(disabled_signals=[pre_save]):
                     appointment.save()
                 appointment.refresh_from_db()
