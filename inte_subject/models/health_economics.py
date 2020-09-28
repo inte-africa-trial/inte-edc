@@ -15,6 +15,10 @@ from ..choices import (
 
 class HealthEconomics(CrfModelMixin, edc_models.BaseUuidModel):
 
+    """Original but retired HE form.
+
+    Was retired just before 3 months in"""
+
     occupation = models.CharField(
         verbose_name="What is your occupation/profession?", max_length=50
     )

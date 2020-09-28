@@ -248,7 +248,9 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         # check if not "free of charge" then requires cost
         cleaned_data.update(
             rx_dm_month=YES,
-            rx_dm_paid_month=DrugPaySources.objects.exclude(name=FREE_OF_CHARGE),
+            rx_dm_paid_month=DrugPaySources.objects.exclude(
+                name__in=[FREE_OF_CHARGE, OTHER]
+            ),
             rx_dm_cost_month=1000,
         )
         form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
@@ -257,6 +259,19 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         except forms.ValidationError:
             pass
         self.assertDictEqual({}, form_validator._errors)
+
+        # check other
+        cleaned_data.update(
+            rx_dm_month=YES,
+            rx_dm_paid_month=DrugPaySources.objects.filter(name=OTHER),
+            rx_dm_cost_month=1000,
+        )
+        form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
+        try:
+            form_validator.validate()
+        except forms.ValidationError:
+            pass
+        self.assertIn("rx_dm_paid_month_other", form_validator._errors)
 
     @tag("he")
     def test_form_validator_recv_drugs_all_no(self):

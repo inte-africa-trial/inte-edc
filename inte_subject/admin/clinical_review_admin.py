@@ -54,6 +54,7 @@ class ClinicalReviewAdmin(
                 )
             },
         ),
+        ("Complications", {"fields": ("complications",)}),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
@@ -65,6 +66,7 @@ class ClinicalReviewAdmin(
         "htn_dx": admin.VERTICAL,
         "dm_dx": admin.VERTICAL,
         "hiv_dx": admin.VERTICAL,
+        "complications": admin.VERTICAL,
         "crf_status": admin.VERTICAL,
     }
 

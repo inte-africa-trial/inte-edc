@@ -154,7 +154,7 @@ list_data = {
         ("club", "Patient support group / club"),
         ("relative", "Relative or others paying"),
         (FREE_OF_CHARGE, "Free drugs from the pharmacy"),
-        (OTHER, "Other reason (specify below)"),
+        (OTHER, "Other pay source (specify below)"),
     ],
     "inte_lists.transportchoices": [
         ("bus", "Bus"),

@@ -61,8 +61,6 @@ class SubjectVisit(
         related_name="visit_health_services",
     )
 
-    clinic_services_other = edc_models.OtherCharField()
-
     info_source = models.CharField(
         verbose_name="What is the main source of this information?",
         max_length=25,

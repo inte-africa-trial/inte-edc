@@ -52,9 +52,9 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         except ClinicalReviewBaselineRequired:
             self.fail("DiagnosesError unexpectedly raised")
 
-        self.assertEqual(YES, diagnoses.hiv)
-        self.assertIsNone(diagnoses.htn)
-        self.assertIsNone(diagnoses.dm)
+        self.assertEqual(YES, diagnoses.hiv_dx)
+        self.assertIsNone(diagnoses.htn_dx)
+        self.assertIsNone(diagnoses.dm_dx)
 
         clinical_review_baseline.htn_test = YES
         clinical_review_baseline.htn_test_ago = "1y"
@@ -64,9 +64,9 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         diagnoses = Diagnoses(
             subject_identifier=subject_visit_baseline.subject_identifier,
         )
-        self.assertEqual(YES, diagnoses.hiv)
-        self.assertEqual(YES, diagnoses.htn)
-        self.assertIsNone(diagnoses.dm)
+        self.assertEqual(YES, diagnoses.hiv_dx)
+        self.assertEqual(YES, diagnoses.htn_dx)
+        self.assertIsNone(diagnoses.dm_dx)
 
         clinical_review_baseline.dm_test = YES
         clinical_review_baseline.dm_test_ago = "1y"
@@ -76,9 +76,9 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         diagnoses = Diagnoses(
             subject_identifier=subject_visit_baseline.subject_identifier,
         )
-        self.assertEqual(YES, diagnoses.hiv)
-        self.assertEqual(YES, diagnoses.htn)
-        self.assertEqual(YES, diagnoses.dm)
+        self.assertEqual(YES, diagnoses.hiv_dx)
+        self.assertEqual(YES, diagnoses.htn_dx)
+        self.assertEqual(YES, diagnoses.dm_dx)
 
     @tag("dx")
     def test_diagnoses_does_not_raise_for_subject_visit(self):
@@ -141,7 +141,7 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
             subject_identifier=subject_visit_baseline.subject_identifier,
         )
 
-        self.assertEqual(YES, diagnoses.hiv)
+        self.assertEqual(YES, diagnoses.hiv_dx)
         self.assertEqual(
             diagnoses.hiv_dx_date,
             clinical_review_baseline.hiv_test_estimated_datetime.date(),
@@ -155,7 +155,7 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
             lte=True,
         )
 
-        self.assertEqual(YES, diagnoses.hiv)
+        self.assertEqual(YES, diagnoses.hiv_dx)
         self.assertEqual(
             diagnoses.hiv_dx_date,
             clinical_review_baseline.hiv_test_estimated_datetime.date(),
@@ -169,7 +169,7 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
             lte=False,
         )
 
-        self.assertEqual(YES, diagnoses.hiv)
+        self.assertEqual(YES, diagnoses.hiv_dx)
         self.assertEqual(
             diagnoses.hiv_dx_date,
             clinical_review_baseline.hiv_test_estimated_datetime.date(),
@@ -177,14 +177,14 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         self.assertIsNone(diagnoses.dm_dx_date)
         self.assertIsNone(diagnoses.htn_dx_date)
 
-    @tag("dx")
+    @tag("dx1")
     def test_diagnoses_dates(self):
         subject_visit_baseline = self.get_subject_visit(
             subject_screening=self.subject_screening,
             subject_consent=self.subject_consent,
         )
 
-        clinical_review_baseline = baker.make(
+        baker.make(
             "inte_subject.clinicalreviewbaseline",
             subject_visit=subject_visit_baseline,
             hiv_test=POS,
@@ -208,7 +208,7 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
             subject_visit=subject_visit_baseline, reason=UNSCHEDULED
         )
 
-        clinical_review = baker.make(
+        baker.make(
             "inte_subject.clinicalreview",
             subject_visit=subject_visit,
             hiv_test=NOT_APPLICABLE,
@@ -227,11 +227,6 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         )
 
         diagnoses = Diagnoses(
-            subject_identifier=subject_visit.subject_identifier,
-            report_datetime=subject_visit.report_datetime,
-        )
-
-        diagnoses2 = Diagnoses(
             subject_identifier=subject_visit.subject_identifier,
             report_datetime=subject_visit.report_datetime,
             lte=True,

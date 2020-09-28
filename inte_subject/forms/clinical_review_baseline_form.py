@@ -1,5 +1,5 @@
 from django import forms
-from edc_constants.constants import POS, YES
+from edc_constants.constants import YES
 from edc_form_validators.form_validator import FormValidator
 from inte_screening.constants import (
     DIABETES_CLINIC,
@@ -21,7 +21,6 @@ class ClinicalReviewBaselineFormValidator(
 ):
     def clean(self):
         self.raise_if_hiv_clinic_and_hiv_pos()
-        # self.required_if(POS, NEG, field="hiv", field_required="hiv_test_ago")
         self.estimated_date_from_ago("hiv_test_ago")
         self.when_tested_required(cond="hiv")
 
@@ -29,19 +28,10 @@ class ClinicalReviewBaselineFormValidator(
         self.raise_if_clinic_and_not_diabetes()
         self.raise_if_ncd_clinic_and_not_both()
 
-        # self.required_if(
-        #     YES, field="htn_test", field_required="htn_test_ago"
-        # )
-
         self.estimated_date_from_ago("htn_test_ago")
-
         self.when_tested_required(cond="htn")
-
         self.required_if(YES, field="htn_test", field_required="htn_dx")
 
-        # self.required_if(
-        #     YES, field="dm_test", field_required="dm_test_ago"
-        # )
         self.estimated_date_from_ago("dm_test_ago")
         self.when_tested_required(cond="diabetes")
         self.required_if(YES, field="dm_test", field_required="dm_dx")

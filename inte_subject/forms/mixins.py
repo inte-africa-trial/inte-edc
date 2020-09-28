@@ -1,26 +1,78 @@
 from django import forms
 from django.apps import apps as django_apps
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from edc_constants.constants import OTHER, YES
+from edc_constants.constants import NO, OTHER, YES
 from edc_crf.modelform_mixins import CrfModelFormMixin as BaseCrfModelFormMixin
 from edc_model import models as edc_models
 from edc_model.models import InvalidFormat
-from edc_utils import age
+from edc_utils import age, convert_php_dateformat
 from edc_visit_schedule.constants import DAY1
-from inte_subject.models import Medications
+from inte_prn.icc_registered import (
+    InterventionSiteNotRegistered,
+    is_icc_registered_site,
+)
+from inte_sites.is_intervention_site import NotInterventionSite
+from inte_subject.diagnoses import Diagnoses, InitialReviewRequired
+from inte_subject.models import HivInitialReview, HivReview, Medications
+from inte_visit_schedule.is_baseline import is_baseline
 
-from ..models import ClinicalReviewBaseline
+from ..models import ClinicalReviewBaseline, ClinicalReview
 
 
-def model_exists_or_raise(form, model_cls=None):
-    subject_identifier = form.cleaned_data.get("subject_visit").subject_identifier
+def art_initiation_date(subject_identifier=None, report_datetime=None):
+    """Returns date initiated on ART or None"""
+    art_date = None
     try:
-        model_cls.objects.get(subject_visit__subject_identifier=subject_identifier)
+        initial_review = HivInitialReview.objects.get(
+            subject_visit__subject_identifier=subject_identifier,
+            report_datetime__lte=report_datetime,
+        )
+    except ObjectDoesNotExist:
+        pass
+    else:
+        if initial_review.arv_initiated == YES:
+            art_date = initial_review.best_art_initiation_date
+        else:
+            for review in HivReview.objects.filter(
+                subject_visit__subject_identifier=subject_identifier,
+                report_datetime__lte=report_datetime,
+            ).order_by("-report_datetime"):
+                if review.arv_initiated == YES:
+                    art_date = review.arv_initiation_actual_date
+                    break
+    return art_date
+
+
+def model_exists_or_raise(subject_visit=None, model_cls=None, singleton=None):
+    singleton = False if singleton is None else singleton
+    if singleton:
+        opts = {"subject_visit__subject_identifier": subject_visit.subject_identifier}
+    else:
+        opts = {"subject_visit": subject_visit}
+    try:
+        model_cls.objects.get(**opts)
     except ObjectDoesNotExist:
         raise forms.ValidationError(
             f"Complete the `{model_cls._meta.verbose_name}` CRF first."
         )
     return True
+
+
+def raise_if_baseline(subject_visit):
+    if subject_visit and is_baseline(subject_visit=subject_visit):
+        raise forms.ValidationError(
+            "This form is not available for completion at baseline."
+        )
+
+
+def raise_if_clinical_review_does_not_exist(subject_visit):
+    if is_baseline(subject_visit):
+        model_exists_or_raise(
+            subject_visit=subject_visit, model_cls=ClinicalReviewBaseline,
+        )
+    else:
+        model_exists_or_raise(subject_visit=subject_visit, model_cls=ClinicalReview)
 
 
 def medications_exists_or_raise(subject_visit):
@@ -62,8 +114,46 @@ class ClinicalReviewBaselineRequiredModelFormMixin:
         if self._meta.model != ClinicalReviewBaseline and self.cleaned_data.get(
             "subject_visit"
         ):
-            model_exists_or_raise(self, model_cls=ClinicalReviewBaseline)
+            model_exists_or_raise(
+                subject_visit=self.cleaned_data.get("subject_visit"),
+                model_cls=ClinicalReviewBaseline,
+                singleton=True,
+            )
         return super().clean()
+
+
+class ReviewFormValidatorMixin:
+    def validate_care_delivery(self):
+        is_applicable, applicable_msg, not_applicable_msg = self.get_integration_info()
+        self.applicable_if_true(
+            is_applicable,
+            field_applicable="care_delivery",
+            applicable_msg=applicable_msg,
+            not_applicable_msg=not_applicable_msg,
+        )
+        self.required_if(
+            NO, field="care_delivery", field_required="care_delivery_other"
+        )
+
+    def get_integration_info(self):
+        applicable = False
+        applicable_msg = None
+        not_applicable_msg = None
+        model_cls = django_apps.get_model("inte_prn.integratedcareclinicregistration")
+        try:
+            is_icc_registered_site(report_datetime=self.report_datetime)
+        except NotInterventionSite:
+            not_applicable_msg = "This site was not selected for integrated care"
+        except InterventionSiteNotRegistered:
+            not_applicable_msg = (
+                "This site's integrated care clinic is NOT open. "
+                f"See facility form {model_cls._meta.verbose_name}."
+            )
+
+        else:
+            applicable = True
+            applicable_msg = "This site's integrated care clinic is open."
+        return applicable, applicable_msg, not_applicable_msg
 
 
 class CrfModelFormMixin(
@@ -172,18 +262,17 @@ class GlucoseFormValidatorMixin:
         self.required_if(YES, field="glucose_performed", field_required="glucose_units")
 
 
-class ReviewFormValidatorMixin:
-    def validate_test_and_care_dates(self):
-        if self.cleaned_data.get("test_date") and self.cleaned_data.get(
-            "care_start_date"
-        ):
-            if (
-                self.cleaned_data.get("test_date")
-                - self.cleaned_data.get("care_start_date")
-            ).days > 1:
-                raise forms.ValidationError(
-                    {"care_start_date": "Invalid. Cannot be before test date."}
-                )
+class InitialReviewFormValidatorMixin:
+    def raise_if_both_ago_and_actual_date(self):
+        if self.cleaned_data.get("dx_ago") and self.cleaned_data.get("dx_date"):
+            raise forms.ValidationError(
+                {
+                    "dx_ago": (
+                        "Date conflict. Do not provide a response "
+                        "here if the exact data of diagnosis is available."
+                    )
+                }
+            )
 
 
 class BPFormValidatorMixin:
@@ -235,3 +324,31 @@ class CrfFormValidatorMixin:
     @property
     def report_datetime(self):
         return self.cleaned_data.get("subject_visit").report_datetime
+
+
+class ResultFormValidatorMixin:
+    def validate_drawn_date_by_dx_date(self, attr, dx_msg_label, drawn_date_fld=None):
+        drawn_date_fld = drawn_date_fld or "drawn_date"
+        dx = Diagnoses(subject_visit=self.cleaned_data.get("subject_visit"), lte=True)
+        try:
+            dx_date = getattr(dx, attr)
+        except InitialReviewRequired:
+            dx_date = None
+        if not dx_date:
+            raise forms.ValidationError(
+                "This form is not relevant. "
+                f"Subject has not been diagnosed with {dx_msg_label}."
+            )
+        else:
+            if dx_date > self.cleaned_data.get(drawn_date_fld):
+                formatted_date = dx_date.strftime(
+                    convert_php_dateformat(settings.SHORT_DATE_FORMAT)
+                )
+                raise forms.ValidationError(
+                    {
+                        "drawn_date": (
+                            "Invalid. Subject was diagnosed with "
+                            f"{dx_msg_label} on {formatted_date}."
+                        )
+                    }
+                )

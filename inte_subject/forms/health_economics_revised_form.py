@@ -1,18 +1,24 @@
 from django import forms
 from django.contrib.sites.models import Site
 from django.core.exceptions import ObjectDoesNotExist
-from edc_constants.constants import FREE_OF_CHARGE, YES, NO
+from edc_constants.constants import FREE_OF_CHARGE, OTHER, YES, NO
 from edc_form_validators.form_validator import FormValidator
 from inte_lists.models import DrugPaySources
 from inte_prn.models import IntegratedCareClinicRegistration
 from inte_sites.is_intervention_site import is_intervention_site
 
 from ..models import HealthEconomicsRevised
-from .mixins import CrfFormValidatorMixin, CrfModelFormMixin, model_exists_or_raise
+from .mixins import (
+    CrfFormValidatorMixin,
+    CrfModelFormMixin,
+    raise_if_clinical_review_does_not_exist,
+)
 
 
 class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
     def clean(self):
+        raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
+
         self.require_icc_registration()
 
         self.clean_education()
@@ -120,6 +126,11 @@ class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
             )
             self.m2m_single_selection_if(
                 FREE_OF_CHARGE, m2m_field=f"rx_{cond}_paid_{duration}"
+            )
+            self.m2m_other_specify(
+                OTHER,
+                m2m_field=f"rx_{cond}_paid_{duration}",
+                field_other=f"rx_{cond}_paid_{duration}_other",
             )
             self.m2m_other_specify(
                 *[

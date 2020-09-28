@@ -17,18 +17,18 @@ class HtnReviewAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistory
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
-        ("Testing and Diagnosis", {"fields": ("test_date", "dx")}),
+        ("Care", {"fields": ("managed_by", "care_delivery", "care_delivery_other")}),
         (
-            "Final Blood Pressure Measurement",
+            "Blood Pressure Measurement",
             {"fields": ("sys_blood_pressure", "dia_blood_pressure",)},
         ),
-        ("Care", {"fields": ("managed_by", "care_start_date")}),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
 
     radio_fields = {
         "dx": admin.VERTICAL,
+        "care_delivery": admin.VERTICAL,
         "crf_status": admin.VERTICAL,
         "managed_by": admin.VERTICAL,
     }

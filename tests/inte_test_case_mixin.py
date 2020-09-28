@@ -123,6 +123,39 @@ class InteTestCaseMixin(SiteTestCaseMixin):
         options.update(**kwargs)
         return baker.make_recipe("inte_consent.subjectconsent", **options)
 
+    def get_appointment(
+        self,
+        subject_identifier=None,
+        visit_code=None,
+        visit_code_sequence=None,
+        reason=None,
+    ):
+        appointment = Appointment.objects.get(
+            subject_identifier=subject_identifier,
+            visit_code=visit_code,
+            visit_code_sequence=visit_code_sequence,
+        )
+        if reason == UNSCHEDULED:
+            appointment = self.create_unscheduled_appointment(appointment)
+        appointment.appt_status = IN_PROGRESS_APPT
+        appointment.save()
+        appointment.refresh_from_db()
+        return appointment
+
+    @staticmethod
+    def create_unscheduled_appointment(appointment):
+        appointment.appt_status = INCOMPLETE_APPT
+        appointment.save()
+        appointment.refresh_from_db()
+        appt_creator = UnscheduledAppointmentCreator(
+            subject_identifier=appointment.subject_identifier,
+            visit_schedule_name=appointment.visit_schedule_name,
+            schedule_name=appointment.schedule_name,
+            visit_code=appointment.visit_code,
+            facility=appointment.facility,
+        )
+        return appt_creator.appointment
+
     def get_subject_visit(
         self,
         visit_code=None,
@@ -130,36 +163,22 @@ class InteTestCaseMixin(SiteTestCaseMixin):
         subject_screening=None,
         subject_consent=None,
         reason=None,
+        appointment=None,
     ):
-        visit_code = visit_code or DAY1
-        visit_code_sequence = (
-            visit_code_sequence if visit_code_sequence is not None else 0
-        )
         reason = reason or SCHEDULED
-        subject_screening = subject_screening or self.get_subject_screening()
-        subject_consent = subject_consent or self.get_subject_consent(subject_screening)
-        subject_identifier = subject_consent.subject_identifier
-
-        appointment = Appointment.objects.get(
-            subject_identifier=subject_identifier,
-            visit_code=visit_code,
-            visit_code_sequence=visit_code_sequence,
-        )
-        if reason == UNSCHEDULED:
-            appointment.appt_status = INCOMPLETE_APPT
-            appointment.save()
-            appointment.refresh_from_db()
-            appt_creator = UnscheduledAppointmentCreator(
-                subject_identifier=subject_identifier,
-                visit_schedule_name=appointment.visit_schedule_name,
-                schedule_name=appointment.schedule_name,
-                visit_code=appointment.visit_code,
-                facility=appointment.facility,
+        if not appointment:
+            subject_screening = subject_screening or self.get_subject_screening()
+            subject_consent = subject_consent or self.get_subject_consent(
+                subject_screening
             )
-            appointment = appt_creator.appointment
-        appointment.appt_status = IN_PROGRESS_APPT
-        appointment.save()
-        appointment.refresh_from_db()
+            appointment = self.get_appointment(
+                subject_identifier=subject_consent.subject_identifier,
+                visit_code=visit_code or DAY1,
+                visit_code_sequence=(
+                    visit_code_sequence if visit_code_sequence is not None else 0
+                ),
+                reason=reason,
+            )
         return SubjectVisit.objects.create(appointment=appointment, reason=reason)
 
     def get_next_subject_visit(

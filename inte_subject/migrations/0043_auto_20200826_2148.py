@@ -9,6 +9,7 @@ def update_appointments(apps, schema_editor):
     registered_subject_model_cls = apps.get_model("edc_registration.registeredsubject")
     appointment_model_cls = apps.get_model("edc_appointment.appointment")
     subject_visit_model_cls = apps.get_model("inte_subject.subjectvisit")
+    crfmetadata_model_cls = apps.get_model("edc_metadata.crfmetadata")
     for registered_subject in registered_subject_model_cls.objects.all():
         for index, appointment in enumerate(
             appointment_model_cls.objects.filter(
@@ -20,6 +21,7 @@ def update_appointments(apps, schema_editor):
             elif appointment.timepoint < 6:
                 appointment.visit_code = "1000"
                 appointment.visit_code_sequence = index
+                appointment.timepoint = 0
                 with DisableSignals(disabled_signals=[pre_save]):
                     appointment.save()
                 appointment.refresh_from_db()
@@ -30,12 +32,25 @@ def update_appointments(apps, schema_editor):
                 except ObjectDoesNotExist:
                     appointment.delete()
                 else:
+                    crfmetadata_model_cls.objects.filter(
+                        subject_identifier=registered_subject.subject_identifier,
+                        visit_code=subject_visit.visit_code,
+                        visit_code_sequence=subject_visit.visit_code_sequence,
+                    ).update(
+                        visit_code=appointment.visit_code,
+                        visit_code_sequence=appointment.visit_code_sequence,
+                        timepoint=appointment.timepoint,
+                    )
                     with DisableSignals(disabled_signals=[pre_save]):
+                        subject_visit.visit_code = appointment.visit_code
+                        subject_visit.visit_code_sequence = (
+                            appointment.visit_code_sequence
+                        )
                         subject_visit.save()
             else:
                 appointment.delete()
 
-    for appointment in appointment_model_cls._default_manager.all():
+    for appointment in appointment_model_cls.objects.filter(visit_code_sequence__gt=0):
         try:
             subject_visit_model_cls.objects.get(appointment=appointment)
         except ObjectDoesNotExist:
@@ -45,6 +60,7 @@ def update_appointments(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
+        ("edc_appointment", "0024_auto_20200911_0425"),
         ("inte_subject", "0042_auto_20200826_1924"),
     ]
 

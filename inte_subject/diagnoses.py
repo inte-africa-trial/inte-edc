@@ -17,23 +17,35 @@ class DiagnosesError(Exception):
 
 class Diagnoses:
     def __init__(
-        self, subject_identifier=None, report_datetime=None, lte=None,
+        self,
+        subject_identifier=None,
+        report_datetime=None,
+        subject_visit=None,
+        lte=None,
     ):
+        if subject_visit:
+            if subject_identifier or report_datetime:
+                raise DiagnosesError(
+                    "Ambiguous parameters provided. Expected either "
+                    "`subject_visit` or `subject_identifier, report_datetime`. Not both."
+                )
+            self.report_datetime = subject_visit.report_datetime
+            self.subject_identifier = subject_visit.appointment.subject_identifier
+        else:
+            self.report_datetime = report_datetime
+            self.subject_identifier = subject_identifier
         self.lte = lte
-        self.report_datetime = report_datetime
-        self.subject_identifier = subject_identifier
-        self.dm = self._get_dx("dm")
-        self.hiv = self._get_dx("hiv")
-        self.htn = self._get_dx("htn")
-        self.diagnoses = dict(hiv=self.hiv, htn=self.htn, dm=self.dm)
+        self.dm_dx = self._get_dx("dm")
+        self.hiv_dx = self._get_dx("hiv")
+        self.htn_dx = self._get_dx("htn")
 
     def get_dx_by_model(self, instance):
         if isinstance(instance, self.hiv_initial_review_model_cls):
-            dx = self.hiv
+            dx = self.hiv_dx
         elif isinstance(instance, self.htn_initial_review_model_cls):
-            dx = self.htn
+            dx = self.htn_dx
         elif isinstance(instance, self.dm_initial_review_model_cls):
-            dx = self.dm
+            dx = self.dm_dx
         else:
             models = [
                 self.hiv_initial_review_model_cls,
@@ -62,7 +74,7 @@ class Diagnoses:
         return None
 
     def _get_dx(self, name):
-        """Returns YES if any diagnoses for this condition or `name`.
+        """Returns YES if any diagnoses for this condition otherwise None.
 
         name is `dm`, `hiv` or `htn`.
         """
@@ -82,7 +94,8 @@ class Diagnoses:
             )
         except ObjectDoesNotExist:
             raise ClinicalReviewBaselineRequired(
-                f"Please complete {self.clinical_review_baseline_model_cls._meta.verbose_name}."
+                "Please complete "
+                f"{self.clinical_review_baseline_model_cls._meta.verbose_name}."
             )
         return obj
 
@@ -131,19 +144,24 @@ class Diagnoses:
         """Returns a dict of initial review model instances
         for each diagnosis.
 
-        If any initial review is expected butt does not exist,
+        If any initial review is expected but does not exist,
         an expection is raised.
         """
         initial_reviews = {}
         options = (
-            ("hiv", self.hiv, self.hiv_initial_review_model_cls, "An HIV diagnosis"),
+            ("hiv", self.hiv_dx, self.hiv_initial_review_model_cls, "An HIV diagnosis"),
             (
                 "htn",
-                self.htn,
+                self.htn_dx,
                 self.htn_initial_review_model_cls,
                 "An hypertension diagnosis",
             ),
-            ("dm", self.dm, self.dm_initial_review_model_cls, "A diabetes diagnosis"),
+            (
+                "dm",
+                self.dm_dx,
+                self.dm_initial_review_model_cls,
+                "A diabetes diagnosis",
+            ),
         )
         for name, diagnosis, initial_review_model_cls, description in options:
             if diagnosis:
@@ -153,14 +171,15 @@ class Diagnoses:
                         **self.report_datetime_opts("subject_visit__", lte=True),
                     )
                 except ObjectDoesNotExist:
-                    subject_visit = (
-                        self.previous_subject_visit or self.baseline_subject_visit
+                    subject_visit = self.initial_diagnosis_visit(name)
+                    visit_label = (
+                        f"{subject_visit.visit_code}."
+                        f"{subject_visit.visit_code_sequence}"
                     )
-                    visit_label = f"{subject_visit.visit_code}.{subject_visit.visit_code_sequence}"
                     raise InitialReviewRequired(
                         f"{description} was been reported on visit {visit_label}. "
-                        f"A `{initial_review_model_cls._meta.verbose_name}` "
-                        "CRF is required for that visit."
+                        f"Complete the `{initial_review_model_cls._meta.verbose_name}` "
+                        "CRF first."
                     )
                 else:
                     initial_reviews.update({name: obj})
@@ -189,3 +208,27 @@ class Diagnoses:
     @property
     def subject_visit_model_cls(self):
         return django_apps.get_model("inte_subject.subjectvisit")
+
+    def initial_diagnosis_visit(self, name):
+        try:
+            clinical_review_baseline = self.clinical_review_baseline_model_cls.objects.get(
+                subject_visit__subject_identifier=self.subject_identifier,
+                **self.report_datetime_opts("subject_visit__", lte=True),
+                **{f"{name}_dx": YES},
+            )
+        except ObjectDoesNotExist:
+            subject_visit = None
+        else:
+            subject_visit = clinical_review_baseline.subject_visit
+        if not subject_visit:
+            try:
+                clinical_review = self.clinical_review_model_cls.objects.get(
+                    subject_visit__subject_identifier=self.subject_identifier,
+                    **self.report_datetime_opts("subject_visit__", lte=True),
+                    **{f"{name}_dx": YES},
+                )
+            except ObjectDoesNotExist:
+                subject_visit = None
+            else:
+                subject_visit = clinical_review.subject_visit
+        return subject_visit
