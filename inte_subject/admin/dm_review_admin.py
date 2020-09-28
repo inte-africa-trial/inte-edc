@@ -17,6 +17,7 @@ class DmReviewAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryA
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
+        ("Care", {"fields": ("managed_by", "care_delivery", "care_delivery_other")}),
         (
             "Blood Sugar Measurement",
             {
@@ -29,7 +30,6 @@ class DmReviewAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryA
                 ),
             },
         ),
-        ("Care", {"fields": ("managed_by",)}),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
@@ -37,6 +37,7 @@ class DmReviewAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryA
     radio_fields = {
         "dx": admin.VERTICAL,
         "crf_status": admin.VERTICAL,
+        "care_delivery": admin.VERTICAL,
         "managed_by": admin.VERTICAL,
         "glucose_fasted": admin.VERTICAL,
         "glucose_units": admin.VERTICAL,

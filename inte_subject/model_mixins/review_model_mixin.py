@@ -1,5 +1,5 @@
 from django.db import models
-from edc_constants.choices import YES_NO
+from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE, NOT_ESTIMATED, YES
 from edc_model import models as edc_models
 from inte_subject.diagnoses import Diagnoses
@@ -61,42 +61,20 @@ class InitialReviewModelMixin(models.Model):
 
 
 class ReviewModelMixin(models.Model):
-
-    diagnosis_date_estimated = edc_models.IsDateEstimatedFieldNa(
-        verbose_name="Is the diagnosis date estimated",
-        default=NOT_ESTIMATED,
-        null=True,
-        blank=True,
-    )
-
-    treatment_start_date = models.DateField(
-        verbose_name="When was the patient started on medicine?", null=True, blank=True,
-    )
-
-    treatment_start_date_estimated = edc_models.IsDateEstimatedFieldNa(
-        verbose_name="Is the start date estimated",
+    care_delivery = models.CharField(
+        verbose_name=(
+            "Was care for this `condition` delivered "
+            "in an integrated care clinic today?"
+        ),
+        max_length=25,
+        choices=YES_NO_NA,
         default=NOT_APPLICABLE,
-        null=True,
-        blank=True,
+        help_text="Select `not applicable` if site was not selected for integrated care.",
     )
 
-    on_treatment = models.CharField(
-        verbose_name="Is the patient currently taking medicines for control?",
-        max_length=15,
-        choices=YES_NO,
+    care_delivery_other = models.TextField(
+        verbose_name="If no, please explain", null=True, blank=True
     )
-
-    def save(self, *args, **kwargs):
-        if not self.dx_ago and not self.dx_date:
-            raise InitialReviewModelError(
-                "Expected either `dx_ago` or `dx_date`. "
-                f"Perhaps catch this in the form. See {self}."
-            )
-        if self.dx_ago:
-            self.dx_estimated_date = edc_models.duration_to_date(
-                self.dx_ago, self.report_datetime
-            )
-        super().save(*args, **kwargs)
 
     class Meta:
         abstract = True

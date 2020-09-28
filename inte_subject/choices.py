@@ -6,7 +6,15 @@ from edc_reportable import (
 )
 from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED, MISSED_VISIT
 
-from .constants import DIET_LIFESTYLE, DRUGS, INSULIN, SITTING, GTE_3HRS, THIS_CLINIC
+from .constants import (
+    DIET_LIFESTYLE,
+    DRUGS,
+    INSULIN,
+    INTEGRATED,
+    SITTING,
+    GTE_3HRS,
+    THIS_CLINIC,
+)
 
 ALCOHOL_CONSUMPTION = (
     ("ocassionally", "Ocassionally"),

@@ -4,10 +4,12 @@ from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
 from inte_subject.choices import DM_MANAGEMENT
 
-from ..model_mixins import CrfModelMixin, GlucoseModelMixin
+from ..model_mixins import CrfModelMixin, GlucoseModelMixin, ReviewModelMixin
 
 
-class DmReview(GlucoseModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
+class DmReview(
+    ReviewModelMixin, GlucoseModelMixin, CrfModelMixin, edc_models.BaseUuidModel
+):
 
     test_date = models.DateField(
         verbose_name="Date tested for diabetes",

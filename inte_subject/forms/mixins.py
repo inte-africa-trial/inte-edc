@@ -2,12 +2,17 @@ from django import forms
 from django.apps import apps as django_apps
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from edc_constants.constants import OTHER, YES
+from edc_constants.constants import NO, OTHER, YES
 from edc_crf.modelform_mixins import CrfModelFormMixin as BaseCrfModelFormMixin
 from edc_model import models as edc_models
 from edc_model.models import InvalidFormat
 from edc_utils import age, convert_php_dateformat
 from edc_visit_schedule.constants import DAY1
+from inte_prn.icc_registered import (
+    InterventionSiteNotRegistered,
+    is_icc_registered_site,
+)
+from inte_sites.is_intervention_site import NotInterventionSite
 from inte_subject.diagnoses import Diagnoses, InitialReviewRequired
 from inte_subject.models import HivInitialReview, HivReview, Medications
 from inte_visit_schedule.is_baseline import is_baseline
@@ -15,7 +20,7 @@ from inte_visit_schedule.is_baseline import is_baseline
 from ..models import ClinicalReviewBaseline, ClinicalReview
 
 
-def art_initiation_date(self, subject_identifier=None, report_datetime=None):
+def art_initiation_date(subject_identifier=None, report_datetime=None):
     """Returns date initiated on ART or None"""
     art_date = None
     try:
@@ -39,10 +44,14 @@ def art_initiation_date(self, subject_identifier=None, report_datetime=None):
     return art_date
 
 
-def model_exists_or_raise(subject_visit, model_cls=None):
-    subject_identifier = subject_visit.subject_identifier
+def model_exists_or_raise(subject_visit=None, model_cls=None, singleton=None):
+    singleton = False if singleton is None else singleton
+    if singleton:
+        opts = {"subject_visit__subject_identifier": subject_visit.subject_identifier}
+    else:
+        opts = {"subject_visit": subject_visit}
     try:
-        model_cls.objects.get(subject_visit__subject_identifier=subject_identifier)
+        model_cls.objects.get(**opts)
     except ObjectDoesNotExist:
         raise forms.ValidationError(
             f"Complete the `{model_cls._meta.verbose_name}` CRF first."
@@ -59,9 +68,11 @@ def raise_if_baseline(subject_visit):
 
 def raise_if_clinical_review_does_not_exist(subject_visit):
     if is_baseline(subject_visit):
-        model_exists_or_raise(subject_visit, model_cls=ClinicalReviewBaseline)
+        model_exists_or_raise(
+            subject_visit=subject_visit, model_cls=ClinicalReviewBaseline,
+        )
     else:
-        model_exists_or_raise(subject_visit, model_cls=ClinicalReview)
+        model_exists_or_raise(subject_visit=subject_visit, model_cls=ClinicalReview)
 
 
 def medications_exists_or_raise(subject_visit):
@@ -104,9 +115,45 @@ class ClinicalReviewBaselineRequiredModelFormMixin:
             "subject_visit"
         ):
             model_exists_or_raise(
-                self.cleaned_data.get("subject_visit"), model_cls=ClinicalReviewBaseline
+                subject_visit=self.cleaned_data.get("subject_visit"),
+                model_cls=ClinicalReviewBaseline,
+                singleton=True,
             )
         return super().clean()
+
+
+class ReviewFormValidatorMixin:
+    def validate_care_delivery(self):
+        is_applicable, applicable_msg, not_applicable_msg = self.get_integration_info()
+        self.applicable_if_true(
+            is_applicable,
+            field_applicable="care_delivery",
+            applicable_msg=applicable_msg,
+            not_applicable_msg=not_applicable_msg,
+        )
+        self.required_if(
+            NO, field="care_delivery", field_required="care_delivery_other"
+        )
+
+    def get_integration_info(self):
+        applicable = False
+        applicable_msg = None
+        not_applicable_msg = None
+        model_cls = django_apps.get_model("inte_prn.integratedcareclinicregistration")
+        try:
+            is_icc_registered_site(report_datetime=self.report_datetime)
+        except NotInterventionSite:
+            not_applicable_msg = "This site was not selected for integrated care"
+        except InterventionSiteNotRegistered:
+            not_applicable_msg = (
+                "This site's integrated care clinic is NOT open. "
+                f"See facility form {model_cls._meta.verbose_name}."
+            )
+
+        else:
+            applicable = True
+            applicable_msg = "This site's integrated care clinic is open."
+        return applicable, applicable_msg, not_applicable_msg
 
 
 class CrfModelFormMixin(

@@ -7,14 +7,16 @@ from .mixins import (
     BPFormValidatorMixin,
     CrfModelFormMixin,
     CrfFormValidatorMixin,
+    ReviewFormValidatorMixin,
 )
 
 
 class HtnReviewFormValidator(
-    BPFormValidatorMixin, CrfFormValidatorMixin, FormValidator
+    ReviewFormValidatorMixin, BPFormValidatorMixin, CrfFormValidatorMixin, FormValidator
 ):
     def clean(self):
         raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
+        self.validate_care_delivery()
         self.validate_bp_reading(
             "sys_blood_pressure", "dia_blood_pressure",
         )

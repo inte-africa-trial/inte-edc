@@ -18,7 +18,9 @@ class MedicationsFormValidator(CrfFormValidatorMixin, FormValidator):
             )
         else:
             model_exists_or_raise(
-                self.cleaned_data.get("subject_visit"), model_cls=ClinicalReviewBaseline
+                self.cleaned_data.get("subject_visit"),
+                model_cls=ClinicalReviewBaseline,
+                singleton=True,
             )
         self.validate_diagnosis_before_refill()
 

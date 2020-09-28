@@ -7,6 +7,7 @@ from edc_model_admin import SimpleHistoryAdmin
 from ..admin_site import inte_subject_admin
 from ..forms import HivReviewForm
 from ..models import HivReview
+from .fieldsets import care_delivery_fieldset_tuple
 from .modeladmin_mixins import CrfModelAdminMixin
 
 
@@ -17,6 +18,7 @@ class HivReviewAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistory
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
+        care_delivery_fieldset_tuple,
         (
             "Anit-retroviral therapy (ART)",
             {"fields": ("arv_initiated", "arv_initiation_actual_date")},
@@ -26,6 +28,8 @@ class HivReviewAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistory
     )
 
     radio_fields = {
-        "dx": admin.VERTICAL,
+        "arv_initiated": admin.VERTICAL,
+        "care_delivery": admin.VERTICAL,
         "crf_status": admin.VERTICAL,
+        "dx": admin.VERTICAL,
     }

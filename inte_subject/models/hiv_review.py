@@ -3,13 +3,16 @@ from edc_constants.choices import YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
 
-from ..model_mixins import CrfModelMixin
+from ..model_mixins import CrfModelMixin, ReviewModelMixin
 
 
-class HivReview(CrfModelMixin, edc_models.BaseUuidModel):
+class HivReview(ReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
 
     test_date = models.DateField(
-        verbose_name="Date tested for HIV", null=True, blank=True,
+        verbose_name="Date tested for HIV",
+        null=True,
+        blank=True,
+        help_text="QUESTION_RETIRED",
     )
 
     dx = models.CharField(
@@ -27,9 +30,7 @@ class HivReview(CrfModelMixin, edc_models.BaseUuidModel):
         help_text="Select `not applicable` if previously reported.",
     )
     arv_initiation_actual_date = models.DateField(
-        verbose_name="Date started antiretroviral therapy (ART)",
-        null=True,
-        blank=False,
+        verbose_name="Date started antiretroviral therapy (ART)", null=True, blank=True,
     )
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
