@@ -23,7 +23,9 @@ class Predicates(PredicateCollection):
         icc_registered = False
         intervention_site = False
         try:
-            is_icc_registered_site(report_datetime=visit.report_datetime)
+            is_icc_registered_site(
+                report_datetime=visit.report_datetime, site=visit.site
+            )
         except NotInterventionSite:
             pass
         except InterventionSiteNotRegistered:
