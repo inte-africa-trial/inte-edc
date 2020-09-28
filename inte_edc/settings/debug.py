@@ -17,8 +17,8 @@ ALLOWED_HOSTS = [
     "localhost",
 ]
 # comment: comment out if using runserver and folders read from .env
-# ETC_DIR = os.path.join(BASE_DIR, "tests", "etc")  # noqa
-# KEY_PATH = os.path.join(ETC_DIR, "crypto_fields")  # noqa
+ETC_DIR = os.path.join(BASE_DIR, "tests", "etc")  # noqa
+KEY_PATH = os.path.join(ETC_DIR, "crypto_fields")  # noqa
 # end comment
 
 if os.path.exists(BASE_DIR) and not os.path.exists(KEY_PATH):  # noqa

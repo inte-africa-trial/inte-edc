@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.sites.models import Site
 from edc_constants.constants import OTHER, STUDY_DEFINED_TIMEPOINT
 from edc_form_validators import FormValidatorMixin
 from edc_sites.forms import SiteModelFormMixin
@@ -57,7 +56,7 @@ class SubjectVisitFormValidator(VisitFormValidator):
                         "health_services": "This site does not have an integrated care clinic."
                     }
                 )
-            except InterventionSiteNotRegistered as e:
+            except InterventionSiteNotRegistered:
                 raise forms.ValidationError(
                     {
                         "health_services": (
