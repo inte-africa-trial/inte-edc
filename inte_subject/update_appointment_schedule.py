@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from django.apps import apps as django_apps
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_delete, pre_save
 from edc_utils import DisableSignals
 from tqdm import tqdm
 
@@ -57,7 +57,8 @@ def update_appointment_schedule(apps=None):
                         )
                         subject_visit.save()
             else:
-                appointment.delete()
+                with DisableSignals(disabled_signals=[pre_delete]):
+                    appointment.delete()
 
     for appointment in appointment_model_cls.objects.filter(visit_code_sequence__gt=0):
         try:
