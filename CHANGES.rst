@@ -1,6 +1,20 @@
 Changes
 =======
 
+0.1.38
+------
+- add result forms to PRN list (VL, CD4, glucose)
+- enforce order of CRF submission where necessary
+- modify review followup forms (hiv, htn, dm); add care delivery
+  questions linked to randomization and icc registration, remove
+  test date and dx questions, check for art init date if not
+  started at diagnosis.
+- add missing other specify fields to HE form
+- add diagnoses class to validate any Q's/CRFs related to a
+  diagnosis or diagnosis date
+- expand forms validation and tests
+- add management command to refresh INTE metadata
+
 0.1.36
 ------
 - refactor field and variable naming using these prefixes: htn-> hypertension, dm->diabetes, hiv->hiv
