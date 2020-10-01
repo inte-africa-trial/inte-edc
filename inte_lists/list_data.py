@@ -3,6 +3,7 @@ from edc_constants.constants import (
     DIABETES,
     FREE_OF_CHARGE,
     HIV,
+    HOSPITALIZED,
     HYPERTENSION,
     LOST_TO_FOLLOWUP,
     OTHER,
@@ -146,7 +147,7 @@ list_data = {
         ("working_schooling", "Away working/schooling"),
         ("too_sick", "Too sick or weak to come to the centre"),
         ("lack_of_transport", "Transportation difficulty"),
-        ("hospitalized", "Hospitalized"),
+        (HOSPITALIZED, "Hospitalized"),
         (OTHER, "Other reason (specify below)"),
     ],
     "inte_lists.drugpaysources": [
