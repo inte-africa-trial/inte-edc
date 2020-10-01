@@ -146,6 +146,7 @@ list_data = {
         ("working_schooling", "Away working/schooling"),
         ("too_sick", "Too sick or weak to come to the centre"),
         ("lack_of_transport", "Transportation difficulty"),
+        ("hospitalized", "Hospitalized"),
         (OTHER, "Other reason (specify below)"),
     ],
     "inte_lists.drugpaysources": [
