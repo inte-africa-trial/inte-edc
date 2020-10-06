@@ -1,6 +1,16 @@
 Changes
 =======
 
+0.1.40
+------
+- fix baseline determination for drug refill `rx_modified` form
+  validation (inte-subject)
+- fix HE form to allow `0` as payment amount (inte-subject)
+- add fields to Clinical Review model; health_insurance,
+  patient_club (inte-subject)
+- add medication adherence CRFs (inte-subject)
+- enforce window period. Extend 6m upper to 1 month before 12m
+
 0.1.38
 ------
 - add result forms to PRN list (VL, CD4, glucose)

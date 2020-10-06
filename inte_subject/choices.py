@@ -1,4 +1,4 @@
-from edc_constants.constants import NO, NOT_APPLICABLE, OTHER
+from edc_constants.constants import NEVER, NO, NOT_APPLICABLE, OTHER
 from edc_reportable import (
     MILLIGRAMS_PER_DECILITER,
     MILLIMOLES_PER_LITER,
@@ -63,6 +63,16 @@ HOUSEHOLD_YES_NO_CHOICES = (
 HTN_MANAGEMENT = (
     (DRUGS, "Drugs / Medicine"),
     (DIET_LIFESTYLE, "Diet and lifestyle alone"),
+)
+
+MISSED_PILLS = (
+    ("today", "today"),
+    ("yesterday", "yesterday"),
+    ("earlier_this_week", "earlier this week"),
+    ("last_week", "last week"),
+    ("lt_month_ago", "less than a month ago"),
+    ("gt_month_ago", "more than a month ago"),
+    (NEVER, "have never missed taking my study pills"),
 )
 
 

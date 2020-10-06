@@ -5,10 +5,19 @@ from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
 from inte_lists.models import ReasonsForTesting
 
-from ..model_mixins import ClinicalReviewModelMixin, CrfModelMixin
+from ..model_mixins import (
+    ClinicalReviewModelMixin,
+    CrfModelMixin,
+    TreatmentPayMethodsModelMixin,
+)
 
 
-class ClinicalReview(ClinicalReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
+class ClinicalReview(
+    TreatmentPayMethodsModelMixin,
+    ClinicalReviewModelMixin,
+    CrfModelMixin,
+    edc_models.BaseUuidModel,
+):
 
     hiv_test = models.CharField(
         verbose_name="Since last seen, was the patient tested for HIV infection?",

@@ -20,7 +20,7 @@ class DmInitialReview(
         default=NOT_APPLICABLE,
     )
 
-    med_start_ago = edc_models.DurationYearMonthField(
+    med_start_ago = edc_models.DurationYMDField(
         verbose_name=(
             "If the patient is taking medicines for diabetes, "
             "how long have they been taking these?"

@@ -44,7 +44,7 @@ class HivInitialReview(
         default=YES,
     )
 
-    arv_initiation_ago = edc_models.DurationYearMonthField(
+    arv_initiation_ago = edc_models.DurationYMDField(
         verbose_name="How long ago did the patient start ART?", null=True, blank=True,
     )
 

@@ -1,6 +1,6 @@
 from django.db import models
 from edc_constants.choices import YES_NO, YES_NO_NA
-from edc_constants.constants import NOT_APPLICABLE, NOT_ESTIMATED, YES
+from edc_constants.constants import NOT_APPLICABLE, YES
 from edc_model import models as edc_models
 from inte_subject.diagnoses import Diagnoses
 
@@ -11,7 +11,7 @@ class InitialReviewModelError(Exception):
 
 class InitialReviewModelMixin(models.Model):
 
-    dx_ago = edc_models.DurationYearMonthField(
+    dx_ago = edc_models.DurationYMDField(
         verbose_name="How long ago was the patient diagnosed?",
         null=True,
         blank=True,
@@ -61,6 +61,7 @@ class InitialReviewModelMixin(models.Model):
 
 
 class ReviewModelMixin(models.Model):
+
     care_delivery = models.CharField(
         verbose_name=(
             "Was care for this `condition` delivered "

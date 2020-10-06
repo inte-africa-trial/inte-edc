@@ -3,6 +3,7 @@ from edc_constants.constants import (
     DIABETES,
     FREE_OF_CHARGE,
     HIV,
+    HOSPITALIZED,
     HYPERTENSION,
     LOST_TO_FOLLOWUP,
     OTHER,
@@ -146,6 +147,7 @@ list_data = {
         ("working_schooling", "Away working/schooling"),
         ("too_sick", "Too sick or weak to come to the centre"),
         ("lack_of_transport", "Transportation difficulty"),
+        (HOSPITALIZED, "Hospitalized"),
         (OTHER, "Other reason (specify below)"),
     ],
     "inte_lists.drugpaysources": [
@@ -168,6 +170,18 @@ list_data = {
         ("hired_bicycle", "Hired bicycle"),
         ("foot", "Foot"),
         (OTHER, "Other reason (specify below)"),
+    ],
+    "inte_lists.nonadherencereasons": [
+        ("forgot_to_take", "I simply forgot to take my medication"),
+        ("travelled", "I travelled and forgot my medication"),
+        ("feel_better", "I felt better and stopped taking my medication"),
+        (
+            "insufficient_supply",
+            "I did not get enough medication from hospital/clinic, could not buy more",
+        ),
+        ("feel_ill", "The medications were making me feel sick"),
+        ("too_many_pills", "Too many pills so I stopped / reduced"),
+        (OTHER, "Other, please specify ..."),
     ],
 }
 

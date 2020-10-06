@@ -108,7 +108,9 @@ class InteTestCaseMixin(SiteTestCaseMixin):
 
         return subject_screening
 
-    def get_subject_consent(self, subject_screening, site_name=None, **kwargs):
+    def get_subject_consent(
+        self, subject_screening, consent_datetime=None, site_name=None, **kwargs
+    ):
         site_name = site_name or "kinoni"
         options = dict(
             user_created="erikvw",
@@ -119,6 +121,7 @@ class InteTestCaseMixin(SiteTestCaseMixin):
             - relativedelta(years=subject_screening.age_in_years),
             site=Site.objects.get(name=site_name),
             clinic_type=HIV_CLINIC,
+            consent_datetime=consent_datetime or get_utcnow(),
         )
         options.update(**kwargs)
         return baker.make_recipe("inte_consent.subjectconsent", **options)
@@ -129,12 +132,17 @@ class InteTestCaseMixin(SiteTestCaseMixin):
         visit_code=None,
         visit_code_sequence=None,
         reason=None,
+        appt_datetime=None,
     ):
         appointment = Appointment.objects.get(
             subject_identifier=subject_identifier,
             visit_code=visit_code,
             visit_code_sequence=visit_code_sequence,
         )
+        if appt_datetime:
+            appointment.appt_datetime = appt_datetime
+            appointment.save()
+            appointment.refresh_from_db()
         if reason == UNSCHEDULED:
             appointment = self.create_unscheduled_appointment(appointment)
         appointment.appt_status = IN_PROGRESS_APPT
@@ -164,6 +172,7 @@ class InteTestCaseMixin(SiteTestCaseMixin):
         subject_consent=None,
         reason=None,
         appointment=None,
+        appt_datetime=None,
     ):
         reason = reason or SCHEDULED
         if not appointment:
@@ -178,11 +187,12 @@ class InteTestCaseMixin(SiteTestCaseMixin):
                     visit_code_sequence if visit_code_sequence is not None else 0
                 ),
                 reason=reason,
+                appt_datetime=appt_datetime,
             )
         return SubjectVisit.objects.create(appointment=appointment, reason=reason)
 
     def get_next_subject_visit(
-        self, subject_visit=None, reason=None,
+        self, subject_visit=None, reason=None, appt_datetime=None,
     ):
         visit_code = (
             subject_visit.appointment.visit_code
@@ -195,11 +205,11 @@ class InteTestCaseMixin(SiteTestCaseMixin):
             if reason == UNSCHEDULED
             else 0
         )
-
         return self.get_subject_visit(
             visit_code=visit_code,
             visit_code_sequence=visit_code_sequence,
             reason=reason,
+            appt_datetime=appt_datetime,
             subject_screening=SubjectScreening.objects.get(
                 subject_identifier=subject_visit.subject_identifier
             ),

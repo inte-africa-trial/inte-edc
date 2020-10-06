@@ -49,6 +49,12 @@ class OffstudyReasons(ListModelMixin):
         verbose_name_plural = "Offstudy Reasons"
 
 
+class NonAdherenceReasons(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "NonAdherence Reasons"
+        verbose_name_plural = "NonAdherence Reasons"
+
+
 class RxModifications(ListModelMixin):
     class Meta(ListModelMixin.Meta):
         verbose_name = "Treatment Modifications"

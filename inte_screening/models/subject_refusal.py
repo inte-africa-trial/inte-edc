@@ -1,7 +1,6 @@
 from django.db import models
-from edc_model.models import BaseUuidModel
+from edc_model.models import BaseUuidModel, OtherCharField
 from edc_model.models.historical_records import HistoricalRecords
-from edc_model_fields.fields.other_charfield import OtherCharField
 from edc_search.model_mixins import SearchSlugManager
 from edc_sites.models import SiteModelMixin, CurrentSiteManager
 from edc_utils import get_utcnow

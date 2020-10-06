@@ -1,4 +1,4 @@
-from edc_constants.constants import NOT_APPLICABLE, YES
+from edc_constants.constants import NO, NOT_APPLICABLE, YES
 from edc_metadata import REQUIRED, NOT_REQUIRED
 from edc_metadata_rules import CrfRule, CrfRuleGroup, register, P
 
@@ -145,6 +145,27 @@ class MedicationsRuleGroup(CrfRuleGroup):
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
         target_models=["drugrefillhtn"],
+    )
+
+    adherence_hiv = CrfRule(
+        predicate=P("refill_hiv", "in", [YES, NO]),
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["hivmedicationadherence"],
+    )
+
+    adherence_dm = CrfRule(
+        predicate=P("refill_dm", "in", [YES, NO]),
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["dmmedicationadherence"],
+    )
+
+    adherence_htn = CrfRule(
+        predicate=P("refill_htn", "in", [YES, NO]),
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["htnmedicationadherence"],
     )
 
     class Meta:

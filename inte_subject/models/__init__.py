@@ -4,6 +4,7 @@ from .clinical_review_baseline import ClinicalReviewBaseline
 from .complications_baseline import ComplicationsBaseline
 from .complications_followup import ComplicationsFollowup
 from .dm_initial_review import DmInitialReview
+from .dm_medication_adherence import DmMedicationAdherence
 from .dm_review import DmReview
 from .drug_refill_dm import DrugRefillDm
 from .drug_refill_hiv import DrugRefillHiv
@@ -16,8 +17,10 @@ from .glucose import Glucose
 from .health_economics import HealthEconomics
 from .health_economics_revised import HealthEconomicsRevised
 from .hiv_initial_review import HivInitialReview
+from .hiv_medication_adherence import HivMedicationAdherence
 from .hiv_review import HivReview
 from .htn_initial_review import HtnInitialReview
+from .htn_medication_adherence import HtnMedicationAdherence
 from .htn_review import HtnReview
 from .indicators import Indicators
 from .investigations import Investigations
