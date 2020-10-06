@@ -7,6 +7,7 @@ from edc_model_admin import SimpleHistoryAdmin
 from ..admin_site import inte_subject_admin
 from ..forms import ClinicalReviewForm
 from ..models import ClinicalReview
+from .fieldsets import treatment_pay_methods_fieldset_tuple
 from .modeladmin_mixins import CrfModelAdminMixin
 
 
@@ -55,6 +56,7 @@ class ClinicalReviewAdmin(
             },
         ),
         ("Complications", {"fields": ("complications",)}),
+        treatment_pay_methods_fieldset_tuple,
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
@@ -62,12 +64,14 @@ class ClinicalReviewAdmin(
     radio_fields = {
         "htn_test": admin.VERTICAL,
         "dm_test": admin.VERTICAL,
+        "health_insurance": admin.VERTICAL,
         "hiv_test": admin.VERTICAL,
         "htn_dx": admin.VERTICAL,
         "dm_dx": admin.VERTICAL,
         "hiv_dx": admin.VERTICAL,
         "complications": admin.VERTICAL,
         "crf_status": admin.VERTICAL,
+        "patient_club": admin.VERTICAL,
     }
 
     filter_horizontal = [

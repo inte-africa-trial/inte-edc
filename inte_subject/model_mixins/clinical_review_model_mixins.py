@@ -36,7 +36,7 @@ class ClinicalReviewBaselineHivModelMixin(models.Model):
         choices=YES_NO,
     )
 
-    hiv_test_ago = edc_models.DurationYearMonthField(
+    hiv_test_ago = edc_models.DurationYMDField(
         verbose_name="How long ago was the patient's most recent HIV test?",
         null=True,
         blank=True,
@@ -86,7 +86,7 @@ class ClinicalReviewBaselineHtnModelMixin(models.Model):
         choices=YES_NO,
     )
 
-    htn_test_ago = edc_models.DurationYearMonthField(
+    htn_test_ago = edc_models.DurationYMDField(
         verbose_name="If Yes, how long ago was the patient tested for Hypertension?",
         null=True,
         blank=True,
@@ -130,7 +130,7 @@ class ClinicalReviewBaselineDmModelMixin(models.Model):
         choices=YES_NO,
     )
 
-    dm_test_ago = edc_models.DurationYearMonthField(
+    dm_test_ago = edc_models.DurationYMDField(
         verbose_name="If Yes, how long ago was the patient tested for Diabetes?",
         null=True,
         blank=True,

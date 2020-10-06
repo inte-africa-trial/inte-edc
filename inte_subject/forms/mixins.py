@@ -2,12 +2,11 @@ from django import forms
 from django.apps import apps as django_apps
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from edc_constants.constants import NO, OTHER, YES
+from edc_constants.constants import NEVER, NO, OTHER, YES
 from edc_crf.modelform_mixins import CrfModelFormMixin as BaseCrfModelFormMixin
 from edc_model import models as edc_models
 from edc_model.models import InvalidFormat
 from edc_utils import age, convert_php_dateformat
-from edc_visit_schedule.constants import DAY1
 from inte_prn.icc_registered import (
     InterventionSiteNotRegistered,
     is_icc_registered_site,
@@ -230,7 +229,7 @@ class DrugRefillFormValidatorMixin:
         medications_exists_or_raise(self.cleaned_data.get("subject_visit"))
         if (
             self.cleaned_data.get("subject_visit")
-            and self.cleaned_data.get("subject_visit").appointment.visit_code == DAY1
+            and is_baseline(self.cleaned_data.get("subject_visit"))
             and self.cleaned_data.get("rx_modified") == YES
         ):
             raise forms.ValidationError({"rx_modified": "Expected `No` at baseline."})
@@ -352,3 +351,14 @@ class ResultFormValidatorMixin:
                         )
                     }
                 )
+
+
+class MedicationAdherenceFormValidatorMixin:
+    def clean(self):
+        raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
+        self.not_required_if(
+            NEVER, field="last_missed_pill", field_required="missed_pill_reason"
+        )
+        self.m2m_other_specify(
+            m2m_field="missed_pill_reason", field_other="other_missed_pill_reason"
+        )

@@ -171,6 +171,18 @@ list_data = {
         ("foot", "Foot"),
         (OTHER, "Other reason (specify below)"),
     ],
+    "inte_lists.nonadherencereasons": [
+        ("forgot_to_take", "I simply forgot to take my medication"),
+        ("travelled", "I travelled and forgot my medication"),
+        ("feel_better", "I felt better and stopped taking my medication"),
+        (
+            "insufficient_supply",
+            "I did not get enough medication from hospital/clinic, could not buy more",
+        ),
+        ("feel_ill", "The medications were making me feel sick"),
+        ("too_many_pills", "Too many pills so I stopped / reduced"),
+        (OTHER, "Other, please specify ..."),
+    ],
 }
 
 # preload_data = PreloadData(list_data=list_data)

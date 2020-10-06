@@ -258,7 +258,9 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             form_validator.validate()
         except forms.ValidationError:
             pass
-        self.assertDictEqual({}, form_validator._errors)
+        self.assertNotIn("rx_dm_paid_month", form_validator._errors)
+        self.assertNotIn("rx_dm_cost_month", form_validator._errors)
+        self.assertNotIn("rx_dm_paid_month_other", form_validator._errors)
 
         # check other
         cleaned_data.update(

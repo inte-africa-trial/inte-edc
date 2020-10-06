@@ -68,6 +68,19 @@ class ClinicalReviewFormValidator(CrfFormValidatorMixin, FormValidator):
         self.required_if(YES, field="hiv_test", field_required="hiv_reason")
         self.applicable_if(YES, field="hiv_test", field_applicable="hiv_dx")
 
+        self.required_if(
+            YES,
+            field="health_insurance",
+            field_required="health_insurance_monthly_pay",
+            field_required_evaluate_as_int=True,
+        )
+        self.required_if(
+            YES,
+            field="patient_club",
+            field_required="patient_club_monthly_pay",
+            field_required_evaluate_as_int=True,
+        )
+
     def raise_if_dx_and_applicable(self, clinic, cond):
         if self.subject_screening.clinic_type in [clinic] and self.cleaned_data.get(
             f"{cond}_test"

@@ -20,7 +20,7 @@ class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
         verbose_name="Stroke", max_length=25, choices=YES_NO, null=True, blank=False,
     )
 
-    stroke_ago = edc_models.DurationYearMonthField(
+    stroke_ago = edc_models.DurationYMDField(
         verbose_name="If yes, how long ago", null=True, blank=True,
     )
 
@@ -37,7 +37,7 @@ class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
         blank=False,
     )
 
-    heart_attack_ago = edc_models.DurationYearMonthField(
+    heart_attack_ago = edc_models.DurationYMDField(
         verbose_name="If yes, how long ago", null=True, blank=True,
     )
 
@@ -57,7 +57,7 @@ class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
         blank=False,
     )
 
-    renal_disease_ago = edc_models.DurationYearMonthField(
+    renal_disease_ago = edc_models.DurationYMDField(
         verbose_name="If yes, how long ago", null=True, blank=True,
     )
 
@@ -76,7 +76,7 @@ class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
         blank=False,
     )
 
-    vision_ago = edc_models.DurationYearMonthField(
+    vision_ago = edc_models.DurationYMDField(
         verbose_name="If yes, how long ago", null=True, blank=True,
     )
 
@@ -96,7 +96,7 @@ class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
         blank=False,
     )
 
-    numbness_ago = edc_models.DurationYearMonthField(
+    numbness_ago = edc_models.DurationYMDField(
         verbose_name="If yes, how long ago", null=True, blank=True,
     )
 
@@ -116,7 +116,7 @@ class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
         blank=False,
     )
 
-    foot_ulcers_ago = edc_models.DurationYearMonthField(
+    foot_ulcers_ago = edc_models.DurationYMDField(
         verbose_name="If yes, how long ago", null=True, blank=True,
     )
 

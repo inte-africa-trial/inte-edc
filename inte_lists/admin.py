@@ -8,13 +8,49 @@ from .models import (
     ClinicServices,
     Conditions,
     DmTreatments,
-    HtnTreatments,
-    OffstudyReasons,
-    VisitReasons,
+    DrugPaySources,
     HealthServices,
-    RxModifications,
+    HtnTreatments,
+    NonAdherenceReasons,
+    OffstudyReasons,
+    ReasonsForTesting,
+    RefillConditions,
     RxModificationReasons,
+    RxModifications,
+    SubjectVisitMissedReasons,
+    TransportChoices,
+    VisitReasons,
 )
+
+
+@admin.register(TransportChoices, site=inte_lists_admin)
+class TransportChoices(ListModelAdminMixin, admin.ModelAdmin):
+    pass
+
+
+@admin.register(DrugPaySources, site=inte_lists_admin)
+class DrugPaySourcesAdmin(ListModelAdminMixin, admin.ModelAdmin):
+    pass
+
+
+@admin.register(SubjectVisitMissedReasons, site=inte_lists_admin)
+class SubjectVisitMissedReasonsAdmin(ListModelAdminMixin, admin.ModelAdmin):
+    pass
+
+
+@admin.register(RefillConditions, site=inte_lists_admin)
+class RefillConditionsAdmin(ListModelAdminMixin, admin.ModelAdmin):
+    pass
+
+
+@admin.register(ReasonsForTesting, site=inte_lists_admin)
+class ReasonsForTestingAdmin(ListModelAdminMixin, admin.ModelAdmin):
+    pass
+
+
+@admin.register(NonAdherenceReasons, site=inte_lists_admin)
+class NonAdherenceReasonsAdmin(ListModelAdminMixin, admin.ModelAdmin):
+    pass
 
 
 @admin.register(Conditions, site=inte_lists_admin)

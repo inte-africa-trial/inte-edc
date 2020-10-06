@@ -33,7 +33,7 @@ class OtherBaselineData(CrfModelMixin, edc_models.BaseUuidModel):
         choices=SMOKER_STATUS_SIMPLE,
     )
 
-    smoker_quit_ago = edc_models.DurationYearMonthField(
+    smoker_quit_ago = edc_models.DurationYMDField(
         verbose_name="If you used to smoke but stopped, how long ago did you stop",
         null=True,
         blank=True,

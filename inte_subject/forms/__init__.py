@@ -4,6 +4,7 @@ from .clinical_review_baseline_form import ClinicalReviewBaselineForm
 from .complications_followup_form import ComplicationsFollowupForm
 from .complications_baseline_form import ComplicationsBaselineForm
 from .dm_initial_review_form import DmInitialReviewForm
+from .dm_medication_adherence_form import DmMedicationAdherenceForm
 from .dm_review_form import DmReviewForm
 from .drug_refill_dm_form import DrugRefillDmForm
 from .drug_refill_hiv_form import DrugRefillHivForm
@@ -18,8 +19,10 @@ from .health_economics_revised_form import (
     HealthEconomicsRevisedFormValidator,
 )
 from .hiv_initial_review_form import HivInitialReviewForm
+from .hiv_medication_adherence_form import HivMedicationAdherenceForm
 from .hiv_review_form import HivReviewForm
 from .htn_initial_review_form import HtnInitialReviewForm
+from .htn_medication_adherence_form import HtnMedicationAdherenceForm
 from .htn_review_form import HtnReviewForm
 from .indicators_form import IndicatorsForm
 from .medications_form import MedicationsForm

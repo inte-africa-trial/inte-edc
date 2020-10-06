@@ -114,10 +114,10 @@ class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
     def clean_recv_drugs_by_duration(self, duration):
         conditions = ["dm", "htn", "hiv", "other"]
         for cond in conditions:
-            self.applicable_if(
+            self.required_if(
                 YES,
                 field=f"received_rx_{duration}",
-                field_applicable=f"rx_{cond}_{duration}",
+                field_required=f"rx_{cond}_{duration}",
             )
             self.m2m_required_if(
                 response=YES,
@@ -140,6 +140,7 @@ class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
                 ],
                 m2m_field=f"rx_{cond}_paid_{duration}",
                 field_other=f"rx_{cond}_cost_{duration}",
+                field_other_evaluate_as_int=True,
             )
 
         responses = [self.cleaned_data.get(f"rx_{k}_{duration}") for k in conditions]
