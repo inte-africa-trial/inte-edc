@@ -22,7 +22,10 @@ class ClinicalReviewFormValidator(
 
         # htn
         self.applicable_if_not_diagnosed(
-            diagnoses=diagnoses, field_dx="htn_dx", field_applicable="htn_test"
+            diagnoses=diagnoses,
+            field_dx="htn_dx",
+            field_applicable="htn_test",
+            label="hypertension",
         )
         self.required_if(YES, field="htn_test", field_required="htn_test_date")
         self.required_if(YES, field="htn_test", field_required="htn_reason")
@@ -30,7 +33,10 @@ class ClinicalReviewFormValidator(
 
         # diabetes
         self.applicable_if_not_diagnosed(
-            diagnoses=diagnoses, field_dx="dm_dx", field_applicable="dm_test"
+            diagnoses=diagnoses,
+            field_dx="dm_dx",
+            field_applicable="dm_test",
+            label="diabetes",
         )
         self.required_if(YES, field="dm_test", field_required="dm_test_date")
         self.required_if(YES, field="dm_test", field_required="dm_reason")
@@ -38,7 +44,10 @@ class ClinicalReviewFormValidator(
 
         # hiv
         self.applicable_if_not_diagnosed(
-            diagnoses=diagnoses, field_dx="hiv_dx", field_applicable="hiv_test"
+            diagnoses=diagnoses,
+            field_dx="hiv_dx",
+            field_applicable="hiv_test",
+            label="HIV",
         )
         self.required_if(YES, field="hiv_test", field_required="hiv_test_date")
         self.required_if(YES, field="hiv_test", field_required="hiv_reason")

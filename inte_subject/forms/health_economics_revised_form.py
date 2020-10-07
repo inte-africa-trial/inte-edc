@@ -116,9 +116,14 @@ class HealthEconomicsRevisedFormValidator(
         )
 
     def clean_recv_drugs_by_duration(self, duration):
-        conditions = ["dm", "htn", "hiv", "other"]
+        conditions = [
+            ("dm", "diabetes"),
+            ("htn", "hypertension"),
+            ("hiv", "HIV"),
+            ("other", None),
+        ]
         diagnoses = self.get_diagnoses()
-        for cond in conditions:
+        for cond, label in conditions:
 
             if cond == "other":
                 self.applicable_if(
@@ -132,6 +137,7 @@ class HealthEconomicsRevisedFormValidator(
                         diagnoses=diagnoses,
                         field_dx=f"{cond}_dx",
                         field_applicable=f"rx_{cond}_{duration}",
+                        label=label,
                     )
                 else:
                     self.applicable_if(
@@ -164,18 +170,18 @@ class HealthEconomicsRevisedFormValidator(
                 field_other_evaluate_as_int=True,
             )
 
-        responses = [self.cleaned_data.get(f"rx_{k}_{duration}") for k in conditions]
-        if self.cleaned_data.get(f"received_rx_{duration}") == YES and all(
-            [r == NO for r in responses]
-        ):
-            raise forms.ValidationError(
-                {
-                    f"received_rx_{duration}": (
-                        "Invalid. Must have received at least one type "
-                        "of drug below if `YES`."
-                    )
-                }
-            )
+        # responses = [self.cleaned_data.get(f"rx_{k}_{duration}") for k in conditions]
+        # if self.cleaned_data.get(f"received_rx_{duration}") == YES and all(
+        #     [r == NO for r in responses]
+        # ):
+        #     raise forms.ValidationError(
+        #         {
+        #             f"received_rx_{duration}": (
+        #                 "Invalid. Must have received at least one type "
+        #                 "of drug below if `YES`."
+        #             )
+        #         }
+        #     )
 
     def clean_non_drug_activities_by_duration(self, duration):
         self.required_if(

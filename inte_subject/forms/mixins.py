@@ -384,7 +384,7 @@ class DiagnosisFormValidatorMixin:
         return diagnoses
 
     def applicable_if_not_diagnosed(
-        self, diagnoses=None, field_dx=None, field_applicable=None,
+        self, diagnoses=None, field_dx=None, field_applicable=None, label=None
     ):
         diagnoses = diagnoses or self.get_diagnoses()
         # htn
@@ -392,14 +392,14 @@ class DiagnosisFormValidatorMixin:
             getattr(diagnoses, field_dx) != YES,
             field_applicable=field_applicable,
             applicable_msg=(
-                "Patient was not previously diagnosed with hypertension. "
+                f"Patient was not previously diagnosed with {label}. "
                 "Expected YES or NO."
             ),
-            not_applicable_msg="Patient was previously diagnosed with hypertension.",
+            not_applicable_msg=f"Patient was previously diagnosed with {label}.",
         )
 
     def applicable_if_diagnosed(
-        self, diagnoses=None, field_dx=None, field_applicable=None,
+        self, diagnoses=None, field_dx=None, field_applicable=None, label=None
     ):
         diagnoses = diagnoses or self.get_diagnoses()
         # htn
@@ -407,8 +407,7 @@ class DiagnosisFormValidatorMixin:
             getattr(diagnoses, field_dx) == YES,
             field_applicable=field_applicable,
             applicable_msg=(
-                "Patient was previously diagnosed with hypertension. "
-                "Expected YES or NO."
+                f"Patient was previously diagnosed with {label}. " "Expected YES or NO."
             ),
-            not_applicable_msg="Patient was not previously diagnosed with hypertension.",
+            not_applicable_msg=f"Patient was not previously diagnosed with {label}.",
         )
