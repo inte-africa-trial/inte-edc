@@ -1,5 +1,3 @@
-import pdb
-
 from django import forms
 from django.test import override_settings, TestCase, tag  # noqa
 from edc_appointment.constants import INCOMPLETE_APPT
@@ -173,7 +171,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             pass
         self.assertIn("highest_earner", form_validator._errors)
 
-    @tag("he1")
+    @tag("he")
     @override_settings(SITE_ID=103)
     def test_form_validator_expenditure(self):
         baker.make("inte_prn.integratedcareclinicregistration")
@@ -195,7 +193,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             pass
         self.assertDictEqual({}, form_validator._errors)
 
-    @tag("he1")
+    @tag("he")
     def test_form_validator_requires_dx(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -217,7 +215,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             pass
         self.assertIn("rx_dm_month", form_validator._errors)
         self.assertIn(
-            "Patient was not previously diagnosed with hypertension",
+            "Patient was not previously diagnosed with diabetes",
             str(form_validator._errors.get("rx_dm_month")),
         )
 
@@ -230,7 +228,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         self.assertNotIn("rx_dm_month", form_validator._errors)
         self.assertDictEqual({}, form_validator._errors)
 
-    @tag("he1")
+    @tag("he")
     def test_form_validator_recv_drugs_month(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -317,7 +315,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             pass
         self.assertIn("rx_hiv_paid_month_other", form_validator._errors)
 
-    @tag("he1")
+    @tag("he")
     def test_form_validator_recv_drugs_all_no(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -329,45 +327,135 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             "food_per_month": None,
             "accomodation_per_month": None,
             "large_expenditure_year": None,
-            "received_rx_month": NO,
-            "rx_dm_month": NOT_APPLICABLE,
-            "rx_htn_month": NOT_APPLICABLE,
-            "rx_hiv_month": NOT_APPLICABLE,
-            "rx_other_month": NOT_APPLICABLE,
+            "received_rx_today": NO,
+            "rx_dm_today": NOT_APPLICABLE,
+            "rx_htn_today": NOT_APPLICABLE,
+            "rx_hiv_today": NOT_APPLICABLE,
+            "rx_other_today": NOT_APPLICABLE,
         }
 
-        cleaned_data.update(
-            {
-                "received_rx_today": YES,
-                "rx_dm_today": NOT_APPLICABLE,
-                "rx_htn_today": NOT_APPLICABLE,
-                "rx_hiv_today": NO,
-                "rx_other_today": NO,
-            }
-        )
         form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
         try:
             form_validator.validate()
         except forms.ValidationError:
             pass
-        pdb.set_trace()
-        self.assertIn("received_rx_today", form_validator._errors)
+        self.assertNotIn("rx_dm_today", form_validator._errors)
+        self.assertNotIn("rx_htn_today", form_validator._errors)
+        self.assertNotIn("rx_hiv_today", form_validator._errors)
 
-        cleaned_data.update(
-            {
-                "received_rx_today": YES,
-                "rx_dm_today": NOT_APPLICABLE,
-                "rx_htn_today": NO,
-                "rx_hiv_today": NO,
-                "rx_other_today": NO,
-            }
-        )
+    @tag("he")
+    def test_form_validator_recv_drugs_yes_hiv_applicable(self):
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "report_datetime": self.subject_visit.report_datetime,
+            "crf_status": COMPLETE,
+            "education_in_years": 10,
+            "education_certificate": "secondary",
+            "is_highest_earner": YES,
+            "food_per_month": None,
+            "accomodation_per_month": None,
+            "large_expenditure_year": None,
+            "received_rx_today": YES,
+            "rx_dm_today": NOT_APPLICABLE,
+            "rx_htn_today": NOT_APPLICABLE,
+            "rx_hiv_today": NOT_APPLICABLE,
+            "rx_other_today": NOT_APPLICABLE,
+        }
+
+        form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
+        try:
+            form_validator.validate()
+        except forms.ValidationError:
+            pass
+        self.assertIn("rx_hiv_today", form_validator._errors)
+        self.assertNotIn("rx_dm_today", form_validator._errors)
+        self.assertNotIn("rx_htn_today", form_validator._errors)
+
+    @tag("he")
+    def test_form_validator_recv_drugs_yes_dm_yes(self):
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "report_datetime": self.subject_visit.report_datetime,
+            "crf_status": COMPLETE,
+            "education_in_years": 10,
+            "education_certificate": "secondary",
+            "is_highest_earner": YES,
+            "food_per_month": None,
+            "accomodation_per_month": None,
+            "large_expenditure_year": None,
+            "received_rx_today": YES,
+            "rx_dm_today": YES,
+            "rx_htn_today": NOT_APPLICABLE,
+            "rx_hiv_today": NO,
+            "rx_other_today": NOT_APPLICABLE,
+        }
+
         form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
         try:
             form_validator.validate()
         except forms.ValidationError:
             pass
         self.assertIn("rx_dm_today", form_validator._errors)
+        self.assertNotIn("rx_htn_today", form_validator._errors)
+        self.assertNotIn("rx_hiv_today", form_validator._errors)
+
+    @tag("he")
+    def test_form_validator_recv_drugs_yes_other_na_raises(self):
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "report_datetime": self.subject_visit.report_datetime,
+            "crf_status": COMPLETE,
+            "education_in_years": 10,
+            "education_certificate": "secondary",
+            "is_highest_earner": YES,
+            "food_per_month": None,
+            "accomodation_per_month": None,
+            "large_expenditure_year": None,
+            "received_rx_today": YES,
+            "rx_dm_today": NOT_APPLICABLE,
+            "rx_htn_today": NOT_APPLICABLE,
+            "rx_hiv_today": NO,
+            "rx_other_today": NOT_APPLICABLE,
+        }
+
+        form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
+        try:
+            form_validator.validate()
+        except forms.ValidationError:
+            pass
+        self.assertIn("rx_other_today", form_validator._errors)
+        self.assertNotIn("rx_htn_today", form_validator._errors)
+        self.assertNotIn("rx_hiv_today", form_validator._errors)
+        self.assertNotIn("rx_dm_today", form_validator._errors)
+
+    @tag("he")
+    def test_form_validator_recv_drugs_yes_other_no(self):
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "report_datetime": self.subject_visit.report_datetime,
+            "crf_status": COMPLETE,
+            "education_in_years": 10,
+            "education_certificate": "secondary",
+            "is_highest_earner": YES,
+            "food_per_month": None,
+            "accomodation_per_month": None,
+            "large_expenditure_year": None,
+            "received_rx_today": YES,
+            "rx_dm_today": NOT_APPLICABLE,
+            "rx_htn_today": NOT_APPLICABLE,
+            "rx_hiv_today": NO,
+            "rx_other_today": NO,
+        }
+
+        form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
+        try:
+            form_validator.validate()
+        except forms.ValidationError:
+            pass
+        self.assertNotIn("rx_other_today", form_validator._errors)
+        self.assertNotIn("rx_htn_today", form_validator._errors)
+        self.assertNotIn("rx_hiv_today", form_validator._errors)
+        self.assertNotIn("rx_dm_today", form_validator._errors)
 
     @tag("he")
     def test_form_validator_non_drug_activities(self):
@@ -385,12 +473,12 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             "rx_dm_month": NOT_APPLICABLE,
             "rx_htn_month": NOT_APPLICABLE,
             "rx_hiv_month": NOT_APPLICABLE,
-            "rx_other_month": NO,
+            "rx_other_month": NOT_APPLICABLE,
             "received_rx_today": NO,
             "rx_dm_today": NOT_APPLICABLE,
             "rx_htn_today": NOT_APPLICABLE,
             "rx_hiv_today": NOT_APPLICABLE,
-            "rx_other_today": NO,
+            "rx_other_today": NOT_APPLICABLE,
         }
 
         cleaned_data.update(
@@ -512,7 +600,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             "inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()]
         )
 
-    @tag("dx1")
+    @tag("he")
     def test_rx_against_diagnosis(self):
 
         cleaned_data = {
@@ -529,7 +617,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             "rx_dm_month": NOT_APPLICABLE,
             "rx_htn_month": NOT_APPLICABLE,
             "rx_hiv_month": NOT_APPLICABLE,
-            "rx_other_month": NO,
+            "rx_other_month": NOT_APPLICABLE,
             "received_rx_today": YES,
             "rx_dm_today": YES,
             "rx_htn_today": NOT_APPLICABLE,
@@ -547,4 +635,3 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             pass
         self.assertIn("rx_dm_today", form_validator._errors)
         self.assertNotIn("rx_hiv_today", form_validator._errors)
-        # self.assertDictEqual({}, form_validator._errors)
