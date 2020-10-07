@@ -12,11 +12,16 @@ from inte_prn.icc_registered import (
     is_icc_registered_site,
 )
 from inte_sites.is_intervention_site import NotInterventionSite
-from inte_subject.diagnoses import Diagnoses, InitialReviewRequired
-from inte_subject.models import HivInitialReview, HivReview, Medications
 from inte_visit_schedule.is_baseline import is_baseline
 
-from ..models import ClinicalReviewBaseline, ClinicalReview
+from ..diagnoses import Diagnoses, InitialReviewRequired, MultipleInitialReviewsExist
+from ..models import (
+    ClinicalReviewBaseline,
+    ClinicalReview,
+    HivInitialReview,
+    HivReview,
+    Medications,
+)
 
 
 def art_initiation_date(subject_identifier=None, report_datetime=None):
@@ -361,4 +366,48 @@ class MedicationAdherenceFormValidatorMixin:
         )
         self.m2m_other_specify(
             m2m_field="missed_pill_reason", field_other="other_missed_pill_reason"
+        )
+
+
+class DiagnosisFormValidatorMixin:
+    def get_diagnoses(self):
+        diagnoses = Diagnoses(
+            subject_identifier=self.subject_identifier,
+            report_datetime=self.report_datetime,
+        )
+        try:
+            diagnoses.initial_reviews
+        except InitialReviewRequired as e:
+            raise forms.ValidationError(e)
+        except MultipleInitialReviewsExist as e:
+            raise forms.ValidationError(e)
+        return diagnoses
+
+    def applicable_if_not_diagnosed(
+        self, diagnoses=None, field_dx=None, field_applicable=None, label=None
+    ):
+        diagnoses = diagnoses or self.get_diagnoses()
+        # htn
+        self.applicable_if_true(
+            getattr(diagnoses, field_dx) != YES,
+            field_applicable=field_applicable,
+            applicable_msg=(
+                f"Patient was not previously diagnosed with {label}. "
+                "Expected YES or NO."
+            ),
+            not_applicable_msg=f"Patient was previously diagnosed with {label}.",
+        )
+
+    def applicable_if_diagnosed(
+        self, diagnoses=None, field_dx=None, field_applicable=None, label=None
+    ):
+        diagnoses = diagnoses or self.get_diagnoses()
+        # htn
+        self.applicable_if_true(
+            getattr(diagnoses, field_dx) == YES,
+            field_applicable=field_applicable,
+            applicable_msg=(
+                f"Patient was previously diagnosed with {label}. " "Expected YES or NO."
+            ),
+            not_applicable_msg=f"Patient was not previously diagnosed with {label}.",
         )

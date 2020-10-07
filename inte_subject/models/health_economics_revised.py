@@ -1,7 +1,7 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from edc_constants.choices import YES_NO, YES_NO_NA
-from edc_constants.constants import NOT_APPLICABLE
+from edc_constants.constants import NO, NOT_APPLICABLE
 from edc_model import models as edc_models
 from inte_lists.models import DrugPaySources, TransportChoices
 
@@ -395,7 +395,8 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
     rx_dm_today = models.CharField(
         verbose_name="Did you receive drugs for raised blood sugar (diabetes) today?",
         max_length=15,
-        choices=YES_NO,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
     )
     rx_dm_paid_today = models.ManyToManyField(
         DrugPaySources,
@@ -424,7 +425,8 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
     rx_htn_today = models.CharField(
         verbose_name="Did you receive raised blood pressure (hypertension) drugs today?",
         max_length=15,
-        choices=YES_NO,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
     )
 
     rx_htn_paid_today = models.ManyToManyField(
@@ -451,7 +453,10 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     rx_hiv_today = models.CharField(
-        verbose_name="Did you receive ARVs (HIV) today?", max_length=15, choices=YES_NO,
+        verbose_name="Did you receive ARVs (HIV) today?",
+        max_length=15,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
     )
 
     rx_hiv_paid_today = models.ManyToManyField(
@@ -477,7 +482,8 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
     rx_other_today = models.CharField(
         verbose_name="Did you receive 'other' drugs today?",
         max_length=15,
-        choices=YES_NO,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
     )
 
     rx_other_paid_today = models.ManyToManyField(

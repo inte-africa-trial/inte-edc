@@ -6,16 +6,20 @@ from edc_form_validators.form_validator import FormValidator
 from inte_lists.models import DrugPaySources
 from inte_prn.models import IntegratedCareClinicRegistration
 from inte_sites.is_intervention_site import is_intervention_site
+from inte_subject.diagnoses import Diagnoses
 
 from ..models import HealthEconomicsRevised
 from .mixins import (
     CrfFormValidatorMixin,
     CrfModelFormMixin,
+    DiagnosisFormValidatorMixin,
     raise_if_clinical_review_does_not_exist,
 )
 
 
-class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
+class HealthEconomicsRevisedFormValidator(
+    DiagnosisFormValidatorMixin, CrfFormValidatorMixin, FormValidator
+):
     def clean(self):
         raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
 
@@ -112,13 +116,36 @@ class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
         )
 
     def clean_recv_drugs_by_duration(self, duration):
-        conditions = ["dm", "htn", "hiv", "other"]
-        for cond in conditions:
-            self.required_if(
-                YES,
-                field=f"received_rx_{duration}",
-                field_required=f"rx_{cond}_{duration}",
-            )
+        conditions = [
+            ("dm", "diabetes"),
+            ("htn", "hypertension"),
+            ("hiv", "HIV"),
+            ("other", None),
+        ]
+        diagnoses = self.get_diagnoses()
+        for cond, label in conditions:
+
+            if cond == "other":
+                self.applicable_if(
+                    YES,
+                    field=f"received_rx_{duration}",
+                    field_applicable=f"rx_{cond}_{duration}",
+                )
+            else:
+                if self.cleaned_data.get(f"received_rx_{duration}") == YES:
+                    self.applicable_if_diagnosed(
+                        diagnoses=diagnoses,
+                        field_dx=f"{cond}_dx",
+                        field_applicable=f"rx_{cond}_{duration}",
+                        label=label,
+                    )
+                else:
+                    self.applicable_if(
+                        YES,
+                        field=f"received_rx_{duration}",
+                        field_applicable=f"rx_{cond}_{duration}",
+                    )
+
             self.m2m_required_if(
                 response=YES,
                 field=f"rx_{cond}_{duration}",
@@ -143,18 +170,18 @@ class HealthEconomicsRevisedFormValidator(CrfFormValidatorMixin, FormValidator):
                 field_other_evaluate_as_int=True,
             )
 
-        responses = [self.cleaned_data.get(f"rx_{k}_{duration}") for k in conditions]
-        if self.cleaned_data.get(f"received_rx_{duration}") == YES and all(
-            [r == NO for r in responses]
-        ):
-            raise forms.ValidationError(
-                {
-                    f"received_rx_{duration}": (
-                        "Invalid. Must have received at least one type "
-                        "of drug below if `YES`."
-                    )
-                }
-            )
+        # responses = [self.cleaned_data.get(f"rx_{k}_{duration}") for k in conditions]
+        # if self.cleaned_data.get(f"received_rx_{duration}") == YES and all(
+        #     [r == NO for r in responses]
+        # ):
+        #     raise forms.ValidationError(
+        #         {
+        #             f"received_rx_{duration}": (
+        #                 "Invalid. Must have received at least one type "
+        #                 "of drug below if `YES`."
+        #             )
+        #         }
+        #     )
 
     def clean_non_drug_activities_by_duration(self, duration):
         self.required_if(

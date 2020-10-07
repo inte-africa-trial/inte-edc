@@ -7,7 +7,6 @@ from edc_visit_tracking.constants import SCHEDULED
 from faker import Faker
 from inte_consent.models import SubjectConsent
 from inte_consent.models import SubjectReconsent
-from inte_prn.models import IntegratedCareClinicRegistration
 from inte_subject.constants import THIS_CLINIC
 from inte_subject.models import (
     ClinicalReview,
