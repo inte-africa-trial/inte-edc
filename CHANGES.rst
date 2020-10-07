@@ -1,6 +1,10 @@
 Changes
 =======
 
+0.1.41
+------
+- add validation to catch multiple initials reviews submitted (inte-subject)
+
 0.1.40
 ------
 - fix baseline determination for drug refill `rx_modified` form
