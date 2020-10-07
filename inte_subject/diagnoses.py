@@ -1,9 +1,13 @@
 from django.apps import apps as django_apps
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from edc_constants.constants import YES
 
 
 class InitialReviewRequired(Exception):
+    pass
+
+
+class MultipleInitialReviewsExist(Exception):
     pass
 
 
@@ -181,6 +185,29 @@ class Diagnoses:
                         f"Complete the `{initial_review_model_cls._meta.verbose_name}` "
                         "CRF first."
                     )
+                except MultipleObjectsReturned:
+                    qs = initial_review_model_cls.objects.filter(
+                        subject_visit__subject_identifier=self.subject_identifier,
+                        **self.report_datetime_opts("subject_visit__", lte=True),
+                    ).order_by(
+                        "subject_visit__visit_code",
+                        "subject_visit__visit_code_sequence",
+                    )
+                    visits_str = ", ".join(
+                        [
+                            f"{obj.subject_visit.visit_code}.{obj.subject_visit.visit_code_sequence}"
+                            for obj in qs
+                        ]
+                    )
+                    raise MultipleInitialReviewsExist(
+                        f"More than one `{initial_review_model_cls._meta.verbose_name}` "
+                        f"has been submitted. "
+                        f"This needs to be corrected. Try removing all but the first "
+                        f"`{initial_review_model_cls._meta.verbose_name}` before continuing. "
+                        f"`{initial_review_model_cls._meta.verbose_name}` CRFs have been submitted "
+                        f"for visits {visits_str}"
+                    )
+
                 else:
                     initial_reviews.update({name: obj})
         return initial_reviews
