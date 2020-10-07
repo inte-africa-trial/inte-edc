@@ -8,6 +8,7 @@ from inte_subject.diagnoses import (
     Diagnoses,
     InitialReviewRequired,
     ClinicalReviewBaselineRequired,
+    MultipleInitialReviewsExist,
 )
 from tests.inte_test_case_mixin import InteTestCaseMixin
 from model_bakery import baker
@@ -240,3 +241,46 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
             diagnoses.htn_dx_date, htn_initial_review.get_best_dx_date().date(),
         )
         self.assertIsNotNone(diagnoses.htn_dx_date)
+
+    @tag("dx")
+    def test_diagnoses_dates_baseline(self):
+        subject_visit_baseline = self.get_subject_visit(
+            subject_screening=self.subject_screening,
+            subject_consent=self.subject_consent,
+        )
+
+        baker.make(
+            "inte_subject.clinicalreviewbaseline",
+            subject_visit=subject_visit_baseline,
+            hiv_test=POS,
+            hiv_dx=YES,
+            hiv_test_ago="5y",
+        )
+        baker.make(
+            "inte_subject.hivinitialreview",
+            subject_visit=subject_visit_baseline,
+            dx_ago="5y",
+            arv_initiation_ago="4y",
+        )
+        subject_visit_baseline.appointment.appt_status = INCOMPLETE_APPT
+        subject_visit_baseline.appointment.save()
+        subject_visit_baseline.appointment.refresh_from_db()
+        subject_visit_baseline.refresh_from_db()
+
+        subject_visit = self.get_next_subject_visit(
+            subject_visit=subject_visit_baseline, reason=UNSCHEDULED
+        )
+
+        baker.make(
+            "inte_subject.hivinitialreview",
+            subject_visit=subject_visit,
+            dx_ago="5y",
+            arv_initiation_ago="4y",
+        )
+
+        diagnoses = Diagnoses(
+            subject_identifier=subject_visit_baseline.subject_identifier,
+        )
+        self.assertRaises(
+            MultipleInitialReviewsExist, getattr, diagnoses, "initial_reviews"
+        )

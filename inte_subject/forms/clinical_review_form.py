@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from edc_constants.constants import NO, YES
 from edc_form_validators.form_validator import FormValidator
+from inte_subject.diagnoses import MultipleInitialReviewsExist
 from inte_subject.models import ClinicalReviewBaseline
 
 from ..models import ClinicalReview
@@ -24,6 +25,8 @@ class ClinicalReviewFormValidator(CrfFormValidatorMixin, FormValidator):
         try:
             diagnoses.initial_reviews
         except InitialReviewRequired as e:
+            raise forms.ValidationError(e)
+        except MultipleInitialReviewsExist as e:
             raise forms.ValidationError(e)
 
         # htn
