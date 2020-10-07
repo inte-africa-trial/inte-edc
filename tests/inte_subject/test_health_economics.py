@@ -1,3 +1,5 @@
+import pdb
+
 from django import forms
 from django.test import override_settings, TestCase, tag  # noqa
 from edc_appointment.constants import INCOMPLETE_APPT
@@ -33,7 +35,12 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             subject_consent=self.subject_consent,
         )
         baker.make(
-            "inte_subject.clinicalreviewbaseline", subject_visit=self.subject_visit
+            "inte_subject.clinicalreviewbaseline",
+            subject_visit=self.subject_visit,
+            hiv_dx=YES,
+        )
+        baker.make(
+            "hivinitialreview", subject_visit=self.subject_visit,
         )
 
     @tag("he")
@@ -188,7 +195,42 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             pass
         self.assertDictEqual({}, form_validator._errors)
 
-    @tag("he")
+    @tag("he1")
+    def test_form_validator_requires_dx(self):
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "report_datetime": self.subject_visit.report_datetime,
+            "crf_status": COMPLETE,
+            "education_in_years": 10,
+            "education_certificate": "secondary",
+            "is_highest_earner": YES,
+            "food_per_month": None,
+            "accomodation_per_month": None,
+            "large_expenditure_year": None,
+            "received_rx_month": YES,
+            "rx_dm_month": YES,
+        }
+        form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
+        try:
+            form_validator.validate()
+        except forms.ValidationError:
+            pass
+        self.assertIn("rx_dm_month", form_validator._errors)
+        self.assertIn(
+            "Patient was not previously diagnosed with hypertension",
+            str(form_validator._errors.get("rx_dm_month")),
+        )
+
+        cleaned_data.update({"rx_dm_month": NOT_APPLICABLE})
+        form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
+        try:
+            form_validator.validate()
+        except forms.ValidationError:
+            pass
+        self.assertNotIn("rx_dm_month", form_validator._errors)
+        self.assertDictEqual({}, form_validator._errors)
+
+    @tag("he1")
     def test_form_validator_recv_drugs_month(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -201,40 +243,40 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             "accomodation_per_month": None,
             "large_expenditure_year": None,
             "received_rx_month": YES,
-            "rx_dm_month": NOT_APPLICABLE,
+            "rx_hiv_month": NOT_APPLICABLE,
         }
         form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
         try:
             form_validator.validate()
         except forms.ValidationError:
             pass
-        self.assertIn("rx_dm_month", form_validator._errors)
+        self.assertIn("rx_hiv_month", form_validator._errors)
 
         cleaned_data.update(
-            rx_dm_month=YES, rx_dm_paid_month=[],
+            rx_hiv_month=YES, rx_hiv_paid_month=[],
         )
         form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
         try:
             form_validator.validate()
         except forms.ValidationError:
             pass
-        self.assertIn("rx_dm_paid_month", form_validator._errors)
+        self.assertIn("rx_hiv_paid_month", form_validator._errors)
 
         # check if "free of charge" then enforces a single selection
         cleaned_data.update(
-            rx_dm_month=YES, rx_dm_paid_month=DrugPaySources.objects.all(),
+            rx_hiv_month=YES, rx_hiv_paid_month=DrugPaySources.objects.all(),
         )
         form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
         try:
             form_validator.validate()
         except forms.ValidationError:
             pass
-        self.assertIn("rx_dm_paid_month", form_validator._errors)
+        self.assertIn("rx_hiv_paid_month", form_validator._errors)
 
         # check if not "free of charge" then requires cost
         cleaned_data.update(
-            rx_dm_month=YES,
-            rx_dm_paid_month=DrugPaySources.objects.exclude(
+            rx_hiv_month=YES,
+            rx_hiv_paid_month=DrugPaySources.objects.exclude(
                 name__in=[FREE_OF_CHARGE, OTHER]
             ),
         )
@@ -243,39 +285,39 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             form_validator.validate()
         except forms.ValidationError:
             pass
-        self.assertIn("rx_dm_cost_month", form_validator._errors)
+        self.assertIn("rx_hiv_cost_month", form_validator._errors)
 
         # check if not "free of charge" then requires cost
         cleaned_data.update(
-            rx_dm_month=YES,
-            rx_dm_paid_month=DrugPaySources.objects.exclude(
+            rx_hiv_month=YES,
+            rx_hiv_paid_month=DrugPaySources.objects.exclude(
                 name__in=[FREE_OF_CHARGE, OTHER]
             ),
-            rx_dm_cost_month=1000,
+            rx_hiv_cost_month=1000,
         )
         form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
         try:
             form_validator.validate()
         except forms.ValidationError:
             pass
-        self.assertNotIn("rx_dm_paid_month", form_validator._errors)
-        self.assertNotIn("rx_dm_cost_month", form_validator._errors)
-        self.assertNotIn("rx_dm_paid_month_other", form_validator._errors)
+        self.assertNotIn("rx_hiv_paid_month", form_validator._errors)
+        self.assertNotIn("rx_hiv_cost_month", form_validator._errors)
+        self.assertNotIn("rx_hiv_paid_month_other", form_validator._errors)
 
         # check other
         cleaned_data.update(
-            rx_dm_month=YES,
-            rx_dm_paid_month=DrugPaySources.objects.filter(name=OTHER),
-            rx_dm_cost_month=1000,
+            rx_hiv_month=YES,
+            rx_hiv_paid_month=DrugPaySources.objects.filter(name=OTHER),
+            rx_hiv_cost_month=1000,
         )
         form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
         try:
             form_validator.validate()
         except forms.ValidationError:
             pass
-        self.assertIn("rx_dm_paid_month_other", form_validator._errors)
+        self.assertIn("rx_hiv_paid_month_other", form_validator._errors)
 
-    @tag("he")
+    @tag("he1")
     def test_form_validator_recv_drugs_all_no(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -297,8 +339,8 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         cleaned_data.update(
             {
                 "received_rx_today": YES,
-                "rx_dm_today": NO,
-                "rx_htn_today": NO,
+                "rx_dm_today": NOT_APPLICABLE,
+                "rx_htn_today": NOT_APPLICABLE,
                 "rx_hiv_today": NO,
                 "rx_other_today": NO,
             }
@@ -308,6 +350,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             form_validator.validate()
         except forms.ValidationError:
             pass
+        pdb.set_trace()
         self.assertIn("received_rx_today", form_validator._errors)
 
         cleaned_data.update(
@@ -342,12 +385,12 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             "rx_dm_month": NOT_APPLICABLE,
             "rx_htn_month": NOT_APPLICABLE,
             "rx_hiv_month": NOT_APPLICABLE,
-            "rx_other_month": NOT_APPLICABLE,
+            "rx_other_month": NO,
             "received_rx_today": NO,
             "rx_dm_today": NOT_APPLICABLE,
             "rx_htn_today": NOT_APPLICABLE,
             "rx_hiv_today": NOT_APPLICABLE,
-            "rx_other_today": NOT_APPLICABLE,
+            "rx_other_today": NO,
         }
 
         cleaned_data.update(
@@ -468,3 +511,40 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         self.assertNotIn(
             "inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()]
         )
+
+    @tag("dx1")
+    def test_rx_against_diagnosis(self):
+
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "report_datetime": self.subject_visit.report_datetime,
+            "crf_status": COMPLETE,
+            "education_in_years": 10,
+            "education_certificate": "secondary",
+            "is_highest_earner": YES,
+            "food_per_month": None,
+            "accomodation_per_month": None,
+            "large_expenditure_year": None,
+            "received_rx_month": NO,
+            "rx_dm_month": NOT_APPLICABLE,
+            "rx_htn_month": NOT_APPLICABLE,
+            "rx_hiv_month": NOT_APPLICABLE,
+            "rx_other_month": NO,
+            "received_rx_today": YES,
+            "rx_dm_today": YES,
+            "rx_htn_today": NOT_APPLICABLE,
+            "rx_hiv_today": NO,
+            "rx_other_today": NO,
+            "non_drug_activities_month": YES,
+            "non_drug_activities_detail_month": "blah",
+            "non_drug_activities_cost_month": 10,
+        }
+
+        form_validator = HealthEconomicsRevisedFormValidator(cleaned_data=cleaned_data)
+        try:
+            form_validator.validate()
+        except forms.ValidationError:
+            pass
+        self.assertIn("rx_dm_today", form_validator._errors)
+        self.assertNotIn("rx_hiv_today", form_validator._errors)
+        # self.assertDictEqual({}, form_validator._errors)
