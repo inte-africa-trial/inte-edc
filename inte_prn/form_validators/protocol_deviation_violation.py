@@ -1,7 +1,6 @@
 from edc_constants.constants import YES, OTHER, CLOSED
 from edc_form_validators import FormValidator
-
-from ..constants import VIOLATION
+from edc_prn.constants import VIOLATION
 
 
 class ProtocolDeviationViolationFormValidator(FormValidator):

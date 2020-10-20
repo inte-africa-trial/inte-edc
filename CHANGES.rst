@@ -1,6 +1,13 @@
 Changes
 =======
 
+0.1.48
+------
+- update missed visit, ltfu, death report flow
+- pin HE CRF to 6 months instead of any time after baseline
+- update HTN drug list
+- bump to edc 0.1.60
+
 0.1.41
 ------
 - add validation to catch multiple initials reviews submitted (inte-subject)

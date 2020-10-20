@@ -11,6 +11,7 @@ from edc_visit_tracking.model_mixins import VisitModelMixin
 from inte_lists.models import ClinicServices, HealthServices
 
 from ..choices import INFO_SOURCE, VISIT_UNSCHEDULED_REASON, VISIT_REASON
+from .subject_visit_missed import SubjectVisitMissed
 
 
 class CurrentSiteManager(VisitModelManager, BaseCurrentSiteManager):
@@ -37,6 +38,7 @@ class SubjectVisit(
         help_text=(
             "Only baseline (0m), 6m and 12m are considered "
             "`scheduled` visits as per the INTE protocol."
+            f"If `missed' complete CRF {SubjectVisitMissed._meta.verbose_name}."
         ),
     )
 

@@ -4,12 +4,7 @@ from random import choices
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
-from edc_appointment.constants import (
-    IN_PROGRESS_APPT,
-    INCOMPLETE_APPT,
-)
-from edc_appointment.creators import UnscheduledAppointmentCreator
-from edc_appointment.models import Appointment
+from edc_appointment.tests.appointment_test_case_mixin import AppointmentTestCaseMixin
 from edc_auth.fix_export_permissions import ExportPermissionsFixer
 from edc_auth.group_permissions_updater import GroupPermissionsUpdater
 from edc_constants.constants import YES, NOT_APPLICABLE, RANDOM_SAMPLING, MALE, NO
@@ -31,10 +26,8 @@ from inte_sites.sites import fqdn
 from inte_subject.models import SubjectVisit
 from model_bakery import baker
 
-from django.core.exceptions import ObjectDoesNotExist
 
-
-class InteTestCaseMixin(SiteTestCaseMixin):
+class InteTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
     fqdn = fqdn
 
     default_sites = get_sites_by_country("uganda")
@@ -42,6 +35,8 @@ class InteTestCaseMixin(SiteTestCaseMixin):
     site_names = [s.name for s in default_sites]
 
     import_randomization_list = True
+
+    subject_visit_model_cls = SubjectVisit
 
     @classmethod
     def setUpClass(cls):
@@ -126,44 +121,6 @@ class InteTestCaseMixin(SiteTestCaseMixin):
         options.update(**kwargs)
         return baker.make_recipe("inte_consent.subjectconsent", **options)
 
-    def get_appointment(
-        self,
-        subject_identifier=None,
-        visit_code=None,
-        visit_code_sequence=None,
-        reason=None,
-        appt_datetime=None,
-    ):
-        appointment = Appointment.objects.get(
-            subject_identifier=subject_identifier,
-            visit_code=visit_code,
-            visit_code_sequence=visit_code_sequence,
-        )
-        if appt_datetime:
-            appointment.appt_datetime = appt_datetime
-            appointment.save()
-            appointment.refresh_from_db()
-        if reason == UNSCHEDULED:
-            appointment = self.create_unscheduled_appointment(appointment)
-        appointment.appt_status = IN_PROGRESS_APPT
-        appointment.save()
-        appointment.refresh_from_db()
-        return appointment
-
-    @staticmethod
-    def create_unscheduled_appointment(appointment):
-        appointment.appt_status = INCOMPLETE_APPT
-        appointment.save()
-        appointment.refresh_from_db()
-        appt_creator = UnscheduledAppointmentCreator(
-            subject_identifier=appointment.subject_identifier,
-            visit_schedule_name=appointment.visit_schedule_name,
-            schedule_name=appointment.schedule_name,
-            visit_code=appointment.visit_code,
-            facility=appointment.facility,
-        )
-        return appt_creator.appointment
-
     def get_subject_visit(
         self,
         visit_code=None,
@@ -189,7 +146,9 @@ class InteTestCaseMixin(SiteTestCaseMixin):
                 reason=reason,
                 appt_datetime=appt_datetime,
             )
-        return SubjectVisit.objects.create(appointment=appointment, reason=reason)
+        return self.subject_visit_model_cls.objects.create(
+            appointment=appointment, reason=reason
+        )
 
     def get_next_subject_visit(
         self, subject_visit=None, reason=None, appt_datetime=None,

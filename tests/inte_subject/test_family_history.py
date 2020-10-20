@@ -60,7 +60,7 @@ class TestFamilyHistory(InteTestCaseMixin, TestCase):
         )
         self.assertIn("inte_subject.familyhistory", [o.model for o in crfs.all()])
 
-    @tag("fam1")
+    @tag("fam")
     def test_required_at_next_visit_if_not_completed_previously(self):
         self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
         self.subject_visit.appointment.save()

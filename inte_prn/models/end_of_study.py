@@ -4,10 +4,10 @@ from edc_constants.choices import YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_identifier.model_mixins import TrackingModelMixin
 from edc_model import models as edc_models
+from edc_offstudy.constants import END_OF_STUDY_ACTION
+from edc_sites.models import CurrentSiteManager
 from edc_visit_schedule.model_mixins import OffScheduleModelMixin
 from inte_lists.models import OffstudyReasons
-
-from ..constants import END_OF_STUDY_ACTION
 
 
 class EndOfStudy(
@@ -60,6 +60,13 @@ class EndOfStudy(
         null=True,
     )
 
+    ltfu_date = models.DateField(
+        verbose_name="Date lost to followup, if applicable",
+        validators=[edc_models.date_not_future],
+        blank=True,
+        null=True,
+    )
+
     transferred_consent = models.CharField(
         verbose_name=(
             "If transferred, has the patient provided consent to be followed-up?"
@@ -68,6 +75,8 @@ class EndOfStudy(
         max_length=15,
         default=NOT_APPLICABLE,
     )
+
+    on_site = CurrentSiteManager()
 
     class Meta(OffScheduleModelMixin.Meta):
         verbose_name = "End of Study"

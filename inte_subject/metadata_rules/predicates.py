@@ -1,11 +1,6 @@
 from django.apps import apps as django_apps
 from django.core.exceptions import ObjectDoesNotExist
 from edc_metadata_rules import PredicateCollection
-from inte_prn.icc_registered import (
-    InterventionSiteNotRegistered,
-    is_icc_registered_site,
-)
-from inte_sites.is_intervention_site import NotInterventionSite
 from inte_visit_schedule.is_baseline import is_baseline
 
 
@@ -16,26 +11,13 @@ class Predicates(PredicateCollection):
 
     @staticmethod
     def health_economics_required(visit, **kwargs):
-        """Returns True if this is not the baseline visit and
+        """Returns True if this is the 6m visit and
         the CRF has NOT been previously completed.
         """
         required = False
-        icc_registered = False
-        intervention_site = False
-        try:
-            is_icc_registered_site(
-                report_datetime=visit.report_datetime, site=visit.site
-            )
-        except NotInterventionSite:
-            pass
-        except InterventionSiteNotRegistered:
-            intervention_site = True
-        else:
-            intervention_site = True
-            icc_registered = True
-
-        if not is_baseline(visit) and (
-            (intervention_site and icc_registered) or not intervention_site
+        if (
+            visit.appointment.visit_code == "1060"
+            and visit.appointment.visit_code_sequence == 0
         ):
             model_cls = django_apps.get_model("inte_subject.healtheconomicsrevised")
             try:

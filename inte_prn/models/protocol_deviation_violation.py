@@ -11,10 +11,10 @@ from edc_identifier.model_mixins import (
 )
 from edc_model import REPORT_STATUS
 from edc_model import models as edc_models
+from edc_prn.constants import PROTOCOL_DEVIATION_VIOLATION_ACTION
 from edc_sites.models import SiteModelMixin
 from edc_utils import get_utcnow
 
-from ..constants import PROTOCOL_DEVIATION_VIOLATION_ACTION
 from ..choices import PROTOCOL_VIOLATION, ACTION_REQUIRED, DEVIATION_VIOLATION
 
 

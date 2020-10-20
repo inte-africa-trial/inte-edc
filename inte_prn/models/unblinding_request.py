@@ -8,6 +8,7 @@ from edc_identifier.model_mixins import (
     NonUniqueSubjectIdentifierFieldMixin,
 )
 from edc_model.models.base_uuid_model import BaseUuidModel
+from edc_prn.constants import UNBLINDING_REQUEST_ACTION
 from edc_sites.models import SiteModelMixin, CurrentSiteManager
 from edc_utils.date import get_utcnow
 from django.core.validators import (
@@ -16,7 +17,6 @@ from django.core.validators import (
     MaxLengthValidator,
 )
 
-from ..constants import UNBLINDING_REQUEST_ACTION
 from .unblinding_user import UnblindingRequestorUser
 
 

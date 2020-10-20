@@ -1,7 +1,8 @@
-from django.apps import apps as django_apps
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils.safestring import mark_safe
 from edc_action_item import ActionWithNotification, site_action_items
+from edc_adverse_event.action_items import DeathReportAction as BaseDeathReportAction
 from edc_adverse_event.constants import (
     AE_INITIAL_ACTION,
     AE_FOLLOWUP_ACTION,
@@ -20,8 +21,11 @@ from edc_constants.constants import (
 )
 from edc_reportable import GRADE5, GRADE4, GRADE3
 from edc_visit_schedule.utils import get_offschedule_models
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from inte_prn.constants import END_OF_STUDY_ACTION
+from edc_visit_tracking.constants import VISIT_MISSED_ACTION
+
+
+class DeathReportAction(BaseDeathReportAction):
+    parent_action_names = [AE_INITIAL_ACTION, AE_FOLLOWUP_ACTION, VISIT_MISSED_ACTION]
 
 
 class AeFollowupAction(ActionWithNotification):
@@ -177,43 +181,6 @@ class AeTmgAction(ActionWithNotification):
 
     def close_action_item_on_save(self):
         return self.reference_obj.report_status == CLOSED
-
-
-class DeathReportAction(ActionWithNotification):
-    name = DEATH_REPORT_ACTION
-    display_name = "Submit Death Report"
-    notification_display_name = "Death Report"
-    reference_model = "inte_ae.deathreport"
-    parent_action_names = [AE_INITIAL_ACTION, AE_FOLLOWUP_ACTION]
-    show_link_to_changelist = True
-    show_link_to_add = True
-    admin_site_name = "inte_ae_admin"
-    priority = HIGH_PRIORITY
-    singleton = True
-    dirty_fields = ["cause_of_death"]
-
-    def get_next_actions(self):
-        """Adds 1 DEATHReportTMG if not yet created and
-        END_OF_STUDY_ACTION if required.
-        """
-        # DEATH_REPORT_TMG_ACTION
-        try:
-            self.action_item_model_cls().objects.get(
-                parent_action_item=self.reference_obj.action_item,
-                related_action_item=self.reference_obj.action_item,
-                action_type__name=DEATH_REPORT_TMG_ACTION,
-            )
-        except ObjectDoesNotExist:
-            next_actions = [DEATH_REPORT_TMG_ACTION]
-        else:
-            next_actions = []
-
-        off_schedule_cls = django_apps.get_model("inte_prn.endofstudy")
-        try:
-            off_schedule_cls.objects.get(subject_identifier=self.subject_identifier)
-        except ObjectDoesNotExist:
-            next_actions.append(END_OF_STUDY_ACTION)
-        return next_actions
 
 
 class DeathReportTmgAction(ActionWithNotification):

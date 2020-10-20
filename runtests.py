@@ -22,6 +22,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
     SITE_ID=SiteID(default=101),
     EDC_SITES_MODULE_NAME="inte_sites.sites",
     SUBJECT_VISIT_MODEL="inte_subject.subjectvisit",
+    SUBJECT_VISIT_MISSED_MODEL="inte_subject.subjectvisitmissed",
     SUBJECT_CONSENT_MODEL="inte_consent.subjectconsent",
     SUBJECT_REQUISITION_MODEL=f"inte_subject.subjectrequisition",
     EDC_PROTOCOL_STUDY_OPEN_DATETIME=get_datetime_from_env(2019, 6, 30, 0, 0, 0, "UTC"),

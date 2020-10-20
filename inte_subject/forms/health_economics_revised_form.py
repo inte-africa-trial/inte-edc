@@ -170,19 +170,6 @@ class HealthEconomicsRevisedFormValidator(
                 field_other_evaluate_as_int=True,
             )
 
-        # responses = [self.cleaned_data.get(f"rx_{k}_{duration}") for k in conditions]
-        # if self.cleaned_data.get(f"received_rx_{duration}") == YES and all(
-        #     [r == NO for r in responses]
-        # ):
-        #     raise forms.ValidationError(
-        #         {
-        #             f"received_rx_{duration}": (
-        #                 "Invalid. Must have received at least one type "
-        #                 "of drug below if `YES`."
-        #             )
-        #         }
-        #     )
-
     def clean_non_drug_activities_by_duration(self, duration):
         self.required_if(
             YES,
