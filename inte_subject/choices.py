@@ -117,6 +117,7 @@ INFO_SOURCE = (
     ("patient", "Patient"),
     ("patient_and_outpatient", "Patient, hospital notes and/or outpatient card"),
     ("collateral_history", "Collateral History from relative/guardian"),
+    (NOT_APPLICABLE, "Not applicable"),
     (OTHER, "Other"),
 )
 
@@ -169,6 +170,6 @@ VISIT_UNSCHEDULED_REASON = (
 
 VISIT_REASON = (
     (SCHEDULED, "Scheduled visit (study)"),
-    (UNSCHEDULED, "Routine / Unschedule visit (non-study)"),
+    (UNSCHEDULED, "Routine / Unscheduled visit (non-study)"),
     (MISSED_VISIT, "Missed visit"),
 )

@@ -11,6 +11,7 @@ from edc_constants.constants import (
 )
 from edc_metadata import REQUIRED
 from edc_metadata.models import CrfMetadata
+from edc_visit_tracking.constants import UNSCHEDULED
 from inte_lists.models import DrugPaySources
 from inte_prn.models import IntegratedCareClinicRegistration
 from inte_subject.forms import (
@@ -546,7 +547,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         )
 
     @tag("he")
-    def test_required_at_next_visit(self):
+    def test_required_at_6m(self):
         self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
         self.subject_visit.appointment.save()
         self.subject_visit.appointment.refresh_from_db()
@@ -554,7 +555,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         subject_visit = self.get_subject_visit(
             subject_screening=self.subject_screening,
             subject_consent=self.subject_consent,
-            visit_code=self.subject_visit.appointment.next.visit_code,
+            visit_code="1060",
         )
 
         crfs = CrfMetadata.objects.filter(
@@ -567,8 +568,8 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             "inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()]
         )
 
-    @tag("he")
-    def test_not_required_at_next_visit_if_completed_previously(self):
+    @tag("he1")
+    def test_not_required_6m_visit_if_completed_previously(self):
         self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
         self.subject_visit.appointment.save()
         self.subject_visit.appointment.refresh_from_db()
@@ -576,20 +577,11 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         subject_visit = self.get_subject_visit(
             subject_screening=self.subject_screening,
             subject_consent=self.subject_consent,
-            visit_code=self.subject_visit.appointment.next.visit_code,
+            visit_code="1060",
         )
 
         baker.make("inte_subject.healtheconomicsrevised", subject_visit=subject_visit)
 
-        subject_visit.appointment.appt_status = INCOMPLETE_APPT
-        subject_visit.appointment.save()
-        subject_visit.appointment.refresh_from_db()
-
-        subject_visit = self.get_subject_visit(
-            subject_screening=self.subject_screening,
-            subject_consent=self.subject_consent,
-            visit_code=subject_visit.appointment.next.visit_code,
-        )
         crfs = CrfMetadata.objects.filter(
             subject_identifier=subject_visit.subject_identifier,
             visit_code=subject_visit.visit_code,

@@ -30,6 +30,7 @@ class SubjectVisitMissedAdmin(
                     "contact_last_date",
                     "missed_reasons",
                     "missed_reasons_other",
+                    "ltfu",
                     "comment",
                 ),
             },
@@ -43,4 +44,5 @@ class SubjectVisitMissedAdmin(
         "survival_status": admin.VERTICAL,
         "contact_attempted": admin.VERTICAL,
         "contact_made": admin.VERTICAL,
+        "ltfu": admin.VERTICAL,
     }

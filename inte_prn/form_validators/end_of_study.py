@@ -1,12 +1,14 @@
+from edc_adverse_event.form_validators import ValidateDeathReportMixin
 from edc_consent.constants import CONSENT_WITHDRAWAL
 from edc_constants.constants import DEAD, OTHER
 from edc_form_validators import FormValidator
-
-from ..constants import OTHER_RX_DISCONTINUATION
-from .validate_death_report_mixin import ValidateDeathReportMixin
+from edc_offstudy.constants import OTHER_RX_DISCONTINUATION
 
 
 class EndOfStudyFormValidator(ValidateDeathReportMixin, FormValidator):
+
+    offschedule_reason_field = "offschedule_reason"
+
     def clean(self):
 
         self.validate_death_report_if_deceased()
