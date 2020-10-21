@@ -76,6 +76,8 @@ class EndOfStudy(
         default=NOT_APPLICABLE,
     )
 
+    comment = models.TextField(verbose_name="Comments", null=True, blank=True)
+
     on_site = CurrentSiteManager()
 
     class Meta(OffScheduleModelMixin.Meta):
