@@ -5,6 +5,7 @@ from edc_visit_schedule.constants import (
     MONTH6,
     MONTH12,
 )
+from ..constants import SCHEDULE_HIV, SCHEDULE_NCD
 
 from .crfs import (
     crfs_d1,
@@ -21,9 +22,6 @@ from .requisitions import (
 )
 
 default_requisitions = None
-
-SCHEDULE_HIV = "schedule_hiv"
-SCHEDULE_NCD = "schedule_ncd"
 
 
 class Visit(BaseVisit):
@@ -52,18 +50,20 @@ schedule_hiv = Schedule(
     name=SCHEDULE_HIV,
     verbose_name="Day 1 to Month 12",
     onschedule_model="inte_prn.onschedulehiv",
-    offschedule_model="inte_prn.endofstudy",
+    offschedule_model="inte_prn.offschedulehiv",
     consent_model="inte_consent.subjectconsent",
     appointment_model="edc_appointment.appointment",
+    loss_to_followup_model="inte_prn.losstofollowup",
 )
 
 schedule_ncd = Schedule(
     name=SCHEDULE_NCD,
     verbose_name="Day 1 to Month 12",
     onschedule_model="inte_prn.onschedulencd",
-    offschedule_model="inte_prn.endofstudy",
+    offschedule_model="inte_prn.offschedulencd",
     consent_model="inte_consent.subjectconsent",
     appointment_model="edc_appointment.appointment",
+    loss_to_followup_model="inte_prn.losstofollowup",
 )
 
 visit00 = Visit(
