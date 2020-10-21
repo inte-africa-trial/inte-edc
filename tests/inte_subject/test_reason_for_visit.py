@@ -1,5 +1,3 @@
-# import pdb
-#
 # from django.test import TestCase, tag
 # from edc_constants.constants import (
 #     HIV,

@@ -24,6 +24,17 @@ class EndOfStudyForm(
         widget=forms.TextInput(attrs={"readonly": "readonly"}),
     )
 
+    visit_schedule = forms.CharField(
+        label="Schedule",
+        required=False,
+        widget=forms.TextInput(attrs={"readonly": "readonly"}),
+    )
+    schedule = forms.CharField(
+        label="Schedule",
+        required=False,
+        widget=forms.TextInput(attrs={"readonly": "readonly"}),
+    )
+
     class Meta:
         model = EndOfStudy
         fields = "__all__"

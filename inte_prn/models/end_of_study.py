@@ -6,12 +6,16 @@ from edc_identifier.model_mixins import TrackingModelMixin
 from edc_model import models as edc_models
 from edc_offstudy.constants import END_OF_STUDY_ACTION
 from edc_sites.models import CurrentSiteManager
-from edc_visit_schedule.model_mixins import OffScheduleModelMixin
+from edc_visit_schedule.model_mixins import (
+    OffScheduleModelMixin,
+    VisitScheduleFieldsModelMixin,
+)
 from inte_lists.models import OffstudyReasons
 
 
 class EndOfStudy(
     OffScheduleModelMixin,
+    VisitScheduleFieldsModelMixin,
     ActionModelMixin,
     TrackingModelMixin,
     edc_models.BaseUuidModel,

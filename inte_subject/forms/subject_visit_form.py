@@ -1,5 +1,3 @@
-import pdb
-
 from django import forms
 from edc_constants.constants import NOT_APPLICABLE, OTHER, STUDY_DEFINED_TIMEPOINT
 from edc_form_validators import FormValidatorMixin

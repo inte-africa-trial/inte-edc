@@ -1,6 +1,7 @@
 from .end_of_study import EndOfStudy
 from .integrated_care_clinic_registration import IntegratedCareClinicRegistration
 from .loss_to_followup import LossToFollowup
+from .offschedule import OffScheduleNcd, OffScheduleHiv
 from .onschedule import OnScheduleHiv, OnScheduleNcd
 from .protocol_deviation_violation import ProtocolDeviationViolation
 from .unblinding_request import UnblindingRequest
