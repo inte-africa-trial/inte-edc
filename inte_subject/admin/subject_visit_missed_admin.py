@@ -24,8 +24,8 @@ class SubjectVisitMissedAdmin(
                 "fields": (
                     "survival_status",
                     "contact_attempted",
-                    "contact_made",
                     "contact_attempts_count",
+                    "contact_made",
                     "contact_attempts_explained",
                     "contact_last_date",
                     "missed_reasons",
