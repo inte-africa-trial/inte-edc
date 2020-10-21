@@ -1,6 +1,10 @@
 Changes
 =======
 
+0.1.50
+------
+- bump to edc 0.1.62
+
 0.1.48
 ------
 - update missed visit, ltfu, death report flow
