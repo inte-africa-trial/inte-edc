@@ -1,6 +1,12 @@
 Changes
 =======
 
+0.1.52
+------
+- add proxy models for offschedule and ltfu
+- fix issues with acion items and missed visit, ltfu, end of study
+  flow
+
 0.1.50
 ------
 - bump to edc 0.1.62
