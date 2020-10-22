@@ -23,6 +23,7 @@ class EndOfStudyHivAction(BaseEndOfStudyAction):
     name = END_OF_STUDY_HIV_ACTION
     display_name = "Submit End of Study (HIV)"
     notification_display_name = "End of Study (HIV)"
+    singleton = True
     parent_action_names = [
         UNBLINDING_REVIEW_ACTION,
         DEATH_REPORT_ACTION,
@@ -36,6 +37,7 @@ class EndOfStudyNcdAction(BaseEndOfStudyAction):
     name = END_OF_STUDY_NCD_ACTION
     display_name = "Submit End of Study (NCD)"
     notification_display_name = "End of Study (NCD)"
+    singleton = True
     parent_action_names = [
         UNBLINDING_REVIEW_ACTION,
         DEATH_REPORT_ACTION,
@@ -47,6 +49,7 @@ class LossToFollowupHivAction(BaseLossToFollowupAction):
     reference_model = "inte_prn.losstofollowuphiv"
     admin_site_name = "inte_prn_admin"
     name = LOSS_TO_FOLLOWUP_HIV_ACTION
+    singleton = True
 
     def get_next_actions(self):
         next_actions = [END_OF_STUDY_HIV_ACTION]
@@ -57,6 +60,7 @@ class LossToFollowupNcdAction(BaseLossToFollowupAction):
     reference_model = "inte_prn.losstofollowupncd"
     admin_site_name = "inte_prn_admin"
     name = LOSS_TO_FOLLOWUP_NCD_ACTION
+    singleton = True
 
     def get_next_actions(self):
         next_actions = [END_OF_STUDY_NCD_ACTION]
