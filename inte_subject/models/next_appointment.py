@@ -34,6 +34,13 @@ class NextAppointment(CrfModelMixin, edc_models.BaseUuidModel):
         help_text="if applicable.",
     )
 
+    integrated_clinic_appt_date = models.DateField(
+        verbose_name="Integrated clinic: next scheduled routine appointment",
+        null=True,
+        blank=True,
+        help_text="if applicable.",
+    )
+
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
         verbose_name = "Routine Appointment"
         verbose_name_plural = "Routine Appointments"
