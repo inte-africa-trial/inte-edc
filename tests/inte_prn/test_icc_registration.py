@@ -6,8 +6,7 @@ from inte_prn.forms import IntegratedCareClinicRegistrationForm
 from ..inte_test_case_mixin import InteTestCaseMixin
 
 
-class IccRegistrationLog(InteTestCaseMixin, TestCase):
-    @tag("icc")
+class TestIccRegistrationLog(InteTestCaseMixin, TestCase):
     @override_settings(SITE_ID=103)
     def test_icc_registration_intervention(self):
         cleaned_data = {
@@ -19,7 +18,6 @@ class IccRegistrationLog(InteTestCaseMixin, TestCase):
         form.is_valid()
         self.assertNotIn("__all__", [k for k in form._errors.keys()])
 
-    @tag("icc")
     @override_settings(SITE_ID=101)
     def test_icc_registration_control(self):
         cleaned_data = {

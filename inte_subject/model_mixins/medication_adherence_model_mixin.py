@@ -29,7 +29,8 @@ class MedicationAdherenceModelMixin(models.Model):
 
     last_missed_pill = models.CharField(
         verbose_name=mark_safe(
-            f"When was the last time you missed taking your <U>{condition_label}</U> medication?"
+            "When was the last time you missed taking "
+            f"your <U>{condition_label}</U> medication?"
         ),
         max_length=25,
         choices=MISSED_PILLS,

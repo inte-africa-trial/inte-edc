@@ -195,7 +195,10 @@ class Diagnoses:
                     )
                     visits_str = ", ".join(
                         [
-                            f"{obj.subject_visit.visit_code}.{obj.subject_visit.visit_code_sequence}"
+                            (
+                                f"{obj.subject_visit.visit_code}."
+                                f"{obj.subject_visit.visit_code_sequence}"
+                            )
                             for obj in qs
                         ]
                     )
@@ -203,8 +206,10 @@ class Diagnoses:
                         f"More than one `{initial_review_model_cls._meta.verbose_name}` "
                         f"has been submitted. "
                         f"This needs to be corrected. Try removing all but the first "
-                        f"`{initial_review_model_cls._meta.verbose_name}` before continuing. "
-                        f"`{initial_review_model_cls._meta.verbose_name}` CRFs have been submitted "
+                        f"`{initial_review_model_cls._meta.verbose_name}` "
+                        "before continuing. "
+                        f"`{initial_review_model_cls._meta.verbose_name}` "
+                        "CRFs have been submitted "
                         f"for visits {visits_str}"
                     )
 
