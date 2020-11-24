@@ -1,3 +1,4 @@
+from edc_action_item.models.action_model_mixin import ActionItemModelManager
 from edc_visit_schedule import site_visit_schedules
 from inte_visit_schedule.constants import SCHEDULE_HIV, SCHEDULE_NCD
 
@@ -5,10 +6,24 @@ from ..constants import END_OF_STUDY_HIV_ACTION, END_OF_STUDY_NCD_ACTION
 from .end_of_study import EndOfStudy
 
 
+class OffScheduleHivManager(ActionItemModelManager):
+    def get_queryset(self):
+        qs = self._queryset_class(model=self.model, using=self._db, hints=self._hints)
+        return qs.filter(schedule_name=SCHEDULE_HIV)
+
+
+class OffScheduleNcdManager(ActionItemModelManager):
+    def get_queryset(self):
+        qs = self._queryset_class(model=self.model, using=self._db, hints=self._hints)
+        return qs.filter(schedule_name=SCHEDULE_NCD)
+
+
 class OffScheduleHiv(EndOfStudy):
     action_name = END_OF_STUDY_HIV_ACTION
 
     tracking_identifier_prefix = "OH"
+
+    objects = OffScheduleHivManager()
 
     def save(self, *args, **kwargs):
         self.visit_schedule_name = "visit_schedule"
@@ -41,6 +56,8 @@ class OffScheduleNcd(EndOfStudy):
     action_name = END_OF_STUDY_NCD_ACTION
 
     tracking_identifier_prefix = "ON"
+
+    objects = OffScheduleNcdManager()
 
     def save(self, *args, **kwargs):
         self.visit_schedule_name = "visit_schedule"
