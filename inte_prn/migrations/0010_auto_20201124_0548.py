@@ -6,28 +6,48 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('inte_prn', '0009_auto_20201022_0333'),
+        ("inte_prn", "0009_auto_20201022_0333"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='historicalprotocoldeviationviolation',
-            name='safety_impact',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No'), ('N/A', 'Not applicable')], default='N/A', max_length=25, verbose_name='Could this occurrence have an impact on safety of the participant?'),
+            model_name="historicalprotocoldeviationviolation",
+            name="safety_impact",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No"), ("N/A", "Not applicable")],
+                default="N/A",
+                max_length=25,
+                verbose_name="Could this occurrence have an impact on safety of the participant?",
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalprotocoldeviationviolation',
-            name='study_outcomes_impact',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No'), ('N/A', 'Not applicable')], default='N/A', max_length=25, verbose_name='Could this occurrence have an impact on study outcomes?'),
+            model_name="historicalprotocoldeviationviolation",
+            name="study_outcomes_impact",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No"), ("N/A", "Not applicable")],
+                default="N/A",
+                max_length=25,
+                verbose_name="Could this occurrence have an impact on study outcomes?",
+            ),
         ),
         migrations.AlterField(
-            model_name='protocoldeviationviolation',
-            name='safety_impact',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No'), ('N/A', 'Not applicable')], default='N/A', max_length=25, verbose_name='Could this occurrence have an impact on safety of the participant?'),
+            model_name="protocoldeviationviolation",
+            name="safety_impact",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No"), ("N/A", "Not applicable")],
+                default="N/A",
+                max_length=25,
+                verbose_name="Could this occurrence have an impact on safety of the participant?",
+            ),
         ),
         migrations.AlterField(
-            model_name='protocoldeviationviolation',
-            name='study_outcomes_impact',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No'), ('N/A', 'Not applicable')], default='N/A', max_length=25, verbose_name='Could this occurrence have an impact on study outcomes?'),
+            model_name="protocoldeviationviolation",
+            name="study_outcomes_impact",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No"), ("N/A", "Not applicable")],
+                default="N/A",
+                max_length=25,
+                verbose_name="Could this occurrence have an impact on study outcomes?",
+            ),
         ),
     ]
