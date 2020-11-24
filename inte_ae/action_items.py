@@ -26,6 +26,7 @@ from edc_visit_tracking.constants import VISIT_MISSED_ACTION
 
 class DeathReportAction(BaseDeathReportAction):
     parent_action_names = [AE_INITIAL_ACTION, AE_FOLLOWUP_ACTION, VISIT_MISSED_ACTION]
+    enable_tmg_workflow = False
 
 
 class AeFollowupAction(ActionWithNotification):
