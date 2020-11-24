@@ -1,16 +1,24 @@
-from edc_constants.constants import UNKNOWN, OTHER
+from edc_constants.constants import OTHER
 
 DEATH_LOCATIONS = (
     ("home", "At home"),
     ("hospital_clinic", "Hospital/clinic"),
-    ("home", "Elsewhere"),
+    (OTHER, "Elsewhere, please specify"),
 )
 
 
-INFORMANT_RELATIONSHIP = (
-    ("husband_wife", "Husband/wife"),
+INFORMANT = (
+    ("spouse", "Spouse"),
     ("Parent", "Parent"),
     ("child", "Child"),
-    (UNKNOWN, "Unknown"),
+    ("healthcare_worker", "Healthcare Worker"),
+    (OTHER, "Other"),
+)
+
+CONTACT = (
+    ("tel", "Telephone conversation"),
+    ("home", "Home visIt"),
+    ("relative_at_clinic", "Relative visited the health facility"),
+    ("patient_record", "Patient record / document"),
     (OTHER, "Other"),
 )
