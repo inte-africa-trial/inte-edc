@@ -1,14 +1,7 @@
-import pdb
-from pprint import pprint
-from django.conf import settings
 from dateutil.relativedelta import relativedelta
 from django.forms import ValidationError
 from django.test import override_settings, TestCase, tag
-from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import INCOMPLETE, YES
-from edc_metadata import REQUIRED
-from edc_metadata.models import CrfMetadata
-from edc_sites import get_sites_by_country
 from edc_utils import get_utcnow
 from inte_prn.models import IntegratedCareClinicRegistration
 from inte_screening.constants import HIV_CLINIC
