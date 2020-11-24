@@ -1,7 +1,9 @@
+import pdb
 import string
 from random import choices
 
 from dateutil.relativedelta import relativedelta
+from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
 from edc_appointment.tests.appointment_test_case_mixin import AppointmentTestCaseMixin
@@ -12,7 +14,7 @@ from edc_facility.import_holidays import import_holidays
 from edc_facility.models import Holiday
 from edc_list_data.site_list_data import site_list_data
 from edc_randomization.randomization_list_importer import RandomizationListImporter
-from edc_sites import add_or_update_django_sites, get_sites_by_country
+from edc_sites import add_or_update_django_sites, get_site_name, get_sites_by_country
 from edc_sites.tests.site_test_case_mixin import SiteTestCaseMixin
 from edc_utils.date import get_utcnow
 from edc_visit_schedule.constants import DAY1
@@ -106,7 +108,8 @@ class InteTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
     def get_subject_consent(
         self, subject_screening, consent_datetime=None, site_name=None, **kwargs
     ):
-        site_name = site_name or "kinoni"
+        # site = [s for s in get_sites_by_country() if s.site_id == settings.SITE_ID][0]
+        # site_name = site_name or site.name
         options = dict(
             user_created="erikvw",
             user_modified="erikvw",
@@ -114,7 +117,7 @@ class InteTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
             initials=subject_screening.initials,
             dob=get_utcnow().date()
             - relativedelta(years=subject_screening.age_in_years),
-            site=Site.objects.get(name=site_name),
+            site=Site.objects.get(id=settings.SITE_ID),
             clinic_type=HIV_CLINIC,
             consent_datetime=consent_datetime or get_utcnow(),
         )
