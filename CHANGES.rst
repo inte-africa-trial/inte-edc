@@ -1,6 +1,10 @@
 Changes
 =======
 
+0.1.58
+------
+- bump to edc 0.1.71
+
 0.1.52
 ------
 - add proxy models for offschedule and ltfu
