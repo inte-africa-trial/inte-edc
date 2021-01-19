@@ -1,10 +1,10 @@
+import pdb
+
 from dateutil.relativedelta import relativedelta
-from django.forms import ValidationError
 from django.test import TestCase, tag
 from edc_constants.constants import YES
 from edc_utils import get_utcnow
-from inte_ae.forms.death_report_form import DeathReportFormValidator
-from inte_prn.form_validators import ProtocolDeviationViolationFormValidator
+from inte_ae.forms.death_report_form import DeathReportForm, DeathReportFormValidator
 from inte_screening.constants import HIV_CLINIC
 from model_bakery import baker
 from pprint import pprint
@@ -12,7 +12,10 @@ from pprint import pprint
 from ..inte_test_case_mixin import InteTestCaseMixin
 
 
-class TestProtocolViolation(InteTestCaseMixin, TestCase):
+class TestDeathReport(InteTestCaseMixin, TestCase):
+
+    form_validator_default_form_cls = DeathReportFormValidator
+
     def setUp(self):
         super().setUp()
         self.subject_screening = None
@@ -44,18 +47,32 @@ class TestProtocolViolation(InteTestCaseMixin, TestCase):
             arv_initiation_ago="4y",
         )
 
-    @tag("d")
-    def test_death_report(self):
+    @tag("death")
+    def test_death_report_form_validator(self):
         self.prepare()
         cleaned_data = {
-            "subject_idenfifier": self.subject_consent.subject_identifier,
+            "subject_identifier": self.subject_consent.subject_identifier,
             "report_datetime": get_utcnow(),
             "death_date": get_utcnow() - relativedelta(days=5),
             "comment": "",
         }
-        form_validator = DeathReportFormValidator(cleaned_data=cleaned_data)
-        try:
-            form_validator.validate()
-        except ValidationError as e:
-            pprint(form_validator._errors)
-            self.fail("ValidationError unexpectedly raised.")
+
+        form_validator = self.validate_form_validator(cleaned_data)
+        self.assertDictEqual({}, form_validator._errors)
+
+    @tag("death")
+    def test_death_report_form(self):
+        self.prepare()
+        cleaned_data = {
+            "subject_identifier": self.subject_consent.subject_identifier,
+            "report_datetime": get_utcnow(),
+            "death_date": get_utcnow() - relativedelta(days=5),
+            "comment": "",
+        }
+
+        form_validator = self.validate_form_validator(cleaned_data)
+        self.assertDictEqual({}, form_validator._errors)
+
+        form = DeathReportForm(data=cleaned_data)
+        form.is_valid()
+        pdb.set_trace()

@@ -49,6 +49,7 @@ crfs_d1 = FormsCollection(
     Crf(show_order=155, model="inte_subject.drugrefillhiv", required=False),
     Crf(show_order=160, model="inte_subject.otherbaselinedata"),
     Crf(show_order=165, model="inte_subject.complicationsbaseline"),
+    Crf(show_order=167, model="inte_subject.healtheconomicsrevised", required=False),
     Crf(show_order=170, model="inte_subject.nextappointment"),
     name="day1",
 )

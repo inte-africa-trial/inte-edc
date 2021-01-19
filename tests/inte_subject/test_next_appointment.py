@@ -7,8 +7,8 @@ from inte_prn.models import IntegratedCareClinicRegistration
 from inte_screening.constants import HIV_CLINIC
 from inte_subject.forms import NextAppointmentForm
 from inte_subject.forms.next_appointment_form import NextAppointmentFormValidator
-from tests.inte_test_case_mixin import InteTestCaseMixin
 from model_bakery import baker
+from tests.inte_test_case_mixin import InteTestCaseMixin
 
 
 class TestNextAppointment(InteTestCaseMixin, TestCase):
