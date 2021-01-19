@@ -327,6 +327,7 @@ SUBJECT_REQUISITION_MODEL = env.str("EDC_SUBJECT_REQUISITION_MODEL")
 SUBJECT_VISIT_MODEL = env.str("EDC_SUBJECT_VISIT_MODEL")
 SUBJECT_VISIT_MISSED_MODEL = env.str("EDC_SUBJECT_VISIT_MISSED_MODEL")
 SUBJECT_VISIT_MISSED_REASONS_MODEL = env.str("EDC_SUBJECT_VISIT_MISSED_REASONS_MODEL")
+LIST_MODEL_APP_LABEL = env.str("LIST_MODEL_APP_LABEL")
 
 EDC_NAVBAR_DEFAULT = env("EDC_NAVBAR_DEFAULT")
 
@@ -452,7 +453,10 @@ if SENTRY_ENABLED and SENTRY_DSN:
     from sentry_sdk.integrations.django import DjangoIntegration
 
     sentry_sdk.init(
-        dsn=SENTRY_DSN, integrations=[DjangoIntegration()], send_default_pii=True
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=1.0,
+        send_default_pii=True,
     )
 # else:
 #     if env("DJANGO_LOGGING_ENABLED"):

@@ -1,25 +1,23 @@
-import pdb
 import string
 from random import choices
 
 from dateutil.relativedelta import relativedelta
+from django import forms
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
 from edc_appointment.tests.appointment_test_case_mixin import AppointmentTestCaseMixin
-from edc_auth.fix_export_permissions import ExportPermissionsFixer
-from edc_auth.group_permissions_updater import GroupPermissionsUpdater
 from edc_constants.constants import YES, NOT_APPLICABLE, RANDOM_SAMPLING, MALE, NO
 from edc_facility.import_holidays import import_holidays
 from edc_facility.models import Holiday
+from edc_form_validators import FormValidatorTestCaseMixin
 from edc_list_data.site_list_data import site_list_data
 from edc_randomization.randomization_list_importer import RandomizationListImporter
-from edc_sites import add_or_update_django_sites, get_site_name, get_sites_by_country
+from edc_sites import get_sites_by_country
 from edc_sites.tests.site_test_case_mixin import SiteTestCaseMixin
 from edc_utils.date import get_utcnow
 from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED
-from inte_auth.codenames_by_group import get_codenames_by_group
 from inte_consent.models import SubjectConsent
 from inte_screening.constants import HIV_CLINIC
 from inte_screening.forms import SubjectScreeningForm
@@ -29,7 +27,9 @@ from inte_subject.models import SubjectVisit
 from model_bakery import baker
 
 
-class InteTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
+class InteTestCaseMixin(
+    AppointmentTestCaseMixin, FormValidatorTestCaseMixin, SiteTestCaseMixin
+):
     fqdn = fqdn
 
     default_sites = get_sites_by_country("uganda")
@@ -40,19 +40,19 @@ class InteTestCaseMixin(AppointmentTestCaseMixin, SiteTestCaseMixin):
 
     subject_visit_model_cls = SubjectVisit
 
+    sid_count_for_tests = 1
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         import_holidays(test=True)
-        add_or_update_django_sites(sites=get_sites_by_country("uganda"))
-        site_list_data.autodiscover()
-        fixer = ExportPermissionsFixer(warn_only=True)
-        fixer.fix()
-        GroupPermissionsUpdater(
-            codenames_by_group=get_codenames_by_group(), verbose=True
-        )
         if cls.import_randomization_list:
-            RandomizationListImporter(verbose=False, name="default")
+            RandomizationListImporter(
+                verbose=False,
+                name="default",
+                sid_count_for_tests=cls.sid_count_for_tests,
+            )
+        # site_list_data.autodiscover()
 
     @classmethod
     def tearDownClass(cls):

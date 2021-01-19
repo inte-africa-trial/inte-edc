@@ -14,6 +14,7 @@ from model_bakery import baker
 from .inte_test_case_mixin import InteTestCaseMixin
 
 
+@tag("ae")
 class TestActions(InteTestCaseMixin, TestCase):
     def test_ae_initial_creates_action(self):
         subject_screening = self.get_subject_screening()
@@ -117,12 +118,14 @@ class TestActions(InteTestCaseMixin, TestCase):
         action_item.refresh_from_db()
         self.assertEqual(action_item.status, CLOSED)
 
+        # tmg flow not required for this trial
+
         try:
-            action_item = ActionItem.objects.get(
+            ActionItem.objects.get(
                 action_type__name=DEATH_REPORT_TMG_ACTION,
                 subject_identifier=subject_consent.subject_identifier,
             )
         except ObjectDoesNotExist:
-            self.fail("ObjectDoesNotExist unexpectedly raised.")
+            pass
         else:
-            self.assertEqual(action_item.status, NEW)
+            self.fail("DEATH_REPORT_TMG_ACTION unexpectedly exists.")

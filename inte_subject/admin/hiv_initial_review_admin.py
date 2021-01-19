@@ -60,3 +60,9 @@ class HivInitialReviewAdmin(
         "receives_care": admin.VERTICAL,
         "vl_quantifier": admin.VERTICAL,
     }
+
+    def get_list_filter(self, request):
+        list_filters = super().get_list_filter(request)
+        list_filters = list(list_filters or [])
+        list_filters.insert(4, "has_vl")
+        return tuple(list_filters)

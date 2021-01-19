@@ -83,7 +83,7 @@ class HealthEconomicsRevisedAdmin(
             },
         ),
         (
-            "Part 4c: Previous Healthcare Expenses: Medication (Hypertension - HTN)",
+            "Part 4c: Previous Healthcare Expenses: Medication (HIV)",
             {
                 "fields": (
                     "rx_hiv_month",
