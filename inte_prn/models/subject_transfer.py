@@ -1,4 +1,3 @@
-from edc_action_item.models.action_model_mixin import ActionItemModelManager
 from edc_model import models as edc_models
 from edc_sites.models import CurrentSiteManager
 from edc_transfer.model_mixins import SubjectTransferModelMixin
@@ -10,8 +9,6 @@ class SubjectTransfer(
 ):
 
     on_site = CurrentSiteManager()
-
-    objects = ActionItemModelManager()
 
     class Meta(SubjectTransferModelMixin.Meta, edc_models.BaseUuidModel.Meta):
         pass
