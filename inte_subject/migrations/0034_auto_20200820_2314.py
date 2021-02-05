@@ -14,14 +14,16 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RenameModel(
-            old_name="CareStatusBaseline", new_name="ClinicalReviewBaseline",
+            old_name="CareStatusBaseline",
+            new_name="ClinicalReviewBaseline",
         ),
         migrations.RenameModel(
             old_name="HistoricalCareStatusBaseline",
             new_name="HistoricalClinicalReviewBaseline",
         ),
         migrations.RemoveIndex(
-            model_name="clinicalreviewbaseline", name="inte_subjec_subject_bf51eb_idx",
+            model_name="clinicalreviewbaseline",
+            name="inte_subjec_subject_bf51eb_idx",
         ),
         migrations.AddIndex(
             model_name="clinicalreviewbaseline",

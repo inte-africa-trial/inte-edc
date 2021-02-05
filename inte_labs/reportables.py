@@ -1,10 +1,17 @@
 from edc_constants.constants import FEMALE, MALE
-from edc_reportable import site_reportables, parse as p, adult_age_options
-from edc_reportable import MILLIGRAMS_PER_DECILITER, MILLIMOLES_PER_LITER
-from edc_reportable import MICROMOLES_PER_LITER, IU_LITER
-from edc_reportable import GRAMS_PER_DECILITER, TEN_X_9_PER_LITER
-from edc_reportable.grading_data.daids_july_2017 import hematology, chemistries, dummies
-from edc_reportable.units import CELLS_PER_MILLIMETER_CUBED, PERCENT, GRAMS_PER_LITER
+from edc_reportable import (
+    GRAMS_PER_DECILITER,
+    IU_LITER,
+    MICROMOLES_PER_LITER,
+    MILLIGRAMS_PER_DECILITER,
+    MILLIMOLES_PER_LITER,
+    TEN_X_9_PER_LITER,
+    adult_age_options,
+)
+from edc_reportable import parse as p
+from edc_reportable import site_reportables
+from edc_reportable.grading_data.daids_july_2017 import chemistries, dummies, hematology
+from edc_reportable.units import CELLS_PER_MILLIMETER_CUBED, GRAMS_PER_LITER, PERCENT
 
 normal_data = {
     "albumin": [
@@ -21,13 +28,9 @@ normal_data = {
             **adult_age_options,
         ),
     ],
-    "alp": [
-        p("40<=x<=150", units=IU_LITER, gender=[MALE, FEMALE], **adult_age_options)
-    ],
+    "alp": [p("40<=x<=150", units=IU_LITER, gender=[MALE, FEMALE], **adult_age_options)],
     "alt": [p("0<=x<=55", units=IU_LITER, gender=[MALE, FEMALE], **adult_age_options)],
-    "amylase": [
-        p("25<=x<=125", units=IU_LITER, gender=[MALE, FEMALE], **adult_age_options)
-    ],
+    "amylase": [p("25<=x<=125", units=IU_LITER, gender=[MALE, FEMALE], **adult_age_options)],
     "ast": [p("5<=x<=34", units=IU_LITER, gender=[MALE, FEMALE], **adult_age_options)],
     "egfr": [],
     "creatinine": [
@@ -60,9 +63,7 @@ normal_data = {
             **adult_age_options,
         ),
     ],
-    "hba1c": [
-        p("4.4<=x<=6.6", units=PERCENT, gender=[MALE, FEMALE], **adult_age_options)
-    ],
+    "hba1c": [p("4.4<=x<=6.6", units=PERCENT, gender=[MALE, FEMALE], **adult_age_options)],
     "hdl": [
         p(
             "1.04<=x<=1.55",
@@ -90,9 +91,7 @@ normal_data = {
         ),
     ],
     # hematocrit
-    "hct": [
-        p("37.0<=x<=54.0", units=PERCENT, gender=[MALE, FEMALE], **adult_age_options)
-    ],
+    "hct": [p("37.0<=x<=54.0", units=PERCENT, gender=[MALE, FEMALE], **adult_age_options)],
     "ldl": [
         p(
             "0.00<=x<=3.34",
@@ -198,9 +197,7 @@ normal_data = {
             **adult_age_options,
         ),
     ],
-    "wbc": [
-        p("2.49<x", units=TEN_X_9_PER_LITER, gender=[MALE, FEMALE], **adult_age_options)
-    ],
+    "wbc": [p("2.49<x", units=TEN_X_9_PER_LITER, gender=[MALE, FEMALE], **adult_age_options)],
 }
 
 grading_data = {}
@@ -208,6 +205,4 @@ grading_data.update(**dummies)
 grading_data.update(**chemistries)
 grading_data.update(**hematology)
 
-site_reportables.register(
-    name="inte", normal_data=normal_data, grading_data=grading_data
-)
+site_reportables.register(name="inte", normal_data=normal_data, grading_data=grading_data)

@@ -4,8 +4,7 @@ from django.db import migrations
 
 
 def update_metadata(apps, schema_editor):
-    """Updates metadata for simple model name changes.
-    """
+    """Updates metadata for simple model name changes."""
     crfmetadata_model_cls = apps.get_model("edc_metadata.crfmetadata")
 
     renamed_models = {

@@ -4,6 +4,7 @@ from django_audit_fields.admin import audit_fieldset_tuple
 from edc_crf.admin import crf_status_fieldset_tuple
 from edc_form_label.form_label_modeladmin_mixin import FormLabelModelAdminMixin
 from edc_model_admin import SimpleHistoryAdmin, TabularInlineMixin
+
 from inte_subject.forms import DrugSupplyDmForm
 
 from ..admin_site import inte_subject_admin
@@ -12,9 +13,7 @@ from ..models import DrugRefillDm, DrugSupplyDm
 from .modeladmin_mixins import CrfModelAdminMixin, DrugSupplyInlineMixin
 
 
-class DrugSupplyDmInline(
-    DrugSupplyInlineMixin, TabularInlineMixin, admin.TabularInline
-):
+class DrugSupplyDmInline(DrugSupplyInlineMixin, TabularInlineMixin, admin.TabularInline):
 
     model = DrugSupplyDm
     form = DrugSupplyDmForm
@@ -28,9 +27,7 @@ class DrugSupplyDmInline(
 
 
 @admin.register(DrugRefillDm, site=inte_subject_admin)
-class DrugRefillDmAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class DrugRefillDmAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
     form = DrugRefillDmForm
 
     additional_instructions = mark_safe(

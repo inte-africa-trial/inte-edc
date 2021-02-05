@@ -1,9 +1,10 @@
 from django import forms
 from django.contrib.sites.models import Site
 from django.core.exceptions import ObjectDoesNotExist
-from edc_sites.forms import SiteModelFormMixin
-from edc_form_validators.form_validator_mixin import FormValidatorMixin
 from edc_form_validators.form_validator import FormValidator
+from edc_form_validators.form_validator_mixin import FormValidatorMixin
+from edc_sites.forms import SiteModelFormMixin
+
 from inte_sites.is_intervention_site import is_intervention_site
 
 from ..models import IntegratedCareClinicRegistration
@@ -27,9 +28,7 @@ class IntegratedCareClinicRegistrationForm(
             )
         if not self.instance.id:
             try:
-                IntegratedCareClinicRegistration.objects.get(
-                    site=Site.objects.get_current()
-                )
+                IntegratedCareClinicRegistration.objects.get(site=Site.objects.get_current())
             except ObjectDoesNotExist:
                 pass
             else:

@@ -1,4 +1,5 @@
 import os  # noqa
+
 from multisite import SiteID
 
 from .defaults import *  # noqa

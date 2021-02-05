@@ -10,6 +10,7 @@ from edc_visit_schedule.model_mixins import (
     OffScheduleModelMixin,
     VisitScheduleFieldsModelMixin,
 )
+
 from inte_lists.models import OffstudyReasons
 
 
@@ -71,10 +72,15 @@ class EndOfStudy(
         null=True,
     )
 
+    transfer_date = models.DateField(
+        verbose_name="Date transferred, if applicable",
+        validators=[edc_models.date_not_future],
+        blank=True,
+        null=True,
+    )
+
     transferred_consent = models.CharField(
-        verbose_name=(
-            "If transferred, has the patient provided consent to be followed-up?"
-        ),
+        verbose_name=("If transferred, has the patient provided consent to be followed-up?"),
         choices=YES_NO_NA,
         max_length=15,
         default=NOT_APPLICABLE,

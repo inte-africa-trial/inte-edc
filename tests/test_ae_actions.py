@@ -1,14 +1,16 @@
+from dateutil.relativedelta import relativedelta
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase, tag
 from edc_action_item.models import ActionItem
-from edc_constants.constants import CLOSED, NEW
 from edc_adverse_event.constants import (
     AE_FOLLOWUP_ACTION,
     AE_TMG_ACTION,
     DEATH_REPORT_ACTION,
     DEATH_REPORT_TMG_ACTION,
 )
+from edc_constants.constants import CLOSED, NEW
 from edc_reportable.constants import GRADE4, GRADE5
+from edc_utils import get_utcnow
 from model_bakery import baker
 
 from .inte_test_case_mixin import InteTestCaseMixin
@@ -42,9 +44,7 @@ class TestActions(InteTestCaseMixin, TestCase):
             "inte_ae.aeinitial", subject_identifier=subject_consent.subject_identifier
         )
 
-        action_item = ActionItem.objects.get(
-            action_identifier=ae_initial.action_identifier
-        )
+        action_item = ActionItem.objects.get(action_identifier=ae_initial.action_identifier)
         try:
             action_item = ActionItem.objects.get(
                 parent_action_item=action_item,
@@ -98,7 +98,9 @@ class TestActions(InteTestCaseMixin, TestCase):
 
     def test_death_report_create_death_report_tmg_action(self):
         subject_screening = self.get_subject_screening()
-        subject_consent = self.get_subject_consent(subject_screening)
+        subject_consent = self.get_subject_consent(
+            subject_screening, consent_datetime=get_utcnow() - relativedelta(days=10)
+        )
         baker.make_recipe(
             "inte_ae.aeinitial",
             subject_identifier=subject_consent.subject_identifier,

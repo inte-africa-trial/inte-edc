@@ -3,11 +3,12 @@ from django.conf import settings
 from edc_constants.constants import NO, NOT_APPLICABLE, YES
 from edc_form_validators.form_validator import FormValidator
 from edc_utils import convert_php_dateformat
+
 from inte_visit_schedule.is_baseline import is_baseline
 
-from ..models import Medications, ClinicalReview, ClinicalReviewBaseline
 from ..diagnoses import Diagnoses, InitialReviewRequired
-from .mixins import CrfModelFormMixin, CrfFormValidatorMixin, model_exists_or_raise
+from ..models import ClinicalReview, ClinicalReviewBaseline, Medications
+from .mixins import CrfFormValidatorMixin, CrfModelFormMixin, model_exists_or_raise
 
 
 class MedicationsFormValidator(CrfFormValidatorMixin, FormValidator):
@@ -47,9 +48,7 @@ class MedicationsFormValidator(CrfFormValidatorMixin, FormValidator):
         ]
         for fld, dx, dx_date, label in options:
             if self.cleaned_data.get(fld) == NOT_APPLICABLE and dx:
-                formatted_date = dx_date.strftime(
-                    convert_php_dateformat(settings.DATE_FORMAT)
-                )
+                formatted_date = dx_date.strftime(convert_php_dateformat(settings.DATE_FORMAT))
                 raise forms.ValidationError(
                     {
                         fld: (

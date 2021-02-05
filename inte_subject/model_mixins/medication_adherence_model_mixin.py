@@ -2,6 +2,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.safestring import mark_safe
 from edc_model import models as edc_models
+
 from inte_lists.models import NonAdherenceReasons
 from inte_subject.choices import MISSED_PILLS
 

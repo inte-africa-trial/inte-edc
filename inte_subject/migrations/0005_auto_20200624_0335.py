@@ -11,9 +11,11 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RemoveField(
-            model_name="historicalhivinitialreview", name="clinic_next_appt_date",
+            model_name="historicalhivinitialreview",
+            name="clinic_next_appt_date",
         ),
         migrations.RemoveField(
-            model_name="hivinitialreview", name="clinic_next_appt_date",
+            model_name="hivinitialreview",
+            name="clinic_next_appt_date",
         ),
     ]

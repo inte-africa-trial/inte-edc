@@ -1,7 +1,7 @@
 from django.core.validators import (
-    RegexValidator,
-    MinLengthValidator,
     MaxLengthValidator,
+    MinLengthValidator,
+    RegexValidator,
 )
 from django.db import models
 from django_crypto_fields.fields import EncryptedCharField
@@ -23,7 +23,8 @@ class ScreeningIdentifier(ScreeningIdentifier):
 
 
 class SubjectScreening(
-    ScreeningModelMixin, BaseUuidModel,
+    ScreeningModelMixin,
+    BaseUuidModel,
 ):
     identifier_cls = ScreeningIdentifier
 
@@ -68,17 +69,14 @@ class SubjectScreening(
     )
 
     requires_acute_care = models.CharField(
-        verbose_name=(
-            "Does the patient require acute care including in-patient admission"
-        ),
+        verbose_name=("Does the patient require acute care including in-patient admission"),
         max_length=25,
         choices=YES_NO,
     )
 
     lives_nearby = models.CharField(
         verbose_name=(
-            "Is the patient planning to remain in the catchment area "
-            "for at least 6 months"
+            "Is the patient planning to remain in the catchment area " "for at least 6 months"
         ),
         max_length=15,
         choices=YES_NO,

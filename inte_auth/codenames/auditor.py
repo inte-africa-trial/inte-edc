@@ -24,6 +24,7 @@ auditor += [
     "inte_prn.view_onschedulehiv",
     "inte_prn.view_onschedulencd",
     "inte_prn.view_protocoldeviationviolation",
+    "inte_prn.view_subjecttransfer",
     "inte_prn.view_unblindingrequestoruser",
     "inte_prn.view_unblindingrevieweruser",
     "inte_screening.view_dailyclosinglog",

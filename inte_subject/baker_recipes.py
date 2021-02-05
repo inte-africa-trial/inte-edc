@@ -1,12 +1,13 @@
 from dateutil.relativedelta import relativedelta
 from django.contrib.sites.models import Site
-from edc_constants.constants import NOT_APPLICABLE, POS, YES, NO, MOBILE_NUMBER
+from edc_constants.constants import MOBILE_NUMBER, NO, NOT_APPLICABLE, POS, YES
 from edc_lab.constants import LT
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import SCHEDULED
 from faker import Faker
-from inte_consent.models import SubjectConsent
-from inte_consent.models import SubjectReconsent
+from model_bakery.recipe import Recipe, seq
+
+from inte_consent.models import SubjectConsent, SubjectReconsent
 from inte_subject.constants import THIS_CLINIC
 from inte_subject.models import (
     ClinicalReview,
@@ -15,11 +16,8 @@ from inte_subject.models import (
     HivInitialReview,
     HtnInitialReview,
 )
-from model_bakery.recipe import Recipe, seq
 
-from .models import SubjectRequisition
-from .models import SubjectVisit
-
+from .models import SubjectRequisition, SubjectVisit
 
 fake = Faker()
 
@@ -64,7 +62,8 @@ subjectreconsent = Recipe(
 )
 
 healtheconomicsrevised = Recipe(
-    HealthEconomicsRevised, site=Site.objects.get_current(),
+    HealthEconomicsRevised,
+    site=Site.objects.get_current(),
 )
 
 clinicalreviewbaseline = Recipe(

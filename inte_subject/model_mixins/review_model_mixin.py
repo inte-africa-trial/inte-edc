@@ -2,6 +2,7 @@ from django.db import models
 from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE, YES
 from edc_model import models as edc_models
+
 from inte_subject.diagnoses import Diagnoses
 
 
@@ -64,8 +65,7 @@ class ReviewModelMixin(models.Model):
 
     care_delivery = models.CharField(
         verbose_name=(
-            "Was care for this `condition` delivered "
-            "in an integrated care clinic today?"
+            "Was care for this `condition` delivered " "in an integrated care clinic today?"
         ),
         max_length=25,
         choices=YES_NO_NA,

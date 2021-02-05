@@ -30,7 +30,9 @@ class HivReview(ReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
         help_text="Select `not applicable` if previously reported.",
     )
     arv_initiation_actual_date = models.DateField(
-        verbose_name="Date started antiretroviral therapy (ART)", null=True, blank=True,
+        verbose_name="Date started antiretroviral therapy (ART)",
+        null=True,
+        blank=True,
     )
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):

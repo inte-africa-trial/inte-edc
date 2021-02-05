@@ -2,7 +2,7 @@ from django.db import models
 from edc_model.models import BaseUuidModel, OtherCharField
 from edc_model.models.historical_records import HistoricalRecords
 from edc_search.model_mixins import SearchSlugManager
-from edc_sites.models import SiteModelMixin, CurrentSiteManager
+from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_utils import get_utcnow
 
 from ..choices import REFUSAL_REASONS
@@ -29,7 +29,9 @@ class SubjectRefusal(SiteModelMixin, BaseUuidModel):
     other_reason = OtherCharField()
 
     comment = models.TextField(
-        verbose_name="Additional Comments", null=True, blank=True,
+        verbose_name="Additional Comments",
+        null=True,
+        blank=True,
     )
 
     on_site = CurrentSiteManager()

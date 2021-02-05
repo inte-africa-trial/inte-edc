@@ -12,9 +12,7 @@ from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(ClinicalReview, site=inte_subject_admin)
-class ClinicalReviewAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class ClinicalReviewAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
     form = ClinicalReviewForm
 
     fieldsets = (

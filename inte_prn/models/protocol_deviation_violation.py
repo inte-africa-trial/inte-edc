@@ -1,13 +1,13 @@
 from django.db import models
 from edc_action_item.managers import (
-    ActionIdentifierSiteManager,
     ActionIdentifierManager,
+    ActionIdentifierSiteManager,
 )
 from edc_action_item.models import ActionModelMixin
 from edc_constants.choices import NOT_APPLICABLE, YES_NO_NA
 from edc_identifier.model_mixins import (
-    TrackingModelMixin,
     NonUniqueSubjectIdentifierFieldMixin,
+    TrackingModelMixin,
 )
 from edc_model import REPORT_STATUS
 from edc_model import models as edc_models
@@ -15,7 +15,7 @@ from edc_prn.constants import PROTOCOL_DEVIATION_VIOLATION_ACTION
 from edc_sites.models import SiteModelMixin
 from edc_utils import get_utcnow
 
-from ..choices import PROTOCOL_VIOLATION, ACTION_REQUIRED, DEVIATION_VIOLATION
+from ..choices import ACTION_REQUIRED, DEVIATION_VIOLATION, PROTOCOL_VIOLATION
 
 
 class ProtocolDeviationViolation(
@@ -51,8 +51,7 @@ class ProtocolDeviationViolation(
     )
 
     safety_impact = models.CharField(
-        verbose_name="Could this occurrence have an impact on safety of the "
-        "participant?",
+        verbose_name="Could this occurrence have an impact on safety of the " "participant?",
         max_length=25,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
@@ -96,8 +95,7 @@ class ProtocolDeviationViolation(
         null=True,
         blank=True,
         help_text=(
-            "Describe in full. Explain how the violation "
-            "happened, what occurred, etc."
+            "Describe in full. Explain how the violation " "happened, what occurred, etc."
         ),
     )
 
@@ -155,7 +153,5 @@ class ProtocolDeviationViolation(
         verbose_name = "Protocol Deviation/Violation"
         verbose_name_plural = "Protocol Deviations/Violations"
         indexes = [
-            models.Index(
-                fields=["subject_identifier", "action_identifier", "site", "id"]
-            )
+            models.Index(fields=["subject_identifier", "action_identifier", "site", "id"])
         ]

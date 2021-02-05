@@ -1,11 +1,13 @@
+from textwrap import fill
+
 from edc_randomization.models import RandomizationList
 from edc_registration.models import RegisteredSubject
 from edc_reports.crf_pdf_report import CrfPdfReport
 from inte_permissions.group_names import RANDO
-from inte_subject.models import Followup
 from reportlab.lib.units import cm
 from reportlab.platypus import Table
-from textwrap import fill
+
+from inte_subject.models import Followup
 
 
 def get_weight_for_timepoint(subject_identifier=None, reference_dt=None):
@@ -59,9 +61,7 @@ class MetaCrfPdfReport(CrfPdfReport):
             ],
             [
                 "Randomization date:",
-                self.registered_subject.randomization_datetime.strftime(
-                    "%Y-%m-%d %H:%M"
-                ),
+                self.registered_subject.randomization_datetime.strftime("%Y-%m-%d %H:%M"),
             ],
             ["Assignment:", assignment],
         ]

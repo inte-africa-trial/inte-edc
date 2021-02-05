@@ -13,9 +13,7 @@ from .modeladmin_mixins import CrfModelAdmin
 
 
 @admin.register(SubjectVisitMissed, site=inte_subject_admin)
-class SubjectVisitMissedAdmin(
-    CrfModelAdmin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class SubjectVisitMissedAdmin(CrfModelAdmin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
 
     form = SubjectVisitMissedForm
 

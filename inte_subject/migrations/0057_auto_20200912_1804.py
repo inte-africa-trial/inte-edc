@@ -5,9 +5,7 @@ from edc_constants.constants import NO, UNKNOWN
 
 
 def update_complications_unknown_to_no(apps, schema_editor):
-    complications_baseline_model_cls = apps.get_model(
-        "inte_subject.complicationsbaseline"
-    )
+    complications_baseline_model_cls = apps.get_model("inte_subject.complicationsbaseline")
     names = [
         "stroke",
         "heart_attack",
@@ -17,9 +15,7 @@ def update_complications_unknown_to_no(apps, schema_editor):
         "foot_ulcers",
     ]
     for name in names:
-        complications_baseline_model_cls.objects.filter(**{name: UNKNOWN}).update(
-            **{name: NO}
-        )
+        complications_baseline_model_cls.objects.filter(**{name: UNKNOWN}).update(**{name: NO})
 
 
 class Migration(migrations.Migration):

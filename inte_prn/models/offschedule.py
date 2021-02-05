@@ -1,5 +1,6 @@
 from edc_action_item.models.action_model_mixin import ActionItemModelManager
 from edc_visit_schedule import site_visit_schedules
+
 from inte_visit_schedule.constants import SCHEDULE_HIV, SCHEDULE_NCD
 
 from ..constants import END_OF_STUDY_HIV_ACTION, END_OF_STUDY_NCD_ACTION
@@ -32,16 +33,14 @@ class OffScheduleHiv(EndOfStudy):
 
     @property
     def visit_schedule(self):
-        """Returns a visit schedule object.
-        """
+        """Returns a visit schedule object."""
         return site_visit_schedules.get_by_onschedule_model(
             onschedule_model=self._meta.label_lower
         )[0]
 
     @property
     def schedule(self):
-        """Returns a schedule object.
-        """
+        """Returns a schedule object."""
         return site_visit_schedules.get_by_onschedule_model(
             onschedule_model=self._meta.label_lower
         )[1]
@@ -66,16 +65,14 @@ class OffScheduleNcd(EndOfStudy):
 
     @property
     def visit_schedule(self):
-        """Returns a visit schedule object.
-        """
+        """Returns a visit schedule object."""
         return site_visit_schedules.get_by_onschedule_model(
             onschedule_model=self._meta.label_lower
         )[0]
 
     @property
     def schedule(self):
-        """Returns a schedule object.
-        """
+        """Returns a schedule object."""
         return site_visit_schedules.get_by_onschedule_model(
             onschedule_model=self._meta.label_lower
         )[1]

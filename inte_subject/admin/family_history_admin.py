@@ -11,9 +11,7 @@ from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(FamilyHistory, site=inte_subject_admin)
-class FamilyHistoryAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class FamilyHistoryAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
 
     form = FamilyHistoryForm
     fieldsets = (

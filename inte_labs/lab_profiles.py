@@ -10,7 +10,6 @@ from .panels import (
     hba1c_poc_panel,
 )
 
-
 subject_lab_profile = LabProfile(
     name="subject_lab_profile", requisition_model=settings.SUBJECT_REQUISITION_MODEL
 )

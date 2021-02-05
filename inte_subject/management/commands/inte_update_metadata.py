@@ -5,7 +5,7 @@ from edc_appointment.models import Appointment
 from edc_visit_schedule import site_visit_schedules
 from tqdm import tqdm
 
-from ...models import SubjectVisit, ClinicalReview, ClinicalReviewBaseline, Medications
+from ...models import ClinicalReview, ClinicalReviewBaseline, Medications, SubjectVisit
 
 
 class UpdateCrfMetadataOnDataChange:
@@ -23,9 +23,7 @@ class UpdateCrfMetadataOnDataChange:
             for visit_code, visit in schedule.visits.items():
                 for appointment in self.appointments_for(visit_code):
                     try:
-                        subject_visit = SubjectVisit.objects.get(
-                            appointment=appointment
-                        )
+                        subject_visit = SubjectVisit.objects.get(appointment=appointment)
                     except ObjectDoesNotExist:
                         pass
                     else:

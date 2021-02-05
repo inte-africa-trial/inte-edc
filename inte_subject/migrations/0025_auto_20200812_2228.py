@@ -23,16 +23,20 @@ class Migration(migrations.Migration):
             new_name="rx_hiv_cost_month",
         ),
         migrations.RemoveField(
-            model_name="healtheconomicsrevised", name="rx_arv_recv_month",
+            model_name="healtheconomicsrevised",
+            name="rx_arv_recv_month",
         ),
         migrations.RemoveField(
-            model_name="healtheconomicsrevised", name="rx_diabetes_recv_month",
+            model_name="healtheconomicsrevised",
+            name="rx_diabetes_recv_month",
         ),
         migrations.RemoveField(
-            model_name="healtheconomicsrevised", name="rx_hypertension_recv_month",
+            model_name="healtheconomicsrevised",
+            name="rx_hypertension_recv_month",
         ),
         migrations.RemoveField(
-            model_name="healtheconomicsrevised", name="rx_other_recv_month",
+            model_name="healtheconomicsrevised",
+            name="rx_other_recv_month",
         ),
         migrations.AddField(
             model_name="healtheconomicsrevised",

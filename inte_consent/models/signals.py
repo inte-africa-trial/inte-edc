@@ -1,9 +1,10 @@
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
-from django.db.models.signals import post_save, post_delete
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from edc_randomization.site_randomizers import site_randomizers
 from edc_visit_schedule import OnScheduleError
 from edc_visit_schedule.site_visit_schedules import site_visit_schedules
+
 from inte_screening.constants import (
     DIABETES_CLINIC,
     HIV_CLINIC,
@@ -49,9 +50,7 @@ def subject_consent_on_post_save(sender, instance, raw, created, **kwargs):
                 get_onschedule_model_name(instance)
             )
             try:
-                schedule.refresh_schedule(
-                    subject_identifier=instance.subject_identifier
-                )
+                schedule.refresh_schedule(subject_identifier=instance.subject_identifier)
             except ObjectDoesNotExist as e:
                 raise InteSubjectConsentError(
                     f"Clinic type cannot be changed. Got `{instance.clinic_type}`. ({e})"
@@ -68,9 +67,7 @@ def subject_consent_on_post_save(sender, instance, raw, created, **kwargs):
                 )
             subject_screening.subject_identifier = instance.subject_identifier
             subject_screening.consented = True
-            subject_screening.save_base(
-                update_fields=["subject_identifier", "consented"]
-            )
+            subject_screening.save_base(update_fields=["subject_identifier", "consented"])
 
             # randomize
             # TODO: should get randomizer name "default" from model or Consent object
@@ -99,13 +96,10 @@ def subject_consent_on_post_save(sender, instance, raw, created, **kwargs):
     dispatch_uid="subject_consent_on_post_delete",
 )
 def subject_consent_on_post_delete(sender, instance, using, **kwargs):
-    """Updates/Resets subject screening.
-    """
+    """Updates/Resets subject screening."""
     # don't allow if subject visits exist. This should be caught
     # in the ModelAdmin delete view
-    if SubjectVisit.objects.filter(
-        subject_identifier=instance.subject_identifier
-    ).exists():
+    if SubjectVisit.objects.filter(subject_identifier=instance.subject_identifier).exists():
         raise ValidationError("Unable to delete consent. Visit data exists.")
 
     _, schedule = site_visit_schedules.get_by_onschedule_model(

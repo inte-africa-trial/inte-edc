@@ -3,12 +3,13 @@ import uuid
 from dateutil.relativedelta import relativedelta
 from django import forms
 from django.test import TestCase, tag
-from edc_constants.constants import MALE, MOBILE_NUMBER, YES, NO, NOT_APPLICABLE
+from edc_constants.constants import MALE, MOBILE_NUMBER, NO, NOT_APPLICABLE, YES
 from edc_utils import get_utcnow
+from pytz import timezone
+
 from inte_consent.forms import SubjectConsentForm, SubjectConsentFormValidator
 from inte_consent.models import InteSubjectConsentError
 from inte_screening.constants import HIV_CLINIC, NCD_CLINIC
-from pytz import timezone
 
 from ..inte_test_case_mixin import InteTestCaseMixin
 
@@ -38,7 +39,9 @@ class TestSubjectConsent(InteTestCaseMixin, TestCase):
             gender=MALE,
             clinic_type=HIV_CLINIC,
         )
-        validator = SubjectConsentFormValidator(cleaned_data=cleaned_data,)
+        validator = SubjectConsentFormValidator(
+            cleaned_data=cleaned_data,
+        )
         validator.clean()
 
     def test_form_validator_consent_before_eligibility_datetime(self):
@@ -56,7 +59,9 @@ class TestSubjectConsent(InteTestCaseMixin, TestCase):
             gender=MALE,
             clinic_type=HIV_CLINIC,
         )
-        validator = SubjectConsentFormValidator(cleaned_data=cleaned_data,)
+        validator = SubjectConsentFormValidator(
+            cleaned_data=cleaned_data,
+        )
         self.assertRaises(forms.ValidationError, validator.clean)
         with self.assertRaises(forms.ValidationError) as cm:
             validator.clean()
@@ -77,7 +82,9 @@ class TestSubjectConsent(InteTestCaseMixin, TestCase):
             gender=MALE,
             clinic_type=HIV_CLINIC,
         )
-        validator = SubjectConsentFormValidator(cleaned_data=cleaned_data,)
+        validator = SubjectConsentFormValidator(
+            cleaned_data=cleaned_data,
+        )
         try:
             validator.clean()
         except forms.ValidationError:
@@ -85,9 +92,7 @@ class TestSubjectConsent(InteTestCaseMixin, TestCase):
 
     def test_model_consent(self):
         subject_screening = self.get_subject_screening(clinic_type=HIV_CLINIC)
-        subject_consent = self.get_subject_consent(
-            subject_screening, clinic_type=HIV_CLINIC
-        )
+        subject_consent = self.get_subject_consent(subject_screening, clinic_type=HIV_CLINIC)
         self.assertIsNotNone(subject_consent.subject_identifier)
 
         subject_screening = self.get_subject_screening(clinic_type=HIV_CLINIC)
@@ -109,9 +114,7 @@ class TestSubjectConsent(InteTestCaseMixin, TestCase):
 
     def test_model_clinic_type_cannot_be_changed(self):
         subject_screening = self.get_subject_screening(clinic_type=HIV_CLINIC)
-        subject_consent = self.get_subject_consent(
-            subject_screening, clinic_type=HIV_CLINIC
-        )
+        subject_consent = self.get_subject_consent(subject_screening, clinic_type=HIV_CLINIC)
 
         subject_consent.clinic_type = NCD_CLINIC
         self.assertRaises(InteSubjectConsentError, subject_consent.save)
@@ -159,7 +162,8 @@ class TestSubjectConsent(InteTestCaseMixin, TestCase):
         instance = form.save()
 
         data.update(
-            subject_identifier=instance.subject_identifier, clinic_type=NCD_CLINIC,
+            subject_identifier=instance.subject_identifier,
+            clinic_type=NCD_CLINIC,
         )
         form = SubjectConsentForm(data=data, instance=instance)
         form.is_valid()

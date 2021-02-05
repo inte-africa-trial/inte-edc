@@ -11,23 +11,35 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RemoveField(
-            model_name="historicalsubjectrefusal", name="subject_identifier",
+            model_name="historicalsubjectrefusal",
+            name="subject_identifier",
         ),
         migrations.RemoveField(
-            model_name="historicalsubjectrefusal", name="subject_identifier_aka",
+            model_name="historicalsubjectrefusal",
+            name="subject_identifier_aka",
         ),
         migrations.RemoveField(
-            model_name="historicalsubjectrefusal", name="subject_identifier_as_pk",
+            model_name="historicalsubjectrefusal",
+            name="subject_identifier_as_pk",
         ),
         migrations.RemoveField(
-            model_name="historicalsubjectrefusal", name="subject_screening",
-        ),
-        migrations.RemoveField(model_name="subjectrefusal", name="subject_identifier",),
-        migrations.RemoveField(
-            model_name="subjectrefusal", name="subject_identifier_aka",
+            model_name="historicalsubjectrefusal",
+            name="subject_screening",
         ),
         migrations.RemoveField(
-            model_name="subjectrefusal", name="subject_identifier_as_pk",
+            model_name="subjectrefusal",
+            name="subject_identifier",
         ),
-        migrations.RemoveField(model_name="subjectrefusal", name="subject_screening",),
+        migrations.RemoveField(
+            model_name="subjectrefusal",
+            name="subject_identifier_aka",
+        ),
+        migrations.RemoveField(
+            model_name="subjectrefusal",
+            name="subject_identifier_as_pk",
+        ),
+        migrations.RemoveField(
+            model_name="subjectrefusal",
+            name="subject_screening",
+        ),
     ]

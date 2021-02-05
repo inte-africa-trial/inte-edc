@@ -4,7 +4,9 @@ from ..model_mixins import CrfModelMixin, MedicationAdherenceModelMixin
 
 
 class HtnMedicationAdherence(
-    MedicationAdherenceModelMixin, CrfModelMixin, edc_models.BaseUuidModel,
+    MedicationAdherenceModelMixin,
+    CrfModelMixin,
+    edc_models.BaseUuidModel,
 ):
 
     condition_label = "Hypertension"

@@ -1,14 +1,15 @@
 from django.db import models
 from edc_action_item.models.action_model_mixin import ActionModelMixin
 from edc_identifier.model_mixins import (
-    TrackingModelMixin,
     NonUniqueSubjectIdentifierFieldMixin,
+    TrackingModelMixin,
 )
 from edc_ltfu.constants import LOSS_TO_FOLLOWUP_ACTION
 from edc_ltfu.model_mixins import LossToFollowupModelMixin
 from edc_model.models.base_uuid_model import BaseUuidModel
 from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_visit_schedule.model_mixins import VisitScheduleFieldsModelMixin
+
 from inte_prn.choices import LOSS_CHOICES
 from inte_prn.constants import LOSS_TO_FOLLOWUP_HIV_ACTION, LOSS_TO_FOLLOWUP_NCD_ACTION
 from inte_visit_schedule.constants import SCHEDULE_HIV, SCHEDULE_NCD
@@ -38,9 +39,7 @@ class LossToFollowup(
 
     class Meta(LossToFollowupModelMixin.Meta, BaseUuidModel.Meta):
         indexes = [
-            models.Index(
-                fields=["subject_identifier", "action_identifier", "site", "id"]
-            )
+            models.Index(fields=["subject_identifier", "action_identifier", "site", "id"])
         ]
 
 

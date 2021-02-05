@@ -1,6 +1,6 @@
 from .metadata_rules import (
-    HealthEconomicsRuleGroup,
     ClinicalReviewBaselineRuleGroup,
     ClinicalReviewRuleGroup,
+    HealthEconomicsRuleGroup,
     MedicationsRuleGroup,
 )

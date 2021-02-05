@@ -1,6 +1,7 @@
 from django.apps import apps as django_apps
 from django.core.exceptions import ObjectDoesNotExist
 from edc_metadata_rules import PredicateCollection
+
 from inte_visit_schedule.is_baseline import is_baseline
 
 

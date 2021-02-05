@@ -4,7 +4,9 @@ from ..model_mixins import CrfModelMixin, MedicationAdherenceModelMixin
 
 
 class DmMedicationAdherence(
-    MedicationAdherenceModelMixin, CrfModelMixin, edc_models.BaseUuidModel,
+    MedicationAdherenceModelMixin,
+    CrfModelMixin,
+    edc_models.BaseUuidModel,
 ):
 
     condition_label = "Diabetes"

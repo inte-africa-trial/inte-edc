@@ -30,7 +30,9 @@ class DmInitialReview(
     )
 
     med_start_estimated_date = models.DateField(
-        verbose_name="Estimated medication start date", null=True, editable=False,
+        verbose_name="Estimated medication start date",
+        null=True,
+        editable=False,
     )
 
     med_start_date_estimated = models.CharField(
@@ -42,9 +44,7 @@ class DmInitialReview(
     )
 
     glucose_performed = models.CharField(
-        verbose_name=(
-            "Has the patient had their glucose measured in the last few months?"
-        ),
+        verbose_name=("Has the patient had their glucose measured in the last few months?"),
         max_length=15,
         choices=YES_NO,
     )

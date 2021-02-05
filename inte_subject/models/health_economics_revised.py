@@ -3,12 +3,10 @@ from django.db import models
 from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NO, NOT_APPLICABLE
 from edc_model import models as edc_models
+
 from inte_lists.models import DrugPaySources, TransportChoices
 
-from ..choices import (
-    ACTIVITY_CHOICES,
-    CHILDCARE_CHOICES,
-)
+from ..choices import ACTIVITY_CHOICES, CHILDCARE_CHOICES
 from ..model_mixins import CrfModelMixin
 
 
@@ -82,17 +80,14 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     is_highest_earner = models.CharField(
-        verbose_name=(
-            "Are you the person who earns the highest income in your household?"
-        ),
+        verbose_name=("Are you the person who earns the highest income in your household?"),
         max_length=15,
         choices=YES_NO,
     )
 
     highest_earner = models.CharField(
         verbose_name=(
-            "If NO, what is the profession of the person "
-            "who earns the highest income?"
+            "If NO, what is the profession of the person " "who earns the highest income?"
         ),
         max_length=50,
         null=True,
@@ -131,8 +126,7 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
 
     rx_dm_month = models.CharField(
         verbose_name=(
-            "Did you receive drugs for raised blood sugar "
-            "(diabetes) over the last month?"
+            "Did you receive drugs for raised blood sugar " "(diabetes) over the last month?"
         ),
         max_length=15,
         choices=YES_NO_NA,
@@ -280,8 +274,7 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
     # Loss of Productivity and Earnings
     missed_routine_activities = models.CharField(
         verbose_name=(
-            "What would you be doing if you had not "
-            "come to the health facility today?"
+            "What would you be doing if you had not " "come to the health facility today?"
         ),
         max_length=25,
         choices=ACTIVITY_CHOICES,
@@ -360,9 +353,7 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
     # Current visit: transport and food
     transport = models.ManyToManyField(
         TransportChoices,
-        verbose_name=(
-            "Which form of transport did you take to get to the hospital today?"
-        ),
+        verbose_name=("Which form of transport did you take to get to the hospital today?"),
         max_length=25,
     )
 
@@ -402,8 +393,7 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         DrugPaySources,
         related_name="+",
         verbose_name=(
-            "If YES, received raised blood sugar "
-            "(diabetes) drugs, how were these paid for?"
+            "If YES, received raised blood sugar " "(diabetes) drugs, how were these paid for?"
         ),
         blank=True,
     )

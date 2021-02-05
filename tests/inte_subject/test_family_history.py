@@ -3,9 +3,10 @@ from edc_appointment.constants import INCOMPLETE_APPT
 from edc_metadata import REQUIRED
 from edc_metadata.models import CrfMetadata
 from edc_utils import get_utcnow
+from model_bakery import baker
+
 from inte_screening.constants import HIV_CLINIC
 from tests.inte_test_case_mixin import InteTestCaseMixin
-from model_bakery import baker
 
 
 class TestFamilyHistory(InteTestCaseMixin, TestCase):

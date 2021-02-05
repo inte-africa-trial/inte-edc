@@ -1,3 +1,4 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO, YES_NO_NOT_REQUIRED
@@ -5,7 +6,6 @@ from edc_constants.constants import NOT_REQUIRED, YES
 from edc_model import models as edc_models
 from edc_model.models import BaseUuidModel
 
-from django.core.validators import MaxValueValidator, MinValueValidator
 from ..model_mixins import CrfModelMixin
 
 
@@ -16,7 +16,10 @@ class Indicators(CrfModelMixin, BaseUuidModel):
         blank=True,
     )
 
-    height = edc_models.HeightField(null=True, blank=True,)
+    height = edc_models.HeightField(
+        null=True,
+        blank=True,
+    )
 
     r1_taken = models.CharField(
         verbose_name=mark_safe("Was a blood pressure reading taken"),

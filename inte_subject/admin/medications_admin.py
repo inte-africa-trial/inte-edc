@@ -11,9 +11,7 @@ from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(Medications, site=inte_subject_admin)
-class MedicationsAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class MedicationsAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
     form = MedicationsForm
 
     fieldsets = (

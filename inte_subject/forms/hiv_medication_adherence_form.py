@@ -5,14 +5,16 @@ from edc_model.widgets import SliderWidget
 
 from ..models import HivMedicationAdherence
 from .mixins import (
-    CrfModelFormMixin,
     CrfFormValidatorMixin,
+    CrfModelFormMixin,
     MedicationAdherenceFormValidatorMixin,
 )
 
 
 class HivMedicationAdherenceFormValidator(
-    MedicationAdherenceFormValidatorMixin, CrfFormValidatorMixin, FormValidator,
+    MedicationAdherenceFormValidatorMixin,
+    CrfFormValidatorMixin,
+    FormValidator,
 ):
     pass
 

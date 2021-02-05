@@ -1,6 +1,7 @@
 from django.contrib.sites.models import Site
-from django.test import override_settings, TestCase, tag
+from django.test import TestCase, override_settings, tag
 from edc_utils import get_utcnow
+
 from inte_prn.models import IntegratedCareClinicRegistration
 from inte_screening.constants import SEQUENTIAL
 from inte_screening.forms import DailyClosingLogForm

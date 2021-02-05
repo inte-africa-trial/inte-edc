@@ -1,7 +1,8 @@
-from django.test import TestCase, tag
-from edc_reportable import site_reportables, ParserError
 from tempfile import mkdtemp
 from unittest import skip
+
+from django.test import TestCase, tag
+from edc_reportable import ParserError, site_reportables
 
 
 @skip

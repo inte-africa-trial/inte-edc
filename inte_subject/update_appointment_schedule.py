@@ -52,9 +52,7 @@ def update_appointment_schedule(apps=None):
                     )
                     with DisableSignals(disabled_signals=[pre_save]):
                         subject_visit.visit_code = appointment.visit_code
-                        subject_visit.visit_code_sequence = (
-                            appointment.visit_code_sequence
-                        )
+                        subject_visit.visit_code_sequence = appointment.visit_code_sequence
                         subject_visit.save()
             else:
                 with DisableSignals(disabled_signals=[pre_delete]):

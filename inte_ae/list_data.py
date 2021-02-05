@@ -1,5 +1,4 @@
-from edc_constants.constants import OTHER, NOT_APPLICABLE, DEAD, UNKNOWN
-from edc_list_data import PreloadData
+from edc_constants.constants import DEAD, NOT_APPLICABLE, OTHER, UNKNOWN
 
 list_data = {
     "edc_adverse_event.aeclassification": [
@@ -35,5 +34,3 @@ list_data = {
         (OTHER, "Other"),
     ],
 }
-
-# preload_data = PreloadData(list_data=list_data, model_data={}, unique_field_data=None)

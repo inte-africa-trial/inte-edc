@@ -25,9 +25,13 @@ class Migration(migrations.Migration):
                 "verbose_name": "historical Daily Closing Log",
             },
         ),
-        migrations.RemoveField(model_name="dailyclosinglog", name="log_identifier",),
         migrations.RemoveField(
-            model_name="historicaldailyclosinglog", name="log_identifier",
+            model_name="dailyclosinglog",
+            name="log_identifier",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldailyclosinglog",
+            name="log_identifier",
         ),
         migrations.AlterField(
             model_name="dailyclosinglog",

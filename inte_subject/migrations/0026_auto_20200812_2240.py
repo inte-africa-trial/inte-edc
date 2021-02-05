@@ -12,16 +12,20 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RemoveField(
-            model_name="healtheconomicsrevised", name="rx_arv_recv_today",
+            model_name="healtheconomicsrevised",
+            name="rx_arv_recv_today",
         ),
         migrations.RemoveField(
-            model_name="healtheconomicsrevised", name="rx_diabetes_recv_today",
+            model_name="healtheconomicsrevised",
+            name="rx_diabetes_recv_today",
         ),
         migrations.RemoveField(
-            model_name="healtheconomicsrevised", name="rx_hypertension_recv_today",
+            model_name="healtheconomicsrevised",
+            name="rx_hypertension_recv_today",
         ),
         migrations.RemoveField(
-            model_name="healtheconomicsrevised", name="rx_other_recv_today",
+            model_name="healtheconomicsrevised",
+            name="rx_other_recv_today",
         ),
         migrations.AddField(
             model_name="healtheconomicsrevised",

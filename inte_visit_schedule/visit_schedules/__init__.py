@@ -1,3 +1,2 @@
-from .visit_schedule import visit_schedule
-from .visit_schedule import VISIT_SCHEDULE
-from .schedule import schedule_hiv, schedule_ncd, SCHEDULE_HIV, SCHEDULE_NCD
+from .schedule import SCHEDULE_HIV, SCHEDULE_NCD, schedule_hiv, schedule_ncd
+from .visit_schedule import VISIT_SCHEDULE, visit_schedule

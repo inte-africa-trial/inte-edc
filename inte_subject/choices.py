@@ -4,15 +4,15 @@ from edc_reportable import (
     MILLIMOLES_PER_LITER,
     MILLIMOLES_PER_LITER_DISPLAY,
 )
-from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED, MISSED_VISIT
+from edc_visit_tracking.constants import MISSED_VISIT, SCHEDULED, UNSCHEDULED
 
 from .constants import (
     DIET_LIFESTYLE,
     DRUGS,
+    GTE_3HRS,
     INSULIN,
     INTEGRATED,
     SITTING,
-    GTE_3HRS,
     THIS_CLINIC,
 )
 
@@ -112,10 +112,11 @@ GLUCOSE_UNITS = (
 )
 
 INFO_SOURCE = (
-    ("hospital_notes", "Hospital notes"),
-    ("outpatient_cards", "Outpatient cards"),
     ("patient", "Patient"),
     ("patient_and_outpatient", "Patient, hospital notes and/or outpatient card"),
+    ("patient_representive", "Patient Representative (e.family member, friend)"),
+    ("hospital_notes", "Hospital notes"),
+    ("outpatient_cards", "Outpatient cards"),
     ("collateral_history", "Collateral History from relative/guardian"),
     (NOT_APPLICABLE, "Not applicable"),
     (OTHER, "Other"),

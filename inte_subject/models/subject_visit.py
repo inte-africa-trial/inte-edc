@@ -8,9 +8,10 @@ from edc_sites.models import CurrentSiteManager as BaseCurrentSiteManager
 from edc_sites.models import SiteModelMixin
 from edc_visit_tracking.managers import VisitModelManager
 from edc_visit_tracking.model_mixins import VisitModelMixin
+
 from inte_lists.models import ClinicServices, HealthServices
 
-from ..choices import INFO_SOURCE, VISIT_UNSCHEDULED_REASON, VISIT_REASON
+from ..choices import INFO_SOURCE, VISIT_REASON, VISIT_UNSCHEDULED_REASON
 from .subject_visit_missed import SubjectVisitMissed
 
 

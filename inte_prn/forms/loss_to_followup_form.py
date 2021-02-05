@@ -1,8 +1,8 @@
 from django import forms
-from edc_ltfu.modelform_mixins import LossToFollowupFormValidator
-from edc_sites.forms import SiteModelFormMixin
 from edc_action_item.forms.action_item_form_mixin import ActionItemFormMixin
 from edc_form_validators.form_validator_mixin import FormValidatorMixin
+from edc_ltfu.modelform_mixins import LossToFollowupFormValidator
+from edc_sites.forms import SiteModelFormMixin
 
 from ..models import LossToFollowup
 

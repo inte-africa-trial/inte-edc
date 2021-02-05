@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
 from edc_appointment.tests.appointment_test_case_mixin import AppointmentTestCaseMixin
-from edc_constants.constants import YES, NOT_APPLICABLE, RANDOM_SAMPLING, MALE, NO
+from edc_constants.constants import MALE, NO, NOT_APPLICABLE, RANDOM_SAMPLING, YES
 from edc_facility.import_holidays import import_holidays
 from edc_facility.models import Holiday
 from edc_form_validators import FormValidatorTestCaseMixin
@@ -18,13 +18,14 @@ from edc_sites.tests.site_test_case_mixin import SiteTestCaseMixin
 from edc_utils.date import get_utcnow
 from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED
+from model_bakery import baker
+
 from inte_consent.models import SubjectConsent
 from inte_screening.constants import HIV_CLINIC
 from inte_screening.forms import SubjectScreeningForm
 from inte_screening.models import SubjectScreening
 from inte_sites.sites import fqdn
 from inte_subject.models import SubjectVisit
-from model_bakery import baker
 
 
 class InteTestCaseMixin(
@@ -71,9 +72,7 @@ class InteTestCaseMixin(
                 user.groups.add(group)
         return self.client.force_login(user or self.user)
 
-    def get_subject_screening(
-        self, report_datetime=None, eligibility_datetime=None, **kwargs
-    ):
+    def get_subject_screening(self, report_datetime=None, eligibility_datetime=None, **kwargs):
         data = {
             "screening_consent": YES,
             "age_in_years": 25,
@@ -115,8 +114,7 @@ class InteTestCaseMixin(
             user_modified="erikvw",
             screening_identifier=subject_screening.screening_identifier,
             initials=subject_screening.initials,
-            dob=get_utcnow().date()
-            - relativedelta(years=subject_screening.age_in_years),
+            dob=get_utcnow().date() - relativedelta(years=subject_screening.age_in_years),
             site=Site.objects.get(id=settings.SITE_ID),
             clinic_type=HIV_CLINIC,
             consent_datetime=consent_datetime or get_utcnow(),
@@ -137,9 +135,7 @@ class InteTestCaseMixin(
         reason = reason or SCHEDULED
         if not appointment:
             subject_screening = subject_screening or self.get_subject_screening()
-            subject_consent = subject_consent or self.get_subject_consent(
-                subject_screening
-            )
+            subject_consent = subject_consent or self.get_subject_consent(subject_screening)
             appointment = self.get_appointment(
                 subject_identifier=subject_consent.subject_identifier,
                 visit_code=visit_code or DAY1,
@@ -154,7 +150,10 @@ class InteTestCaseMixin(
         )
 
     def get_next_subject_visit(
-        self, subject_visit=None, reason=None, appt_datetime=None,
+        self,
+        subject_visit=None,
+        reason=None,
+        appt_datetime=None,
     ):
         visit_code = (
             subject_visit.appointment.visit_code
@@ -163,9 +162,7 @@ class InteTestCaseMixin(
         )
         # visit_code_sequence will increment in get_subject_visit
         visit_code_sequence = (
-            subject_visit.appointment.visit_code_sequence
-            if reason == UNSCHEDULED
-            else 0
+            subject_visit.appointment.visit_code_sequence if reason == UNSCHEDULED else 0
         )
         return self.get_subject_visit(
             visit_code=visit_code,

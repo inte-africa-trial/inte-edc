@@ -6,6 +6,7 @@ from edc_appointment.model_mixins import AppointmentWindowError
 from edc_utils import get_utcnow
 from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED
+
 from inte_screening.constants import HIV_CLINIC
 from tests.inte_test_case_mixin import InteTestCaseMixin
 
@@ -43,7 +44,8 @@ class TestWindowPeriod(InteTestCaseMixin, TestCase):
     @tag("win")
     def test_window_period_up_to_6m(self):
         weeks_count = weeks_between(
-            self.appointment_1000.appt_datetime, self.appointment_1060.appt_datetime,
+            self.appointment_1000.appt_datetime,
+            self.appointment_1060.appt_datetime,
         )
 
         subject_visit_baseline = self.get_subject_visit(
@@ -61,9 +63,7 @@ class TestWindowPeriod(InteTestCaseMixin, TestCase):
         self.assertFalse(self.appointment_1060.appt_status == IN_PROGRESS_APPT)
 
         for week in range(1, weeks_count):
-            appt_datetime = self.appointment_1000.appt_datetime + relativedelta(
-                weeks=week
-            )
+            appt_datetime = self.appointment_1000.appt_datetime + relativedelta(weeks=week)
             with self.subTest(week=week, appt_datetime=appt_datetime):
                 try:
                     subject_visit = self.get_next_subject_visit(
@@ -72,15 +72,13 @@ class TestWindowPeriod(InteTestCaseMixin, TestCase):
                         appt_datetime=appt_datetime,
                     )
                 except AppointmentWindowError:
-                    if (
-                        appt_datetime
-                        < self.appointment_1000.appt_datetime + relativedelta(weeks=22)
+                    if appt_datetime < self.appointment_1000.appt_datetime + relativedelta(
+                        weeks=22
                     ):
                         self.fail("AppointmentWindowError unexpectedly raised")
                 else:
-                    if (
-                        appt_datetime
-                        >= self.appointment_1000.appt_datetime + relativedelta(weeks=22)
+                    if appt_datetime >= self.appointment_1000.appt_datetime + relativedelta(
+                        weeks=22
                     ):
                         self.fail("AppointmentWindowError unexpectedly NOT raised")
                 subject_visit.appointment.appt_status = INCOMPLETE_APPT

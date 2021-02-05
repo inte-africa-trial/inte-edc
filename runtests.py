@@ -1,14 +1,13 @@
 #!/usr/bin/env python
-import django
 import logging
 import os
 import sys
+from os.path import abspath, dirname, join
 
+import django
 from django.conf import settings
 from django.test.runner import DiscoverRunner
 from edc_test_utils import DefaultTestSettings
-from os.path import abspath, dirname, join
-
 from edc_utils import get_datetime_from_env
 from multisite import SiteID
 
@@ -26,9 +25,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
     SUBJECT_CONSENT_MODEL="inte_consent.subjectconsent",
     SUBJECT_REQUISITION_MODEL=f"inte_subject.subjectrequisition",
     EDC_PROTOCOL_STUDY_OPEN_DATETIME=get_datetime_from_env(2019, 6, 30, 0, 0, 0, "UTC"),
-    EDC_PROTOCOL_STUDY_CLOSE_DATETIME=get_datetime_from_env(
-        2024, 12, 31, 23, 59, 59, "UTC"
-    ),
+    EDC_PROTOCOL_STUDY_CLOSE_DATETIME=get_datetime_from_env(2024, 12, 31, 23, 59, 59, "UTC"),
     ADVERSE_EVENT_ADMIN_SITE="inte_ae_admin",
     ADVERSE_EVENT_APP_LABEL="inte_ae",
     EDC_NAVBAR_DEFAULT="inte_dashboard",
@@ -76,6 +73,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
         "logentry_admin",
         "simple_history",
         "storages",
+        "defender",
         "edc_action_item.apps.AppConfig",
         "edc_appointment.apps.AppConfig",
         "edc_adverse_event.apps.AppConfig",

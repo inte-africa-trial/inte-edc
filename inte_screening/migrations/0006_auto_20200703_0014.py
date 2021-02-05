@@ -13,15 +13,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="historicalsubjectrefusal",
             name="comment",
-            field=models.TextField(
-                blank=True, null=True, verbose_name="Additional Comments"
-            ),
+            field=models.TextField(blank=True, null=True, verbose_name="Additional Comments"),
         ),
         migrations.AddField(
             model_name="subjectrefusal",
             name="comment",
-            field=models.TextField(
-                blank=True, null=True, verbose_name="Additional Comments"
-            ),
+            field=models.TextField(blank=True, null=True, verbose_name="Additional Comments"),
         ),
     ]

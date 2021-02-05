@@ -12,9 +12,7 @@ class DataMigrationError(Exception):
 
 
 def convert_clinical_review_hiv_dx(apps, schema_editor):
-    clinical_review_baseline_model_cls = apps.get_model(
-        "inte_subject.clinicalreviewbaseline"
-    )
+    clinical_review_baseline_model_cls = apps.get_model("inte_subject.clinicalreviewbaseline")
     for obj in clinical_review_baseline_model_cls.objects.all():
         hiv_status = copy(obj.hiv_test)
         if hiv_status == NEVER:

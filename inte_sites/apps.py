@@ -1,7 +1,6 @@
 from django.apps import AppConfig as DjangoAppConfig
 from django.core.management.color import color_style
 
-
 style = color_style()
 
 

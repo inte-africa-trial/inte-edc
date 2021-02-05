@@ -1,24 +1,25 @@
 import sys
+from unittest import skip
 
 from dateutil.relativedelta import relativedelta
 from django.apps import apps as django_apps
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.core.management.color import color_style
-from django.test import tag, TestCase
+from django.test import TestCase, tag
 from django.test.utils import override_settings
 from django.urls.base import reverse
 from django.urls.exceptions import NoReverseMatch
 from edc_appointment.constants import IN_PROGRESS_APPT, SCHEDULED_APPT
 from edc_appointment.models import Appointment
-from edc_auth import TMG, EVERYONE, AUDITOR, CLINIC, PII, EXPORT, LAB
+from edc_auth import AUDITOR, CLINIC, EVERYONE, EXPORT, LAB, PII, TMG
 from edc_dashboard.url_names import url_names
 from edc_sites import add_or_update_django_sites, get_sites_by_country
 from edc_utils import get_utcnow
+from model_bakery import baker
+
 from inte_screening.models.subject_screening import SubjectScreening
 from inte_sites.sites import fqdn
-from model_bakery import baker
-from unittest import skip
 
 from .inte_test_case_mixin import InteTestCaseMixin
 
@@ -51,18 +52,18 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
     def test_ae(self):
         self.login(superuser=False, groups=[EVERYONE, AUDITOR])
         response = self.client.get(reverse("inte_ae:home_url"))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         response = self.client.get(reverse("edc_adverse_event:ae_home_url"))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         response = self.client.get(reverse("edc_adverse_event:tmg_home_url"))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         response = self.client.get(reverse("edc_data_manager:home_url"))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_home_everyone(self):
         self.login(superuser=False, groups=[EVERYONE])
         response = self.client.get(reverse("home_url"))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "Screening")
         self.assertNotContains(response, "Subjects")
         self.assertNotContains(response, "Specimens")
@@ -79,7 +80,7 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
     def test_home_auditor(self):
         self.login(superuser=False, groups=[EVERYONE, AUDITOR])
         response = self.client.get(reverse("home_url"))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Screening")
         self.assertContains(response, "Subjects")
         self.assertContains(response, "Specimens")
@@ -168,9 +169,7 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
         self.assertNotIn("Add SubjectScreening", screening_page)
 
     def test_screening_form(self):
-        subject_screening = baker.prepare_recipe(
-            f"{app_prefix}_screening.subjectscreening"
-        )
+        subject_screening = baker.prepare_recipe(f"{app_prefix}_screening.subjectscreening")
         self.login(superuser=False, groups=[EVERYONE, CLINIC, PII])
 
         home_page = self.client.get(reverse("home_url"))
@@ -223,9 +222,7 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
         subject_consent = baker.make_recipe(
             "inte_subject.subjectconsent",
             screening_identifier=subject_screening.screening_identifier,
-            dob=(
-                get_utcnow() - relativedelta(years=subject_screening.age_in_years)
-            ).date(),
+            dob=(get_utcnow() - relativedelta(years=subject_screening.age_in_years)).date(),
             first_name="Melissa",
             last_name="Rodriguez",
             initials="MR",
@@ -289,10 +286,7 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
         subject_visit_page.form["info_source"] = "patient"
         subject_dashboard_page = subject_visit_page.form.submit()
 
-        url = (
-            f"/subject/subject_dashboard/{subject_identifier}/"
-            f"{str(appointments[0].pk)}/"
-        )
+        url = f"/subject/subject_dashboard/{subject_identifier}/" f"{str(appointments[0].pk)}/"
         self.assertEqual(subject_dashboard_page.status_code, 302)
         self.assertEqual(subject_dashboard_page.url, url)
 
@@ -312,8 +306,7 @@ class AdminSiteTest(InteTestCaseMixin, TestCase):
         self.assertIn("Requisitions", subject_dashboard_page)
 
     def test_follow_urls(self):
-        """Follows any url that can be reversed without kwargs.
-        """
+        """Follows any url that can be reversed without kwargs."""
         self.login(superuser=False, groups=[EVERYONE, CLINIC, PII])
         for url_name in url_names.registry.values():
             sys.stdout.write(style.MIGRATE_HEADING(f" - '{url_name}' ...\r"))

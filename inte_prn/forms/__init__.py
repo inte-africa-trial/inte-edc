@@ -4,5 +4,6 @@ from .integrated_care_clinic_registration_form import (
 )
 from .loss_to_followup_form import LossToFollowupForm
 from .protocol_deviation_violation_form import ProtocolDeviationViolationForm
+from .subject_transfer_form import SubjectTransferForm
 from .unblinding_request_form import UnblindingRequestForm
 from .unblinding_review_form import UnblindingReviewForm

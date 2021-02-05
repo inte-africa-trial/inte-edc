@@ -3,6 +3,7 @@ from edc_crf.model_mixins import CrfWithActionModelMixin
 from edc_model import models as edc_models
 from edc_sites.models import SiteModelMixin
 from edc_visit_tracking.model_mixins import SubjectVisitMissedModelMixin
+
 from inte_lists.models import SubjectVisitMissedReasons
 
 from ..model_mixins import CrfModelMixin

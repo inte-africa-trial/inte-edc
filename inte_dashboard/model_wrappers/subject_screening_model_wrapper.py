@@ -2,11 +2,11 @@ from django.apps import apps as django_apps
 from django.core.exceptions import ObjectDoesNotExist
 from edc_consent import ConsentModelWrapperMixin
 from edc_model_wrapper import ModelWrapper
+from edc_subject_model_wrappers import SubjectConsentModelWrapper as BaseModelWrapper
 from edc_subject_model_wrappers import (
-    SubjectConsentModelWrapper as BaseModelWrapper,
-    SubjectRefusalModelWrapperMixin,
     SubjectRefusalModelWrapper as BaseRefusalModelWrapper,
 )
+from edc_subject_model_wrappers import SubjectRefusalModelWrapperMixin
 
 
 class SubjectConsentModelWrapper(BaseModelWrapper):

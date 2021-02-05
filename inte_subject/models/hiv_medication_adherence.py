@@ -4,7 +4,9 @@ from ..model_mixins import CrfModelMixin, MedicationAdherenceModelMixin
 
 
 class HivMedicationAdherence(
-    MedicationAdherenceModelMixin, CrfModelMixin, edc_models.BaseUuidModel,
+    MedicationAdherenceModelMixin,
+    CrfModelMixin,
+    edc_models.BaseUuidModel,
 ):
 
     condition_label = "HIV"

@@ -3,10 +3,11 @@ from django.test import TestCase, tag
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import INCOMPLETE
 from edc_utils import get_utcnow
+from model_bakery import baker
+
 from inte_screening.constants import HIV_CLINIC
 from inte_subject.forms.indicators_form import IndicatorsFormValidator
 from tests.inte_test_case_mixin import InteTestCaseMixin
-from model_bakery import baker
 
 
 class TestIndicators(InteTestCaseMixin, TestCase):
@@ -22,9 +23,7 @@ class TestIndicators(InteTestCaseMixin, TestCase):
             subject_screening=self.subject_screening,
             subject_consent=self.subject_consent,
         )
-        baker.make(
-            "inte_subject.clinicalreviewbaseline", subject_visit=self.subject_visit
-        )
+        baker.make("inte_subject.clinicalreviewbaseline", subject_visit=self.subject_visit)
 
     def test_weight_height_required_at_baseline(self):
         data = {

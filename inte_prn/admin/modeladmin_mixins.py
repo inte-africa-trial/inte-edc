@@ -1,6 +1,7 @@
 from copy import copy
+
 from django.contrib import admin
-from edc_action_item import action_fieldset_tuple, action_fields
+from edc_action_item import action_fields, action_fieldset_tuple
 from edc_model_admin import audit_fieldset_tuple
 from edc_model_admin.dashboard import ModelAdminSubjectDashboardMixin
 
@@ -26,6 +27,8 @@ class EndOfStudyModelAdminMixin(ModelAdminSubjectDashboardMixin):
                     "offschedule_reason",
                     "other_offschedule_reason",
                     "ltfu_date",
+                    "transfer_date",
+                    "transferred_consent",
                     "death_date",
                     "comment",
                 )

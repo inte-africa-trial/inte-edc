@@ -177,8 +177,7 @@ class Diagnoses:
                 except ObjectDoesNotExist:
                     subject_visit = self.initial_diagnosis_visit(name)
                     visit_label = (
-                        f"{subject_visit.visit_code}."
-                        f"{subject_visit.visit_code_sequence}"
+                        f"{subject_visit.visit_code}." f"{subject_visit.visit_code_sequence}"
                     )
                     raise InitialReviewRequired(
                         f"{description} was been reported on visit {visit_label}. "

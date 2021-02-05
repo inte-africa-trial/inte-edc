@@ -1,18 +1,19 @@
 from edc_constants.constants import (
-    OTHER,
     DIABETES,
     HIV,
     HYPERTENSION,
+    OTHER,
     PURPOSIVELY_SELECTED,
     RANDOM_SAMPLING,
 )
-from inte_subject.constants import NCD, INTEGRATED
+
+from inte_subject.constants import INTEGRATED, NCD
 
 from .constants import (
-    NCD_CLINIC,
+    DIABETES_CLINIC,
     HIV_CLINIC,
     HYPERTENSION_CLINIC,
-    DIABETES_CLINIC,
+    NCD_CLINIC,
     SEQUENTIAL,
     SYSTEMATIC,
 )

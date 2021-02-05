@@ -1,0 +1,17 @@
+.edc-body {
+    padding-top: 10px;
+}
+
+.table-no-border>thead>tr>th, 
+.table-no-border>tbody>tr>th, 
+.table-no-border>tfoot>tr>th, 
+.table-no-border>thead>tr>td, 
+.table-no-border>tbody>tr>td, 
+.table-no-border>tfoot>tr>td {
+  border-top: none; 
+}
+
+@-ms-viewport       { width: device-width; }
+@-o-viewport        { width: device-width; }
+@viewport           { width: device-width; }
+

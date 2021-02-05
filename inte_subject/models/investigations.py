@@ -2,6 +2,7 @@ from django.db import models
 from edc_constants.choices import YES_NO
 from edc_constants.constants import NO
 from edc_model import models as edc_models
+
 from inte_lists.models import ReasonsForTesting
 
 from ..model_mixins import CrfModelMixin
@@ -32,9 +33,7 @@ class Investigations(CrfModelMixin, edc_models.BaseUuidModel):
         default=NO,
     )
 
-    test_date = models.DateField(
-        verbose_name="Date test requested", null=True, blank=True
-    )
+    test_date = models.DateField(verbose_name="Date test requested", null=True, blank=True)
 
     reason = models.ManyToManyField(
         ReasonsForTesting, verbose_name="Why was the patient tested?", blank=True

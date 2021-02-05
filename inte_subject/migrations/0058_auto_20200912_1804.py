@@ -7,12 +7,9 @@ from edc_utils import DisableSignals
 
 
 def update_complications_from_baseline(apps, schema_editor):
-    """Splits the complications model into baseline and followup.
-    """
+    """Splits the complications model into baseline and followup."""
     complications_model_cls = apps.get_model("inte_subject.complicationsbaseline")
-    complications_followup_model_cls = apps.get_model(
-        "inte_subject.complicationsfollowup"
-    )
+    complications_followup_model_cls = apps.get_model("inte_subject.complicationsfollowup")
     clinical_review_model_cls = apps.get_model("inte_subject.clinicalreview")
     names = [
         "stroke",
@@ -56,9 +53,7 @@ def update_complications_from_baseline(apps, schema_editor):
 
             complications_followup.complications = complications.complications
 
-            complications_followup.other_complications = (
-                complications.other_complications
-            )
+            complications_followup.other_complications = complications.other_complications
             with DisableSignals(disabled_signals=[pre_save]):
                 complications_followup.save()
                 complications.delete()

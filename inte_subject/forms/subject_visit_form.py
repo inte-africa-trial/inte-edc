@@ -4,6 +4,7 @@ from edc_form_validators import FormValidatorMixin
 from edc_sites.forms import SiteModelFormMixin
 from edc_visit_tracking.constants import MISSED_VISIT, SCHEDULED, UNSCHEDULED
 from edc_visit_tracking.form_validators import VisitFormValidator
+
 from inte_prn.icc_registered import (
     InterventionSiteNotRegistered,
     is_icc_registered_site,
@@ -21,7 +22,9 @@ class SubjectVisitFormValidator(VisitFormValidator):
     def clean(self):
         super().clean()
         self.m2m_other_specify(
-            OTHER, m2m_field="clinic_services", field_other="clinic_services_other",
+            OTHER,
+            m2m_field="clinic_services",
+            field_other="clinic_services_other",
         )
 
         self.validate__clinic_services()
@@ -37,9 +40,7 @@ class SubjectVisitFormValidator(VisitFormValidator):
             self.cleaned_data.get("appointment").visit_code_sequence == 0
             and STUDY_DEFINED_TIMEPOINT not in selections
         ):
-            raise forms.ValidationError(
-                {"clinic_services": "This is scheduled study visit."}
-            )
+            raise forms.ValidationError({"clinic_services": "This is scheduled study visit."})
         elif (
             self.cleaned_data.get("appointment").visit_code_sequence != 0
             and STUDY_DEFINED_TIMEPOINT in selections
@@ -64,9 +65,7 @@ class SubjectVisitFormValidator(VisitFormValidator):
                 )
             except NotInterventionSite:
                 raise forms.ValidationError(
-                    {
-                        "health_services": "This site does not have an integrated care clinic."
-                    }
+                    {"health_services": "This site does not have an integrated care clinic."}
                 )
             except InterventionSiteNotRegistered:
                 raise forms.ValidationError(

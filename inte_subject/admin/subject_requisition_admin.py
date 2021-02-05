@@ -1,18 +1,19 @@
+from urllib.parse import parse_qs, urlsplit
+
 from django.contrib import admin
 from edc_constants.constants import YES
-from edc_model_admin import audit_fieldset_tuple
 from edc_lab.admin import (
     RequisitionAdminMixin,
     requisition_fieldset,
-    requisition_status_fieldset,
     requisition_identifier_fieldset,
+    requisition_status_fieldset,
     requisition_verify_fieldset,
 )
-from urllib.parse import parse_qs, urlsplit
+from edc_model_admin import audit_fieldset_tuple
 
 from ..admin_site import inte_subject_admin
-from ..models import SubjectRequisition
 from ..forms import SubjectRequisitionForm
+from ..models import SubjectRequisition
 from .modeladmin_mixins import CrfModelAdmin
 
 
@@ -39,9 +40,7 @@ class SubjectRequisitionAdmin(RequisitionAdminMixin, CrfModelAdmin):
     }
 
     def get_search_results(self, request, queryset, search_term):
-        queryset, use_distinct = super().get_search_results(
-            request, queryset, search_term
-        )
+        queryset, use_distinct = super().get_search_results(request, queryset, search_term)
         path = urlsplit(request.META.get("HTTP_REFERER")).path
         query = urlsplit(request.META.get("HTTP_REFERER")).query
         if "bloodresult" in path:

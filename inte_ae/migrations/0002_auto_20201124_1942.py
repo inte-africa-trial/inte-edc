@@ -10,83 +10,154 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(model_name="deathreport", name="action_item",),
-        migrations.RemoveField(model_name="deathreport", name="cause_of_death",),
-        migrations.RemoveField(model_name="deathreport", name="parent_action_item",),
-        migrations.RemoveField(model_name="deathreport", name="related_action_item",),
         migrations.RemoveField(
-            model_name="deathreport", name="secondary_cause_of_death",
-        ),
-        migrations.RemoveField(model_name="deathreport", name="site",),
-        migrations.RemoveField(model_name="deathreporttmg", name="action_item",),
-        migrations.RemoveField(model_name="deathreporttmg", name="cause_of_death",),
-        migrations.RemoveField(model_name="deathreporttmg", name="death_report",),
-        migrations.RemoveField(model_name="deathreporttmg", name="parent_action_item",),
-        migrations.RemoveField(
-            model_name="deathreporttmg", name="related_action_item",
-        ),
-        migrations.RemoveField(model_name="deathreporttmg", name="site",),
-        migrations.RemoveField(model_name="historicaldeathreport", name="action_item",),
-        migrations.RemoveField(
-            model_name="historicaldeathreport", name="cause_of_death",
+            model_name="deathreport",
+            name="action_item",
         ),
         migrations.RemoveField(
-            model_name="historicaldeathreport", name="history_user",
+            model_name="deathreport",
+            name="cause_of_death",
         ),
         migrations.RemoveField(
-            model_name="historicaldeathreport", name="parent_action_item",
+            model_name="deathreport",
+            name="parent_action_item",
         ),
         migrations.RemoveField(
-            model_name="historicaldeathreport", name="related_action_item",
+            model_name="deathreport",
+            name="related_action_item",
         ),
         migrations.RemoveField(
-            model_name="historicaldeathreport", name="secondary_cause_of_death",
-        ),
-        migrations.RemoveField(model_name="historicaldeathreport", name="site",),
-        migrations.RemoveField(
-            model_name="historicaldeathreporttmg", name="action_item",
+            model_name="deathreport",
+            name="secondary_cause_of_death",
         ),
         migrations.RemoveField(
-            model_name="historicaldeathreporttmg", name="cause_of_death",
+            model_name="deathreport",
+            name="site",
         ),
         migrations.RemoveField(
-            model_name="historicaldeathreporttmg", name="death_report",
+            model_name="deathreporttmg",
+            name="action_item",
         ),
         migrations.RemoveField(
-            model_name="historicaldeathreporttmg", name="history_user",
+            model_name="deathreporttmg",
+            name="cause_of_death",
         ),
         migrations.RemoveField(
-            model_name="historicaldeathreporttmg", name="parent_action_item",
+            model_name="deathreporttmg",
+            name="death_report",
         ),
         migrations.RemoveField(
-            model_name="historicaldeathreporttmg", name="related_action_item",
-        ),
-        migrations.RemoveField(model_name="historicaldeathreporttmg", name="site",),
-        migrations.RemoveField(
-            model_name="historicaldeathreporttmgsecond", name="action_item",
+            model_name="deathreporttmg",
+            name="parent_action_item",
         ),
         migrations.RemoveField(
-            model_name="historicaldeathreporttmgsecond", name="cause_of_death",
+            model_name="deathreporttmg",
+            name="related_action_item",
         ),
         migrations.RemoveField(
-            model_name="historicaldeathreporttmgsecond", name="death_report",
+            model_name="deathreporttmg",
+            name="site",
         ),
         migrations.RemoveField(
-            model_name="historicaldeathreporttmgsecond", name="history_user",
+            model_name="historicaldeathreport",
+            name="action_item",
         ),
         migrations.RemoveField(
-            model_name="historicaldeathreporttmgsecond", name="parent_action_item",
+            model_name="historicaldeathreport",
+            name="cause_of_death",
         ),
         migrations.RemoveField(
-            model_name="historicaldeathreporttmgsecond", name="related_action_item",
+            model_name="historicaldeathreport",
+            name="history_user",
         ),
         migrations.RemoveField(
-            model_name="historicaldeathreporttmgsecond", name="site",
+            model_name="historicaldeathreport",
+            name="parent_action_item",
         ),
-        migrations.DeleteModel(name="DeathReportTmgSecond",),
-        migrations.DeleteModel(name="DeathReport",),
-        migrations.DeleteModel(name="DeathReportTmg",),
-        migrations.DeleteModel(name="HistoricalDeathReport",),
-        migrations.DeleteModel(name="HistoricalDeathReportTmg",),
-        migrations.DeleteModel(name="HistoricalDeathReportTmgSecond",),
+        migrations.RemoveField(
+            model_name="historicaldeathreport",
+            name="related_action_item",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreport",
+            name="secondary_cause_of_death",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreport",
+            name="site",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreporttmg",
+            name="action_item",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreporttmg",
+            name="cause_of_death",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreporttmg",
+            name="death_report",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreporttmg",
+            name="history_user",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreporttmg",
+            name="parent_action_item",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreporttmg",
+            name="related_action_item",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreporttmg",
+            name="site",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreporttmgsecond",
+            name="action_item",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreporttmgsecond",
+            name="cause_of_death",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreporttmgsecond",
+            name="death_report",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreporttmgsecond",
+            name="history_user",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreporttmgsecond",
+            name="parent_action_item",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreporttmgsecond",
+            name="related_action_item",
+        ),
+        migrations.RemoveField(
+            model_name="historicaldeathreporttmgsecond",
+            name="site",
+        ),
+        migrations.DeleteModel(
+            name="DeathReportTmgSecond",
+        ),
+        migrations.DeleteModel(
+            name="DeathReport",
+        ),
+        migrations.DeleteModel(
+            name="DeathReportTmg",
+        ),
+        migrations.DeleteModel(
+            name="HistoricalDeathReport",
+        ),
+        migrations.DeleteModel(
+            name="HistoricalDeathReportTmg",
+        ),
+        migrations.DeleteModel(
+            name="HistoricalDeathReportTmgSecond",
+        ),
     ]
