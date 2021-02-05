@@ -1,9 +1,10 @@
 from django.contrib import admin
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from edc_consent.modeladmin_mixins import ModelAdminConsentMixin
-from edc_identifier import is_subject_identifier_or_raise, SubjectIdentifierError
-from edc_model_admin import audit_fieldset_tuple, SimpleHistoryAdmin
+from edc_identifier import SubjectIdentifierError, is_subject_identifier_or_raise
+from edc_model_admin import SimpleHistoryAdmin, audit_fieldset_tuple
 from edc_model_admin.dashboard import ModelAdminSubjectDashboardMixin
+
 from inte_screening.models.subject_screening import SubjectScreening
 from inte_subject.models import SubjectVisit
 
@@ -78,20 +79,15 @@ class SubjectConsentAdmin(
     }
 
     def delete_view(self, request, object_id, extra_context=None):
-        """Prevent deletion if SubjectVisit objects exist.
-        """
+        """Prevent deletion if SubjectVisit objects exist."""
         extra_context = extra_context or {}
         obj = SubjectConsent.objects.get(id=object_id)
         try:
-            protected = [
-                SubjectVisit.objects.get(subject_identifier=obj.subject_identifier)
-            ]
+            protected = [SubjectVisit.objects.get(subject_identifier=obj.subject_identifier)]
         except ObjectDoesNotExist:
             protected = None
         except MultipleObjectsReturned:
-            protected = SubjectVisit.objects.filter(
-                subject_identifier=obj.subject_identifier
-            )
+            protected = SubjectVisit.objects.filter(subject_identifier=obj.subject_identifier)
         extra_context.update({"protected": protected})
         return super().delete_view(request, object_id, extra_context)
 

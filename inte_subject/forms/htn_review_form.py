@@ -3,11 +3,11 @@ from edc_form_validators.form_validator import FormValidator
 
 from ..models import HtnReview
 from .mixins import (
-    raise_if_clinical_review_does_not_exist,
     BPFormValidatorMixin,
-    CrfModelFormMixin,
     CrfFormValidatorMixin,
+    CrfModelFormMixin,
     ReviewFormValidatorMixin,
+    raise_if_clinical_review_does_not_exist,
 )
 
 
@@ -18,7 +18,8 @@ class HtnReviewFormValidator(
         raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
         self.validate_care_delivery()
         self.validate_bp_reading(
-            "sys_blood_pressure", "dia_blood_pressure",
+            "sys_blood_pressure",
+            "dia_blood_pressure",
         )
 
 

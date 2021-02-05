@@ -1,8 +1,8 @@
-from edc_reportable.form_validator_mixin import ReportablesFormValidatorMixin
-from edc_lab.form_validators import CrfRequisitionFormValidatorMixin
-from edc_form_validators.form_validator import FormValidator
-from edc_reportable.constants import GRADE3, GRADE4
 from edc_constants.constants import YES
+from edc_form_validators.form_validator import FormValidator
+from edc_lab.form_validators import CrfRequisitionFormValidatorMixin
+from edc_reportable.constants import GRADE3, GRADE4
+from edc_reportable.form_validator_mixin import ReportablesFormValidatorMixin
 
 
 class BloodResultsFormValidatorMixin(
@@ -19,18 +19,14 @@ class BloodResultsFormValidatorMixin(
 
     @property
     def field_values(self):
-        return [
-            self.cleaned_data.get(f) is not None for f in [f for f in self.field_names]
-        ]
+        return [self.cleaned_data.get(f) is not None for f in [f for f in self.field_names]]
 
     @property
     def extra_options(self):
         return {}
 
     def clean(self):
-        self.required_if_true(
-            any(self.field_values), field_required=self.requisition_field
-        )
+        self.required_if_true(any(self.field_values), field_required=self.requisition_field)
 
         if self.cleaned_data.get("is_poc") and self.cleaned_data.get("is_poc") == YES:
             self.validate_requisition(

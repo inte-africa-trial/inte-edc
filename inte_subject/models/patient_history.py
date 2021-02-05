@@ -1,4 +1,4 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO
@@ -6,6 +6,7 @@ from edc_lab.choices import RESULT_QUANTIFIER
 from edc_lab.constants import EQ
 from edc_model import models as edc_models
 from edc_reportable.units import COPIES_PER_MILLILITER
+
 from inte_lists.models import VisitReasons
 
 from ..choices import GLUCOSE_UNITS
@@ -14,7 +15,8 @@ from ..model_mixins import CrfModelMixin
 
 class PatientHistory(CrfModelMixin, edc_models.BaseUuidModel):
     visit_reason = models.ManyToManyField(
-        VisitReasons, verbose_name="Reason for this visit",
+        VisitReasons,
+        verbose_name="Reason for this visit",
     )
 
     new_complaints = models.CharField(
@@ -24,7 +26,10 @@ class PatientHistory(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     new_complaints_detail = models.TextField(
-        verbose_name="If yes, provide detail", max_length=250, null=True, blank=True,
+        verbose_name="If yes, provide detail",
+        max_length=250,
+        null=True,
+        blank=True,
     )
 
     weight_measured = models.CharField(
@@ -34,7 +39,10 @@ class PatientHistory(CrfModelMixin, edc_models.BaseUuidModel):
         help_text="If yes, indicate below",
     )
 
-    weight = edc_models.WeightField(null=True, blank=True,)
+    weight = edc_models.WeightField(
+        null=True,
+        blank=True,
+    )
 
     bp_measured = models.CharField(
         verbose_name="Was the blood pressure measured?",
@@ -75,7 +83,9 @@ class PatientHistory(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     fasting_glucose_quantifier = models.CharField(
-        max_length=10, choices=RESULT_QUANTIFIER, default=EQ,
+        max_length=10,
+        choices=RESULT_QUANTIFIER,
+        default=EQ,
     )
 
     fasting_glucose_units = models.CharField(
@@ -108,7 +118,9 @@ class PatientHistory(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     out_refrral = models.CharField(
-        verbose_name="Was there an Out-referral?", max_length=15, choices=YES_NO,
+        verbose_name="Was there an Out-referral?",
+        max_length=15,
+        choices=YES_NO,
     )
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):

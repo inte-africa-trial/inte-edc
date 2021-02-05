@@ -1,6 +1,7 @@
 from django.core.exceptions import ImproperlyConfigured
 from edc_action_item.site_action_items import site_action_items
 from edc_visit_tracking.action_items import VisitMissedAction
+
 from inte_prn.constants import LOSS_TO_FOLLOWUP_HIV_ACTION, LOSS_TO_FOLLOWUP_NCD_ACTION
 from inte_visit_schedule.constants import SCHEDULE_HIV, SCHEDULE_NCD
 

@@ -1,7 +1,7 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.safestring import mark_safe
-from edc_constants.choices import YES_NO, YES_NO_PENDING_NA, YES_NO_NA
+from edc_constants.choices import YES_NO, YES_NO_NA, YES_NO_PENDING_NA
 from edc_constants.constants import NOT_APPLICABLE, YES
 from edc_lab.choices import VL_QUANTIFIER_NA
 from edc_model import models as edc_models
@@ -11,9 +11,7 @@ from ..choices import CARE_ACCESS
 from ..model_mixins import CrfModelMixin, InitialReviewModelMixin
 
 
-class HivInitialReview(
-    InitialReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel
-):
+class HivInitialReview(InitialReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
 
     receives_care = models.CharField(
         verbose_name="Is the patient receiving care for HIV?",
@@ -29,9 +27,7 @@ class HivInitialReview(
     )
 
     clinic_other = models.CharField(
-        verbose_name=mark_safe(
-            "If <u>not</u> attending here, where does the patient attend?"
-        ),
+        verbose_name=mark_safe("If <u>not</u> attending here, where does the patient attend?"),
         max_length=50,
         null=True,
         blank=True,
@@ -45,7 +41,9 @@ class HivInitialReview(
     )
 
     arv_initiation_ago = edc_models.DurationYMDField(
-        verbose_name="How long ago did the patient start ART?", null=True, blank=True,
+        verbose_name="How long ago did the patient start ART?",
+        null=True,
+        blank=True,
     )
 
     arv_initiation_actual_date = models.DateField(
@@ -87,7 +85,10 @@ class HivInitialReview(
     )
 
     vl_quantifier = models.CharField(
-        max_length=10, choices=VL_QUANTIFIER_NA, null=True, blank=True,
+        max_length=10,
+        choices=VL_QUANTIFIER_NA,
+        null=True,
+        blank=True,
     )
 
     vl_date = models.DateField(

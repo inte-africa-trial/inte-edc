@@ -4,8 +4,7 @@ from django.urls.base import reverse
 from django.utils.safestring import mark_safe
 from edc_constants.constants import OTHER
 from edc_dashboard.url_names import url_names
-from edc_form_validators import FormValidator
-from edc_form_validators import FormValidatorMixin
+from edc_form_validators import FormValidator, FormValidatorMixin
 from edc_registration.models import RegisteredSubject
 
 from ..models import SubjectRefusal, SubjectScreening
@@ -51,7 +50,8 @@ class AlreadyConsentedFormMixin:
         else:
             url_name = url_names.get("subject_dashboard_url")
             url = reverse(
-                url_name, kwargs={"subject_identifier": obj.subject_identifier},
+                url_name,
+                kwargs={"subject_identifier": obj.subject_identifier},
             )
             msg = mark_safe(
                 "Not allowed. Subject has already consented. "

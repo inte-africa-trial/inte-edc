@@ -2,11 +2,11 @@ from edc_model import models as edc_models
 from edc_visit_schedule.constants import DAY1
 
 from ..model_mixins import (
-    CrfModelMixin,
+    ClinicalReviewBaselineDmModelMixin,
     ClinicalReviewBaselineHivModelMixin,
     ClinicalReviewBaselineHtnModelMixin,
-    ClinicalReviewBaselineDmModelMixin,
     ClinicalReviewModelMixin,
+    CrfModelMixin,
     TreatmentPayMethodsModelMixin,
 )
 

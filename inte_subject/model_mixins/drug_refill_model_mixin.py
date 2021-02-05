@@ -1,5 +1,6 @@
 from django.db import models
 from edc_constants.choices import YES_NO
+
 from inte_lists.models import RxModificationReasons, RxModifications
 
 
@@ -23,7 +24,9 @@ class DrugRefillModelMixin(models.Model):
     )
 
     modifications = models.ManyToManyField(
-        RxModifications, verbose_name="Which changes occurred?", blank=True,
+        RxModifications,
+        verbose_name="Which changes occurred?",
+        blank=True,
     )
 
     modifications_other = models.CharField(

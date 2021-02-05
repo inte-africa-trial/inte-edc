@@ -11,15 +11,21 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameModel(old_name="DiabetesTreatments", new_name="DmTreatments",),
         migrations.RenameModel(
-            old_name="HypertensionTreatments", new_name="HtnTreatments",
+            old_name="DiabetesTreatments",
+            new_name="DmTreatments",
+        ),
+        migrations.RenameModel(
+            old_name="HypertensionTreatments",
+            new_name="HtnTreatments",
         ),
         migrations.RemoveIndex(
-            model_name="dmtreatments", name="inte_lists__id_5eae8d_idx",
+            model_name="dmtreatments",
+            name="inte_lists__id_5eae8d_idx",
         ),
         migrations.RemoveIndex(
-            model_name="htntreatments", name="inte_lists__id_34d395_idx",
+            model_name="htntreatments",
+            name="inte_lists__id_34d395_idx",
         ),
         migrations.AddIndex(
             model_name="dmtreatments",

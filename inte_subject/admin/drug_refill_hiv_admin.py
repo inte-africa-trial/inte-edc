@@ -11,9 +11,7 @@ from ..models import DrugRefillHiv, DrugSupplyHiv
 from .modeladmin_mixins import CrfModelAdminMixin, DrugSupplyInlineMixin
 
 
-class DrugSupplyHivInline(
-    TabularInlineMixin, DrugSupplyInlineMixin, admin.TabularInline
-):
+class DrugSupplyHivInline(TabularInlineMixin, DrugSupplyInlineMixin, admin.TabularInline):
 
     model = DrugSupplyHiv
     form = DrugSupplyHivForm
@@ -27,9 +25,7 @@ class DrugSupplyHivInline(
 
 
 @admin.register(DrugRefillHiv, site=inte_subject_admin)
-class DrugRefillHivAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class DrugRefillHivAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
     form = DrugRefillHivForm
 
     additional_instructions = mark_safe(

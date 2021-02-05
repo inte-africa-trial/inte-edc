@@ -4,7 +4,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from edc_model.models import BaseUuidModel
 from edc_model.models.historical_records import HistoricalRecords
-from edc_sites.models import SiteModelMixin, CurrentSiteManager
+from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_utils import convert_php_dateformat, get_utcnow
 
 from ..choices import CLINIC_DAYS, SELECTION_METHOD
@@ -18,7 +18,11 @@ class DailyClosingLogManager(models.Manager):
 class DailyClosingLog(SiteModelMixin, BaseUuidModel):
 
     site = models.ForeignKey(
-        Site, on_delete=models.PROTECT, null=True, related_name="+", blank=False,
+        Site,
+        on_delete=models.PROTECT,
+        null=True,
+        related_name="+",
+        blank=False,
     )
 
     log_date = models.DateField(verbose_name="Clinic date", default=get_utcnow)
@@ -51,7 +55,9 @@ class DailyClosingLog(SiteModelMixin, BaseUuidModel):
     )
 
     comment = models.TextField(
-        verbose_name="Additional Comments", null=True, blank=True,
+        verbose_name="Additional Comments",
+        null=True,
+        blank=True,
     )
 
     on_site = CurrentSiteManager()
@@ -70,7 +76,5 @@ class DailyClosingLog(SiteModelMixin, BaseUuidModel):
         verbose_name = "Daily Closing Log"
         verbose_name_plural = "Daily Closing Logs"
         constraints = [
-            models.UniqueConstraint(
-                fields=["log_date", "site"], name="unique_date_for_site"
-            ),
+            models.UniqueConstraint(fields=["log_date", "site"], name="unique_date_for_site"),
         ]

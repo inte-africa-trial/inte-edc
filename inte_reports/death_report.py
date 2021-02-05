@@ -1,14 +1,15 @@
-import inflect
+from textwrap import fill
 
+import inflect
 from django.contrib.auth import get_user_model
 from edc_constants.constants import OTHER, TUBERCULOSIS
-from inte_ae.models import DeathReport as DeathReportModel
 from reportlab.lib import colors
 from reportlab.lib.units import cm
 from reportlab.platypus.flowables import Spacer
 from reportlab.platypus.para import Paragraph
 from reportlab.platypus.tables import Table
-from textwrap import fill
+
+from inte_ae.models import DeathReport as DeathReportModel
 
 from .pdf_report import MetaCrfPdfReport
 
@@ -68,7 +69,7 @@ class DeathReport(MetaCrfPdfReport):
             ],
             [
                 "Death date:",
-                self.death_report.death_datetime.strftime("%Y-%m-%d %H:%M"),
+                self.death_report.death_date.strftime("%Y-%m-%d %H:%M"),
             ],
             ["Study day:", self.death_report.study_day],
             ["Death as inpatient:", self.death_report.death_as_inpatient],
@@ -127,18 +128,12 @@ class DeathReport(MetaCrfPdfReport):
             ],
             (3 * cm, 3 * cm, 3 * cm, 9 * cm),
         )
-        self.set_table_style(
-            t, bg_cmd=("BACKGROUND", (0, 0), (3, -1), colors.lightgrey)
-        )
+        self.set_table_style(t, bg_cmd=("BACKGROUND", (0, 0), (3, -1), colors.lightgrey))
         story.append(t)
 
-        qs = DeathReportModel.history.filter(id=self.death_report.id).order_by(
-            "-history_date"
-        )
+        qs = DeathReportModel.history.filter(id=self.death_report.id).order_by("-history_date")
         for obj in qs:
-            username = (
-                obj.user_created if obj.history_type == "+" else obj.user_modified
-            )
+            username = obj.user_created if obj.history_type == "+" else obj.user_modified
             t = Table(
                 [
                     [

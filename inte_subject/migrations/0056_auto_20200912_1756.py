@@ -37,7 +37,8 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.RemoveIndex(
-            model_name="complicationsbaseline", name="inte_subjec_subject_5de7e3_idx",
+            model_name="complicationsbaseline",
+            name="inte_subjec_subject_5de7e3_idx",
         ),
         migrations.AlterField(
             model_name="complicationsbaseline",

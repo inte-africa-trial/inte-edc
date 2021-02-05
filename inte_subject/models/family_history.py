@@ -25,9 +25,7 @@ class FamilyHistory(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     hiv_in_household = models.CharField(
-        verbose_name=mark_safe(
-            "Do you know if anyone else in your household has <u>HIV</u>?"
-        ),
+        verbose_name=mark_safe("Do you know if anyone else in your household has <u>HIV</u>?"),
         max_length=25,
         choices=HOUSEHOLD_YES_NO_CHOICES,
     )
@@ -110,9 +108,7 @@ class FamilyHistory(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     dm_cause_tf = models.CharField(
-        verbose_name=mark_safe(
-            "Having drinks with sugar (e.g. tea/coffee) causes diabetes"
-        ),
+        verbose_name=mark_safe("Having drinks with sugar (e.g. tea/coffee) causes diabetes"),
         max_length=25,
         choices=TRUE_FALSE_DONT_KNOW,
     )

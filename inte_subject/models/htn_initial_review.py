@@ -7,9 +7,7 @@ from ..choices import HTN_MANAGEMENT
 from ..model_mixins import CrfModelMixin, InitialReviewModelMixin
 
 
-class HtnInitialReview(
-    InitialReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel
-):
+class HtnInitialReview(InitialReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
 
     managed_by = models.CharField(
         verbose_name="How is the patient's hypertension managed?",
@@ -28,7 +26,9 @@ class HtnInitialReview(
     )
 
     med_start_estimated_date = models.DateField(
-        verbose_name="Estimated medication start date", null=True, editable=False,
+        verbose_name="Estimated medication start date",
+        null=True,
+        editable=False,
     )
 
     med_start_date_estimated = models.CharField(

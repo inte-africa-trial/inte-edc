@@ -11,9 +11,7 @@ from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(OtherBaselineData, site=inte_subject_admin)
-class OtherBaselineDataAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class OtherBaselineDataAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
     form = OtherBaselineDataForm
 
     fieldsets = (

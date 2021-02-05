@@ -1,25 +1,25 @@
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.utils.safestring import mark_safe
 from edc_action_item import ActionWithNotification, site_action_items
 from edc_adverse_event.action_items import DeathReportAction as BaseDeathReportAction
 from edc_adverse_event.constants import (
-    AE_INITIAL_ACTION,
     AE_FOLLOWUP_ACTION,
-    DEATH_REPORT_ACTION,
-    AE_TMG_ACTION,
+    AE_INITIAL_ACTION,
     AE_SUSAR_ACTION,
+    AE_TMG_ACTION,
+    DEATH_REPORT_ACTION,
     DEATH_REPORT_TMG_ACTION,
 )
 from edc_constants.constants import (
-    DEAD,
-    LOST_TO_FOLLOWUP,
-    YES,
-    HIGH_PRIORITY,
-    NO,
     CLOSED,
+    DEAD,
+    HIGH_PRIORITY,
+    LOST_TO_FOLLOWUP,
+    NO,
+    YES,
 )
-from edc_reportable import GRADE5, GRADE4, GRADE3
+from edc_reportable import GRADE3, GRADE4, GRADE5
 from edc_visit_schedule.utils import get_offschedule_models
 from edc_visit_tracking.constants import VISIT_MISSED_ACTION
 
@@ -62,8 +62,7 @@ class AeFollowupAction(ActionWithNotification):
             next_actions=next_actions,
             action_name=DEATH_REPORT_ACTION,
             required=(
-                self.reference_obj.outcome == DEAD
-                or self.reference_obj.ae_grade == GRADE5
+                self.reference_obj.outcome == DEAD or self.reference_obj.ae_grade == GRADE5
             ),
         )
 
@@ -101,8 +100,7 @@ class AeInitialAction(ActionWithNotification):
         """
         next_actions = []
         deceased = (
-            self.reference_obj.ae_grade == GRADE5
-            or self.reference_obj.sae_reason.name == DEAD
+            self.reference_obj.ae_grade == GRADE5 or self.reference_obj.sae_reason.name == DEAD
         )
 
         # add next AeFollowup if not deceased
@@ -116,8 +114,7 @@ class AeInitialAction(ActionWithNotification):
             next_actions=next_actions,
             action_name=AE_SUSAR_ACTION,
             required=(
-                self.reference_obj.susar == YES
-                and self.reference_obj.susar_reported == NO
+                self.reference_obj.susar == YES and self.reference_obj.susar_reported == NO
             ),
         )
 
@@ -142,9 +139,7 @@ class AeInitialAction(ActionWithNotification):
         next_actions = self.append_to_next_if_required(
             next_actions=next_actions,
             action_name=AE_TMG_ACTION,
-            required=(
-                self.reference_obj.ae_grade == GRADE3 and self.reference_obj.sae == YES
-            ),
+            required=(self.reference_obj.ae_grade == GRADE3 and self.reference_obj.sae == YES),
         )
 
         return next_actions
@@ -200,8 +195,7 @@ class DeathReportTmgAction(ActionWithNotification):
     instructions = mark_safe("This report is to be completed by the TMG only.")
 
     def reopen_action_item_on_change(self):
-        """Do not reopen if status is CLOSED.
-        """
+        """Do not reopen if status is CLOSED."""
         return self.reference_obj.report_status != CLOSED
 
     @property
@@ -210,8 +204,7 @@ class DeathReportTmgAction(ActionWithNotification):
         cause_of_death on Death Report.
         """
         return (
-            self.reference_obj.death_report.cause_of_death
-            == self.reference_obj.cause_of_death
+            self.reference_obj.death_report.cause_of_death == self.reference_obj.cause_of_death
         )
 
     def close_action_item_on_save(self):

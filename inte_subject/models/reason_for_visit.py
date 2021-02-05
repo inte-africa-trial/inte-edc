@@ -2,7 +2,8 @@ from django.db import models
 from edc_constants.choices import YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
-from inte_lists.models import HealthServices, ClinicServices
+
+from inte_lists.models import ClinicServices, HealthServices
 
 from ..model_mixins import CrfModelMixin
 

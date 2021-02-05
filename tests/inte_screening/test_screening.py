@@ -1,12 +1,7 @@
 from django.test import TestCase, tag
-from edc_constants.constants import (
-    YES,
-    NO,
-    RANDOM_SAMPLING,
-    MALE,
-    NOT_APPLICABLE,
-)
+from edc_constants.constants import MALE, NO, NOT_APPLICABLE, RANDOM_SAMPLING, YES
 from edc_utils.date import get_utcnow
+
 from inte_screening.constants import NCD_CLINIC
 from inte_screening.forms import SubjectScreeningForm
 from inte_screening.models import SubjectScreening
@@ -41,7 +36,9 @@ class TestForms(TestCase):
 
         data = self.get_data()
 
-        responses = dict(age_in_years=17,)
+        responses = dict(
+            age_in_years=17,
+        )
 
         for k, v in responses.items():
             with self.subTest(k=v):
@@ -55,7 +52,9 @@ class TestForms(TestCase):
         data = self.get_data()
 
         responses = dict(
-            qualifying_condition=NO, lives_nearby=NO, requires_acute_care=YES,
+            qualifying_condition=NO,
+            lives_nearby=NO,
+            requires_acute_care=YES,
         )
 
         for k, v in responses.items():

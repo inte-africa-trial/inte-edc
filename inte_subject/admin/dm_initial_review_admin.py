@@ -11,9 +11,7 @@ from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(DmInitialReview, site=inte_subject_admin)
-class DmInitialReviewAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class DmInitialReviewAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
 
     form = DmInitialReviewForm
 
@@ -21,7 +19,14 @@ class DmInitialReviewAdmin(
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
             "Diagnosis and Treatment",
-            {"fields": ("dx_ago", "dx_date", "managed_by", "med_start_ago",)},
+            {
+                "fields": (
+                    "dx_ago",
+                    "dx_date",
+                    "managed_by",
+                    "med_start_ago",
+                )
+            },
         ),
         (
             "Blood Sugar Measurement",

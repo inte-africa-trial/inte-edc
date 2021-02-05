@@ -7,6 +7,7 @@ from edc_crf.modelform_mixins import CrfModelFormMixin as BaseCrfModelFormMixin
 from edc_model import models as edc_models
 from edc_model.models import InvalidFormat
 from edc_utils import age, convert_php_dateformat
+
 from inte_prn.icc_registered import (
     InterventionSiteNotRegistered,
     is_icc_registered_site,
@@ -16,8 +17,8 @@ from inte_visit_schedule.is_baseline import is_baseline
 
 from ..diagnoses import Diagnoses, InitialReviewRequired, MultipleInitialReviewsExist
 from ..models import (
-    ClinicalReviewBaseline,
     ClinicalReview,
+    ClinicalReviewBaseline,
     HivInitialReview,
     HivReview,
     Medications,
@@ -65,18 +66,18 @@ def model_exists_or_raise(subject_visit=None, model_cls=None, singleton=None):
 
 def raise_if_baseline(subject_visit):
     if subject_visit and is_baseline(subject_visit=subject_visit):
-        raise forms.ValidationError(
-            "This form is not available for completion at baseline."
-        )
+        raise forms.ValidationError("This form is not available for completion at baseline.")
 
 
 def raise_if_clinical_review_does_not_exist(subject_visit):
-    if is_baseline(subject_visit):
-        model_exists_or_raise(
-            subject_visit=subject_visit, model_cls=ClinicalReviewBaseline,
-        )
-    else:
-        model_exists_or_raise(subject_visit=subject_visit, model_cls=ClinicalReview)
+    if subject_visit:
+        if is_baseline(subject_visit):
+            model_exists_or_raise(
+                subject_visit=subject_visit,
+                model_cls=ClinicalReviewBaseline,
+            )
+        else:
+            model_exists_or_raise(subject_visit=subject_visit, model_cls=ClinicalReview)
 
 
 def medications_exists_or_raise(subject_visit):
@@ -112,7 +113,7 @@ def validate_total_days(form, return_in_days=None):
 
 
 class ClinicalReviewBaselineRequiredModelFormMixin:
-    """Asserts Baseline Clinical Review exists"""
+    """Asserts Baseline Clinical Review exists or raise"""
 
     def clean(self):
         if self._meta.model != ClinicalReviewBaseline and self.cleaned_data.get(
@@ -126,6 +127,10 @@ class ClinicalReviewBaselineRequiredModelFormMixin:
         return super().clean()
 
 
+class CrfModelFormMixin(ClinicalReviewBaselineRequiredModelFormMixin, BaseCrfModelFormMixin):
+    pass
+
+
 class ReviewFormValidatorMixin:
     def validate_care_delivery(self):
         is_applicable, applicable_msg, not_applicable_msg = self.get_integration_info()
@@ -135,9 +140,7 @@ class ReviewFormValidatorMixin:
             applicable_msg=applicable_msg,
             not_applicable_msg=not_applicable_msg,
         )
-        self.required_if(
-            NO, field="care_delivery", field_required="care_delivery_other"
-        )
+        self.required_if(NO, field="care_delivery", field_required="care_delivery_other")
 
     def get_integration_info(self):
         applicable = False
@@ -158,12 +161,6 @@ class ReviewFormValidatorMixin:
             applicable = True
             applicable_msg = "This site's integrated care clinic is open."
         return applicable, applicable_msg, not_applicable_msg
-
-
-class CrfModelFormMixin(
-    ClinicalReviewBaselineRequiredModelFormMixin, BaseCrfModelFormMixin
-):
-    pass
 
 
 class EstimatedDateFromAgoFormMixin:
@@ -224,9 +221,7 @@ class DrugSupplyNcdFormMixin:
     def raise_on_missing_drug(rx_names, inline_drug_names):
         for display_name in rx_names:
             if display_name not in inline_drug_names:
-                raise forms.ValidationError(
-                    f"Missing drug. Also expected {display_name}."
-                )
+                raise forms.ValidationError(f"Missing drug. Also expected {display_name}.")
 
 
 class DrugRefillFormValidatorMixin:
@@ -253,16 +248,13 @@ class GlucoseFormValidatorMixin:
     def validate_glucose_test(self):
         if self.cleaned_data.get("glucose_date") and self.cleaned_data.get("dx_ago"):
             if (
-                self.estimated_date_from_ago("dx_ago")
-                - self.cleaned_data.get("glucose_date")
+                self.estimated_date_from_ago("dx_ago") - self.cleaned_data.get("glucose_date")
             ).days > 1:
                 raise forms.ValidationError(
                     {"glucose_date": "Invalid. Cannot be before diagnosis."}
                 )
         self.required_if(YES, field="glucose_performed", field_required="glucose")
-        self.required_if(
-            YES, field="glucose_performed", field_required="glucose_quantifier"
-        )
+        self.required_if(YES, field="glucose_performed", field_required="glucose_quantifier")
         self.required_if(YES, field="glucose_performed", field_required="glucose_units")
 
 
@@ -313,9 +305,7 @@ class CrfFormValidatorMixin:
         try:
             subject_identifier = self.instance.subject_visit.subject_idenfifier
         except AttributeError:
-            subject_identifier = self.cleaned_data.get(
-                "subject_visit"
-            ).subject_identifier
+            subject_identifier = self.cleaned_data.get("subject_visit").subject_identifier
         return subject_identifier
 
     @property
@@ -387,13 +377,12 @@ class DiagnosisFormValidatorMixin:
         self, diagnoses=None, field_dx=None, field_applicable=None, label=None
     ):
         diagnoses = diagnoses or self.get_diagnoses()
-        # htn
+
         self.applicable_if_true(
             getattr(diagnoses, field_dx) != YES,
             field_applicable=field_applicable,
             applicable_msg=(
-                f"Patient was not previously diagnosed with {label}. "
-                "Expected YES or NO."
+                f"Patient was not previously diagnosed with {label}. " "Expected YES or NO."
             ),
             not_applicable_msg=f"Patient was previously diagnosed with {label}.",
         )

@@ -81,7 +81,9 @@ class Migration(migrations.Migration):
                 ),
             },
         ),
-        migrations.DeleteModel(name="Diagnoses",),
+        migrations.DeleteModel(
+            name="Diagnoses",
+        ),
         migrations.AddIndex(
             model_name="subjectvisitmissedreasons",
             index=models.Index(

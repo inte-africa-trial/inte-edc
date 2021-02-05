@@ -3,10 +3,11 @@ from edc_appointment.models import Appointment
 from edc_model_wrapper.tests import ModelWrapperTestHelper
 from edc_subject_model_wrappers import (
     AppointmentModelWrapper,
-    SubjectLocatorModelWrapper,
     SubjectConsentModelWrapper,
+    SubjectLocatorModelWrapper,
     SubjectVisitModelWrapper,
 )
+
 from inte_consent.models import SubjectConsent
 from inte_dashboard.model_wrappers import SubjectScreeningModelWrapper
 from inte_screening.models import SubjectScreening

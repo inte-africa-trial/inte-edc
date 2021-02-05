@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django_audit_fields import audit_fieldset_tuple
-from edc_crf.admin import crf_status_fieldset_tuple, CrfStatusModelAdminMixin
+from edc_crf.admin import CrfStatusModelAdminMixin, crf_status_fieldset_tuple
 from edc_model_admin import SimpleHistoryAdmin
 from edc_model_admin.dashboard import (
-    ModelAdminSubjectDashboardMixin,
     ModelAdminCrfDashboardMixin,
+    ModelAdminSubjectDashboardMixin,
 )
 
 medication_adherence_description = """

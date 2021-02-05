@@ -1,5 +1,6 @@
 from django import forms
 from edc_form_validators.form_validator import FormValidator
+
 from inte_consent.models import SubjectConsent
 from inte_prn.icc_registered import icc_registered
 from inte_screening.constants import (
@@ -30,7 +31,9 @@ class NextAppointmentFormValidator(CrfFormValidatorMixin, FormValidator):
             field_required="integrated_clinic_appt_date",
         )
         self.date_not_before(
-            "report_datetime", "integrated_clinic_appt_date", convert_to_date=True,
+            "report_datetime",
+            "integrated_clinic_appt_date",
+            convert_to_date=True,
         )
         if not icc_registered(report_datetime=self.cleaned_data.get("report_datetime")):
             # hiv_clinic_appt_date
@@ -45,7 +48,9 @@ class NextAppointmentFormValidator(CrfFormValidatorMixin, FormValidator):
             )
             self.required_if_true(condition, field_required="hiv_clinic_appt_date")
             self.date_not_before(
-                "report_datetime", "hiv_clinic_appt_date", convert_to_date=True,
+                "report_datetime",
+                "hiv_clinic_appt_date",
+                convert_to_date=True,
             )
             ncd_condition = (
                 DmInitialReview.objects.filter(
@@ -66,21 +71,27 @@ class NextAppointmentFormValidator(CrfFormValidatorMixin, FormValidator):
                 field_required="ncd_clinic_appt_date",
             )
             self.date_not_before(
-                "report_datetime", "ncd_clinic_appt_date", convert_to_date=True,
+                "report_datetime",
+                "ncd_clinic_appt_date",
+                convert_to_date=True,
             )
             self.required_if_true(
                 ncd_condition and self.clinic_type == DIABETES_CLINIC,
                 field_required="dm_clinic_appt_date",
             )
             self.date_not_before(
-                "report_datetime", "dm_clinic_appt_date", convert_to_date=True,
+                "report_datetime",
+                "dm_clinic_appt_date",
+                convert_to_date=True,
             )
             self.required_if_true(
                 ncd_condition and self.clinic_type == HYPERTENSION_CLINIC,
                 field_required="htn_clinic_appt_date",
             )
             self.date_not_before(
-                "report_datetime", "htn_clinic_appt_date", convert_to_date=True,
+                "report_datetime",
+                "htn_clinic_appt_date",
+                convert_to_date=True,
             )
 
     @property

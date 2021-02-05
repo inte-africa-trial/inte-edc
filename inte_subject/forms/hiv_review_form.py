@@ -4,17 +4,15 @@ from edc_form_validators.form_validator import FormValidator
 
 from ..models import HivReview
 from .mixins import (
+    CrfFormValidatorMixin,
+    CrfModelFormMixin,
+    ReviewFormValidatorMixin,
     art_initiation_date,
     raise_if_clinical_review_does_not_exist,
-    CrfModelFormMixin,
-    CrfFormValidatorMixin,
-    ReviewFormValidatorMixin,
 )
 
 
-class HivReviewFormValidator(
-    ReviewFormValidatorMixin, CrfFormValidatorMixin, FormValidator
-):
+class HivReviewFormValidator(ReviewFormValidatorMixin, CrfFormValidatorMixin, FormValidator):
     def clean(self):
         raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
         self.validate_care_delivery()

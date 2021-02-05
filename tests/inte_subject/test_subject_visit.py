@@ -1,10 +1,11 @@
 from dateutil.relativedelta import relativedelta
 from django import forms
-from django.test import override_settings, TestCase, tag
+from django.test import TestCase, override_settings, tag
 from edc_constants.constants import STUDY_DEFINED_TIMEPOINT
 from edc_utils import get_utcnow
 from edc_visit_schedule.constants import DAY1
 from edc_visit_tracking.constants import SCHEDULED
+
 from inte_lists.models import ClinicServices, HealthServices
 from inte_prn.icc_registered import (
     InterventionSiteNotRegistered,
@@ -32,7 +33,9 @@ class TestSubjectVisit(InteTestCaseMixin, TestCase):
     @override_settings(SITE_ID=101)  # control
     def test_control_site(self):
         self.assertRaises(
-            NotInterventionSite, is_icc_registered_site, report_datetime=get_utcnow(),
+            NotInterventionSite,
+            is_icc_registered_site,
+            report_datetime=get_utcnow(),
         )
 
     @tag("v")
@@ -56,7 +59,8 @@ class TestSubjectVisit(InteTestCaseMixin, TestCase):
             reason=SCHEDULED,
         )
         IntegratedCareClinicRegistration.objects.create(
-            report_datetime=appointment.created, date_opened=appointment.appt_datetime,
+            report_datetime=appointment.created,
+            date_opened=appointment.appt_datetime,
         )
         try:
             is_icc_registered_site(report_datetime=appointment.appt_datetime)
@@ -93,7 +97,8 @@ class TestSubjectVisit(InteTestCaseMixin, TestCase):
             reason=SCHEDULED,
         )
         icc_registration = IntegratedCareClinicRegistration.objects.create(
-            report_datetime=appointment.created, date_opened=appointment.appt_datetime,
+            report_datetime=appointment.created,
+            date_opened=appointment.appt_datetime,
         )
         clinic_services = ClinicServices.objects.filter(name=STUDY_DEFINED_TIMEPOINT)
         health_services = HealthServices.objects.filter(name=INTEGRATED)

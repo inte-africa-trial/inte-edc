@@ -1,5 +1,6 @@
 from django import forms
 from edc_constants.constants import FASTING
+
 from inte_labs.panels import (
     blood_glucose_panel,
     blood_glucose_poc_panel,

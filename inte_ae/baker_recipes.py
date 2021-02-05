@@ -1,13 +1,14 @@
-from inte_ae.models.ae_initial import AeInitial
-from inte_ae.models.ae_tmg import AeTmg
-from inte_ae.models.ae_susar import AeSusar
-from inte_ae.models.ae_followup import AeFollowup
-from edc_constants.constants import YES, NO, NOT_APPLICABLE
-from model_bakery.recipe import Recipe
+from dateutil.relativedelta import relativedelta
+from edc_constants.constants import NO, NOT_APPLICABLE, OTHER, YES
 from edc_reportable.constants import GRADE4
 from edc_utils.date import get_utcnow
-from inte_ae.models.death_report import DeathReport
+from model_bakery.recipe import Recipe
 
+from inte_ae.models.ae_followup import AeFollowup
+from inte_ae.models.ae_initial import AeInitial
+from inte_ae.models.ae_susar import AeSusar
+from inte_ae.models.ae_tmg import AeTmg
+from inte_ae.models.death_report import DeathReport
 
 aeinitial = Recipe(
     AeInitial,
@@ -40,4 +41,16 @@ deathreport = Recipe(
     subject_identifier=None,
     action_identifier=None,
     tracking_identifier=None,
+    report_datetime=get_utcnow(),
+    death_date=get_utcnow() - relativedelta(days=5),
+    death_as_inpatient=NO,
+    death_location=OTHER,
+    death_location_other="some location",
+    hospital_death=NO,
+    hospital_name=None,
+    informant=OTHER,
+    informant_other="some informant",
+    confirmed_by=OTHER,
+    confirmed_by_other="some confirmation",
+    narrative="some narrative",
 )

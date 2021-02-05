@@ -1,19 +1,17 @@
+from pprint import pprint
+
 from dateutil.relativedelta import relativedelta
 from django.forms import ValidationError
 from django.test import TestCase, tag
 from edc_action_item.models import ActionItem, ActionType
 from edc_constants.constants import YES
 from edc_utils import get_utcnow
-from inte_ae.forms.death_report_form import DeathReportFormValidator
+from model_bakery import baker
+
 from inte_ae.models import DeathReport
-from inte_prn.form_validators import (
-    EndOfStudyFormValidator,
-    ProtocolDeviationViolationFormValidator,
-)
+from inte_prn.form_validators import EndOfStudyFormValidator
 from inte_screening.constants import HIV_CLINIC
 from inte_visit_schedule.constants import SCHEDULE_HIV
-from model_bakery import baker
-from pprint import pprint
 
 from ..inte_test_case_mixin import InteTestCaseMixin
 

@@ -1,6 +1,4 @@
 from django.test import TestCase, tag
-from edc_auth.utils import compare_codenames_for_group
-from edc_auth.group_permissions_updater import GroupPermissionsUpdater
 from edc_auth import (
     ACCOUNT_MANAGER,
     AE,
@@ -10,26 +8,29 @@ from edc_auth import (
     EVERYONE,
     LAB,
     LAB_VIEW,
-    SCREENING,
     PII,
     PII_VIEW,
     RANDO,
+    SCREENING,
     TMG,
-    UNBLINDING_REVIEWERS,
     UNBLINDING_REQUESTORS,
+    UNBLINDING_REVIEWERS,
 )
 from edc_auth.codenames import (
+    account_manager,
     ae,
     ae_review,
-    account_manager,
     everyone,
+    get_rando,
     lab,
     lab_view,
     pii,
     pii_view,
-    get_rando,
     tmg,
 )
+from edc_auth.group_permissions_updater import GroupPermissionsUpdater
+from edc_auth.utils import compare_codenames_for_group
+
 from inte_auth.codenames import (
     auditor,
     clinic,
@@ -43,9 +44,7 @@ from inte_auth.codenames_by_group import get_codenames_by_group
 class TestPermissions(TestCase):
     @classmethod
     def setUpClass(cls):
-        GroupPermissionsUpdater(
-            codenames_by_group=get_codenames_by_group(), verbose=True
-        )
+        GroupPermissionsUpdater(codenames_by_group=get_codenames_by_group(), verbose=True)
         return super(TestPermissions, cls).setUpClass()
 
     def test_pii(self):
@@ -86,9 +85,7 @@ class TestPermissions(TestCase):
 
     def test_account_manager(self):
         # update_permissions()
-        compare_codenames_for_group(
-            group_name=ACCOUNT_MANAGER, expected=account_manager
-        )
+        compare_codenames_for_group(group_name=ACCOUNT_MANAGER, expected=account_manager)
 
     def test_clinic(self):
         # update_permissions()

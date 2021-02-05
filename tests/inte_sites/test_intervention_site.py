@@ -1,5 +1,6 @@
-from django.test import override_settings, TestCase, tag
+from django.test import TestCase, override_settings, tag
 from edc_utils import get_utcnow
+
 from inte_prn.models.integrated_care_clinic_registration import (
     IntegratedCareClinicRegistration,
     IntegratedCareClinicRegistrationError,

@@ -1,26 +1,26 @@
 import pdb
 
 from django import forms
-from django.test import override_settings, TestCase, tag  # noqa
+from django.test import TestCase, override_settings, tag  # noqa
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import (
     COMPLETE,
     FREE_OF_CHARGE,
-    NOT_APPLICABLE,
     NO,
+    NOT_APPLICABLE,
     OTHER,
     YES,
 )
 from edc_metadata import REQUIRED
 from edc_metadata.models import CrfMetadata
+from model_bakery import baker
+
 from inte_lists.models import DrugPaySources
 from inte_prn.models import IntegratedCareClinicRegistration
 from inte_subject.forms import (
     HealthEconomicsRevisedForm,
     HealthEconomicsRevisedFormValidator,
 )
-from model_bakery import baker
-
 
 from ..inte_test_case_mixin import InteTestCaseMixin
 
@@ -44,7 +44,8 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             hiv_dx=YES,
         )
         baker.make(
-            "hivinitialreview", subject_visit=self.subject_visit,
+            "hivinitialreview",
+            subject_visit=self.subject_visit,
         )
 
     @tag("he")
@@ -200,18 +201,14 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         self.assertIn("rx_hiv_paid_month", form_validator._errors)
 
         # check if "free of charge" then enforces a single selection
-        cleaned_data.update(
-            rx_hiv_month=YES, rx_hiv_paid_month=DrugPaySources.objects.all()
-        )
+        cleaned_data.update(rx_hiv_month=YES, rx_hiv_paid_month=DrugPaySources.objects.all())
         form_validator = self.validate_form_validator(cleaned_data)
         self.assertIn("rx_hiv_paid_month", form_validator._errors)
 
         # check if not "free of charge" then requires cost
         cleaned_data.update(
             rx_hiv_month=YES,
-            rx_hiv_paid_month=DrugPaySources.objects.exclude(
-                name__in=[FREE_OF_CHARGE, OTHER]
-            ),
+            rx_hiv_paid_month=DrugPaySources.objects.exclude(name__in=[FREE_OF_CHARGE, OTHER]),
         )
         form_validator = self.validate_form_validator(cleaned_data)
         self.assertIn("rx_hiv_cost_month", form_validator._errors)
@@ -219,9 +216,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         # check if not "free of charge" then requires cost
         cleaned_data.update(
             rx_hiv_month=YES,
-            rx_hiv_paid_month=DrugPaySources.objects.exclude(
-                name__in=[FREE_OF_CHARGE, OTHER]
-            ),
+            rx_hiv_paid_month=DrugPaySources.objects.exclude(name__in=[FREE_OF_CHARGE, OTHER]),
             rx_hiv_cost_month=1000,
         )
         form_validator = self.validate_form_validator(cleaned_data)
@@ -422,9 +417,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             visit_code_sequence=self.subject_visit.visit_code_sequence,
             entry_status=REQUIRED,
         )
-        self.assertNotIn(
-            "inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()]
-        )
+        self.assertNotIn("inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()])
         self.subject_visit.save()
         crfs = CrfMetadata.objects.filter(
             subject_identifier=self.subject_visit.subject_identifier,
@@ -432,9 +425,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             visit_code_sequence=self.subject_visit.visit_code_sequence,
             entry_status=REQUIRED,
         )
-        self.assertNotIn(
-            "inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()]
-        )
+        self.assertNotIn("inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()])
 
     @tag("he")
     def test_required_at_6m(self):
@@ -454,9 +445,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             visit_code_sequence=subject_visit.visit_code_sequence,
             entry_status=REQUIRED,
         )
-        self.assertIn(
-            "inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()]
-        )
+        self.assertIn("inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()])
 
     @tag("he1")
     def test_not_required_6m_visit_if_completed_previously(self):
@@ -478,9 +467,7 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             visit_code_sequence=subject_visit.visit_code_sequence,
             entry_status=REQUIRED,
         )
-        self.assertNotIn(
-            "inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()]
-        )
+        self.assertNotIn("inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()])
 
     @tag("he")
     def test_rx_against_diagnosis(self):

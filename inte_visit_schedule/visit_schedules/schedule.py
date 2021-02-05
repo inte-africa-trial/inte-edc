@@ -1,25 +1,13 @@
 from dateutil.relativedelta import relativedelta
-from edc_visit_schedule import Schedule, Visit as BaseVisit
-from edc_visit_schedule.constants import (
-    DAY1,
-    MONTH6,
-    MONTH12,
-)
-from ..constants import SCHEDULE_HIV, SCHEDULE_NCD
+from edc_visit_schedule import Schedule
+from edc_visit_schedule import Visit as BaseVisit
+from edc_visit_schedule.constants import DAY1, MONTH6, MONTH12
 
-from .crfs import (
-    crfs_d1,
-    crfs_6m,
-    crfs_12m,
-    crfs_missed,
-    crfs_prn as default_crfs_prn,
-    crfs_unscheduled as default_crfs_unscheduled,
-)
-from .requisitions import (
-    requisitions_d1,
-    requisitions_6m,
-    requisitions_12m,
-)
+from ..constants import SCHEDULE_HIV, SCHEDULE_NCD
+from .crfs import crfs_6m, crfs_12m, crfs_d1, crfs_missed
+from .crfs import crfs_prn as default_crfs_prn
+from .crfs import crfs_unscheduled as default_crfs_unscheduled
+from .requisitions import requisitions_6m, requisitions_12m, requisitions_d1
 
 default_requisitions = None
 
@@ -41,7 +29,7 @@ class Visit(BaseVisit):
             crfs_prn=crfs_prn or default_crfs_prn,
             requisitions_prn=requisitions_prn,  # or default_requisitions_prn,
             crfs_missed=crfs_missed,
-            **kwargs
+            **kwargs,
         )
 
 

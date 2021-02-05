@@ -4,10 +4,15 @@ from edc_ltfu.action_items import LossToFollowupAction as BaseLossToFollowupActi
 from edc_offstudy.action_items import EndOfStudyAction as BaseEndOfStudyAction
 from edc_prn.action_items import (
     ProtocolDeviationViolationAction as BaseProtocolDeviationViolationAction,
-    UnblindingRequestAction as BaseUnblindingRequestAction,
-    UnblindingReviewAction as BaseUnblindingReviewAction,
 )
+from edc_prn.action_items import UnblindingRequestAction as BaseUnblindingRequestAction
+from edc_prn.action_items import UnblindingReviewAction as BaseUnblindingReviewAction
 from edc_prn.constants import UNBLINDING_REVIEW_ACTION
+from edc_transfer.action_items import SubjectTransferAction as BaseSubjectTransferAction
+from edc_transfer.constants import SUBJECT_TRANSFER_ACTION
+
+from inte_consent.models import SubjectConsent
+from inte_screening.constants import HIV_CLINIC, NCD_CLINIC
 
 from .constants import (
     END_OF_STUDY_HIV_ACTION,
@@ -28,6 +33,7 @@ class EndOfStudyHivAction(BaseEndOfStudyAction):
         UNBLINDING_REVIEW_ACTION,
         DEATH_REPORT_ACTION,
         LOSS_TO_FOLLOWUP_HIV_ACTION,
+        SUBJECT_TRANSFER_ACTION,
     ]
 
 
@@ -42,6 +48,7 @@ class EndOfStudyNcdAction(BaseEndOfStudyAction):
         UNBLINDING_REVIEW_ACTION,
         DEATH_REPORT_ACTION,
         LOSS_TO_FOLLOWUP_NCD_ACTION,
+        SUBJECT_TRANSFER_ACTION,
     ]
 
 
@@ -67,6 +74,23 @@ class LossToFollowupNcdAction(BaseLossToFollowupAction):
         return next_actions
 
 
+class SubjectTransferAction(BaseSubjectTransferAction):
+    reference_model = "inte_prn.subjecttransfer"
+    admin_site_name = "inte_prn_admin"
+
+    def get_next_actions(self):
+        subject_consent = SubjectConsent.objects.get(
+            subject_identifier=self.subject_identifier
+        )
+        if subject_consent.clinic_type == NCD_CLINIC:
+            next_actions = [END_OF_STUDY_NCD_ACTION]
+        elif subject_consent.clinic_type == HIV_CLINIC:
+            next_actions = [END_OF_STUDY_HIV_ACTION]
+        else:
+            raise TypeError(f"Unexpected clinic type. Got {subject_consent.clinic_type}")
+        return next_actions
+
+
 class ProtocolDeviationViolationAction(BaseProtocolDeviationViolationAction):
     reference_model = "inte_prn.protocoldeviationviolation"
     admin_site_name = "inte_prn_admin"
@@ -86,6 +110,7 @@ site_action_items.register(EndOfStudyHivAction)
 site_action_items.register(EndOfStudyNcdAction)
 site_action_items.register(LossToFollowupHivAction)
 site_action_items.register(LossToFollowupNcdAction)
+site_action_items.register(SubjectTransferAction)
 site_action_items.register(ProtocolDeviationViolationAction)
 site_action_items.register(UnblindingRequestAction)
 site_action_items.register(UnblindingReviewAction)

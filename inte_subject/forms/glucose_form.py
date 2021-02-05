@@ -3,12 +3,12 @@ from edc_form_validators.form_validator import FormValidator
 
 from ..models import Glucose
 from .mixins import (
-    CrfModelFormMixin,
     CrfFormValidatorMixin,
+    CrfModelFormMixin,
     GlucoseFormValidatorMixin,
+    ResultFormValidatorMixin,
     raise_if_baseline,
     raise_if_clinical_review_does_not_exist,
-    ResultFormValidatorMixin,
 )
 
 
@@ -21,9 +21,7 @@ class GlucoseFormValidator(
     def clean(self):
         if self.cleaned_data.get("subject_visit"):
             raise_if_baseline(self.cleaned_data.get("subject_visit"))
-            raise_if_clinical_review_does_not_exist(
-                self.cleaned_data.get("subject_visit")
-            )
+            raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
         self.validate_drawn_date_by_dx_date(
             "dm_dx_date", "Diabetes", drawn_date_fld="glucose_date"
         )

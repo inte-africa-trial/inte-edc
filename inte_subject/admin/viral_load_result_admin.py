@@ -11,13 +11,14 @@ from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(ViralLoadResult, site=inte_subject_admin)
-class ViralLoadResultAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class ViralLoadResultAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin):
     form = ViralLoadResultForm
 
     fieldsets = (
-        (None, {"fields": ("subject_visit", "report_datetime")},),
+        (
+            None,
+            {"fields": ("subject_visit", "report_datetime")},
+        ),
         ("Result", {"fields": ("drawn_date", "result", "quantifier")}),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,

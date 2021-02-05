@@ -2,11 +2,11 @@ from django import forms
 from edc_constants.constants import YES
 from edc_form_validators.form_validator import FormValidator
 
-from ..models import ComplicationsBaseline, ClinicalReviewBaseline
+from ..models import ClinicalReviewBaseline, ComplicationsBaseline
 from .mixins import (
-    EstimatedDateFromAgoFormMixin,
-    CrfModelFormMixin,
     CrfFormValidatorMixin,
+    CrfModelFormMixin,
+    EstimatedDateFromAgoFormMixin,
     model_exists_or_raise,
 )
 
@@ -30,9 +30,7 @@ class ComplicationsBaselineFormValidator(
         self.estimated_date_from_ago("numbness_ago")
         self.required_if(YES, field="foot_ulcers", field_required="foot_ulcers_ago")
         self.estimated_date_from_ago("foot_ulcers_ago")
-        self.required_if(
-            YES, field="complications", field_required="complications_other"
-        )
+        self.required_if(YES, field="complications", field_required="complications_other")
 
 
 class ComplicationsBaselineForm(CrfModelFormMixin, forms.ModelForm):

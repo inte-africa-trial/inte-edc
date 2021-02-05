@@ -1,5 +1,5 @@
 from django.utils.safestring import mark_safe
-from edc_constants.constants import YES, TBD, NO
+from edc_constants.constants import NO, TBD, YES
 from edc_utils.date import get_utcnow
 
 
@@ -20,8 +20,7 @@ class EligibilityPartThreeError(Exception):
 
 
 def check_eligible_final(obj):
-    """Updates model instance fields `eligible` and `reasons_ineligible`.
-    """
+    """Updates model instance fields `eligible` and `reasons_ineligible`."""
     reasons_ineligible = []
 
     if obj.unsuitable_for_study == YES:
@@ -47,8 +46,7 @@ def check_eligible_final(obj):
 
 
 def calculate_eligible_final(obj):
-    """Returns YES, NO or TBD.
-    """
+    """Returns YES, NO or TBD."""
     if (
         obj.qualifying_condition in [YES, NO]
         and obj.lives_nearby in [YES, NO]

@@ -97,6 +97,12 @@ class DrugPaySources(ListModelMixin):
         verbose_name_plural = "Drug Payment Sources"
 
 
+class TransferReasons(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Transfer Reasons"
+        verbose_name_plural = "Transfer Reasons"
+
+
 class TransportChoices(ListModelMixin):
     class Meta(ListModelMixin.Meta):
         verbose_name = "Transport Choices"

@@ -5,9 +5,10 @@ from edc_metadata import KEYED, REQUIRED
 from edc_metadata.models import CrfMetadata
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import UNSCHEDULED
+from model_bakery import baker
+
 from inte_screening.constants import HIV_CLINIC
 from tests.inte_test_case_mixin import InteTestCaseMixin
-from model_bakery import baker
 
 
 class TestMetadataRules(InteTestCaseMixin, TestCase):
@@ -29,9 +30,9 @@ class TestMetadataRules(InteTestCaseMixin, TestCase):
         )
         return [
             obj.model
-            for obj in crf_metadatas.filter(
-                entry_status__in=[KEYED, REQUIRED]
-            ).order_by("model")
+            for obj in crf_metadatas.filter(entry_status__in=[KEYED, REQUIRED]).order_by(
+                "model"
+            )
         ]
 
     @tag("dx1")

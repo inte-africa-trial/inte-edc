@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.sites.models import Site
 from django.core.exceptions import ObjectDoesNotExist
-from edc_constants.constants import FREE_OF_CHARGE, OTHER, YES, NO
+from edc_constants.constants import FREE_OF_CHARGE, NO, OTHER, YES
 from edc_form_validators.form_validator import FormValidator
+
 from inte_lists.models import DrugPaySources
 from inte_prn.models import IntegratedCareClinicRegistration
 from inte_sites.is_intervention_site import is_intervention_site
@@ -39,7 +40,9 @@ class HealthEconomicsRevisedFormValidator(
         )
 
         self.required_if(
-            YES, field="lost_income", field_required="lost_income_amount",
+            YES,
+            field="lost_income",
+            field_required="lost_income_amount",
         )
 
         self.applicable_if(YES, field="childcare", field_applicable="childcare_source")
@@ -48,17 +51,13 @@ class HealthEconomicsRevisedFormValidator(
             field="childcare_source", other_specify_field="childcare_source_other"
         )
 
-        self.validate_other_specify(
-            field="transport", other_specify_field="transport_other"
-        )
+        self.validate_other_specify(field="transport", other_specify_field="transport_other")
 
         self.clean_recv_drugs_by_duration("today")
 
         self.clean_non_drug_activities_by_duration("today")
 
-        self.required_if(
-            YES, field="health_insurance", field_required="health_insurance_cost"
-        )
+        self.required_if(YES, field="health_insurance", field_required="health_insurance_cost")
 
         self.required_if(YES, field="patient_club", field_required="patient_club_cost")
 

@@ -13,9 +13,13 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameModel(old_name="CareStatus", new_name="CareStatusBaseline",),
         migrations.RenameModel(
-            old_name="HistoricalCareStatus", new_name="HistoricalCareStatusBaseline",
+            old_name="CareStatus",
+            new_name="CareStatusBaseline",
+        ),
+        migrations.RenameModel(
+            old_name="HistoricalCareStatus",
+            new_name="HistoricalCareStatusBaseline",
         ),
         migrations.AlterModelOptions(
             name="carestatusbaseline",
@@ -60,19 +64,24 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.RemoveIndex(
-            model_name="carestatusbaseline", name="inte_subjec_subject_2f6eea_idx",
+            model_name="carestatusbaseline",
+            name="inte_subjec_subject_2f6eea_idx",
         ),
         migrations.RemoveField(
-            model_name="historicalhivinitialreview", name="current_arv_regimen",
+            model_name="historicalhivinitialreview",
+            name="current_arv_regimen",
         ),
         migrations.RemoveField(
-            model_name="historicalhivinitialreview", name="other_current_arv_regimen",
+            model_name="historicalhivinitialreview",
+            name="other_current_arv_regimen",
         ),
         migrations.RemoveField(
-            model_name="hivinitialreview", name="current_arv_regimen",
+            model_name="hivinitialreview",
+            name="current_arv_regimen",
         ),
         migrations.RemoveField(
-            model_name="hivinitialreview", name="other_current_arv_regimen",
+            model_name="hivinitialreview",
+            name="other_current_arv_regimen",
         ),
         migrations.AddIndex(
             model_name="carestatusbaseline",

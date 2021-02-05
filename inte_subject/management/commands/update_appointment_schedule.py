@@ -1,4 +1,5 @@
 from django.core.management import BaseCommand
+
 from inte_subject.update_appointment_schedule import update_appointment_schedule
 
 

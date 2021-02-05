@@ -3,6 +3,7 @@ from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO, YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
+
 from inte_lists.models import ReasonsForTesting
 
 from ..model_mixins import (
@@ -33,7 +34,9 @@ class ClinicalReview(
     )
 
     hiv_test_date = models.DateField(
-        verbose_name="Date test requested", null=True, blank=True,
+        verbose_name="Date test requested",
+        null=True,
+        blank=True,
     )
 
     hiv_reason = models.ManyToManyField(
@@ -68,7 +71,9 @@ class ClinicalReview(
     )
 
     htn_test_date = models.DateField(
-        verbose_name="Date test requested", null=True, blank=True,
+        verbose_name="Date test requested",
+        null=True,
+        blank=True,
     )
 
     htn_reason = models.ManyToManyField(
@@ -103,7 +108,9 @@ class ClinicalReview(
     )
 
     dm_test_date = models.DateField(
-        verbose_name="Date test requested", null=True, blank=True,
+        verbose_name="Date test requested",
+        null=True,
+        blank=True,
     )
 
     dm_reason = models.ManyToManyField(

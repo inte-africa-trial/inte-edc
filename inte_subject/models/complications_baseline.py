@@ -1,5 +1,5 @@
 from django.db import models
-from edc_constants.choices import YES_NO, YES_NO_UNKNOWN
+from edc_constants.choices import YES_NO
 from edc_constants.constants import NO
 from edc_model import models as edc_models
 
@@ -8,24 +8,26 @@ from ..model_mixins import CrfModelMixin
 
 class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
 
-    # has_complications = models.CharField(
-    #     verbose_name="Are there any complications to report?",
-    #     max_length=25,
-    #     choices=YES_NO,
-    #     default=YES,
-    # )
-
     # stroke
     stroke = models.CharField(
-        verbose_name="Stroke", max_length=25, choices=YES_NO, null=True, blank=False,
+        verbose_name="Stroke",
+        max_length=25,
+        choices=YES_NO,
+        null=True,
+        blank=False,
     )
 
     stroke_ago = edc_models.DurationYMDField(
-        verbose_name="If yes, how long ago", null=True, blank=True,
+        verbose_name="If yes, how long ago",
+        null=True,
+        blank=True,
     )
 
     stroke_estimated_date = models.DateField(
-        verbose_name="Estimated date of stroke", null=True, blank=True, editable=False,
+        verbose_name="Estimated date of stroke",
+        null=True,
+        blank=True,
+        editable=False,
     )
 
     # heart_attack
@@ -38,7 +40,9 @@ class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     heart_attack_ago = edc_models.DurationYMDField(
-        verbose_name="If yes, how long ago", null=True, blank=True,
+        verbose_name="If yes, how long ago",
+        null=True,
+        blank=True,
     )
 
     heart_attack_estimated_date = models.DateField(
@@ -58,7 +62,9 @@ class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     renal_disease_ago = edc_models.DurationYMDField(
-        verbose_name="If yes, how long ago", null=True, blank=True,
+        verbose_name="If yes, how long ago",
+        null=True,
+        blank=True,
     )
 
     renal_disease_estimated_date = models.DateField(
@@ -77,7 +83,9 @@ class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     vision_ago = edc_models.DurationYMDField(
-        verbose_name="If yes, how long ago", null=True, blank=True,
+        verbose_name="If yes, how long ago",
+        null=True,
+        blank=True,
     )
 
     vision_estimated_date = models.DateField(
@@ -97,7 +105,9 @@ class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     numbness_ago = edc_models.DurationYMDField(
-        verbose_name="If yes, how long ago", null=True, blank=True,
+        verbose_name="If yes, how long ago",
+        null=True,
+        blank=True,
     )
 
     numbness_estimated_date = models.DateField(
@@ -117,7 +127,9 @@ class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     foot_ulcers_ago = edc_models.DurationYMDField(
-        verbose_name="If yes, how long ago", null=True, blank=True,
+        verbose_name="If yes, how long ago",
+        null=True,
+        blank=True,
     )
 
     foot_ulcers_estimated_date = models.DateField(
@@ -126,7 +138,7 @@ class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
         blank=True,
         editable=False,
     )
-    #
+
     complications = models.CharField(
         verbose_name="Are there any other major complications to report?",
         max_length=25,
@@ -135,7 +147,9 @@ class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     complications_other = models.TextField(
-        null=True, blank=True, help_text="Please include dates",
+        null=True,
+        blank=True,
+        help_text="Please include dates",
     )
 
     def save(self, *args, **kwargs):

@@ -3,9 +3,9 @@ from edc_form_validators.form_validator import FormValidator
 
 from ..models import DrugRefillHtn
 from .mixins import (
-    DrugRefillFormValidatorMixin,
-    CrfModelFormMixin,
     CrfFormValidatorMixin,
+    CrfModelFormMixin,
+    DrugRefillFormValidatorMixin,
 )
 
 

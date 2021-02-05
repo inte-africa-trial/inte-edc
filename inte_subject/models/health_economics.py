@@ -82,17 +82,14 @@ class HealthEconomics(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     is_highest_earner = models.CharField(
-        verbose_name=(
-            "Are you the person who earns the highest income in your household?"
-        ),
+        verbose_name=("Are you the person who earns the highest income in your household?"),
         max_length=15,
         choices=YES_NO,
     )
 
     highest_earner = models.CharField(
         verbose_name=(
-            "If NO, what is the profession of the person "
-            "who earns the highest income?"
+            "If NO, what is the profession of the person " "who earns the highest income?"
         ),
         max_length=50,
         null=True,
@@ -105,9 +102,7 @@ class HealthEconomics(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     accomodation_per_month = models.IntegerField(
-        verbose_name=(
-            "How much do you/your family spend on rent and utilities in a month?"
-        ),
+        verbose_name=("How much do you/your family spend on rent and utilities in a month?"),
         help_text="in Shilling",
     )
 
@@ -208,9 +203,7 @@ class HealthEconomics(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     healthcare_expenditure_month = models.IntegerField(
-        verbose_name=(
-            "How much in total has been spent on your healthcare in the last month?"
-        )
+        verbose_name=("How much in total has been spent on your healthcare in the last month?")
     )
 
     routine_activities = models.CharField(
@@ -285,9 +278,7 @@ class HealthEconomics(CrfModelMixin, edc_models.BaseUuidModel):
 
     # change to M2M, add field for other sepcify.
     transport_old = models.CharField(
-        verbose_name=(
-            "Which form of transport did you take to get to the hospital today?"
-        ),
+        verbose_name=("Which form of transport did you take to get to the hospital today?"),
         max_length=25,
         choices=TRANSPORT_CHOICES,
     )

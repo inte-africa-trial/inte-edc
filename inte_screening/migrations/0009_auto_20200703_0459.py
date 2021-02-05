@@ -59,7 +59,10 @@ class Migration(migrations.Migration):
                 verbose_name="Total number of patients who attended the clinic today",
             ),
         ),
-        migrations.AlterUniqueTogether(name="dailyclosinglog", unique_together=set(),),
+        migrations.AlterUniqueTogether(
+            name="dailyclosinglog",
+            unique_together=set(),
+        ),
         migrations.AddConstraint(
             model_name="dailyclosinglog",
             constraint=models.UniqueConstraint(

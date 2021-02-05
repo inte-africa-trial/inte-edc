@@ -1,19 +1,19 @@
+from unittest import skip
+
 from django.contrib.auth.models import User
 from django.test import TestCase, tag
 from django.test.client import RequestFactory
 from edc_adverse_event.models import AeClassification
-from inte_reports.ae_report import AeReport
 from model_bakery import baker
-from unittest import skip
+
+from inte_reports.ae_report import AeReport
 
 from .inte_test_case_mixin import InteTestCaseMixin
 
 
 class TestReports(InteTestCaseMixin, TestCase):
     def setUp(self):
-        self.user = User.objects.create(
-            username="erikvw", is_staff=True, is_active=True
-        )
+        self.user = User.objects.create(username="erikvw", is_staff=True, is_active=True)
         subject_screening = self.get_subject_screening()
         subject_consent = self.get_subject_consent(subject_screening)
         self.subject_identifier = subject_consent.subject_identifier

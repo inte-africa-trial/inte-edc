@@ -93,7 +93,9 @@ class ClinicalReviewBaselineHtnModelMixin(models.Model):
     )
 
     htn_test_estimated_datetime = models.DateTimeField(
-        null=True, blank=True, help_text="calculated by the EDC using `htn_test_ago`",
+        null=True,
+        blank=True,
+        help_text="calculated by the EDC using `htn_test_ago`",
     )
 
     htn_test_date = models.DateField(
@@ -137,7 +139,9 @@ class ClinicalReviewBaselineDmModelMixin(models.Model):
     )
 
     dm_test_estimated_datetime = models.DateTimeField(
-        null=True, blank=True, help_text="calculated by the EDC using `dm_test_ago`",
+        null=True,
+        blank=True,
+        help_text="calculated by the EDC using `dm_test_ago`",
     )
 
     dm_test_date = models.DateField(

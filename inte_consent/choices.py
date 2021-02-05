@@ -1,4 +1,4 @@
-from edc_consent.constants import HOSPITAL_NUMBER, CLINIC_NUMBER
+from edc_consent.constants import CLINIC_NUMBER, HOSPITAL_NUMBER
 from edc_constants.constants import MOBILE_NUMBER, OTHER
 
 IDENTITY_TYPE = (

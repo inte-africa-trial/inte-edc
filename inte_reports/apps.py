@@ -8,7 +8,7 @@ class AppConfig(DjangoAppConfig):
 
 
 if settings.APP_NAME == "inte_reports":
-    from dateutil.relativedelta import MO, TU, WE, TH, FR, SA, SU
+    from dateutil.relativedelta import FR, MO, SA, SU, TH, TU, WE
 
     class EdcFacilityAppConfig(BaseEdcFacilityAppConfig):
         country = "uganda"
@@ -17,7 +17,5 @@ if settings.APP_NAME == "inte_reports":
                 days=[MO, TU, WE, TH, FR, SA, SU],
                 slots=[100, 100, 100, 100, 100, 100, 100],
             ),
-            "5-day-clinic": dict(
-                days=[MO, TU, WE, TH, FR], slots=[100, 100, 100, 100, 100]
-            ),
+            "5-day-clinic": dict(days=[MO, TU, WE, TH, FR], slots=[100, 100, 100, 100, 100]),
         }

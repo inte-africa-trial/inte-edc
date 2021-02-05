@@ -1,9 +1,9 @@
 from django.db import models
-from edc_model.models import date_not_future, HistoricalRecords
-from edc_model.models import BaseUuidModel
+from edc_model.models import BaseUuidModel, HistoricalRecords, date_not_future
 from edc_protocol.validators import date_not_before_study_start
 from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_utils.date import get_utcnow
+
 from inte_sites.is_intervention_site import is_intervention_site
 
 

@@ -1,13 +1,12 @@
 from edc_lab import RequisitionPanel
 
 from .processing_profiles import (
+    blood_glucose_processing,
+    chemistry_processing,
     fbc_processing,
     hba1c_processing,
-    chemistry_processing,
-    blood_glucose_processing,
     poc_processing,
 )
-
 
 hba1c_panel = RequisitionPanel(
     name="hba1c",

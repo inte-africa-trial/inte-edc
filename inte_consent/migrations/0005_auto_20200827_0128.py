@@ -2,6 +2,7 @@
 
 from django.db import migrations
 from edc_visit_schedule import site_visit_schedules
+
 from inte_consent.models.signals import get_onschedule_model_name
 
 

@@ -1,5 +1,5 @@
 from django.db import models
-from edc_constants.choices import YES_NO, SMOKER_STATUS_SIMPLE
+from edc_constants.choices import SMOKER_STATUS_SIMPLE, YES_NO
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
 
@@ -24,7 +24,9 @@ class OtherBaselineData(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     marital_status = models.CharField(
-        verbose_name="Personal status?", max_length=25, choices=MARITAL_STATUS,
+        verbose_name="Personal status?",
+        max_length=25,
+        choices=MARITAL_STATUS,
     )
 
     smoking_status = models.CharField(
@@ -40,11 +42,15 @@ class OtherBaselineData(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     smoker_quit_estimated_date = models.DateField(
-        verbose_name="Estimated date smoker quit?", null=True, editable=False,
+        verbose_name="Estimated date smoker quit?",
+        null=True,
+        editable=False,
     )
 
     alcohol = models.CharField(
-        verbose_name="Do you drink alcohol?", max_length=15, choices=YES_NO,
+        verbose_name="Do you drink alcohol?",
+        max_length=15,
+        choices=YES_NO,
     )
 
     alcohol_consumption = models.CharField(

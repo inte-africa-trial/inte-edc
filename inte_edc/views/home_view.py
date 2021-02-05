@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import TemplateView
 from edc_dashboard.view_mixins import EdcViewMixin
 from edc_navbar import NavbarViewMixin
+
 from inte_prn.models import IntegratedCareClinicRegistration
 from inte_sites.is_intervention_site import is_intervention_site
 

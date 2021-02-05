@@ -3,15 +3,16 @@ from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import NOT_APPLICABLE, POS, YES
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import UNSCHEDULED
+from model_bakery import baker
+
 from inte_screening.constants import HIV_CLINIC
 from inte_subject.diagnoses import (
+    ClinicalReviewBaselineRequired,
     Diagnoses,
     InitialReviewRequired,
-    ClinicalReviewBaselineRequired,
     MultipleInitialReviewsExist,
 )
 from tests.inte_test_case_mixin import InteTestCaseMixin
-from model_bakery import baker
 
 
 class TestDiagnoses(InteTestCaseMixin, TestCase):
@@ -83,7 +84,7 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
 
     @tag("dx")
     def test_diagnoses_does_not_raise_for_subject_visit(self):
-        """"Note: Source of the exception will be in
+        """ "Note: Source of the exception will be in
         the metadata rule
         """
         try:
@@ -234,11 +235,13 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         )
         self.assertIsNotNone(diagnoses.hiv_dx_date)
         self.assertEqual(
-            diagnoses.hiv_dx_date, hiv_initial_review.get_best_dx_date().date(),
+            diagnoses.hiv_dx_date,
+            hiv_initial_review.get_best_dx_date().date(),
         )
 
         self.assertEqual(
-            diagnoses.htn_dx_date, htn_initial_review.get_best_dx_date().date(),
+            diagnoses.htn_dx_date,
+            htn_initial_review.get_best_dx_date().date(),
         )
         self.assertIsNotNone(diagnoses.htn_dx_date)
 
@@ -281,6 +284,4 @@ class TestDiagnoses(InteTestCaseMixin, TestCase):
         diagnoses = Diagnoses(
             subject_identifier=subject_visit_baseline.subject_identifier,
         )
-        self.assertRaises(
-            MultipleInitialReviewsExist, getattr, diagnoses, "initial_reviews"
-        )
+        self.assertRaises(MultipleInitialReviewsExist, getattr, diagnoses, "initial_reviews")

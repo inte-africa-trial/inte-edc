@@ -1,6 +1,7 @@
 from django import forms
 from edc_constants.constants import YES
 from edc_form_validators.form_validator import FormValidator
+
 from inte_screening.constants import (
     DIABETES_CLINIC,
     HIV_CLINIC,
@@ -10,9 +11,9 @@ from inte_screening.constants import (
 
 from ..models import ClinicalReviewBaseline
 from .mixins import (
-    EstimatedDateFromAgoFormMixin,
-    CrfModelFormMixin,
     CrfFormValidatorMixin,
+    CrfModelFormMixin,
+    EstimatedDateFromAgoFormMixin,
 )
 
 
@@ -38,9 +39,9 @@ class ClinicalReviewBaselineFormValidator(
 
     def when_tested_required(self, cond=None):
         if self.cleaned_data.get(f"{cond}_test") == YES:
-            if not self.cleaned_data.get(
-                f"{cond}_test_ago"
-            ) and not self.cleaned_data.get(f"{cond}_test_date"):
+            if not self.cleaned_data.get(f"{cond}_test_ago") and not self.cleaned_data.get(
+                f"{cond}_test_date"
+            ):
                 raise forms.ValidationError(
                     f"{cond.title()}: When was the subject tested? Either provide an "
                     "estimated time 'ago' or provide the exact date. See below."
@@ -53,9 +54,7 @@ class ClinicalReviewBaselineFormValidator(
         ):
             raise forms.ValidationError(
                 {
-                    "hiv_test": (
-                        "Patient was screened from an HIV clinic, expected `Yes`."
-                    ),
+                    "hiv_test": ("Patient was screened from an HIV clinic, expected `Yes`."),
                 }
             )
 
@@ -65,9 +64,7 @@ class ClinicalReviewBaselineFormValidator(
         ):
             raise forms.ValidationError(
                 {
-                    "hiv_dx": (
-                        "Patient was screened from an HIV clinic, expected `Yes`."
-                    ),
+                    "hiv_dx": ("Patient was screened from an HIV clinic, expected `Yes`."),
                 }
             )
 
@@ -113,9 +110,7 @@ class ClinicalReviewBaselineFormValidator(
         ):
             raise forms.ValidationError(
                 {
-                    "dm_dx": (
-                        "Patient was screened from a Diabetes clinic, expected `Yes`."
-                    ),
+                    "dm_dx": ("Patient was screened from a Diabetes clinic, expected `Yes`."),
                 }
             )
 

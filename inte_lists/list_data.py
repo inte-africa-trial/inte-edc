@@ -1,6 +1,7 @@
 from edc_constants.constants import (
     DEAD,
     DIABETES,
+    DWTA,
     FREE_OF_CHARGE,
     HIV,
     HOSPITALIZED,
@@ -13,14 +14,21 @@ from edc_constants.constants import (
     STUDY_DEFINED_TIMEPOINT,
     UNWELL_VISIT,
 )
-from edc_offstudy.constants import (
-    LATE_EXCLUSION,
-    TRANSFERRED,
-    WITHDRAWAL,
-)
+from edc_offstudy.constants import LATE_EXCLUSION, WITHDRAWAL
+from edc_transfer.constants import TRANSFERRED
+
 from inte_subject.constants import INTEGRATED, NCD
 
 list_data = {
+    "inte_lists.transferreasons": [
+        ("moved", "Moved away from the area"),
+        ("unhappy_with_care", "Was unhappy with the care they are receiving"),
+        ("need_specialized_treatment", "Needed more specialist treatment"),
+        ("drug_supply", "Due to drug supply "),
+        ("stigma", "Concerned about stigma"),
+        (DWTA, "No reason provided"),
+        (OTHER, "Other reason (specify below)"),
+    ],
     "inte_lists.conditions": [
         (HYPERTENSION, "Patient has high blood pressure (Hypertension)"),
         (DIABETES, "Patient has high blood sugar (Diabetes)"),
@@ -39,12 +47,18 @@ list_data = {
     ],
     "inte_lists.offstudyreasons": [
         ("completed_followup", "Patient completed 12 months of follow-up"),
-        (LOST_TO_FOLLOWUP, "Patient lost to follow-up"),
-        (DEAD, "Patient reported/known to have died"),
+        (LOST_TO_FOLLOWUP, "Patient lost to follow-up (Submit LTFU CRF first)"),
+        (DEAD, "Patient reported/known to have died (Submit Death Report first)"),
         (WITHDRAWAL, "Patient withdrew consent to participate further"),
         (LATE_EXCLUSION, "Patient fulfilled late exclusion criteria*"),
-        (TRANSFERRED, "Patient has been transferred to another health centre"),
-        (OTHER, "Other reason (specify below)",),
+        (
+            TRANSFERRED,
+            "Patient has been transferred to another health centre (Submit Transfer Report first)",
+        ),
+        (
+            OTHER,
+            "Other reason (specify below)",
+        ),
     ],
     "inte_lists.htntreatments": [
         ("aldactone", "Aldactone (Spironolactone)"),

@@ -10,7 +10,7 @@ to minimise contamination (e.g. persons living in control areas travelling
 to intervention facilities for health care).
 """
 
-from edc_constants.constants import INTERVENTION, CONTROL
+from edc_constants.constants import CONTROL, INTERVENTION
 from edc_randomization.randomizer import Randomizer as Base
 from edc_randomization.site_randomizers import site_randomizers
 

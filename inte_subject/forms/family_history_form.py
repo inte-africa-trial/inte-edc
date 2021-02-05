@@ -3,8 +3,8 @@ from edc_form_validators.form_validator import FormValidator
 
 from ..models import FamilyHistory
 from .mixins import (
-    CrfModelFormMixin,
     CrfFormValidatorMixin,
+    CrfModelFormMixin,
     raise_if_clinical_review_does_not_exist,
 )
 

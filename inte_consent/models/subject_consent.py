@@ -1,21 +1,25 @@
 from django.apps import apps as django_apps
 from django.db import models
-from edc_consent.field_mixins import IdentityFieldsMixin
-from edc_consent.field_mixins import ReviewFieldsMixin, PersonalFieldsMixin
-from edc_consent.field_mixins import SampleCollectionFieldsMixin, CitizenFieldsMixin
-from edc_consent.field_mixins import VulnerabilityFieldsMixin
+from edc_consent.field_mixins import (
+    CitizenFieldsMixin,
+    IdentityFieldsMixin,
+    PersonalFieldsMixin,
+    ReviewFieldsMixin,
+    SampleCollectionFieldsMixin,
+    VulnerabilityFieldsMixin,
+)
 from edc_consent.managers import ConsentManager
 from edc_consent.model_mixins import ConsentModelMixin
 from edc_constants.choices import GENDER
 from edc_constants.constants import NOT_APPLICABLE
 from edc_identifier.model_mixins import NonUniqueSubjectIdentifierModelMixin
 from edc_identifier.subject_identifier import SubjectIdentifier as BaseSubjectIdentifier
-from edc_model.models import BaseUuidModel
-from edc_model.models import HistoricalRecords
+from edc_model.models import BaseUuidModel, HistoricalRecords
 from edc_registration.model_mixins import UpdatesOrCreatesRegistrationModelMixin
 from edc_search.model_mixins import SearchSlugManager
 from edc_sites.models import SiteModelMixin
 from edc_visit_tracking.managers import CurrentSiteManager
+
 from inte_screening.choices import CLINIC_CHOICES
 
 from ..choices import IDENTITY_TYPE
@@ -46,8 +50,7 @@ class SubjectConsent(
     SearchSlugModelMixin,
     BaseUuidModel,
 ):
-    """ A model completed by the user that captures the ICF.
-    """
+    """A model completed by the user that captures the ICF."""
 
     subject_identifier_cls = SubjectIdentifier
 
@@ -72,7 +75,11 @@ class SubjectConsent(
     )
 
     gender = models.CharField(
-        verbose_name="Gender", choices=GENDER, max_length=1, null=True, blank=False,
+        verbose_name="Gender",
+        choices=GENDER,
+        max_length=1,
+        null=True,
+        blank=False,
     )
 
     identity_type = models.CharField(
@@ -113,8 +120,7 @@ class SubjectConsent(
 
     @property
     def registration_unique_field(self):
-        """Required for UpdatesOrCreatesRegistrationModelMixin.
-        """
+        """Required for UpdatesOrCreatesRegistrationModelMixin."""
         return "subject_identifier"
 
     class Meta(ConsentModelMixin.Meta):

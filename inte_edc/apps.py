@@ -1,4 +1,4 @@
-from dateutil.relativedelta import MO, TU, WE, TH, FR, SA, SU
+from dateutil.relativedelta import FR, MO, SA, SU, TH, TU, WE
 from django.apps import AppConfig as DjangoAppConfig
 from django.apps import apps as django_apps
 from django.core.management.color import color_style
@@ -41,8 +41,6 @@ class EdcFacilityAppConfig(BaseEdcFacilityAppConfig):
         "6-day-clinic": dict(
             days=[MO, TU, WE, TH, FR, SA], slots=[100, 100, 100, 100, 100, 100]
         ),
-        "5-day-clinic": dict(
-            days=[MO, TU, WE, TH, FR], slots=[100, 100, 100, 100, 100]
-        ),
+        "5-day-clinic": dict(days=[MO, TU, WE, TH, FR], slots=[100, 100, 100, 100, 100]),
         "4-day-clinic": dict(days=[MO, TU, WE, TH], slots=[100, 100, 100, 100]),
     }

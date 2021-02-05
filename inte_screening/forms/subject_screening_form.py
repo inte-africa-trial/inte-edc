@@ -1,7 +1,6 @@
 from django import forms
-from edc_constants.constants import YES, NO
-from edc_form_validators import FormValidator
-from edc_form_validators import FormValidatorMixin
+from edc_constants.constants import NO, YES
+from edc_form_validators import FormValidator, FormValidatorMixin
 from edc_screening.modelform_mixins import AlreadyConsentedFormMixin
 
 from ..models import SubjectScreening
@@ -46,9 +45,7 @@ class SubjectScreeningFormValidator(FormValidator):
             )
 
 
-class SubjectScreeningForm(
-    AlreadyConsentedFormMixin, FormValidatorMixin, forms.ModelForm
-):
+class SubjectScreeningForm(AlreadyConsentedFormMixin, FormValidatorMixin, forms.ModelForm):
     form_validator_cls = SubjectScreeningFormValidator
 
     def clean(self):

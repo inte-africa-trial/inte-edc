@@ -3,7 +3,7 @@ from edc_model_admin import SimpleHistoryAdmin
 from edc_model_admin.dashboard import ModelAdminSubjectDashboardMixin
 
 from ..admin_site import inte_prn_admin
-from ..models import OnScheduleNcd, OnScheduleHiv
+from ..models import OnScheduleHiv, OnScheduleNcd
 
 
 @admin.register(OnScheduleNcd, site=inte_prn_admin)

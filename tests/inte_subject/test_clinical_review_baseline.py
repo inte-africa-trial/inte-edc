@@ -1,6 +1,8 @@
 from django.test import TestCase, tag
-from edc_constants.constants import INCOMPLETE, NOT_APPLICABLE, NO, YES
+from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, YES
 from edc_utils import get_utcnow
+from pytz import timezone
+
 from inte_screening.constants import (
     DIABETES_CLINIC,
     HIV_CLINIC,
@@ -8,7 +10,6 @@ from inte_screening.constants import (
     NCD_CLINIC,
 )
 from inte_subject.forms import ClinicalReviewBaselineForm
-from pytz import timezone
 
 from ..inte_test_case_mixin import InteTestCaseMixin
 
@@ -50,7 +51,8 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             report_datetime=get_utcnow(), clinic_type=DIABETES_CLINIC
         )
         self.subject_consent_dm = self.get_subject_consent(
-            subject_screening=self.subject_screening_dm, clinic_type=DIABETES_CLINIC,
+            subject_screening=self.subject_screening_dm,
+            clinic_type=DIABETES_CLINIC,
         )
         self.subject_visit_dm = self.get_subject_visit(
             subject_screening=self.subject_screening_dm,
@@ -62,7 +64,8 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             report_datetime=get_utcnow(), clinic_type=NCD_CLINIC
         )
         self.subject_consent_ncd = self.get_subject_consent(
-            subject_screening=self.subject_screening_ncd, clinic_type=NCD_CLINIC,
+            subject_screening=self.subject_screening_ncd,
+            clinic_type=NCD_CLINIC,
         )
         self.subject_visit_ncd = self.get_subject_visit(
             subject_screening=self.subject_screening_ncd,
@@ -138,7 +141,10 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             "crf_status": INCOMPLETE,
         }
         data.update(
-            hiv_test=NO, hiv_test_ago=None, hiv_test_date=None, hiv_dx=NOT_APPLICABLE,
+            hiv_test=NO,
+            hiv_test_ago=None,
+            hiv_test_date=None,
+            hiv_dx=NOT_APPLICABLE,
         )
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
@@ -185,7 +191,10 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
         self.assertIn("__all__", form._errors)
 
         data.update(
-            hiv_test=YES, hiv_test_ago=None, hiv_test_date=get_utcnow(), hiv_dx=YES,
+            hiv_test=YES,
+            hiv_test_ago=None,
+            hiv_test_date=get_utcnow(),
+            hiv_dx=YES,
         )
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
@@ -217,7 +226,8 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
         self.assertIn("htn_test", form._errors)
 
         data.update(
-            htn_test=YES, htn_dx=NOT_APPLICABLE,
+            htn_test=YES,
+            htn_dx=NOT_APPLICABLE,
         )
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
@@ -225,7 +235,8 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
         self.assertIn("htn_dx", form._errors)
 
         data.update(
-            htn_test=YES, htn_dx=YES,
+            htn_test=YES,
+            htn_dx=YES,
         )
         form = ClinicalReviewBaselineForm(data=data)
         form.is_valid()
@@ -264,9 +275,7 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                 # expects a diagnosis
                 self.assertIn("__all__", [k for k in form._errors.keys()])
 
-                data.update(
-                    {f"{cond}_test": YES, f"{cond}_test_ago": "1y", f"{cond}_dx": YES}
-                )
+                data.update({f"{cond}_test": YES, f"{cond}_test_ago": "1y", f"{cond}_dx": YES})
                 form = ClinicalReviewBaselineForm(data=data)
                 form.is_valid()
                 self.assertNotIn("__all__", [k for k in form._errors.keys()])

@@ -507,8 +507,12 @@ class Migration(migrations.Migration):
                 ),
             },
         ),
-        migrations.DeleteModel(name="DiabetesTreatment",),
-        migrations.DeleteModel(name="HypertensionTreatment",),
+        migrations.DeleteModel(
+            name="DiabetesTreatment",
+        ),
+        migrations.DeleteModel(
+            name="HypertensionTreatment",
+        ),
         migrations.AddIndex(
             model_name="rxmodifications",
             index=models.Index(

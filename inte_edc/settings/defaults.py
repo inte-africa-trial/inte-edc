@@ -1,10 +1,10 @@
-import environ
 import os
 import sys
+from pathlib import Path
 
+import environ
 from edc_appointment.constants import SCHEDULED_APPT, UNSCHEDULED_APPT
 from edc_utils import get_datetime_from_env
-from pathlib import Path
 
 
 class DisableMigrations:
@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    "defender",
     "multisite",
     "django_crypto_fields.apps.AppConfig",
     "django_revision.apps.AppConfig",
@@ -124,6 +125,7 @@ INSTALLED_APPS = [
     "edc_sites.apps.AppConfig",
     "edc_subject_dashboard.apps.AppConfig",
     "edc_timepoint.apps.AppConfig",
+    "edc_transfer.apps.AppConfig",
     "edc_visit_tracking.apps.AppConfig",
     "edc_form_describer.apps.AppConfig",
     "inte_consent.apps.AppConfig",
@@ -144,13 +146,14 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "multisite.middleware.DynamicSiteMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "multisite.middleware.DynamicSiteMiddleware",
     "django.contrib.sites.middleware.CurrentSiteMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "defender.middleware.FailedLoginMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -183,6 +186,7 @@ TEMPLATES = [
     }
 ]
 
+
 if env("DATABASE_SQLITE_ENABLED"):
     DATABASES = {
         "default": {
@@ -201,7 +205,6 @@ if env.str("DJANGO_CACHE") == "redis":
         "default": {
             "BACKEND": "django_redis.cache.RedisCache",
             "LOCATION": "redis://127.0.0.1:6379/1",
-            # "LOCATION": "unix://[:{DJANGO_REDIS_PASSWORD}]@/path/to/socket.sock?db=0",
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
                 "PASSWORD": env.str("DJANGO_REDIS_PASSWORD"),
@@ -213,11 +216,10 @@ if env.str("DJANGO_CACHE") == "redis":
     SESSION_CACHE_ALIAS = "default"
     DJANGO_REDIS_IGNORE_EXCEPTIONS = True
     DJANGO_REDIS_LOG_IGNORED_EXCEPTIONS = True
-
 elif env.str("DJANGO_CACHE") == "memcached":
     CACHES = {
         "default": {
-            "BACKEND": "django.core.cache.backends.memcached.MemcachedCache",
+            "BACKEND": "django.core.cache.backends.memcached.PyLibMCCache",
             "LOCATION": "unix:/tmp/memcached.sock",
         }
     }
@@ -231,9 +233,7 @@ WSGI_APPLICATION = f"{APP_NAME}.wsgi.application"
 AUTHENTICATION_BACKENDS = ["edc_auth.backends.ModelBackendWithSite"]
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
@@ -247,9 +247,7 @@ PASSWORD_HASHERS = [
 ]
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
         "OPTIONS": {"min_length": 20},
@@ -327,7 +325,7 @@ SUBJECT_REQUISITION_MODEL = env.str("EDC_SUBJECT_REQUISITION_MODEL")
 SUBJECT_VISIT_MODEL = env.str("EDC_SUBJECT_VISIT_MODEL")
 SUBJECT_VISIT_MISSED_MODEL = env.str("EDC_SUBJECT_VISIT_MISSED_MODEL")
 SUBJECT_VISIT_MISSED_REASONS_MODEL = env.str("EDC_SUBJECT_VISIT_MISSED_REASONS_MODEL")
-LIST_MODEL_APP_LABEL = env.str("LIST_MODEL_APP_LABEL")
+LIST_MODEL_APP_LABEL = env.str("EDC_LIST_MODEL_APP_LABEL")
 
 EDC_NAVBAR_DEFAULT = env("EDC_NAVBAR_DEFAULT")
 
@@ -422,6 +420,14 @@ SIMPLE_HISTORY_REVERT_ENABLED = False
 
 # django-multisite
 CACHE_MULTISITE_KEY_PREFIX = APP_NAME
+
+# django-defender
+# see if env.str("DJANGO_CACHE") == "redis" above
+# and that redis server is running
+DEFENDER_REDIS_NAME = "default"
+DEFENDER_LOCK_OUT_BY_IP_AND_USERNAME = True
+DEFENDER_LOCKOUT_TEMPLATE = "edc_auth/bootstrap3/login.html"
+DEFENDER_LOGIN_FAILURE_LIMIT = 5
 
 # static
 if env("AWS_ENABLED"):

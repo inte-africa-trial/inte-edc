@@ -12,35 +12,64 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RemoveField(
-            model_name="historicalinvestigations", name="diabetes_dx",
+            model_name="historicalinvestigations",
+            name="diabetes_dx",
         ),
         migrations.RemoveField(
-            model_name="historicalinvestigations", name="diabetes_reason_other",
-        ),
-        migrations.RemoveField(model_name="historicalinvestigations", name="hiv_dx",),
-        migrations.RemoveField(
-            model_name="historicalinvestigations", name="hiv_reason_other",
+            model_name="historicalinvestigations",
+            name="diabetes_reason_other",
         ),
         migrations.RemoveField(
-            model_name="historicalinvestigations", name="hypertension_dx",
+            model_name="historicalinvestigations",
+            name="hiv_dx",
         ),
         migrations.RemoveField(
-            model_name="historicalinvestigations", name="hypertension_reason_other",
-        ),
-        migrations.RemoveField(model_name="investigations", name="diabetes_dx",),
-        migrations.RemoveField(model_name="investigations", name="diabetes_reason",),
-        migrations.RemoveField(
-            model_name="investigations", name="diabetes_reason_other",
-        ),
-        migrations.RemoveField(model_name="investigations", name="hiv_dx",),
-        migrations.RemoveField(model_name="investigations", name="hiv_reason",),
-        migrations.RemoveField(model_name="investigations", name="hiv_reason_other",),
-        migrations.RemoveField(model_name="investigations", name="hypertension_dx",),
-        migrations.RemoveField(
-            model_name="investigations", name="hypertension_reason",
+            model_name="historicalinvestigations",
+            name="hiv_reason_other",
         ),
         migrations.RemoveField(
-            model_name="investigations", name="hypertension_reason_other",
+            model_name="historicalinvestigations",
+            name="hypertension_dx",
+        ),
+        migrations.RemoveField(
+            model_name="historicalinvestigations",
+            name="hypertension_reason_other",
+        ),
+        migrations.RemoveField(
+            model_name="investigations",
+            name="diabetes_dx",
+        ),
+        migrations.RemoveField(
+            model_name="investigations",
+            name="diabetes_reason",
+        ),
+        migrations.RemoveField(
+            model_name="investigations",
+            name="diabetes_reason_other",
+        ),
+        migrations.RemoveField(
+            model_name="investigations",
+            name="hiv_dx",
+        ),
+        migrations.RemoveField(
+            model_name="investigations",
+            name="hiv_reason",
+        ),
+        migrations.RemoveField(
+            model_name="investigations",
+            name="hiv_reason_other",
+        ),
+        migrations.RemoveField(
+            model_name="investigations",
+            name="hypertension_dx",
+        ),
+        migrations.RemoveField(
+            model_name="investigations",
+            name="hypertension_reason",
+        ),
+        migrations.RemoveField(
+            model_name="investigations",
+            name="hypertension_reason_other",
         ),
         migrations.AlterField(
             model_name="historicalinvestigations",
@@ -75,9 +104,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="historicalinvestigations",
             name="test_date",
-            field=models.DateField(
-                blank=True, null=True, verbose_name="Date test requested"
-            ),
+            field=models.DateField(blank=True, null=True, verbose_name="Date test requested"),
         ),
         migrations.AlterField(
             model_name="investigations",
@@ -121,8 +148,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="investigations",
             name="test_date",
-            field=models.DateField(
-                blank=True, null=True, verbose_name="Date test requested"
-            ),
+            field=models.DateField(blank=True, null=True, verbose_name="Date test requested"),
         ),
     ]

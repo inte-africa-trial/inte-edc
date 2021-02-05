@@ -4,10 +4,11 @@ from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, POS, YES
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import UNSCHEDULED
+from model_bakery import baker
+
 from inte_screening.constants import HIV_CLINIC
 from inte_subject.forms.clinical_review_form import ClinicalReviewForm
 from tests.inte_test_case_mixin import InteTestCaseMixin
-from model_bakery import baker
 
 
 class TestClinicalReview(InteTestCaseMixin, TestCase):
@@ -21,7 +22,7 @@ class TestClinicalReview(InteTestCaseMixin, TestCase):
         )
 
     @tag("cr")
-    def test_clinical_review_requires_cr(self):
+    def test_clinical_review_requires_clinical_review_baseline(self):
         subject_visit_baseline = self.get_subject_visit(
             subject_screening=self.subject_screening,
             subject_consent=self.subject_consent,
@@ -62,7 +63,7 @@ class TestClinicalReview(InteTestCaseMixin, TestCase):
         form.is_valid()
         self.assertNotIn("__all__", form._errors)
 
-    @tag("cr")
+    @tag("7")
     def test_hiv_na_if_diagnosed(self):
         subject_visit_baseline = self.get_subject_visit(
             subject_screening=self.subject_screening,
@@ -96,6 +97,8 @@ class TestClinicalReview(InteTestCaseMixin, TestCase):
             "report_datetime": subject_visit.report_datetime,
             "crf_status": INCOMPLETE,
         }
+
+        # at next visit and patient reported an HIV dx at the previous visit
         for hiv_test in [YES, NO]:
             with self.subTest():
                 data.update(hiv_test=hiv_test)

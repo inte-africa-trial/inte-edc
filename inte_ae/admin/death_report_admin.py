@@ -1,4 +1,5 @@
 from copy import copy
+
 from django.contrib import admin
 from django_audit_fields.admin import audit_fieldset_tuple
 from edc_action_item import ModelAdminActionItemMixin
@@ -19,7 +20,7 @@ class DeathReportAdmin(
     form = DeathReportForm
 
     fieldsets = (
-        (None, {"fields": ("subject_identifier", "report_datetime", "death_date",)},),
+        (None, {"fields": ("subject_identifier", "report_datetime", "death_date")}),
         (
             "Location of death",
             {
@@ -42,7 +43,7 @@ class DeathReportAdmin(
                 )
             },
         ),
-        ("Comment", {"fields": ("narrative",)},),
+        ("Comment", {"fields": ("narrative",)}),
         action_fieldset_tuple,
         audit_fieldset_tuple,
     )
