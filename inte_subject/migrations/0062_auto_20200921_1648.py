@@ -35,6 +35,7 @@ def update_subjectvisit(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
+        ("inte_lists", "0002_auto_20200625_0329"),
         ("inte_subject", "0061_auto_20200915_1615"),
     ]
 
