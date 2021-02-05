@@ -1,4 +1,4 @@
-|pypi| |travis| |codecov| |downloads| |pyup|
+|pypi| |actions| |codecov| |downloads|
 
 
 
@@ -99,7 +99,7 @@ Once logged in, go to you user account and update your group memberships. As a p
 
 * ACCOUNT_MANAGER
 * ADMINISTRATION
-* AE 
+* AE
 * AE_REVIEW
 * CLINIC
 * DATA_MANAGER
@@ -120,15 +120,11 @@ Once logged in, go to you user account and update your group memberships. As a p
 .. |pypi| image:: https://img.shields.io/pypi/v/inte-edc.svg
     :target: https://pypi.python.org/pypi/inte-edc
 
-.. |travis| image:: https://travis-ci.com/inte-africa-trial/inte-edc.svg?branch=develop
-    :target: https://travis-ci.com/inte-africa-trial/inte-edc
+.. |actions| image:: https://github.com/inte-africa-trial/inte-edc/workflows/build/badge.svg?branch=develop
+  :target: https://github.com/inte-africa-trial/inte-edc/actions?query=workflow:build
 
 .. |codecov| image:: https://codecov.io/gh/inte-africa-trial/inte-edc/branch/develop/graph/badge.svg
   :target: https://codecov.io/gh/inte-africa-trial/inte-edc
 
 .. |downloads| image:: https://pepy.tech/badge/inte-edc
    :target: https://pepy.tech/project/inte-edc
-
-.. |pyup| image:: https://pyup.io/repos/github/inte-africa-trial/inte-edc/shield.svg
-    :target: https://pyup.io/repos/github/inte-africa-trial/inte-edc/
-    :alt: Updates
