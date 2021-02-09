@@ -64,12 +64,26 @@ class HivInitialReviewFormValidator(
             field_required="arv_initiation_actual_date",
             inverse=False,
         )
+
         if self.cleaned_data.get("art_initiated") == YES and not (
             self.cleaned_data.get("arv_initiation_ago")
             or self.cleaned_data.get("arv_initiation_actual_date")
         ):
             raise forms.ValidationError(
                 {"arv_initiation_actual_date": "This field is required (or the above)."}
+            )
+
+        if (
+            self.cleaned_data.get("art_initiated") == YES
+            and self.cleaned_data.get("arv_initiation_ago")
+            and self.cleaned_data.get("arv_initiation_actual_date")
+        ):
+            raise forms.ValidationError(
+                {
+                    "arv_initiation_ago": (
+                        "This field is not required if the actual date is provided (below)."
+                    )
+                }
             )
 
         if self.arv_initiation_date and self.dx_date:
