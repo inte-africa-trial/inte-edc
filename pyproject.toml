@@ -17,4 +17,4 @@ source = ["inte_edc", ".tox/*/site-packages"]
 [tool.coverage.report]
 show_missing = true
 skip_covered = true
-omit = ["requirements/*"]
+omit = ["requirements.txt"]

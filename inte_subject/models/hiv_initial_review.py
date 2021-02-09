@@ -44,13 +44,14 @@ class HivInitialReview(InitialReviewModelMixin, CrfModelMixin, edc_models.BaseUu
         verbose_name="How long ago did the patient start ART?",
         null=True,
         blank=True,
+        help_text="If possible, provide the exact date below instead of estimating here.",
     )
 
     arv_initiation_actual_date = models.DateField(
         verbose_name="Date started antiretroviral therapy (ART)",
         validators=[edc_models.date_not_future],
         null=True,
-        help_text="Calculated based on response to `arv_initiation_ago`",
+        help_text="If possible, provide the exact date here instead of estimating above.",
     )
 
     arv_initiation_estimated_date = models.DateField(
