@@ -357,7 +357,7 @@ class TestHealthEconomicsShort(InteTestCaseMixin, TestCase):
         self.assertNotIn("inte_subject.healtheconomicsshort", [o.model for o in crfs.all()])
 
     @tag("he-short")
-    def test_not_required_6m_visit_if_he_revised_completed_previously(self):
+    def test_not_required_6m_visit_if_he_revision_01_completed_previously(self):
         self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
         self.subject_visit.appointment.save()
         self.subject_visit.appointment.refresh_from_db()
@@ -368,7 +368,7 @@ class TestHealthEconomicsShort(InteTestCaseMixin, TestCase):
             visit_code="1060",
         )
 
-        baker.make("inte_subject.healtheconomicsrevised", subject_visit=subject_visit)
+        baker.make("inte_subject.healtheconomicsrevision01", subject_visit=subject_visit)
 
         crfs = CrfMetadata.objects.filter(
             subject_identifier=subject_visit.subject_identifier,

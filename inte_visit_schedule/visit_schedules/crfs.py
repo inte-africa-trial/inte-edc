@@ -50,7 +50,7 @@ crfs_d1 = FormsCollection(
     Crf(show_order=155, model="inte_subject.drugrefillhiv", required=False),
     Crf(show_order=160, model="inte_subject.otherbaselinedata"),
     Crf(show_order=165, model="inte_subject.complicationsbaseline"),
-    Crf(show_order=167, model="inte_subject.healtheconomicsrevised", required=False),
+    Crf(show_order=167, model="inte_subject.healtheconomicsrevision01", required=False),
     Crf(show_order=170, model="inte_subject.nextappointment"),
     name="day1",
 )
@@ -72,7 +72,7 @@ crfs_6m = FormsCollection(
     Crf(show_order=195, model="inte_subject.htnmedicationadherence", required=False),
     Crf(show_order=200, model="inte_subject.complicationsfollowup", required=False),
     Crf(show_order=205, model="inte_subject.healtheconomicsshort"),
-    Crf(show_order=210, model="inte_subject.healtheconomicsrevised", required=False),
+    Crf(show_order=210, model="inte_subject.healtheconomicsrevision01", required=False),
     Crf(show_order=220, model="inte_subject.familyhistory"),
     Crf(show_order=230, model="inte_subject.nextappointment"),
     name="6m",
@@ -96,7 +96,7 @@ crfs_12m = FormsCollection(
     Crf(show_order=195, model="inte_subject.htnmedicationadherence", required=False),
     Crf(show_order=200, model="inte_subject.complicationsfollowup", required=False),
     Crf(show_order=205, model="inte_subject.healtheconomicsshort", required=False),
-    Crf(show_order=210, model="inte_subject.healtheconomicsrevised", required=False),
+    Crf(show_order=210, model="inte_subject.healtheconomicsrevision01", required=False),
     Crf(show_order=220, model="inte_subject.familyhistory"),
     name="12m",
 )

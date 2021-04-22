@@ -10,7 +10,7 @@ from ..choices import ACTIVITY_CHOICES, CHILDCARE_CHOICES
 from ..model_mixins import CrfModelMixin
 
 
-class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
+class HealthEconomicsRevision01(CrfModelMixin, edc_models.BaseUuidModel):
 
     """Second iteration of HE form.
 
@@ -578,5 +578,5 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
-        verbose_name = "Health Economics (Revised)"
-        verbose_name_plural = "Health Economics (Revised)"
+        verbose_name = "Health Economics (Revision 01)"
+        verbose_name_plural = "Health Economics (Revision 01)"

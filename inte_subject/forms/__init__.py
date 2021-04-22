@@ -14,9 +14,9 @@ from .drug_supply_hiv_form import DrugSupplyHivForm
 from .drug_supply_htn_form import DrugSupplyHtnForm
 from .family_history_form import FamilyHistoryForm
 from .glucose_form import GlucoseForm
-from .health_economics_revised_form import (
-    HealthEconomicsRevisedForm,
-    HealthEconomicsRevisedFormValidator,
+from .health_economics_revision_01_form import (
+    HealthEconomicsRevision01Form,
+    HealthEconomicsRevision01FormValidator,
 )
 from .health_economics_short_form import (
     HealthEconomicsShortForm,

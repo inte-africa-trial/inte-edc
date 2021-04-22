@@ -9,7 +9,7 @@ from inte_prn.models import IntegratedCareClinicRegistration
 from inte_sites.is_intervention_site import is_intervention_site
 from inte_subject.diagnoses import Diagnoses
 
-from ..models import HealthEconomicsRevised
+from ..models import HealthEconomicsRevision01
 from .mixins import (
     CrfFormValidatorMixin,
     CrfModelFormMixin,
@@ -18,7 +18,7 @@ from .mixins import (
 )
 
 
-class HealthEconomicsRevisedFormValidator(
+class HealthEconomicsRevision01FormValidator(
     DiagnosisFormValidatorMixin, CrfFormValidatorMixin, FormValidator
 ):
     def clean(self):
@@ -183,10 +183,10 @@ class HealthEconomicsRevisedFormValidator(
         )
 
 
-class HealthEconomicsRevisedForm(CrfModelFormMixin, forms.ModelForm):
+class HealthEconomicsRevision01Form(CrfModelFormMixin, forms.ModelForm):
 
-    form_validator_cls = HealthEconomicsRevisedFormValidator
+    form_validator_cls = HealthEconomicsRevision01FormValidator
 
     class Meta:
-        model = HealthEconomicsRevised
+        model = HealthEconomicsRevision01
         fields = "__all__"
