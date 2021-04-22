@@ -13,7 +13,7 @@ from inte_subject.models import (
     ClinicalReview,
     ClinicalReviewBaseline,
     HealthEconomicsRevision01,
-    HealthEconomicsShort,
+    HealthEconomicsRevision02,
     HivInitialReview,
     HtnInitialReview,
 )
@@ -67,8 +67,8 @@ healtheconomicsrevision01 = Recipe(
     site=Site.objects.get_current(),
 )
 
-healtheconomicsshort = Recipe(
-    HealthEconomicsShort,
+healtheconomicsrevision02 = Recipe(
+    HealthEconomicsRevision02,
     site=Site.objects.get_current(),
 )
 

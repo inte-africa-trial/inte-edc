@@ -18,9 +18,9 @@ from .health_economics_revision_01_form import (
     HealthEconomicsRevision01Form,
     HealthEconomicsRevision01FormValidator,
 )
-from .health_economics_short_form import (
-    HealthEconomicsShortForm,
-    HealthEconomicsShortFormValidator,
+from .health_economics_revision_02_form import (
+    HealthEconomicsRevision02Form,
+    HealthEconomicsRevision02FormValidator,
 )
 from .hiv_initial_review_form import HivInitialReviewForm
 from .hiv_medication_adherence_form import HivMedicationAdherenceForm

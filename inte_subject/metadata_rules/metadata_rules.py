@@ -100,7 +100,7 @@ class HealthEconomicsRuleGroup(CrfRuleGroup):
         predicate=pc.health_economics_required,
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_models=["healtheconomicsshort"],
+        target_models=["healtheconomicsrevision02"],
     )
 
     class Meta:

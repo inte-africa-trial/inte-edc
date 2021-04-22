@@ -9,7 +9,7 @@ from inte_lists.models import DrugPaySources
 from ..model_mixins import CrfModelMixin
 
 
-class HealthEconomicsShort(CrfModelMixin, edc_models.BaseUuidModel):
+class HealthEconomicsRevision02(CrfModelMixin, edc_models.BaseUuidModel):
 
     """Third iteration of HE form."""
 

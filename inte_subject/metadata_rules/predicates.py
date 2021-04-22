@@ -13,7 +13,7 @@ class Predicates(PredicateCollection):
     @staticmethod
     def health_economics_required(visit, **kwargs):
         """Returns True if this is the 6m visit and neither of the health
-        economics CRFs (revision 01 or shortened) have been previously completed.
+        economics CRFs (revision 01 or 02) have been previously completed.
         """
         required = False
         if (
@@ -26,7 +26,7 @@ class Predicates(PredicateCollection):
                     subject_visit__subject_identifier=visit.subject_identifier
                 )
             except ObjectDoesNotExist:
-                model_cls = django_apps.get_model("inte_subject.healtheconomicsshort")
+                model_cls = django_apps.get_model("inte_subject.healtheconomicsrevision02")
                 try:
                     model_cls.objects.get(
                         subject_visit__subject_identifier=visit.subject_identifier
