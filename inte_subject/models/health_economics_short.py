@@ -1,20 +1,17 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from edc_constants.choices import YES_NO, YES_NO_NA
-from edc_constants.constants import NO, NOT_APPLICABLE
+from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
 
-from inte_lists.models import DrugPaySources, TransportChoices
+from inte_lists.models import DrugPaySources
 
-from ..choices import ACTIVITY_CHOICES, CHILDCARE_CHOICES
 from ..model_mixins import CrfModelMixin
 
 
-class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
+class HealthEconomicsShort(CrfModelMixin, edc_models.BaseUuidModel):
 
-    """Second iteration of HE form.
-
-    Retired April 2021."""
+    """Third iteration of HE form."""
 
     occupation = models.CharField(
         verbose_name="What is your occupation/profession?", max_length=50
@@ -73,49 +70,6 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         choices=YES_NO,
     )
 
-    income_per_month = models.IntegerField(
-        verbose_name="How much do you earn (take home) per month?",
-        help_text="in local currency",
-    )
-
-    household_income_per_month = models.IntegerField(
-        verbose_name="What is the total income in your household per month?",
-        help_text="in local currency",
-    )
-
-    is_highest_earner = models.CharField(
-        verbose_name=("Are you the person who earns the highest income in your household?"),
-        max_length=15,
-        choices=YES_NO,
-    )
-
-    highest_earner = models.CharField(
-        verbose_name=(
-            "If NO, what is the profession of the person " "who earns the highest income?"
-        ),
-        max_length=50,
-        null=True,
-        blank=True,
-    )
-
-    # General expenditure
-    food_per_month = models.IntegerField(
-        verbose_name="How much do you/your family spend on food in a month?",
-        help_text="in local currency",
-    )
-
-    accomodation_per_month = models.IntegerField(
-        verbose_name=(
-            "How much do you/your family spend on rent (or house loan/mortgage) "
-            "and utilities in a month?"
-        ),
-        help_text="in local currency",
-    )
-
-    large_expenditure_year = models.IntegerField(
-        verbose_name="How much have you spent on large items in the last year",
-        help_text="e.g. furniture, electrical items, cars (in local currency)",
-    )
     #################################################
     # Previous health care expenses: Medications
     received_rx_month = models.CharField(
@@ -239,146 +193,6 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         help_text="In local currency",
     )
 
-    #################################################
-    # Previous health care expenses: Other
-
-    non_drug_activities_month = models.CharField(
-        verbose_name=(
-            "Over the last month, did you spend money on other activities (not drugs) "
-            "relating to your health?"
-        ),
-        max_length=15,
-        choices=YES_NO,
-    )
-
-    non_drug_activities_detail_month = models.TextField(
-        verbose_name="If YES, what was the activity", null=True, blank=True
-    )
-
-    non_drug_activities_cost_month = models.IntegerField(
-        verbose_name=(
-            "If YES, how much was spent on other activities "
-            "(not drugs) relating to your health?"
-        ),
-        validators=[MinValueValidator(0)],
-        help_text="In local currency",
-        null=True,
-        blank=True,
-    )
-
-    healthcare_expenditure_total_month = models.IntegerField(
-        verbose_name=(
-            "How much in total has been spent on your healthcare in the last month?"
-        ),
-        validators=[MinValueValidator(0)],
-        help_text="In local currency",
-    )
-
-    #################################################
-    # Loss of Productivity and Earnings
-    missed_routine_activities = models.CharField(
-        verbose_name=(
-            "What would you be doing if you had not " "come to the health facility today?"
-        ),
-        max_length=25,
-        choices=ACTIVITY_CHOICES,
-    )
-
-    missed_routine_activities_other = models.CharField(
-        verbose_name="If OTHER, please specify", max_length=50, null=True, blank=True
-    )
-
-    off_work_days = models.DecimalField(
-        verbose_name="How much time did you take off work?",
-        decimal_places=1,
-        max_digits=4,
-        help_text="in days. (1,2,3 etc. If half-day 0.5)",
-    )
-
-    travel_time = models.CharField(
-        verbose_name="How long did it take you to reach here?",
-        max_length=5,
-        help_text="in hours and minutes (format HH:MM)",
-    )
-
-    hospital_time = models.CharField(
-        verbose_name="How much time did you spend at the health care facility?",
-        max_length=5,
-        help_text="in hours and minutes (format HH:MM)",
-    )
-
-    lost_income = models.CharField(
-        verbose_name="Did you lose earnings as a result of coming here today? ",
-        max_length=15,
-        choices=YES_NO,
-    )
-
-    lost_income_amount = models.IntegerField(
-        verbose_name="If Yes, how much did you lose?",
-        validators=[MinValueValidator(0)],
-        null=True,
-        blank=True,
-        help_text="In local currency",
-    )
-
-    #################################################
-    # Family Loss of Productivity and Earnings
-    childcare = models.CharField(
-        verbose_name=(
-            "Did you ask anyone else, such as your family member/"
-            "friend to look after your child/children in order to come here?"
-        ),
-        max_length=15,
-        choices=YES_NO,
-    )
-
-    childcare_source = models.CharField(
-        verbose_name=(
-            "If Yes, what would they have been doing if they had not stayed to "
-            "look after your child or children?"
-        ),
-        max_length=25,
-        choices=CHILDCARE_CHOICES,
-        default=NOT_APPLICABLE,
-    )
-
-    childcare_source_other = edc_models.OtherCharField()
-
-    childcare_source_timeoff = models.DecimalField(
-        verbose_name="How much time did a family member or friend take off?",
-        decimal_places=1,
-        max_digits=4,
-        null=True,
-        blank=True,
-        help_text="in days. (1,2,3 etc. If half-day 0.5)",
-    )
-
-    #################################################
-    # Current visit: transport and food
-    transport = models.ManyToManyField(
-        TransportChoices,
-        verbose_name=("Which form of transport did you take to get to the hospital today?"),
-        max_length=25,
-    )
-
-    transport_other = edc_models.OtherCharField(
-        verbose_name="If `other reason`, please specify ..."
-    )
-
-    transport_cost = models.IntegerField(
-        verbose_name="How much did you spend on transport in total?",
-        help_text="Coming to the health care facility going back home. (In local currency)",
-    )
-
-    food_cost = models.IntegerField(
-        verbose_name=(
-            "How much did you spend on food while "
-            "you were at the health care faility today?"
-        ),
-        validators=[MinValueValidator(0)],
-        help_text="In local currency",
-    )
-
     #######################################################
     # Current Visit: health care expenses
     received_rx_today = models.CharField(
@@ -498,53 +312,7 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
         blank=True,
         help_text="In local currency",
     )
-    ########################################################
-    # Current Visit: Other expenses
 
-    non_drug_activities_today = models.CharField(
-        verbose_name=(
-            "Did you spend money on other activities (not drugs) "
-            "relating to your health today?"
-        ),
-        max_length=15,
-        choices=YES_NO,
-    )
-
-    non_drug_activities_detail_today = models.TextField(
-        verbose_name="If YES, what was the activity", null=True, blank=True
-    )
-
-    non_drug_activities_cost_today = models.IntegerField(
-        verbose_name="If YES, how much did you spend?",
-        validators=[MinValueValidator(0)],
-        help_text="In local currency",
-        null=True,
-        blank=True,
-    )
-
-    healthcare_expenditure_total_month_today = models.IntegerField(
-        verbose_name=(
-            "How much in total has been spent on your healthcare in the last month?"
-        ),
-        validators=[MinValueValidator(0)],
-        help_text="In local currency",
-    )
-
-    ########################################################
-    # Health care financing
-    finance_by_sale = models.CharField(
-        verbose_name="Do you sell anything to pay for your visit today?",
-        max_length=15,
-        choices=YES_NO,
-    )
-
-    finance_by_loan = models.CharField(
-        verbose_name="Did you take any loans to pay for your visit?",
-        max_length=15,
-        choices=YES_NO,
-    )
-
-    # 39
     health_insurance = models.CharField(
         verbose_name="Do you have private healthcare insurance?",
         max_length=15,
@@ -578,5 +346,5 @@ class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
-        verbose_name = "Health Economics (Revised)"
-        verbose_name_plural = "Health Economics (Revised)"
+        verbose_name = "Health Economics (Short)"
+        verbose_name_plural = "Health Economics (Short)"

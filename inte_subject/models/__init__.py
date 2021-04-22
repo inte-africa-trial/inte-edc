@@ -16,6 +16,7 @@ from .family_history import FamilyHistory
 from .glucose import Glucose
 from .health_economics import HealthEconomics
 from .health_economics_revised import HealthEconomicsRevised
+from .health_economics_short import HealthEconomicsShort
 from .hiv_initial_review import HivInitialReview
 from .hiv_medication_adherence import HivMedicationAdherence
 from .hiv_review import HivReview
