@@ -99,6 +99,7 @@ class HealthEconomicsRevision01Admin(
                 "fields": (
                     "rx_other_month",
                     "rx_other_paid_month",
+                    "rx_other_paid_month_other",
                     "rx_other_cost_month",
                 )
             },
