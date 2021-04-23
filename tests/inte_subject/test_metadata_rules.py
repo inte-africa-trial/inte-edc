@@ -1,3 +1,5 @@
+import pdb
+
 from django.test import TestCase, tag
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import NO, NOT_APPLICABLE, POS, YES
@@ -34,6 +36,58 @@ class TestMetadataRules(InteTestCaseMixin, TestCase):
                 "model"
             )
         ]
+
+    @tag("dx1")
+    def test_diagnoses_dates1(self):
+        subject_visit_baseline = self.get_subject_visit(
+            subject_screening=self.subject_screening,
+            subject_consent=self.subject_consent,
+        )
+
+        baker.make(
+            "inte_subject.clinicalreviewbaseline",
+            subject_visit=subject_visit_baseline,
+            hiv_test=POS,
+            hiv_dx=YES,
+            hiv_test_ago="5y",
+        )
+
+        baker.make(
+            "inte_subject.hivinitialreview",
+            subject_visit=subject_visit_baseline,
+            dx_ago="5y",
+            arv_initiation_ago="4y",
+        )
+
+        subject_visit_baseline.appointment.appt_status = INCOMPLETE_APPT
+        subject_visit_baseline.appointment.save()
+        subject_visit_baseline.appointment.refresh_from_db()
+        subject_visit_baseline.refresh_from_db()
+
+        subject_visit = self.get_next_subject_visit(
+            subject_visit=subject_visit_baseline, reason=UNSCHEDULED
+        )
+        clinical_review = baker.make(
+            "inte_subject.clinicalreview",
+            subject_visit=subject_visit,
+            hiv_test=NOT_APPLICABLE,
+            hiv_dx=NOT_APPLICABLE,
+            hiv_test_date=None,
+            htn_test=NO,
+            htn_dx=NOT_APPLICABLE,
+            htn_test_date=None,
+            dm_test=NO,
+            dm_dx=NOT_APPLICABLE,
+            dm_test_date=None,
+        )
+        clinical_review.save()
+        models = self.get_metadata_models(subject_visit)
+        self.assertIn("inte_subject.hivreview", models)
+        self.assertNotIn("inte_subject.hivinitialreview", models)
+        self.assertNotIn("inte_subject.htninitialreview", models)
+        self.assertNotIn("inte_subject.dminitialreview", models)
+        self.assertNotIn("inte_subject.htnreview", models)
+        self.assertNotIn("inte_subject.dmreview", models)
 
     @tag("dx1")
     def test_diagnoses_dates2(self):
@@ -80,19 +134,12 @@ class TestMetadataRules(InteTestCaseMixin, TestCase):
             dm_test_date=None,
         )
 
-        models = self.get_metadata_models(subject_visit)
-        self.assertIn("inte_subject.hivreview", models)
-        self.assertNotIn("inte_subject.hivinitialreview", models)
-        self.assertNotIn("inte_subject.htninitialreview", models)
-        self.assertNotIn("inte_subject.dminitialreview", models)
-        self.assertNotIn("inte_subject.htnreview", models)
-        self.assertNotIn("inte_subject.dmreview", models)
-
         clinical_review.htn_test = YES
         clinical_review.htn_test_date = subject_visit.report_datetime
         clinical_review.htn_dx = YES
         clinical_review.save()
         clinical_review.refresh_from_db()
+
         self.assertEqual(NOT_APPLICABLE, clinical_review.hiv_test)
 
         models = self.get_metadata_models(subject_visit)
