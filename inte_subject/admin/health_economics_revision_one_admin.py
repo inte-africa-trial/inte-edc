@@ -5,17 +5,17 @@ from edc_form_label import FormLabelModelAdminMixin
 from edc_model_admin import SimpleHistoryAdmin
 
 from ..admin_site import inte_subject_admin
-from ..forms import HealthEconomicsRevision01Form
-from ..models import HealthEconomicsRevision01
+from ..forms import HealthEconomicsRevisionOneForm
+from ..models import HealthEconomicsRevisionOne
 from .modeladmin_mixins import CrfModelAdminMixin
 
 
-@admin.register(HealthEconomicsRevision01, site=inte_subject_admin)
-class HealthEconomicsRevision01Admin(
+@admin.register(HealthEconomicsRevisionOne, site=inte_subject_admin)
+class HealthEconomicsRevisionOneAdmin(
     CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
 ):
 
-    form = HealthEconomicsRevision01Form
+    form = HealthEconomicsRevisionOneForm
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (

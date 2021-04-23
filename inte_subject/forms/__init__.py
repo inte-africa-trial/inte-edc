@@ -14,13 +14,13 @@ from .drug_supply_hiv_form import DrugSupplyHivForm
 from .drug_supply_htn_form import DrugSupplyHtnForm
 from .family_history_form import FamilyHistoryForm
 from .glucose_form import GlucoseForm
-from .health_economics_revision_01_form import (
-    HealthEconomicsRevision01Form,
-    HealthEconomicsRevision01FormValidator,
+from .health_economics_revision_one_form import (
+    HealthEconomicsRevisionOneForm,
+    HealthEconomicsRevisionOneFormValidator,
 )
-from .health_economics_revision_02_form import (
-    HealthEconomicsRevision02Form,
-    HealthEconomicsRevision02FormValidator,
+from .health_economics_revision_two_form import (
+    HealthEconomicsRevisionTwoForm,
+    HealthEconomicsRevisionTwoFormValidator,
 )
 from .hiv_initial_review_form import HivInitialReviewForm
 from .hiv_medication_adherence_form import HivMedicationAdherenceForm

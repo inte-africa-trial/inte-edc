@@ -10,7 +10,7 @@ from ..choices import ACTIVITY_CHOICES, CHILDCARE_CHOICES
 from ..model_mixins import CrfModelMixin
 
 
-class HealthEconomicsRevision01(CrfModelMixin, edc_models.BaseUuidModel):
+class HealthEconomicsRevisionOne(CrfModelMixin, edc_models.BaseUuidModel):
 
     """Second iteration of HE form.
 

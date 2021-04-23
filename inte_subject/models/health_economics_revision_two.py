@@ -1,7 +1,7 @@
-from .health_economics_revision_01 import HealthEconomicsRevision01
+from .health_economics_revision_one import HealthEconomicsRevisionOne
 
 
-class HealthEconomicsRevision02(HealthEconomicsRevision01):
+class HealthEconomicsRevisionTwo(HealthEconomicsRevisionOne):
 
     """Third iteration of HE form."""
 

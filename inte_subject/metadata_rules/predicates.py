@@ -20,13 +20,13 @@ class Predicates(PredicateCollection):
             visit.appointment.visit_code == "1060"
             and visit.appointment.visit_code_sequence == 0
         ):
-            model_cls = django_apps.get_model("inte_subject.healtheconomicsrevision01")
+            model_cls = django_apps.get_model("inte_subject.healtheconomicsrevisionone")
             try:
                 model_cls.objects.get(
                     subject_visit__subject_identifier=visit.subject_identifier
                 )
             except ObjectDoesNotExist:
-                model_cls = django_apps.get_model("inte_subject.healtheconomicsrevision02")
+                model_cls = django_apps.get_model("inte_subject.healtheconomicsrevisiontwo")
                 try:
                     model_cls.objects.get(
                         subject_visit__subject_identifier=visit.subject_identifier

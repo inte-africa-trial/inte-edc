@@ -2,7 +2,7 @@ from django import forms
 from edc_constants.constants import NO, YES
 from edc_form_validators import FormValidator
 
-from ..models import HealthEconomicsRevision01
+from ..models import HealthEconomicsRevisionOne
 from .mixins import (
     CrfFormValidatorMixin,
     CrfModelFormMixin,
@@ -12,7 +12,7 @@ from .mixins import (
 )
 
 
-class HealthEconomicsRevision01FormValidator(
+class HealthEconomicsRevisionOneFormValidator(
     HealthEconomicsFormValidatorMixin,
     DiagnosisFormValidatorMixin,
     CrfFormValidatorMixin,
@@ -72,10 +72,10 @@ class HealthEconomicsRevision01FormValidator(
         )
 
 
-class HealthEconomicsRevision01Form(CrfModelFormMixin, forms.ModelForm):
+class HealthEconomicsRevisionOneForm(CrfModelFormMixin, forms.ModelForm):
 
-    form_validator_cls = HealthEconomicsRevision01FormValidator
+    form_validator_cls = HealthEconomicsRevisionOneFormValidator
 
     class Meta:
-        model = HealthEconomicsRevision01
+        model = HealthEconomicsRevisionOne
         fields = "__all__"

@@ -12,8 +12,8 @@ from inte_subject.constants import THIS_CLINIC
 from inte_subject.models import (
     ClinicalReview,
     ClinicalReviewBaseline,
-    HealthEconomicsRevision01,
-    HealthEconomicsRevision02,
+    HealthEconomicsRevisionOne,
+    HealthEconomicsRevisionTwo,
     HivInitialReview,
     HtnInitialReview,
 )
@@ -62,13 +62,13 @@ subjectreconsent = Recipe(
     tracking_identifier=None,
 )
 
-healtheconomicsrevision01 = Recipe(
-    HealthEconomicsRevision01,
+healtheconomicsrevisionone = Recipe(
+    HealthEconomicsRevisionOne,
     site=Site.objects.get_current(),
 )
 
-healtheconomicsrevision02 = Recipe(
-    HealthEconomicsRevision02,
+healtheconomicsrevisiontwo = Recipe(
+    HealthEconomicsRevisionTwo,
     site=Site.objects.get_current(),
 )
 
