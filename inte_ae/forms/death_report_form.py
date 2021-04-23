@@ -24,4 +24,17 @@ class DeathReportForm(DeathReportModelFormMixin, forms.ModelForm):
 
     class Meta:
         model = DeathReport
-        fields = "__all__"
+        fields = [
+            "subject_identifier",
+            "report_datetime",
+            "death_date",
+            "death_location",
+            "death_location_other",
+            "hospital_death",
+            "hospital_name",
+            "informant",
+            "informant_other",
+            "confirmed_by",
+            "confirmed_by_other",
+            "narrative",
+        ]

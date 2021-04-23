@@ -12,7 +12,12 @@ from edc_transfer.action_items import SubjectTransferAction as BaseSubjectTransf
 from edc_transfer.constants import SUBJECT_TRANSFER_ACTION
 
 from inte_consent.models import SubjectConsent
-from inte_screening.constants import HIV_CLINIC, NCD_CLINIC
+from inte_screening.constants import (
+    DIABETES_CLINIC,
+    HIV_CLINIC,
+    HYPERTENSION_CLINIC,
+    NCD_CLINIC,
+)
 
 from .constants import (
     END_OF_STUDY_HIV_ACTION,
@@ -82,7 +87,7 @@ class SubjectTransferAction(BaseSubjectTransferAction):
         subject_consent = SubjectConsent.objects.get(
             subject_identifier=self.subject_identifier
         )
-        if subject_consent.clinic_type == NCD_CLINIC:
+        if subject_consent.clinic_type in [NCD_CLINIC, HYPERTENSION_CLINIC, DIABETES_CLINIC]:
             next_actions = [END_OF_STUDY_NCD_ACTION]
         elif subject_consent.clinic_type == HIV_CLINIC:
             next_actions = [END_OF_STUDY_HIV_ACTION]

@@ -94,9 +94,12 @@ class TestDeathReport(InteTestCaseMixin, TestCase):
             "subject_identifier": self.subject_consent.subject_identifier,
             "report_datetime": get_utcnow(),
             "death_date": get_utcnow() - relativedelta(days=5),
+            # "death_datetime":
+            # "study_day":
             "death_as_inpatient": NO,
             "death_location": OTHER,
             "death_location_other": "some location",
+            # "cause_of_death":
             "hospital_death": NO,
             "hospital_name": None,
             "informant": OTHER,

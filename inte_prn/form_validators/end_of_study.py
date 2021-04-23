@@ -5,7 +5,7 @@ from edc_form_validators import FormValidator
 from edc_ltfu.modelform_mixins import LtfuFormValidatorMixin
 from edc_offstudy.constants import OTHER_RX_DISCONTINUATION
 from edc_transfer.constants import TRANSFERRED
-from edc_transfer.modelform_mixins import SubjectTransferFormValidatorMixin
+from edc_transfer.form_validators import SubjectTransferFormValidatorMixin
 
 
 class EndOfStudyFormValidator(

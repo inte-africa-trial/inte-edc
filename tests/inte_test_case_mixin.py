@@ -2,16 +2,14 @@ import string
 from random import choices
 
 from dateutil.relativedelta import relativedelta
-from django import forms
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
+from django.test import TestCase
 from edc_appointment.tests.appointment_test_case_mixin import AppointmentTestCaseMixin
 from edc_constants.constants import MALE, NO, NOT_APPLICABLE, RANDOM_SAMPLING, YES
 from edc_facility.import_holidays import import_holidays
-from edc_facility.models import Holiday
 from edc_form_validators import FormValidatorTestCaseMixin
-from edc_list_data.site_list_data import site_list_data
 from edc_randomization.randomization_list_importer import RandomizationListImporter
 from edc_sites import get_sites_by_country
 from edc_sites.tests.site_test_case_mixin import SiteTestCaseMixin
@@ -29,7 +27,7 @@ from inte_subject.models import SubjectVisit
 
 
 class InteTestCaseMixin(
-    AppointmentTestCaseMixin, FormValidatorTestCaseMixin, SiteTestCaseMixin
+    AppointmentTestCaseMixin, FormValidatorTestCaseMixin, SiteTestCaseMixin, TestCase
 ):
     fqdn = fqdn
 
@@ -44,8 +42,7 @@ class InteTestCaseMixin(
     sid_count_for_tests = 1
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpTestData(cls):
         import_holidays(test=True)
         if cls.import_randomization_list:
             RandomizationListImporter(
@@ -53,12 +50,6 @@ class InteTestCaseMixin(
                 name="default",
                 sid_count_for_tests=cls.sid_count_for_tests,
             )
-        # site_list_data.autodiscover()
-
-    @classmethod
-    def tearDownClass(cls):
-        super().tearDownClass()
-        Holiday.objects.all().delete()
 
     def login(self, user=None, superuser=None, groups=None):
         user = self.user if user is None else user
