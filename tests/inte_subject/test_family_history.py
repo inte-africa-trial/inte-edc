@@ -63,6 +63,7 @@ class TestFamilyHistory(InteTestCaseMixin, TestCase):
 
     @tag("fam")
     def test_required_at_next_visit_if_not_completed_previously(self):
+
         self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
         self.subject_visit.appointment.save()
         self.subject_visit.appointment.refresh_from_db()
@@ -73,7 +74,8 @@ class TestFamilyHistory(InteTestCaseMixin, TestCase):
             visit_code=self.subject_visit.appointment.next.visit_code,
         )
 
-        baker.make("inte_subject.familyhistory", subject_visit=subject_visit)
+        family_history = baker.make("inte_subject.familyhistory", subject_visit=subject_visit)
+        family_history.save()
 
         subject_visit.appointment.appt_status = INCOMPLETE_APPT
         subject_visit.appointment.save()
