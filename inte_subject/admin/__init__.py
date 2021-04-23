@@ -13,6 +13,7 @@ from .drug_refill_htn_admin import DrugRefillHtnAdmin
 from .family_history_admin import FamilyHistoryAdmin
 from .glucose_admin import GlucoseAdmin
 from .health_economics_revision_01_admin import HealthEconomicsRevision01Admin
+from .health_economics_revision_02_admin import HealthEconomicsRevision02Admin
 from .hiv_initial_review_admin import HivInitialReviewAdmin
 from .hiv_medication_adherence_admin import HivMedicationAdherenceAdmin
 from .hiv_review_admin import HivReviewAdmin
