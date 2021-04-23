@@ -107,7 +107,6 @@ INSTALLED_APPS = [
     "edc_locator.apps.AppConfig",
     "edc_reference.apps.AppConfig",
     "edc_metadata.apps.AppConfig",
-    "edc_metadata_rules.apps.AppConfig",
     "edc_model.apps.AppConfig",
     "edc_model_admin.apps.AppConfig",
     "edc_navbar.apps.AppConfig",
@@ -287,6 +286,8 @@ DATETIME_FORMAT = "j N Y H:i"
 SHORT_DATE_FORMAT = "d/m/Y"
 SHORT_DATETIME_FORMAT = "d/m/Y H:i"
 
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 # edc-action-item
 ENFORCE_RELATED_ACTION_ITEM_EXISTS = False
 
@@ -319,13 +320,14 @@ LABEL_TEMPLATE_FOLDER = env.str("DJANGO_LABEL_TEMPLATE_FOLDER") or os.path.join(
 )
 CUPS_SERVERS = env.dict("DJANGO_CUPS_SERVERS")
 
-SUBJECT_SCREENING_MODEL = env.str("EDC_SUBJECT_SCREENING_MODEL")
+LIST_MODEL_APP_LABEL = env.str("EDC_LIST_MODEL_APP_LABEL")
+SUBJECT_APP_LABEL = env.str("EDC_SUBJECT_APP_LABEL")
 SUBJECT_CONSENT_MODEL = env.str("EDC_SUBJECT_CONSENT_MODEL")
 SUBJECT_REQUISITION_MODEL = env.str("EDC_SUBJECT_REQUISITION_MODEL")
-SUBJECT_VISIT_MODEL = env.str("EDC_SUBJECT_VISIT_MODEL")
+SUBJECT_SCREENING_MODEL = env.str("EDC_SUBJECT_SCREENING_MODEL")
 SUBJECT_VISIT_MISSED_MODEL = env.str("EDC_SUBJECT_VISIT_MISSED_MODEL")
 SUBJECT_VISIT_MISSED_REASONS_MODEL = env.str("EDC_SUBJECT_VISIT_MISSED_REASONS_MODEL")
-LIST_MODEL_APP_LABEL = env.str("EDC_LIST_MODEL_APP_LABEL")
+SUBJECT_VISIT_MODEL = env.str("EDC_SUBJECT_VISIT_MODEL")
 
 EDC_NAVBAR_DEFAULT = env("EDC_NAVBAR_DEFAULT")
 
@@ -420,6 +422,7 @@ SIMPLE_HISTORY_REVERT_ENABLED = False
 
 # django-multisite
 CACHE_MULTISITE_KEY_PREFIX = APP_NAME
+SILENCED_SYSTEM_CHECKS = ["sites.E101"]
 
 # django-defender
 # see if env.str("DJANGO_CACHE") == "redis" above
