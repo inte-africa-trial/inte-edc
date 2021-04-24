@@ -338,7 +338,7 @@ class TestHealthEconomicsRevisionTwo(InteTestCaseMixin, TestCase):
         )
         self.assertIn("inte_subject.healtheconomicsrevisiontwo", [o.model for o in crfs.all()])
 
-    @tag("he-shortpython manage.py makemigrations")
+    @tag("he-r02")
     def test_not_required_6m_visit_if_completed_previously(self):
         self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
         self.subject_visit.appointment.save()
