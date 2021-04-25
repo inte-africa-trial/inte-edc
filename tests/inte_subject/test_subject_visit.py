@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 from django import forms
-from django.test import TestCase, override_settings, tag
+from django.test import TestCase, override_settings
 from edc_constants.constants import STUDY_DEFINED_TIMEPOINT
 from edc_utils import get_utcnow
 from edc_visit_schedule.constants import DAY1
@@ -22,14 +22,16 @@ from tests.inte_test_case_mixin import InteTestCaseMixin
 class TestSubjectVisit(InteTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
+        self.baseline_datetime = get_utcnow() - relativedelta(months=1)
         self.subject_screening = self.get_subject_screening(
-            report_datetime=get_utcnow(), clinic_type=HIV_CLINIC
+            report_datetime=self.baseline_datetime, clinic_type=HIV_CLINIC
         )
         self.subject_consent = self.get_subject_consent(
-            subject_screening=self.subject_screening, clinic_type=HIV_CLINIC
+            subject_screening=self.subject_screening,
+            clinic_type=HIV_CLINIC,
+            report_datetime=self.baseline_datetime,
         )
 
-    @tag("v")
     @override_settings(SITE_ID=101)  # control
     def test_control_site(self):
         self.assertRaises(
@@ -38,7 +40,6 @@ class TestSubjectVisit(InteTestCaseMixin, TestCase):
             report_datetime=get_utcnow(),
         )
 
-    @tag("v")
     @override_settings(SITE_ID=103)  # intervention
     def test_not_registered_intervention_site(self):
 
@@ -48,7 +49,6 @@ class TestSubjectVisit(InteTestCaseMixin, TestCase):
             report_datetime=get_utcnow(),
         )
 
-    @tag("v")
     @override_settings(SITE_ID=103)  # intervention
     def test_icc_opened_by_appt_datetime(self):
 
@@ -67,7 +67,6 @@ class TestSubjectVisit(InteTestCaseMixin, TestCase):
         except InterventionSiteNotRegistered:
             self.fail("InterventionSiteNotRegistered unexpectedly raised")
 
-    @tag("v")
     @override_settings(SITE_ID=103)  # intervention
     def test_icc_not_opened_by_appt_datetime(self):
 
@@ -87,7 +86,6 @@ class TestSubjectVisit(InteTestCaseMixin, TestCase):
             report_datetime=appointment.appt_datetime,
         )
 
-    @tag("v")
     @override_settings(SITE_ID=103)  # intervention
     def test_not_registered_intervention_subject_visit_form(self):
         appointment = self.get_appointment(

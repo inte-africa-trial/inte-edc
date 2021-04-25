@@ -1,7 +1,6 @@
 from edc_visit_schedule import Crf, FormsCollection
 
 crfs_prn = FormsCollection(
-    # Crf(show_order=175, model="inte_subject.healtheconomicsrevised"),
     Crf(show_order=178, model="inte_subject.familyhistory"),
     Crf(show_order=180, model="inte_subject.nextappointment"),
     Crf(show_order=200, model="inte_subject.cd4result"),
@@ -50,7 +49,6 @@ crfs_d1 = FormsCollection(
     Crf(show_order=155, model="inte_subject.drugrefillhiv", required=False),
     Crf(show_order=160, model="inte_subject.otherbaselinedata"),
     Crf(show_order=165, model="inte_subject.complicationsbaseline"),
-    Crf(show_order=167, model="inte_subject.healtheconomicsrevised", required=False),
     Crf(show_order=170, model="inte_subject.nextappointment"),
     name="day1",
 )
@@ -71,7 +69,8 @@ crfs_6m = FormsCollection(
     Crf(show_order=190, model="inte_subject.dmmedicationadherence", required=False),
     Crf(show_order=195, model="inte_subject.htnmedicationadherence", required=False),
     Crf(show_order=200, model="inte_subject.complicationsfollowup", required=False),
-    Crf(show_order=210, model="inte_subject.healtheconomicsrevised"),
+    Crf(show_order=210, model="inte_subject.healtheconomicsrevised", required=False),
+    Crf(show_order=215, model="inte_subject.healtheconomicsrevisedtwo", required=False),
     Crf(show_order=220, model="inte_subject.familyhistory"),
     Crf(show_order=230, model="inte_subject.nextappointment"),
     name="6m",
@@ -94,7 +93,6 @@ crfs_12m = FormsCollection(
     Crf(show_order=190, model="inte_subject.dmmedicationadherence", required=False),
     Crf(show_order=195, model="inte_subject.htnmedicationadherence", required=False),
     Crf(show_order=200, model="inte_subject.complicationsfollowup", required=False),
-    Crf(show_order=210, model="inte_subject.healtheconomicsrevised", required=False),
     Crf(show_order=220, model="inte_subject.familyhistory"),
     name="12m",
 )

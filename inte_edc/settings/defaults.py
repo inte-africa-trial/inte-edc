@@ -1,10 +1,12 @@
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
 
 import environ
 from edc_appointment.constants import SCHEDULED_APPT, UNSCHEDULED_APPT
 from edc_utils import get_datetime_from_env
+from pytz import UTC
 
 
 class DisableMigrations:
@@ -107,7 +109,6 @@ INSTALLED_APPS = [
     "edc_locator.apps.AppConfig",
     "edc_reference.apps.AppConfig",
     "edc_metadata.apps.AppConfig",
-    "edc_metadata_rules.apps.AppConfig",
     "edc_model.apps.AppConfig",
     "edc_model_admin.apps.AppConfig",
     "edc_navbar.apps.AppConfig",
@@ -287,6 +288,8 @@ DATETIME_FORMAT = "j N Y H:i"
 SHORT_DATE_FORMAT = "d/m/Y"
 SHORT_DATETIME_FORMAT = "d/m/Y H:i"
 
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 # edc-action-item
 ENFORCE_RELATED_ACTION_ITEM_EXISTS = False
 
@@ -319,13 +322,17 @@ LABEL_TEMPLATE_FOLDER = env.str("DJANGO_LABEL_TEMPLATE_FOLDER") or os.path.join(
 )
 CUPS_SERVERS = env.dict("DJANGO_CUPS_SERVERS")
 
-SUBJECT_SCREENING_MODEL = env.str("EDC_SUBJECT_SCREENING_MODEL")
+# cuttoff date for HE rev 1
+INTE_SUBJECT_HE_REVISION_DATE = datetime(2021, 4, 25, 23, 59, 0, tzinfo=UTC)
+
+LIST_MODEL_APP_LABEL = env.str("EDC_LIST_MODEL_APP_LABEL")
+SUBJECT_APP_LABEL = env.str("EDC_SUBJECT_APP_LABEL")
 SUBJECT_CONSENT_MODEL = env.str("EDC_SUBJECT_CONSENT_MODEL")
 SUBJECT_REQUISITION_MODEL = env.str("EDC_SUBJECT_REQUISITION_MODEL")
-SUBJECT_VISIT_MODEL = env.str("EDC_SUBJECT_VISIT_MODEL")
+SUBJECT_SCREENING_MODEL = env.str("EDC_SUBJECT_SCREENING_MODEL")
 SUBJECT_VISIT_MISSED_MODEL = env.str("EDC_SUBJECT_VISIT_MISSED_MODEL")
 SUBJECT_VISIT_MISSED_REASONS_MODEL = env.str("EDC_SUBJECT_VISIT_MISSED_REASONS_MODEL")
-LIST_MODEL_APP_LABEL = env.str("EDC_LIST_MODEL_APP_LABEL")
+SUBJECT_VISIT_MODEL = env.str("EDC_SUBJECT_VISIT_MODEL")
 
 EDC_NAVBAR_DEFAULT = env("EDC_NAVBAR_DEFAULT")
 
@@ -415,11 +422,15 @@ EDC_RANDOMIZATION_SKIP_VERIFY_CHECKS = True
 # edc_visit_tracking
 EDC_VISIT_TRACKING_ALLOW_MISSED_UNSCHEDULED = True
 
+# respond
+RESPOND_DIAGNOSIS_LABELS = env.dict("RESPOND_DIAGNOSIS_LABELS")
+
 # django-simple-history
 SIMPLE_HISTORY_REVERT_ENABLED = False
 
 # django-multisite
 CACHE_MULTISITE_KEY_PREFIX = APP_NAME
+SILENCED_SYSTEM_CHECKS = ["sites.E101"]
 
 # django-defender
 # see if env.str("DJANGO_CACHE") == "redis" above

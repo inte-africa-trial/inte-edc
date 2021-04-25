@@ -1,7 +1,8 @@
-import pdb
+from datetime import datetime
 
-from django import forms
-from django.test import TestCase, override_settings, tag  # noqa
+from dateutil.relativedelta import relativedelta
+from django.conf import settings
+from django.test import TestCase, override_settings
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import (
     COMPLETE,
@@ -13,7 +14,9 @@ from edc_constants.constants import (
 )
 from edc_metadata import REQUIRED
 from edc_metadata.models import CrfMetadata
+from edc_visit_schedule.constants import MONTH6
 from model_bakery import baker
+from pytz import UTC
 
 from inte_lists.models import DrugPaySources
 from inte_prn.models import IntegratedCareClinicRegistration
@@ -25,7 +28,132 @@ from inte_subject.forms import (
 from ..inte_test_case_mixin import InteTestCaseMixin
 
 
-class TestHealthEconomics(InteTestCaseMixin, TestCase):
+@override_settings(INTE_SUBJECT_HE_REVISION_DATE=datetime(2021, 4, 26, 0, 0, tzinfo=UTC))
+class TestHealthEconomicsRevisionRequired(InteTestCaseMixin, TestCase):
+    def setUp(self):
+        super().setUp()
+        now = settings.INTE_SUBJECT_HE_REVISION_DATE - relativedelta(months=6)
+        self.subject_screening = self.get_subject_screening(
+            report_datetime=now,
+            eligibility_datetime=settings.INTE_SUBJECT_HE_REVISION_DATE
+            - relativedelta(months=6),
+        )
+        self.subject_consent = self.get_subject_consent(
+            self.subject_screening,
+            consent_datetime=now,
+        )
+        self.subject_visit = self.get_subject_visit(
+            subject_screening=self.subject_screening,
+            subject_consent=self.subject_consent,
+            appt_datetime=now,
+        )
+        baker.make(
+            "inte_subject.clinicalreviewbaseline",
+            subject_visit=self.subject_visit,
+            hiv_dx=YES,
+        )
+        baker.make(
+            "hivinitialreview",
+            subject_visit=self.subject_visit,
+        )
+
+    @staticmethod
+    def get_crf_metadata(subject_visit):
+        return CrfMetadata.objects.filter(
+            subject_identifier=subject_visit.subject_identifier,
+            visit_code=subject_visit.visit_code,
+            visit_code_sequence=subject_visit.visit_code_sequence,
+            entry_status=REQUIRED,
+        )
+
+    def test_he_revision_one_required_at_6m_by_date(self):
+        self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
+        self.subject_visit.appointment.save()
+        self.subject_visit.appointment.refresh_from_db()
+
+        subject_visit = self.get_subject_visit(
+            subject_screening=self.subject_screening,
+            subject_consent=self.subject_consent,
+            visit_code=MONTH6,
+            appt_datetime=settings.INTE_SUBJECT_HE_REVISION_DATE - relativedelta(days=10),
+        )
+
+        crfs = self.get_crf_metadata(subject_visit)
+
+        self.assertIn("inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()])
+        self.assertNotIn(
+            "inte_subject.healtheconomicsrevisedtwo", [o.model for o in crfs.all()]
+        )
+
+    def test_he_revision_two_required_at_6m_by_date(self):
+        self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
+        self.subject_visit.appointment.save()
+        self.subject_visit.appointment.refresh_from_db()
+
+        subject_visit = self.get_subject_visit(
+            subject_screening=self.subject_screening,
+            subject_consent=self.subject_consent,
+            visit_code=MONTH6,
+            appt_datetime=settings.INTE_SUBJECT_HE_REVISION_DATE + relativedelta(days=10),
+        )
+
+        crfs = self.get_crf_metadata(subject_visit)
+
+        self.assertNotIn("inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()])
+        self.assertIn("inte_subject.healtheconomicsrevisedtwo", [o.model for o in crfs.all()])
+
+    def test_not_required_6m_visit_if_rev_one_completed_previously(self):
+        self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
+        self.subject_visit.appointment.save()
+        self.subject_visit.appointment.refresh_from_db()
+
+        subject_visit = self.get_subject_visit(
+            subject_screening=self.subject_screening,
+            subject_consent=self.subject_consent,
+            visit_code=MONTH6,
+            appt_datetime=settings.INTE_SUBJECT_HE_REVISION_DATE - relativedelta(days=10),
+        )
+
+        baker.make(
+            "inte_subject.healtheconomicsrevised",
+            subject_visit=subject_visit,
+            report_datetime=subject_visit.report_datetime,
+        )
+
+        crfs = self.get_crf_metadata(subject_visit)
+
+        self.assertNotIn("inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()])
+        self.assertNotIn(
+            "inte_subject.healtheconomicsrevisedtwo", [o.model for o in crfs.all()]
+        )
+
+    def test_not_required_6m_visit_if_rev_two_completed_previously(self):
+        self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
+        self.subject_visit.appointment.save()
+        self.subject_visit.appointment.refresh_from_db()
+
+        subject_visit = self.get_subject_visit(
+            subject_screening=self.subject_screening,
+            subject_consent=self.subject_consent,
+            visit_code=MONTH6,
+            appt_datetime=settings.INTE_SUBJECT_HE_REVISION_DATE + relativedelta(days=10),
+        )
+
+        baker.make(
+            "inte_subject.healtheconomicsrevised",
+            subject_visit=subject_visit,
+            report_datetime=subject_visit.report_datetime,
+        )
+
+        crfs = self.get_crf_metadata(subject_visit)
+
+        self.assertNotIn("inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()])
+        self.assertNotIn(
+            "inte_subject.healtheconomicsrevisedtwo", [o.model for o in crfs.all()]
+        )
+
+
+class TestHealthEconomicsRevisedFormValidator(InteTestCaseMixin, TestCase):
 
     sid_count_for_tests = 1
     form_validator_default_form_cls = HealthEconomicsRevisedFormValidator
@@ -48,7 +176,6 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             subject_visit=self.subject_visit,
         )
 
-    @tag("he")
     @override_settings(SITE_ID=103)
     def test_form_validator_requires_icc_registration_for_intervention(self):
         cleaned_data = {
@@ -64,7 +191,6 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             ";".join(form._errors.get("__all__")),
         )
 
-    @tag("he")
     @override_settings(SITE_ID=101)
     def test_form_validator_does_not_require_icc_registration_for_control(self):
         cleaned_data = {
@@ -79,7 +205,6 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             ";".join(form._errors.get("__all__") or []),
         )
 
-    @tag("he")
     def test_form_validator_education(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -112,7 +237,6 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         form_validator = self.validate_form_validator(cleaned_data)
         self.assertIn("education_in_years", form_validator._errors)
 
-    @tag("he")
     def test_form_validator_income(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -126,7 +250,6 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         form_validator = self.validate_form_validator(cleaned_data)
         self.assertIn("highest_earner", form_validator._errors)
 
-    @tag("he")
     @override_settings(SITE_ID=103)
     def test_form_validator_expenditure(self):
         baker.make("inte_prn.integratedcareclinicregistration")
@@ -144,7 +267,6 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         form_validator = self.validate_form_validator(cleaned_data)
         self.assertDictEqual({}, form_validator._errors)
 
-    @tag("he")
     def test_form_validator_requires_dx(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -171,7 +293,6 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         self.assertNotIn("rx_dm_month", form_validator._errors)
         self.assertDictEqual({}, form_validator._errors)
 
-    @tag("he")
     def test_form_validator_recv_drugs_month(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -233,7 +354,6 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         form_validator = self.validate_form_validator(cleaned_data)
         self.assertIn("rx_hiv_paid_month_other", form_validator._errors)
 
-    @tag("he")
     def test_form_validator_recv_drugs_all_no(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -257,7 +377,6 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         self.assertNotIn("rx_htn_today", form_validator._errors)
         self.assertNotIn("rx_hiv_today", form_validator._errors)
 
-    @tag("he")
     def test_form_validator_recv_drugs_yes_hiv_applicable(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -281,7 +400,6 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         self.assertNotIn("rx_dm_today", form_validator._errors)
         self.assertNotIn("rx_htn_today", form_validator._errors)
 
-    @tag("he")
     def test_form_validator_recv_drugs_yes_dm_yes(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -305,7 +423,6 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         self.assertNotIn("rx_htn_today", form_validator._errors)
         self.assertNotIn("rx_hiv_today", form_validator._errors)
 
-    @tag("he")
     def test_form_validator_recv_drugs_yes_other_na_raises(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -330,7 +447,6 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         self.assertNotIn("rx_hiv_today", form_validator._errors)
         self.assertNotIn("rx_dm_today", form_validator._errors)
 
-    @tag("he")
     def test_form_validator_recv_drugs_yes_other_no(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -355,7 +471,6 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         self.assertNotIn("rx_hiv_today", form_validator._errors)
         self.assertNotIn("rx_dm_today", form_validator._errors)
 
-    @tag("he")
     def test_form_validator_non_drug_activities(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -409,7 +524,6 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
         form_validator = self.validate_form_validator(cleaned_data)
         self.assertDictEqual({}, form_validator._errors)
 
-    @tag("he")
     def test_not_required_at_baseline(self):
         crfs = CrfMetadata.objects.filter(
             subject_identifier=self.subject_visit.subject_identifier,
@@ -417,7 +531,11 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             visit_code_sequence=self.subject_visit.visit_code_sequence,
             entry_status=REQUIRED,
         )
+        self.assertNotIn("inte_subject.healtheconomics", [o.model for o in crfs.all()])
         self.assertNotIn("inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()])
+        self.assertNotIn(
+            "inte_subject.healtheconomicsrevisedtwo", [o.model for o in crfs.all()]
+        )
         self.subject_visit.save()
         crfs = CrfMetadata.objects.filter(
             subject_identifier=self.subject_visit.subject_identifier,
@@ -425,51 +543,12 @@ class TestHealthEconomics(InteTestCaseMixin, TestCase):
             visit_code_sequence=self.subject_visit.visit_code_sequence,
             entry_status=REQUIRED,
         )
+        self.assertNotIn("inte_subject.healtheconomics", [o.model for o in crfs.all()])
         self.assertNotIn("inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()])
-
-    @tag("he")
-    def test_required_at_6m(self):
-        self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
-        self.subject_visit.appointment.save()
-        self.subject_visit.appointment.refresh_from_db()
-
-        subject_visit = self.get_subject_visit(
-            subject_screening=self.subject_screening,
-            subject_consent=self.subject_consent,
-            visit_code="1060",
+        self.assertNotIn(
+            "inte_subject.healtheconomicsrevisedtwo", [o.model for o in crfs.all()]
         )
 
-        crfs = CrfMetadata.objects.filter(
-            subject_identifier=subject_visit.subject_identifier,
-            visit_code=subject_visit.visit_code,
-            visit_code_sequence=subject_visit.visit_code_sequence,
-            entry_status=REQUIRED,
-        )
-        self.assertIn("inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()])
-
-    @tag("he1")
-    def test_not_required_6m_visit_if_completed_previously(self):
-        self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
-        self.subject_visit.appointment.save()
-        self.subject_visit.appointment.refresh_from_db()
-
-        subject_visit = self.get_subject_visit(
-            subject_screening=self.subject_screening,
-            subject_consent=self.subject_consent,
-            visit_code="1060",
-        )
-
-        baker.make("inte_subject.healtheconomicsrevised", subject_visit=subject_visit)
-
-        crfs = CrfMetadata.objects.filter(
-            subject_identifier=subject_visit.subject_identifier,
-            visit_code=subject_visit.visit_code,
-            visit_code_sequence=subject_visit.visit_code_sequence,
-            entry_status=REQUIRED,
-        )
-        self.assertNotIn("inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()])
-
-    @tag("he")
     def test_rx_against_diagnosis(self):
 
         cleaned_data = {

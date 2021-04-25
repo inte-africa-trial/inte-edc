@@ -1,4 +1,5 @@
-from django.test import TestCase, tag
+from dateutil.relativedelta import relativedelta
+from django.test import TestCase
 from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, YES
 from edc_utils import get_utcnow
 from pytz import timezone
@@ -21,55 +22,66 @@ def get_now():
 class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
+        self.baseline_datetime = get_utcnow() - relativedelta(months=1)
         # hiv clinic
         self.subject_screening_hiv = self.get_subject_screening(
-            report_datetime=get_utcnow(), clinic_type=HIV_CLINIC
+            report_datetime=self.baseline_datetime, clinic_type=HIV_CLINIC
         )
         self.subject_consent_hiv = self.get_subject_consent(
-            subject_screening=self.subject_screening_hiv, clinic_type=HIV_CLINIC
+            subject_screening=self.subject_screening_hiv,
+            clinic_type=HIV_CLINIC,
+            consent_datetime=self.baseline_datetime,
         )
         self.subject_visit_hiv = self.get_subject_visit(
             subject_screening=self.subject_screening_hiv,
             subject_consent=self.subject_consent_hiv,
+            report_datetime=self.baseline_datetime,
         )
 
         # htn clinic
         self.subject_screening_htn = self.get_subject_screening(
-            report_datetime=get_utcnow(), clinic_type=HYPERTENSION_CLINIC
+            report_datetime=self.baseline_datetime,
+            clinic_type=HYPERTENSION_CLINIC,
         )
         self.subject_consent_htn = self.get_subject_consent(
             subject_screening=self.subject_screening_htn,
             clinic_type=HYPERTENSION_CLINIC,
+            report_datetime=self.baseline_datetime,
         )
         self.subject_visit_htn = self.get_subject_visit(
             subject_screening=self.subject_screening_htn,
             subject_consent=self.subject_consent_htn,
+            report_datetime=self.baseline_datetime,
         )
 
         # diabetes clinic
         self.subject_screening_dm = self.get_subject_screening(
-            report_datetime=get_utcnow(), clinic_type=DIABETES_CLINIC
+            report_datetime=self.baseline_datetime, clinic_type=DIABETES_CLINIC
         )
         self.subject_consent_dm = self.get_subject_consent(
             subject_screening=self.subject_screening_dm,
             clinic_type=DIABETES_CLINIC,
+            report_datetime=self.baseline_datetime,
         )
         self.subject_visit_dm = self.get_subject_visit(
             subject_screening=self.subject_screening_dm,
             subject_consent=self.subject_consent_dm,
+            report_datetime=self.baseline_datetime,
         )
 
         # NCD clinic
         self.subject_screening_ncd = self.get_subject_screening(
-            report_datetime=get_utcnow(), clinic_type=NCD_CLINIC
+            report_datetime=self.baseline_datetime, clinic_type=NCD_CLINIC
         )
         self.subject_consent_ncd = self.get_subject_consent(
             subject_screening=self.subject_screening_ncd,
             clinic_type=NCD_CLINIC,
+            report_datetime=self.baseline_datetime,
         )
         self.subject_visit_ncd = self.get_subject_visit(
             subject_screening=self.subject_screening_ncd,
             subject_consent=self.subject_consent_ncd,
+            report_datetime=self.baseline_datetime,
         )
 
     def test_form_ok_hiv(self):

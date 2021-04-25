@@ -18,6 +18,10 @@ from .health_economics_revised_form import (
     HealthEconomicsRevisedForm,
     HealthEconomicsRevisedFormValidator,
 )
+from .health_economics_revised_two_form import (
+    HealthEconomicsRevisedTwoForm,
+    HealthEconomicsRevisedTwoFormValidator,
+)
 from .hiv_initial_review_form import HivInitialReviewForm
 from .hiv_medication_adherence_form import HivMedicationAdherenceForm
 from .hiv_review_form import HivReviewForm
