@@ -4,8 +4,7 @@ from django.db import migrations
 from django.db.models.signals import pre_save
 from edc_constants.constants import NO, NOT_APPLICABLE, YES
 from edc_utils import DisableSignals
-
-from inte_subject.diagnoses import ClinicalReviewBaselineRequired, Diagnoses
+from respond_models.diagnoses import ClinicalReviewBaselineRequired, Diagnoses
 
 
 def update_medications(apps, schema_editor):
