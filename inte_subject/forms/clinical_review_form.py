@@ -1,5 +1,3 @@
-import pdb
-
 from django import forms
 from edc_constants.constants import NO, YES
 from edc_form_validators.form_validator import FormValidator
@@ -13,10 +11,11 @@ from .mixins import (
 
 
 class ClinicalReviewFormValidator(
-    DiagnosisFormValidatorMixin, CrfFormValidatorMixin, FormValidator
+    DiagnosisFormValidatorMixin,
+    CrfFormValidatorMixin,
+    FormValidator,
 ):
     def clean(self):
-        # self.requires_clinical_review_at_baseline()
         diagnoses = self.get_diagnoses()
 
         # htn
@@ -76,16 +75,6 @@ class ClinicalReviewFormValidator(
                     ),
                 }
             )
-
-    # def requires_clinical_review_at_baseline(self):
-    #     try:
-    #         ClinicalReviewBaseline.objects.get(
-    #             subject_visit__subject_identifier=self.subject_identifier
-    #         )
-    #     except ObjectDoesNotExist:
-    #         raise forms.ValidationError(
-    #             f"Please complete the {ClinicalReviewBaseline._meta.verbose_name} first."
-    #         )
 
 
 class ClinicalReviewForm(CrfModelFormMixin, forms.ModelForm):

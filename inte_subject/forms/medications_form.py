@@ -1,12 +1,12 @@
 from django import forms
 from django.conf import settings
-from edc_constants.constants import NO, NOT_APPLICABLE, YES
+from edc_constants.constants import DM, HIV, HTN, NOT_APPLICABLE
 from edc_form_validators.form_validator import FormValidator
 from edc_utils import convert_php_dateformat
+from respond_models.diagnoses import Diagnoses, InitialReviewRequired
 
 from inte_visit_schedule.is_baseline import is_baseline
 
-from ..diagnoses import Diagnoses, InitialReviewRequired
 from ..models import ClinicalReview, ClinicalReviewBaseline, Medications
 from .mixins import CrfFormValidatorMixin, CrfModelFormMixin, model_exists_or_raise
 
@@ -42,9 +42,9 @@ class MedicationsFormValidator(CrfFormValidatorMixin, FormValidator):
             raise forms.ValidationError(e)
 
         options = [
-            ("refill_htn", diagnoses.htn_dx, diagnoses.htn_dx_date, "hypertension"),
-            ("refill_dm", diagnoses.dm_dx, diagnoses.dm_dx_date, "diabetes"),
-            ("refill_hiv", diagnoses.hiv_dx, diagnoses.hiv_dx_date, "HIV"),
+            ("refill_htn", diagnoses.get_dx(HTN), diagnoses.get_dx_date(HTN), "hypertension"),
+            ("refill_dm", diagnoses.get_dx(DM), diagnoses.get_dx_date(DM), "diabetes"),
+            ("refill_hiv", diagnoses.get_dx(HIV), diagnoses.get_dx_date(HIV), "HIV"),
         ]
         for fld, dx, dx_date, label in options:
             if self.cleaned_data.get(fld) == NOT_APPLICABLE and dx:

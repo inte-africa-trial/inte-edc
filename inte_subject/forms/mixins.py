@@ -8,6 +8,11 @@ from edc_crf.modelform_mixins import CrfModelFormMixin as BaseCrfModelFormMixin
 from edc_model import models as edc_models
 from edc_model.models import InvalidFormat
 from edc_utils import age, convert_php_dateformat
+from respond_models.diagnoses import (
+    Diagnoses,
+    InitialReviewRequired,
+    MultipleInitialReviewsExist,
+)
 
 from inte_lists.models import DrugPaySources
 from inte_prn.icc_registered import (
@@ -18,7 +23,6 @@ from inte_prn.models import IntegratedCareClinicRegistration
 from inte_sites.is_intervention_site import NotInterventionSite, is_intervention_site
 from inte_visit_schedule.is_baseline import is_baseline
 
-from ..diagnoses import Diagnoses, InitialReviewRequired, MultipleInitialReviewsExist
 from ..models import (
     ClinicalReview,
     ClinicalReviewBaseline,
