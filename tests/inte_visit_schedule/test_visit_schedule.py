@@ -1,3 +1,4 @@
+from dateutil.relativedelta import relativedelta
 from django.test import TestCase, tag
 from edc_utils import get_utcnow
 from edc_visit_schedule.constants import DAY1
@@ -11,11 +12,14 @@ from ..inte_test_case_mixin import InteTestCaseMixin
 class TestVisitSchedule(InteTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
+        self.baseline_datetime = get_utcnow() - relativedelta(months=1)
         self.subject_screening = self.get_subject_screening(
-            report_datetime=get_utcnow(), clinic_type=HIV_CLINIC
+            report_datetime=self.baseline_datetime, clinic_type=HIV_CLINIC
         )
         self.subject_consent = self.get_subject_consent(
-            subject_screening=self.subject_screening, clinic_type=HIV_CLINIC
+            subject_screening=self.subject_screening,
+            clinic_type=HIV_CLINIC,
+            report_datetime=self.baseline_datetime,
         )
 
     @tag("vs")
@@ -36,6 +40,7 @@ class TestVisitSchedule(InteTestCaseMixin, TestCase):
             subject_consent=self.subject_consent,
             visit_code=DAY1,
             reason=SCHEDULED,
+            report_datetime=self.baseline_datetime,
         )
 
         subject_visit = self.get_next_subject_visit(
@@ -61,11 +66,13 @@ class TestVisitSchedule(InteTestCaseMixin, TestCase):
             subject_consent=self.subject_consent,
             visit_code=DAY1,
             reason=SCHEDULED,
+            report_datetime=self.baseline_datetime,
         )
 
         subject_visit = self.get_next_subject_visit(
             subject_visit=subject_visit,
             reason=UNSCHEDULED,
+            report_datetime=self.baseline_datetime + relativedelta(days=5),
         )
         self.assertEqual("1000", subject_visit.appointment.visit_code)
         self.assertEqual(1, subject_visit.appointment.visit_code_sequence)
@@ -73,6 +80,7 @@ class TestVisitSchedule(InteTestCaseMixin, TestCase):
         subject_visit = self.get_next_subject_visit(
             subject_visit=subject_visit,
             reason=UNSCHEDULED,
+            report_datetime=self.baseline_datetime + relativedelta(days=10),
         )
 
         self.assertEqual("1000", subject_visit.appointment.visit_code)
@@ -81,6 +89,7 @@ class TestVisitSchedule(InteTestCaseMixin, TestCase):
         subject_visit = self.get_next_subject_visit(
             subject_visit=subject_visit,
             reason=SCHEDULED,
+            report_datetime=self.baseline_datetime + relativedelta(days=28),
         )
 
         self.assertEqual("1060", subject_visit.appointment.visit_code)

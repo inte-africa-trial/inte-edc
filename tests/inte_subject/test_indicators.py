@@ -1,5 +1,5 @@
 from django import forms
-from django.test import TestCase, tag
+from django.test import TestCase
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import INCOMPLETE
 from edc_utils import get_utcnow

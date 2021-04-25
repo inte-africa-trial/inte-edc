@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
+from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 from edc_appointment.tests.appointment_test_case_mixin import AppointmentTestCaseMixin
 from edc_constants.constants import MALE, NO, NOT_APPLICABLE, RANDOM_SAMPLING, YES
@@ -95,20 +96,22 @@ class InteTestCaseMixin(
 
         return subject_screening
 
-    def get_subject_consent(
-        self, subject_screening, consent_datetime=None, site_name=None, **kwargs
-    ):
-        # site = [s for s in get_sites_by_country() if s.site_id == settings.SITE_ID][0]
-        # site_name = site_name or site.name
+    @staticmethod
+    def get_subject_consent(subject_screening, consent_datetime=None, **kwargs):
+        dob = (consent_datetime or get_utcnow()).date() - relativedelta(
+            years=subject_screening.age_in_years
+        )
+        consent_datetime = consent_datetime or subject_screening.report_datetime
+
         options = dict(
             user_created="erikvw",
             user_modified="erikvw",
             screening_identifier=subject_screening.screening_identifier,
             initials=subject_screening.initials,
-            dob=get_utcnow().date() - relativedelta(years=subject_screening.age_in_years),
+            dob=dob,
             site=Site.objects.get(id=settings.SITE_ID),
             clinic_type=HIV_CLINIC,
-            consent_datetime=consent_datetime or get_utcnow(),
+            consent_datetime=consent_datetime,
         )
         options.update(**kwargs)
         return baker.make_recipe("inte_consent.subjectconsent", **options)
@@ -122,29 +125,38 @@ class InteTestCaseMixin(
         reason=None,
         appointment=None,
         appt_datetime=None,
+        report_datetime=None,
     ):
         reason = reason or SCHEDULED
         if not appointment:
             subject_screening = subject_screening or self.get_subject_screening()
             subject_consent = subject_consent or self.get_subject_consent(subject_screening)
-            appointment = self.get_appointment(
+            options = dict(
                 subject_identifier=subject_consent.subject_identifier,
                 visit_code=visit_code or DAY1,
                 visit_code_sequence=(
                     visit_code_sequence if visit_code_sequence is not None else 0
                 ),
                 reason=reason,
-                appt_datetime=appt_datetime,
             )
-        return self.subject_visit_model_cls.objects.create(
-            appointment=appointment, reason=reason
-        )
+            if appt_datetime:
+                options.update(appt_datetime=appt_datetime)
+            appointment = self.get_appointment(**options)
+        try:
+            return self.subject_visit_model_cls.objects.get(appointment=appointment)
+        except ObjectDoesNotExist:
+            return self.subject_visit_model_cls.objects.create(
+                appointment=appointment,
+                reason=reason,
+                report_datetime=report_datetime or appt_datetime or appointment.appt_datetime,
+            )
 
     def get_next_subject_visit(
         self,
         subject_visit=None,
         reason=None,
         appt_datetime=None,
+        report_datetime=None,
     ):
         visit_code = (
             subject_visit.appointment.visit_code
@@ -166,4 +178,5 @@ class InteTestCaseMixin(
             subject_consent=SubjectConsent.objects.get(
                 subject_identifier=subject_visit.subject_identifier
             ),
+            report_datetime=report_datetime,
         )

@@ -27,7 +27,8 @@ class TestDeathReport(InteTestCaseMixin, TestCase):
             report_datetime=get_utcnow(), clinic_type=HIV_CLINIC
         )
         self.subject_consent = self.get_subject_consent(
-            subject_screening=self.subject_screening, clinic_type=HIV_CLINIC
+            subject_screening=self.subject_screening,
+            clinic_type=HIV_CLINIC,
         )
         self.subject_visit = self.get_subject_visit(
             subject_screening=self.subject_screening,

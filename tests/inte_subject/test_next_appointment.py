@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 from django.forms import ValidationError
-from django.test import TestCase, override_settings, tag
+from django.test import TestCase, override_settings
 from edc_constants.constants import INCOMPLETE, YES
 from edc_utils import get_utcnow
 from model_bakery import baker
@@ -18,21 +18,26 @@ class TestNextAppointment(InteTestCaseMixin, TestCase):
         self.subject_screening = None
         self.subject_consent = None
         self.subject_visit = None
+        self.baseline_datetime = get_utcnow() - relativedelta(months=1)
 
     def prepare(self):
         self.subject_screening = self.get_subject_screening(
-            report_datetime=get_utcnow(), clinic_type=HIV_CLINIC
+            report_datetime=self.baseline_datetime, clinic_type=HIV_CLINIC
         )
         self.subject_consent = self.get_subject_consent(
-            subject_screening=self.subject_screening, clinic_type=HIV_CLINIC
+            subject_screening=self.subject_screening,
+            clinic_type=HIV_CLINIC,
+            report_datetime=self.baseline_datetime,
         )
         self.subject_visit = self.get_subject_visit(
             subject_screening=self.subject_screening,
             subject_consent=self.subject_consent,
+            report_datetime=self.baseline_datetime,
         )
         baker.make(
             "inte_subject.clinicalreviewbaseline",
             subject_visit=self.subject_visit,
+            report_datetime=self.baseline_datetime,
             hiv_test=YES,
             hiv_dx=YES,
             hiv_test_ago="5y",
@@ -40,11 +45,11 @@ class TestNextAppointment(InteTestCaseMixin, TestCase):
         baker.make(
             "inte_subject.hivinitialreview",
             subject_visit=self.subject_visit,
+            report_datetime=self.baseline_datetime,
             dx_date=get_utcnow() - relativedelta(years=5),
             arv_initiation_ago="4y",
         )
 
-    @tag("appt")
     def test_next_appointment_vertical(self):
         self.prepare()
         data = {
@@ -56,13 +61,12 @@ class TestNextAppointment(InteTestCaseMixin, TestCase):
         form.is_valid()
         self.assertIn("hiv_clinic_appt_date", form._errors)
 
-    @tag("appt")
     @override_settings(SITE_ID=103)
     def test_next_appointment_integrated_raises(self):
         self.prepare()
         IntegratedCareClinicRegistration.objects.create(
-            report_datetime=self.subject_visit.appointment.created,
-            date_opened=self.subject_visit.appointment.appt_datetime,
+            report_datetime=get_utcnow(),
+            date_opened=get_utcnow(),
         )
         cleaned_data = {
             "subject_visit": self.subject_visit,
@@ -84,13 +88,12 @@ class TestNextAppointment(InteTestCaseMixin, TestCase):
         else:
             self.fail("ValidationError unexpectedly NOT raised.")
 
-    @tag("appt")
     @override_settings(SITE_ID=103)
     def test_next_appointment_integrated_does_not_raise(self):
         self.prepare()
         IntegratedCareClinicRegistration.objects.create(
-            report_datetime=self.subject_visit.appointment.created,
-            date_opened=self.subject_visit.appointment.appt_datetime,
+            report_datetime=self.baseline_datetime,
+            date_opened=self.baseline_datetime,
         )
         cleaned_data = {
             "subject_visit": self.subject_visit,
