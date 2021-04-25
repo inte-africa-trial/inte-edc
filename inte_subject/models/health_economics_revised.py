@@ -10,7 +10,7 @@ from ..choices import ACTIVITY_CHOICES, CHILDCARE_CHOICES
 from ..model_mixins import CrfModelMixin
 
 
-class HealthEconomicsRevisionOne(CrfModelMixin, edc_models.BaseUuidModel):
+class HealthEconomicsRevised(CrfModelMixin, edc_models.BaseUuidModel):
 
     """Second iteration of HE form.
 
@@ -88,7 +88,7 @@ class HealthEconomicsRevisionOne(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     is_highest_earner = models.CharField(
-        verbose_name=("Are you the person who earns the highest income in your household?"),
+        verbose_name="Are you the person who earns the highest income in your household?",
         max_length=15,
         choices=YES_NO,
         null=True,
@@ -97,7 +97,7 @@ class HealthEconomicsRevisionOne(CrfModelMixin, edc_models.BaseUuidModel):
 
     highest_earner = models.CharField(
         verbose_name=(
-            "If NO, what is the profession of the person " "who earns the highest income?"
+            "If NO, what is the profession of the person who earns the highest income?"
         ),
         max_length=50,
         null=True,
@@ -142,7 +142,7 @@ class HealthEconomicsRevisionOne(CrfModelMixin, edc_models.BaseUuidModel):
 
     rx_dm_month = models.CharField(
         verbose_name=(
-            "Did you receive drugs for raised blood sugar " "(diabetes) over the last month?"
+            "Did you receive drugs for raised blood sugar (diabetes) over the last month?"
         ),
         max_length=15,
         choices=YES_NO_NA,
@@ -387,9 +387,8 @@ class HealthEconomicsRevisionOne(CrfModelMixin, edc_models.BaseUuidModel):
     # Current visit: transport and food
     transport = models.ManyToManyField(
         TransportChoices,
-        verbose_name=("Which form of transport did you take to get to the hospital today?"),
+        verbose_name="Which form of transport did you take to get to the hospital today?",
         max_length=25,
-        null=True,
         blank=False,
     )
 
@@ -433,7 +432,7 @@ class HealthEconomicsRevisionOne(CrfModelMixin, edc_models.BaseUuidModel):
         DrugPaySources,
         related_name="+",
         verbose_name=(
-            "If YES, received raised blood sugar " "(diabetes) drugs, how were these paid for?"
+            "If YES, received raised blood sugar (diabetes) drugs, how were these paid for?"
         ),
         blank=True,
     )
@@ -621,5 +620,5 @@ class HealthEconomicsRevisionOne(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
-        verbose_name = "Health Economics (Revision 01)"
-        verbose_name_plural = "Health Economics (Revision 01)"
+        verbose_name = "Health Economics (Rev 1)"
+        verbose_name_plural = "Health Economics (Rev 1)"

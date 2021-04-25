@@ -1,10 +1,12 @@
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
 
 import environ
 from edc_appointment.constants import SCHEDULED_APPT, UNSCHEDULED_APPT
 from edc_utils import get_datetime_from_env
+from pytz import UTC
 
 
 class DisableMigrations:
@@ -319,6 +321,9 @@ LABEL_TEMPLATE_FOLDER = env.str("DJANGO_LABEL_TEMPLATE_FOLDER") or os.path.join(
     BASE_DIR, "label_templates", "2.25x1.25in"
 )
 CUPS_SERVERS = env.dict("DJANGO_CUPS_SERVERS")
+
+# cuttoff date for HE rev 1
+INTE_SUBJECT_HE_REVISION_DATE = datetime(2021, 4, 25, 23, 59, 0, tzinfo=UTC)
 
 LIST_MODEL_APP_LABEL = env.str("EDC_LIST_MODEL_APP_LABEL")
 SUBJECT_APP_LABEL = env.str("EDC_SUBJECT_APP_LABEL")

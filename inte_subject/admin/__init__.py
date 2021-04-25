@@ -12,8 +12,8 @@ from .drug_refill_hiv_admin import DrugRefillHivAdmin
 from .drug_refill_htn_admin import DrugRefillHtnAdmin
 from .family_history_admin import FamilyHistoryAdmin
 from .glucose_admin import GlucoseAdmin
-from .health_economics_revision_one_admin import HealthEconomicsRevisionOneAdmin
-from .health_economics_revision_two_admin import HealthEconomicsRevisionTwoAdmin
+from .health_economics_revised_admin import HealthEconomicsRevisedAdmin
+from .health_economics_revised_two_admin import HealthEconomicsRevisedTwoAdmin
 from .hiv_initial_review_admin import HivInitialReviewAdmin
 from .hiv_medication_adherence_admin import HivMedicationAdherenceAdmin
 from .hiv_review_admin import HivReviewAdmin

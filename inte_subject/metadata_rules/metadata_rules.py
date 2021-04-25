@@ -96,11 +96,18 @@ class ClinicalReviewRuleGroup(CrfRuleGroup):
 @register()
 class HealthEconomicsRuleGroup(CrfRuleGroup):
 
-    econ = CrfRule(
-        predicate=pc.health_economics_required,
+    he_rev1 = CrfRule(
+        predicate=pc.health_economics_rev_one_required,
         consequence=REQUIRED,
         alternative=NOT_REQUIRED,
-        target_models=["healtheconomicsrevisiontwo"],
+        target_models=["healtheconomicsrevised"],
+    )
+
+    he_rev2 = CrfRule(
+        predicate=pc.health_economics_rev_two_required,
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["healtheconomicsrevisedtwo"],
     )
 
     class Meta:

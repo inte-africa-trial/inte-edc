@@ -5,17 +5,17 @@ from edc_form_label import FormLabelModelAdminMixin
 from edc_model_admin import SimpleHistoryAdmin
 
 from ..admin_site import inte_subject_admin
-from ..forms import HealthEconomicsRevisionTwoForm
-from ..models import HealthEconomicsRevisionTwo
+from ..forms import HealthEconomicsRevisedForm
+from ..models import HealthEconomicsRevised
 from .modeladmin_mixins import CrfModelAdminMixin
 
 
-@admin.register(HealthEconomicsRevisionTwo, site=inte_subject_admin)
-class HealthEconomicsRevisionTwoAdmin(
+@admin.register(HealthEconomicsRevised, site=inte_subject_admin)
+class HealthEconomicsRevisedAdmin(
     CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
 ):
 
-    form = HealthEconomicsRevisionTwoForm
+    form = HealthEconomicsRevisedForm
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
@@ -36,14 +36,32 @@ class HealthEconomicsRevisionTwoAdmin(
         ),
         (
             "Part 2: Income",
-            {"fields": ("welfare",)},
+            {
+                "fields": (
+                    "welfare",
+                    "income_per_month",
+                    "household_income_per_month",
+                    "is_highest_earner",
+                    "highest_earner",
+                )
+            },
         ),
         (
-            "Part 3: Previous Healthcare Expenses: Medication",
+            "Part 3: General Expenses",
+            {
+                "fields": (
+                    "food_per_month",
+                    "accomodation_per_month",
+                    "large_expenditure_year",
+                )
+            },
+        ),
+        (
+            "Part 4: Previous Healthcare Expenses: Medication",
             {"fields": ("received_rx_month",)},
         ),
         (
-            "Part 3a: Previous Healthcare Expenses: Medication (Diabetes - DM)",
+            "Part 4a: Previous Healthcare Expenses: Medication (Diabetes - DM)",
             {
                 "fields": (
                     "rx_dm_month",
@@ -54,7 +72,7 @@ class HealthEconomicsRevisionTwoAdmin(
             },
         ),
         (
-            "Part 3b: Previous Healthcare Expenses: Medication (Hypertension - HTN)",
+            "Part 4b: Previous Healthcare Expenses: Medication (Hypertension - HTN)",
             {
                 "fields": (
                     "rx_htn_month",
@@ -65,7 +83,7 @@ class HealthEconomicsRevisionTwoAdmin(
             },
         ),
         (
-            "Part 3c: Previous Healthcare Expenses: Medication (HIV)",
+            "Part 4c: Previous Healthcare Expenses: Medication (HIV)",
             {
                 "fields": (
                     "rx_hiv_month",
@@ -76,7 +94,7 @@ class HealthEconomicsRevisionTwoAdmin(
             },
         ),
         (
-            "Part 3d: Previous Healthcare Expenses: Other Medications",
+            "Part 4d: Previous Healthcare Expenses: Other Medications",
             {
                 "fields": (
                     "rx_other_month",
@@ -87,11 +105,51 @@ class HealthEconomicsRevisionTwoAdmin(
             },
         ),
         (
-            "Part 4: Current Visit Healthcare Expenses: Medications",
+            "Part 5: Previous Healthcare Expenses: Non-medication",
+            {
+                "fields": (
+                    "non_drug_activities_month",
+                    "non_drug_activities_detail_month",
+                    "non_drug_activities_cost_month",
+                    "healthcare_expenditure_total_month",
+                )
+            },
+        ),
+        (
+            "Part 6: Family Loss of Productivity and Earnings",
+            {
+                "fields": (
+                    "missed_routine_activities",
+                    "missed_routine_activities_other",
+                    "off_work_days",
+                    "travel_time",
+                    "hospital_time",
+                    "lost_income",
+                    "lost_income_amount",
+                )
+            },
+        ),
+        (
+            "Part 7: Work, Childcare, Transport",
+            {
+                "fields": (
+                    "childcare",
+                    "childcare_source",
+                    "childcare_source_other",
+                    "childcare_source_timeoff",
+                    "transport",
+                    "transport_other",
+                    "transport_cost",
+                    "food_cost",
+                )
+            },
+        ),
+        (
+            "Part 8: Current Visit Healthcare Expenses: Medications",
             {"fields": ("received_rx_today",)},
         ),
         (
-            "Part 4a: Current Visit Healthcare Expenses: Medications (Diabetes - DM)",
+            "Part 8a: Current Visit Healthcare Expenses: Medications (Diabetes - DM)",
             {
                 "fields": (
                     "rx_dm_today",
@@ -102,7 +160,7 @@ class HealthEconomicsRevisionTwoAdmin(
             },
         ),
         (
-            "Part 4b: Current Visit Healthcare Expenses: Medications (Hypertension - HTN)",
+            "Part 8b: Current Visit Healthcare Expenses: Medications (Hypertension - HTN)",
             {
                 "fields": (
                     "rx_htn_today",
@@ -113,7 +171,7 @@ class HealthEconomicsRevisionTwoAdmin(
             },
         ),
         (
-            "Part 4c: Current Visit Healthcare Expenses: Medications (HIV)",
+            "Part 8c: Current Visit Healthcare Expenses: Medications (HIV)",
             {
                 "fields": (
                     "rx_hiv_today",
@@ -124,7 +182,7 @@ class HealthEconomicsRevisionTwoAdmin(
             },
         ),
         (
-            "Part 4d: Current Visit Healthcare Expenses: Other Medications",
+            "Part 8d: Current Visit Healthcare Expenses: Other Medications",
             {
                 "fields": (
                     "rx_other_today",
@@ -135,9 +193,22 @@ class HealthEconomicsRevisionTwoAdmin(
             },
         ),
         (
-            "Part 5: Health Care Financing",
+            "Part 9: Current Visit Healthcare Expenses: Non-medications",
             {
                 "fields": (
+                    "non_drug_activities_today",
+                    "non_drug_activities_detail_today",
+                    "non_drug_activities_cost_today",
+                    "healthcare_expenditure_total_month_today",
+                )
+            },
+        ),
+        (
+            "Part 10: Health Care Financing",
+            {
+                "fields": (
+                    "finance_by_sale",
+                    "finance_by_loan",
                     "health_insurance",
                     "health_insurance_cost",
                     "patient_club",
@@ -150,9 +221,18 @@ class HealthEconomicsRevisionTwoAdmin(
     )
 
     radio_fields = {
+        "childcare": admin.VERTICAL,
+        "childcare_source": admin.VERTICAL,
         "crf_status": admin.VERTICAL,
+        "finance_by_loan": admin.VERTICAL,
+        "finance_by_sale": admin.VERTICAL,
         "health_insurance": admin.VERTICAL,
         "higher_education": admin.VERTICAL,
+        "is_highest_earner": admin.VERTICAL,
+        "lost_income": admin.VERTICAL,
+        "missed_routine_activities": admin.VERTICAL,
+        "non_drug_activities_month": admin.VERTICAL,
+        "non_drug_activities_today": admin.VERTICAL,
         "patient_club": admin.VERTICAL,
         "primary_school": admin.VERTICAL,
         "received_rx_month": admin.VERTICAL,
@@ -174,6 +254,7 @@ class HealthEconomicsRevisionTwoAdmin(
         "rx_htn_paid_month",
         "rx_hiv_paid_month",
         "rx_other_paid_month",
+        "transport",
         "rx_dm_paid_today",
         "rx_htn_paid_today",
         "rx_hiv_paid_today",

@@ -62,12 +62,12 @@ subjectreconsent = Recipe(
     tracking_identifier=None,
 )
 
-healtheconomicsrevisionone = Recipe(
+healtheconomicsrevised = Recipe(
     HealthEconomicsRevisionOne,
     site=Site.objects.get_current(),
 )
 
-healtheconomicsrevisiontwo = Recipe(
+healtheconomicsrevisedtwo = Recipe(
     HealthEconomicsRevisionTwo,
     site=Site.objects.get_current(),
 )
