@@ -3,8 +3,24 @@ Changes
 
 Unreleased
 ----------
-- rename HE revised form to HE revision 01
-- add (shortened) HE revision 02 form and pin to 6M visit
+
+0.1.63
+----------
+- bump to edc 0.3.14
+- Testing environment
+    - add Django 3.2
+    - drop Django 3.0
+    - drop Python 3.7
+- Respond
+    - add requirement for respond-africa 0.1.8
+    - add respond diagnosis labels
+    - use death report model mixin from respond
+    - use Diagnosis class from respond
+- Health Economics Form
+    - add shortened 'HE (Rev 2)' proxy model, form and admin class
+    - 'HE (Rev 2)' form required at 6m visits on or after 2021-04-26
+    - 'HE (Rev 1)' form now only required for 6m visits before 2021-04-26
+    - 'HE (Rev 1)' form not required at baseline or 12m
 
 0.1.59
 ------
