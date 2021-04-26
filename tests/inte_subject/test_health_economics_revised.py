@@ -140,7 +140,7 @@ class TestHealthEconomicsRevisionRequired(InteTestCaseMixin, TestCase):
         )
 
         baker.make(
-            "inte_subject.healtheconomicsrevised",
+            "inte_subject.healtheconomicsrevisedtwo",
             subject_visit=subject_visit,
             report_datetime=subject_visit.report_datetime,
         )
