@@ -66,7 +66,7 @@ class TestHealthEconomicsRevisionRequired(InteTestCaseMixin, TestCase):
             entry_status=REQUIRED,
         )
 
-    def test_he_revision_one_required_at_6m_by_date(self):
+    def test_he_rev_one_required_at_6m_by_date(self):
         self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
         self.subject_visit.appointment.save()
         self.subject_visit.appointment.refresh_from_db()
@@ -85,7 +85,7 @@ class TestHealthEconomicsRevisionRequired(InteTestCaseMixin, TestCase):
             "inte_subject.healtheconomicsrevisedtwo", [o.model for o in crfs.all()]
         )
 
-    def test_he_revision_two_required_at_6m_by_date(self):
+    def test_he_rev_two_required_at_6m_by_date(self):
         self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
         self.subject_visit.appointment.save()
         self.subject_visit.appointment.refresh_from_db()
@@ -102,7 +102,7 @@ class TestHealthEconomicsRevisionRequired(InteTestCaseMixin, TestCase):
         self.assertNotIn("inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()])
         self.assertIn("inte_subject.healtheconomicsrevisedtwo", [o.model for o in crfs.all()])
 
-    def test_not_required_6m_visit_if_rev_one_completed_previously(self):
+    def test_not_required_6m_visit_if_he_rev_one_completed_previously(self):
         self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
         self.subject_visit.appointment.save()
         self.subject_visit.appointment.refresh_from_db()
@@ -127,7 +127,7 @@ class TestHealthEconomicsRevisionRequired(InteTestCaseMixin, TestCase):
             "inte_subject.healtheconomicsrevisedtwo", [o.model for o in crfs.all()]
         )
 
-    def test_not_required_6m_visit_if_rev_two_completed_previously(self):
+    def test_not_required_6m_visit_if_he_rev_two_completed_previously(self):
         self.subject_visit.appointment.appt_status = INCOMPLETE_APPT
         self.subject_visit.appointment.save()
         self.subject_visit.appointment.refresh_from_db()
