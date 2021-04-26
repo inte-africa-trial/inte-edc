@@ -34,8 +34,6 @@ class DrugRefillHtnAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHis
     )
 
     inlines = [DrugSupplyHtnInline]
-    add_form_template = "admin/custom_inline/change_form.html"
-    change_form_template = "admin/custom_inline/change_form.html"
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
