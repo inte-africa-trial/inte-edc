@@ -36,9 +36,6 @@ class DrugRefillDmAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHist
 
     inlines = [DrugSupplyDmInline]
 
-    add_form_template = "admin/custom_inline/change_form.html"
-    change_form_template = "admin/custom_inline/change_form.html"
-
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
         (
@@ -59,7 +56,6 @@ class DrugRefillDmAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHist
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
-
     filter_horizontal = ["rx", "modifications", "modifications_reason"]
 
     radio_fields = {

@@ -4,7 +4,11 @@ Changes
 Unreleased
 ----------
 
-0.1.63
+0.1.65
+------
+- bump to edc 0.3.15
+
+0.1.64
 ----------
 - bump to edc 0.3.14
 - Testing environment
