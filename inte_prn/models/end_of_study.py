@@ -1,3 +1,6 @@
+import abc
+
+from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from edc_action_item.models import ActionModelMixin
 from edc_constants.choices import YES_NO_NA
@@ -80,7 +83,7 @@ class EndOfStudy(
     )
 
     transferred_consent = models.CharField(
-        verbose_name=("If transferred, has the patient provided consent to be followed-up?"),
+        verbose_name="If transferred, has the patient provided consent to be followed-up?",
         choices=YES_NO_NA,
         max_length=15,
         default=NOT_APPLICABLE,
@@ -89,6 +92,13 @@ class EndOfStudy(
     comment = models.TextField(verbose_name="Comments", null=True, blank=True)
 
     on_site = CurrentSiteManager()
+
+    def save(self, *args, **kwargs):
+        if self.action_name == END_OF_STUDY_ACTION:
+            raise ImproperlyConfigured(
+                f"Invalid action name. Set this on the proxy model. Got {END_OF_STUDY_ACTION}."
+            )
+        super().save(*args, **kwargs)
 
     class Meta(OffScheduleModelMixin.Meta):
         verbose_name = "End of Study"
