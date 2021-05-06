@@ -2,9 +2,8 @@ from django import forms
 from django.contrib import admin
 from edc_model_admin import SimpleHistoryAdmin
 
-from inte_prn.forms import EndOfStudyForm
-
 from ..admin_site import inte_prn_admin
+from ..forms import EndOfStudyForm
 from ..models import EndOfStudy, OffScheduleHiv, OffScheduleNcd
 from .modeladmin_mixins import EndOfStudyModelAdminMixin
 
@@ -22,3 +21,6 @@ class EndOfStudyNoSaveForm(EndOfStudyForm):
 class EndOfStudyAdmin(EndOfStudyModelAdminMixin, SimpleHistoryAdmin):
 
     form = EndOfStudyNoSaveForm
+
+    def has_delete_permission(self, request, obj=None):
+        return False
