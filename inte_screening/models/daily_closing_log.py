@@ -42,16 +42,29 @@ class DailyClosingLog(SiteModelMixin, BaseUuidModel):
         verbose_name="How were patients selected to be approached?",
         max_length=25,
         choices=SELECTION_METHOD,
+        null=True,
     )
 
     approached = models.IntegerField(
         verbose_name="Of those who attended, how many were approached by the study team",
         validators=[MinValueValidator(0)],
+        null=True,
     )
 
     agreed_to_screen = models.IntegerField(
         verbose_name="Of those approached, how many agreed to be screened",
         validators=[MinValueValidator(0)],
+        null=True,
+    )
+
+    clinic_start_time = models.TimeField(
+        verbose_name="Clinic start time",
+        null=True,
+    )
+
+    clinic_end_time = models.TimeField(
+        verbose_name="Clinic End time",
+        null=True,
     )
 
     comment = models.TextField(

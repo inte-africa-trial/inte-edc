@@ -28,10 +28,12 @@ class DailyClosingLogAdmin(
             {
                 "fields": (
                     "clinic_services",
+                    "clinic_start_time",
                     "attended",
-                    "selection_method",
-                    "approached",
-                    "agreed_to_screen",
+                    # "selection_method",
+                    # "approached",
+                    # "agreed_to_screen",
+                    "clinic_end_time",
                     "comment",
                 )
             },
@@ -43,8 +45,10 @@ class DailyClosingLogAdmin(
         "log_date",
         "clinic_services",
         "number_attended",
-        "number_approached",
-        "number_agreed_to_screen",
+        # "number_approached",
+        # "number_agreed_to_screen",
+        "clinic_start_time",
+        "clinic_end_time",
     )
 
     list_filter = ("log_date", "clinic_services", "created", "modified")
@@ -59,15 +63,25 @@ class DailyClosingLogAdmin(
 
     number_attended.short_description = "Attended"
 
-    def number_approached(self, obj):
-        return obj.approached
+    # def number_approached(self, obj):
+    #     return obj.approached
+    #
+    # number_approached.short_description = "Approached"
+    #
+    # def number_agreed_to_screen(self, obj):
+    #     return obj.agreed_to_screen
+    #
+    # number_agreed_to_screen.short_description = "Agreed to Screen"
 
-    number_approached.short_description = "Approached"
+    def clinic_start_time(self, obj):
+        return obj.clinic_start_time
 
-    def number_agreed_to_screen(self, obj):
-        return obj.agreed_to_screen
+    clinic_start_time.short_description = "Clinic Start Time"
 
-    number_agreed_to_screen.short_description = "Agreed to Screen"
+    def clinic_end_time(self, obj):
+        return obj.clinic_start_time
+
+    clinic_end_time.short_description = "Clinic End Time"
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "site":
