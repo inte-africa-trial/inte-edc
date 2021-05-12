@@ -24,6 +24,7 @@ from .htn_initial_review import HtnInitialReview
 from .htn_medication_adherence import HtnMedicationAdherence
 from .htn_review import HtnReview
 from .indicators import Indicators
+from .integrated_care_review import IntegratedCareReview
 from .investigations import Investigations
 from .medications import Medications
 from .next_appointment import NextAppointment

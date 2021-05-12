@@ -21,6 +21,7 @@ from .htn_initial_review_admin import HtnInitialReviewAdmin
 from .htn_medication_adherence_admin import HtnMedicationAdherenceAdmin
 from .htn_review_admin import HtnReviewAdmin
 from .indicators_admin import IndicatorsAdmin
+from .integrated_care_review_admin import IntegratedCareReviewAdmin
 from .medications_admin import MedicationsAdmin
 from .next_appointment_admin import NextAppointmentAdmin
 from .other_baseline_data_admin import OtherBaselineDataAdmin

@@ -34,6 +34,24 @@ list_data = {
         (DIABETES, "Patient has high blood sugar (Diabetes)"),
         (HIV, "Patient has HIV infection (HIV+)"),
     ],
+    "inte_lists.healthadvisors": [
+        ("nurse", "Nurse"),
+        ("expert_patient_or_volunteer", "Expert patient/Volunteer"),
+        ("clinical_or_medical_officer", "Clinical or medical officer"),
+        (OTHER, "Other (specify below)"),
+    ],
+    "inte_lists.healthinterventiontypes": [
+        ("lifestyle", "Lifestyle"),
+        ("diet", "Diet"),
+        ("medicines", "Medicines"),
+        (OTHER, "Other (specify below)"),
+    ],
+    "inte_lists.healthtalkconditions": [
+        (HIV, "HIV infection"),
+        (DIABETES, "Diabetes"),
+        (HYPERTENSION, "Hypertension"),
+        (OTHER, "Other condition (specify below)"),
+    ],
     "inte_lists.refillconditions": [
         (HYPERTENSION, "Hypertension"),
         (DIABETES, "Diabetes"),

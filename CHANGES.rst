@@ -3,6 +3,8 @@ Changes
 
 Unreleased
 ----------
+- add integrated care review CRF (Form 26), required at 6m and 12m visits
+
 
 0.1.65
 ------

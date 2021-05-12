@@ -72,6 +72,7 @@ crfs_6m = FormsCollection(
     Crf(show_order=210, model="inte_subject.healtheconomicsrevised", required=False),
     Crf(show_order=215, model="inte_subject.healtheconomicsrevisedtwo", required=False),
     Crf(show_order=220, model="inte_subject.familyhistory"),
+    Crf(show_order=225, model="inte_subject.integratedcarereview"),
     Crf(show_order=230, model="inte_subject.nextappointment"),
     name="6m",
 )
@@ -94,5 +95,6 @@ crfs_12m = FormsCollection(
     Crf(show_order=195, model="inte_subject.htnmedicationadherence", required=False),
     Crf(show_order=200, model="inte_subject.complicationsfollowup", required=False),
     Crf(show_order=220, model="inte_subject.familyhistory"),
+    Crf(show_order=225, model="inte_subject.integratedcarereview"),
     name="12m",
 )

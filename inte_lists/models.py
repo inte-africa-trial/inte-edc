@@ -31,10 +31,28 @@ class DmTreatments(ListModelMixin):
         verbose_name_plural = "Diabetes Treatments"
 
 
+class HealthAdvisors(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Health Advisors"
+        verbose_name_plural = "Health Advisors"
+
+
+class HealthInterventionTypes(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Health Intervention Types"
+        verbose_name_plural = "Health Intervention Types"
+
+
 class HealthServices(ListModelMixin):
     class Meta(ListModelMixin.Meta):
         verbose_name = "Health Services"
         verbose_name_plural = "Health Services"
+
+
+class HealthTalkConditions(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Health Talk Conditions"
+        verbose_name_plural = "Health Talk Conditions"
 
 
 class HtnTreatments(ListModelMixin):
