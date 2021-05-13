@@ -1,9 +1,9 @@
 from dateutil.relativedelta import relativedelta
 from django import forms
-from django.test import TestCase, tag
+from django.test import TestCase, override_settings, tag
 from edc_appointment.constants import COMPLETE_APPT, INCOMPLETE_APPT
 from edc_appointment.creators import UnscheduledAppointmentCreator
-from edc_constants.constants import HIV, NO, OTHER, YES
+from edc_constants.constants import COMPLETE, HIV, NO, OTHER, YES
 from edc_metadata import REQUIRED
 from edc_metadata.models import CrfMetadata
 from edc_utils import get_utcnow
@@ -16,8 +16,10 @@ from inte_lists.models import (
     HealthInterventionTypes,
     HealthTalkConditions,
 )
+from inte_prn.models import IntegratedCareClinicRegistration
 from inte_screening.constants import HIV_CLINIC
 from inte_subject.forms.integrated_care_review_form import (
+    IntegratedCareReviewForm,
     IntegratedCareReviewFormValidator,
 )
 from tests.inte_test_case_mixin import InteTestCaseMixin
@@ -151,6 +153,39 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             "inte_subject.clinicalreviewbaseline",
             subject_visit=self.subject_visit,
             hiv_dx=YES,
+        )
+
+    @override_settings(SITE_ID=103)
+    def test_form_validator_requires_icc_registration_for_intervention(self):
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "crf_status": COMPLETE,
+            "report_datetime": self.subject_visit.report_datetime,
+            "receive_health_talk_messages": NO,
+            "additional_health_advice": NO,
+        }
+        form = IntegratedCareReviewForm(data=cleaned_data)
+        form.is_valid()
+        self.assertIn("__all__", form._errors)
+        self.assertIn(
+            IntegratedCareClinicRegistration._meta.verbose_name,
+            ";".join(form._errors.get("__all__")),
+        )
+
+    @override_settings(SITE_ID=101)
+    def test_form_validator_does_not_require_icc_registration_for_control(self):
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "crf_status": COMPLETE,
+            "report_datetime": self.subject_visit.report_datetime,
+            "receive_health_talk_messages": NO,
+            "additional_health_advice": NO,
+        }
+        form = IntegratedCareReviewForm(data=cleaned_data)
+        form.is_valid()
+        self.assertNotIn(
+            IntegratedCareClinicRegistration._meta.verbose_name,
+            ";".join(form._errors.get("__all__") or []),
         )
 
     def test_follow_up_questions_required_if_received_health_talk_messages(self):
