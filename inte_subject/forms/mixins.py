@@ -87,6 +87,17 @@ def raise_if_clinical_review_does_not_exist(subject_visit):
             model_exists_or_raise(subject_visit=subject_visit, model_cls=ClinicalReview)
 
 
+def raise_if_intervention_site_without_icc_registration():
+    if is_intervention_site():
+        try:
+            IntegratedCareClinicRegistration.objects.get(site_id=Site.objects.get_current())
+        except ObjectDoesNotExist:
+            raise forms.ValidationError(
+                "This is an intervention site. Complete the "
+                f"`{IntegratedCareClinicRegistration._meta.verbose_name}` form first."
+            )
+
+
 def medications_exists_or_raise(subject_visit):
     if subject_visit:
         try:
@@ -410,19 +421,6 @@ class DiagnosisFormValidatorMixin:
 
 
 class HealthEconomicsFormValidatorMixin:
-    @staticmethod
-    def require_icc_registration():
-        if is_intervention_site():
-            try:
-                IntegratedCareClinicRegistration.objects.get(
-                    site_id=Site.objects.get_current()
-                )
-            except ObjectDoesNotExist:
-                raise forms.ValidationError(
-                    "This is an intervention site. Complete the "
-                    f"`{IntegratedCareClinicRegistration._meta.verbose_name}` form first."
-                )
-
     def clean_education(self):
         cond = (
             self.cleaned_data.get("education_in_years") is not None

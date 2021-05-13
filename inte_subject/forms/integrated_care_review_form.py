@@ -6,20 +6,19 @@ from ..models import IntegratedCareReview
 from .mixins import (
     CrfFormValidatorMixin,
     CrfModelFormMixin,
-    HealthEconomicsFormValidatorMixin,
     raise_if_clinical_review_does_not_exist,
+    raise_if_intervention_site_without_icc_registration,
 )
 
 
 class IntegratedCareReviewFormValidator(
-    HealthEconomicsFormValidatorMixin,
     CrfFormValidatorMixin,
     FormValidator,
 ):
     def clean(self):
         raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
 
-        self.require_icc_registration()
+        raise_if_intervention_site_without_icc_registration()
 
         health_message_q = "receive_health_talk_messages"
         health_advice_q = "additional_health_advice"
