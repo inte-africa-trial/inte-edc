@@ -22,7 +22,6 @@ class DailyClosingLog(SiteModelMixin, BaseUuidModel):
         on_delete=models.PROTECT,
         null=True,
         related_name="+",
-        blank=False,
     )
 
     log_date = models.DateField(verbose_name="Clinic date", default=get_utcnow)
@@ -60,11 +59,13 @@ class DailyClosingLog(SiteModelMixin, BaseUuidModel):
     clinic_start_time = models.TimeField(
         verbose_name="Clinic start time",
         null=True,
+        help_text="Use 24HRS format. For example 17:00",
     )
 
     clinic_end_time = models.TimeField(
         verbose_name="Clinic End time",
         null=True,
+        help_text="Use 24HRS format. For example 17:00",
     )
 
     comment = models.TextField(

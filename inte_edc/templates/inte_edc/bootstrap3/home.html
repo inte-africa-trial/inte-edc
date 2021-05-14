@@ -55,7 +55,7 @@
                             Review</a>
                     {% endif %}
                     {% if perms.edc_dashboard.view_screening_listboard %}
-                        <a href="{% url 'inte_screening_admin:inte_screening_dailyclosinglog_changelist' %}"
+                        <a href="{{daily_closing_log_url}}"
                            class="list-group-item"><i
                                 class="fas fa-newspaper fa-lg fa-fw"></i>&nbsp;Daily Closing Log</a>
                     {% endif %}

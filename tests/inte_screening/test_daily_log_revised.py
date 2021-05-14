@@ -1,17 +1,15 @@
-import pdb
-
 from django.contrib.sites.models import Site
 from django.test import TestCase, override_settings, tag
 from edc_utils import get_utcnow
+from inte_screening.constants import SEQUENTIAL
 
 from inte_prn.models import IntegratedCareClinicRegistration
-from inte_screening.constants import SEQUENTIAL
-from inte_screening.forms import DailyClosingLogForm
+from inte_screening.forms import DailyClosingLogRevisedForm
 from inte_subject.constants import INTEGRATED
 from tests.inte_test_case_mixin import InteTestCaseMixin
 
 
-class TestDailyLog(InteTestCaseMixin, TestCase):
+class TestDailyLogRevised(InteTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
 
@@ -19,35 +17,35 @@ class TestDailyLog(InteTestCaseMixin, TestCase):
             "site": Site.objects.get_current(),
             "log_date": get_utcnow().date(),
             "clinic_services": INTEGRATED,
-            "selection_method": SEQUENTIAL,
             "attended": 10,
-            "approached": 10,
-            "agreed_to_screen": 10,
+            "clinic_start_time": "08:00",
+            "clinic_end_time": "18:00",
+
         }
 
     @tag("daily")
     @override_settings(SITE_ID=103)
     def test_integrated_for_intervention_site(self):
-        form = DailyClosingLogForm(data=self.data)
+        form = DailyClosingLogRevisedForm(data=self.data)
         form.is_valid()
         self.assertIn("clinic_services", form._errors)
 
         # register the site
         IntegratedCareClinicRegistration.objects.create(date_opened=get_utcnow().date())
-        form = DailyClosingLogForm(data=self.data)
+        form = DailyClosingLogRevisedForm(data=self.data)
         form.is_valid()
         self.assertNotIn("clinic_services", form._errors)
 
     @tag("daily")
     @override_settings(SITE_ID=101)
     def test_integrated_for_control_site(self):
-        form = DailyClosingLogForm(data=self.data)
+        form = DailyClosingLogRevisedForm(data=self.data)
         form.is_valid()
         self.assertIn("clinic_services", form._errors)
 
-    @tag("daily1")
+    @tag("daily")
     @override_settings(SITE_ID=103)
-    def test_numbers(self):
+    def test_clinic_start_time(self):
         IntegratedCareClinicRegistration.objects.create(date_opened=get_utcnow().date())
         data = {
             "site": Site.objects.get_current(),
@@ -57,19 +55,21 @@ class TestDailyLog(InteTestCaseMixin, TestCase):
             "attended": 10,
             "approached": 10,
             "agreed_to_screen": 10,
+            "clinic_start_time": "08:00",
+            "clinic_end_time": "18:00",
         }
-        form = DailyClosingLogForm(data=data)
+        form = DailyClosingLogRevisedForm(data=data)
         form.is_valid()
         self.assertDictEqual({}, form._errors)
 
-        data.update(approached=11)
+        data.update(clinic_start_time="04:00")
 
-        form = DailyClosingLogForm(data=data)
+        form = DailyClosingLogRevisedForm(data=data)
         form.is_valid()
-        self.assertIn("approached", form._errors)
+        self.assertIn("clinic_start_time", form._errors)
 
-        data.update(approached=10, agreed_to_screen=11)
+        data.update(clinic_start_time="09:00", clinic_end_time="08:00")
 
-        form = DailyClosingLogForm(data=data)
+        form = DailyClosingLogRevisedForm(data=data)
         form.is_valid()
-        self.assertIn("agreed_to_screen", form._errors)
+        self.assertIn("clinic_start_time", form._errors)

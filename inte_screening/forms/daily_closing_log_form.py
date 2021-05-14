@@ -18,8 +18,6 @@ class DailyClosingLogForm(forms.ModelForm):
         attended = cleaned_data.get("attended")
         approached = cleaned_data.get("approached")
         agreed_to_screen = cleaned_data.get("agreed_to_screen")
-        clinic_start_time = cleaned_data.get("clinic_start_time")
-        clinic_end_time = cleaned_data.get("clinic_end_time")
         if attended is not None and approached is not None:
             if approached > attended:
                 raise forms.ValidationError(
@@ -37,16 +35,6 @@ class DailyClosingLogForm(forms.ModelForm):
                         "agreed_to_screen": (
                             "Invalid. Number who agreed to be screened cannot "
                             "be greater than number approached"
-                        )
-                    }
-                )
-        if clinic_start_time is not None and clinic_end_time is not None:
-            if clinic_start_time > clinic_end_time:
-                raise forms.ValidationError(
-                    {
-                        "clinic_start_time": (
-                            "Invalid. Clinic start Time cannot "
-                            "be greater than Clinic End Time"
                         )
                     }
                 )
