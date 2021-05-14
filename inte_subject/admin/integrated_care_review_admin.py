@@ -57,6 +57,7 @@ class IntegratedCareReviewAdmin(
                     "missed_appointment",
                     "missed_appointment_call",
                     "missed_appointment_call_who",
+                    "missed_appointment_call_who_other",
                 )
             },
         ),

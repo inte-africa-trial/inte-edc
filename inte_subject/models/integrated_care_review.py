@@ -86,8 +86,6 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
         max_length=15,
         choices=CARD_TYPE_CHOICES,
         default=NOT_APPLICABLE,
-        null=True,
-        blank=True,
     )
 
     missed_appointment = models.CharField(
@@ -101,8 +99,6 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
-        null=True,
-        blank=True,
     )
 
     missed_appointment_call_who = models.CharField(
@@ -110,8 +106,6 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
         max_length=15,
         choices=MISSED_VISIT_CALLER_CHOICES,
         default=NOT_APPLICABLE,
-        null=True,
-        blank=True,
     )
 
     missed_appointment_call_who_other = edc_models.OtherCharField()
