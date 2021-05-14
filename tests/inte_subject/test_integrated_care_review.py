@@ -211,11 +211,7 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
                 field_name=field_name,
                 valid_qs=valid_qs,
             ):
-                form_validator = IntegratedCareReviewFormValidator(cleaned_data=cleaned_data)
-                try:
-                    form_validator.validate()
-                except forms.ValidationError:
-                    pass
+                form_validator = self.validate_form_validator(cleaned_data)
                 self.assertIn(field_name, form_validator._errors)
                 self.assertIn(
                     "This field is required",
@@ -245,11 +241,7 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
                 f"Testing '{field_name}' is not required",
                 field_name=field_name,
             ):
-                form_validator = IntegratedCareReviewFormValidator(cleaned_data=cleaned_data)
-                try:
-                    form_validator.validate()
-                except forms.ValidationError:
-                    pass
+                form_validator = self.validate_form_validator(cleaned_data)
                 self.assertIn(field_name, form_validator._errors)
                 self.assertIn(
                     "This field is not required",
@@ -277,11 +269,7 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
                 field_name=field_name,
                 valid_qs=valid_qs,
             ):
-                form_validator = IntegratedCareReviewFormValidator(cleaned_data=cleaned_data)
-                try:
-                    form_validator.validate()
-                except forms.ValidationError:
-                    pass
+                form_validator = self.validate_form_validator(cleaned_data)
                 self.assertIn(field_name, form_validator._errors, form_validator._errors)
                 self.assertIn(
                     "This field is required",
@@ -309,11 +297,7 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
                 f"Testing '{field_name}' is not required",
                 field_name=field_name,
             ):
-                form_validator = IntegratedCareReviewFormValidator(cleaned_data=cleaned_data)
-                try:
-                    form_validator.validate()
-                except forms.ValidationError:
-                    pass
+                form_validator = self.validate_form_validator(cleaned_data)
                 self.assertIn(field_name, form_validator._errors)
                 self.assertIn(
                     "This field is not required",
@@ -357,11 +341,7 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
                 f"Testing '{field_name_other}' with '{field_name}' and '{valid_qs}'",
                 field_name_other=field_name_other,
             ):
-                form_validator = IntegratedCareReviewFormValidator(cleaned_data=cleaned_data)
-                try:
-                    form_validator.validate()
-                except forms.ValidationError:
-                    pass
+                form_validator = self.validate_form_validator(cleaned_data)
                 self.assertIn(field_name_other, form_validator._errors)
                 self.assertIn(
                     "This field is required",
@@ -606,11 +586,7 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             with self.subTest(
                 f"Testing 'which_laboratory_tests_charged_for' not required for {cd_update}",
             ):
-                form_validator = IntegratedCareReviewFormValidator(cleaned_data=cleaned_data)
-                try:
-                    form_validator.validate()
-                except forms.ValidationError:
-                    pass
+                form_validator = self.validate_form_validator(cleaned_data)
                 self.assertIn("which_laboratory_tests_charged_for", form_validator._errors)
                 self.assertIn(
                     "This field is not required",
