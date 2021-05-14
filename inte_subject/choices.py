@@ -12,6 +12,7 @@ from .constants import (
     GTE_3HRS,
     INSULIN,
     INTEGRATED,
+    NURSE,
     SITTING,
     THIS_CLINIC,
 )
@@ -42,7 +43,6 @@ EDUCATION = (
     ("secondary", "Up to secondary / high school"),
     ("tertiary", "university educated"),
 )
-
 
 EMPLOYMENT_STATUS = (
     ("professional", "Professional / office work / business"),
@@ -75,7 +75,6 @@ MISSED_PILLS = (
     (NEVER, "have never missed taking my study pills"),
 )
 
-
 MARITAL_STATUS = (
     ("married", "Married or living with someone"),
     ("single", "Single"),
@@ -94,6 +93,13 @@ ACTIVITY_CHOICES = (
     (OTHER, "Other, please specify"),
 )
 
+CARD_TYPE_CHOICES = (
+    ("paper_based", "Paper-based"),
+    ("electronic", "Electronic"),
+    ("both", "Both"),
+    (NOT_APPLICABLE, "Not Applicable"),
+)
+
 CHILDCARE_CHOICES = (
     (NOT_APPLICABLE, "Not applicable"),
     ("working", "Working"),
@@ -103,7 +109,6 @@ CHILDCARE_CHOICES = (
     ("nothing", "Nothing"),
     (OTHER, "Other, specify"),
 )
-
 
 GLUCOSE_UNITS = (
     (MILLIGRAMS_PER_DECILITER, MILLIGRAMS_PER_DECILITER),
@@ -120,6 +125,12 @@ INFO_SOURCE = (
     ("collateral_history", "Collateral History from relative/guardian"),
     (NOT_APPLICABLE, "Not applicable"),
     (OTHER, "Other"),
+)
+
+MISSED_VISIT_CALLER_CHOICES = (
+    (NURSE, "Nurse"),
+    (OTHER, "Other"),
+    (NOT_APPLICABLE, "Not applicable"),
 )
 
 PAYEE_CHOICES = (

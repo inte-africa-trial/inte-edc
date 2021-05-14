@@ -42,6 +42,27 @@ class IntegratedCareReviewFormValidator(
                 field_other=f"{dependant_q}_other",
             )
 
+        #################################################
+        self.applicable_if(
+            YES,
+            field="hospital_card",
+            field_applicable="hospital_card_type",
+        )
+        self.applicable_if(
+            YES,
+            field="missed_appointment",
+            field_applicable="missed_appointment_call",
+        )
+        self.applicable_if(
+            YES,
+            field="missed_appointment_call",
+            field_applicable="missed_appointment_call_who",
+        )
+        self.validate_other_specify(
+            field="missed_appointment_call_who",
+            other_specify_field="missed_appointment_call_who_other",
+        )
+
 
 class IntegratedCareReviewForm(CrfModelFormMixin, forms.ModelForm):
 

@@ -3,7 +3,8 @@ from django import forms
 from django.test import TestCase, override_settings, tag
 from edc_appointment.constants import COMPLETE_APPT, INCOMPLETE_APPT
 from edc_appointment.creators import UnscheduledAppointmentCreator
-from edc_constants.constants import COMPLETE, HIV, NO, OTHER, YES
+from edc_constants.choices import YES_NO_DONT_KNOW
+from edc_constants.constants import COMPLETE, HIV, NO, NOT_APPLICABLE, OTHER, YES
 from edc_metadata import REQUIRED
 from edc_metadata.models import CrfMetadata
 from edc_utils import get_utcnow
@@ -18,6 +19,7 @@ from inte_lists.models import (
 )
 from inte_prn.models import IntegratedCareClinicRegistration
 from inte_screening.constants import HIV_CLINIC
+from inte_subject.constants import NURSE
 from inte_subject.forms.integrated_care_review_form import (
     IntegratedCareReviewForm,
     IntegratedCareReviewFormValidator,
@@ -141,6 +143,9 @@ class TestIntegratedCareReview(InteTestCaseMixin, TestCase):
 
 @tag("icr")
 class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
+
+    form_validator_default_form_cls = IntegratedCareReviewFormValidator
+
     def setUp(self):
         super().setUp()
         self.subject_screening = self.get_subject_screening()
@@ -324,6 +329,7 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": YES,
             "additional_health_advice": YES,
+            "missed_appointment_call": YES,
         }
         other_condition = HealthTalkConditions.objects.filter(name=OTHER)
         other_category = HealthInterventionTypes.objects.filter(name=OTHER)
@@ -335,6 +341,7 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             ("health_talk_presenters", other_presenter),
             ("health_advice_advisor", other_presenter),
             ("health_advice_focus", other_category),
+            ("missed_appointment_call_who", OTHER),
         ]:
             # Select 'other', then test it's required
             cleaned_data.update({field_name: valid_qs})
@@ -358,3 +365,144 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
 
             # Complete 'other' field, and move onto next test
             cleaned_data.update({field_name_other: "Some other value"})
+
+    def test_card_type_applicable_if_has_hospital_card(self):
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "report_datetime": self.subject_visit.report_datetime,
+            "receive_health_talk_messages": NO,
+            "additional_health_advice": NO,
+            "hospital_card": YES,
+            "hospital_card_type": NOT_APPLICABLE,
+        }
+        form_validator = self.validate_form_validator(cleaned_data)
+        self.assertIn("hospital_card_type", form_validator._errors)
+        self.assertIn(
+            "This field is applicable",
+            str(form_validator._errors.get("hospital_card_type")),
+        )
+
+        # Test no errors when has card, and card type selected
+        cleaned_data.update({"hospital_card": YES, "hospital_card_type": "paper_based"})
+        form_validator = self.validate_form_validator(cleaned_data)
+        self.assertNotIn("hospital_card_type", form_validator._errors)
+
+    def test_card_type_not_applicable_if_no_hospital_card(self):
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "report_datetime": self.subject_visit.report_datetime,
+            "receive_health_talk_messages": NO,
+            "additional_health_advice": NO,
+        }
+        for answer, _ in YES_NO_DONT_KNOW:
+            if answer != YES:
+                # Test doesn't error when card type not required, and NOT selected
+                cleaned_data.update(
+                    {
+                        "hospital_card": answer,
+                        "hospital_card_type": NOT_APPLICABLE,
+                    }
+                )
+                form_validator = self.validate_form_validator(cleaned_data)
+                self.assertNotIn("hospital_card_type", form_validator._errors)
+
+                # Test raises error when card type not required, but IS selected
+                cleaned_data.update({"hospital_card_type": "paper_based"})
+                form_validator = self.validate_form_validator(cleaned_data)
+                self.assertIn("hospital_card_type", form_validator._errors)
+                self.assertIn(
+                    "This field is not applicable",
+                    str(form_validator._errors.get("hospital_card_type")),
+                )
+
+    def test_missed_appointment_call_applicable_if_has_missed_appointment(self):
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "report_datetime": self.subject_visit.report_datetime,
+            "receive_health_talk_messages": NO,
+            "additional_health_advice": NO,
+            "hospital_card": NO,
+            "missed_appointment": YES,
+            "missed_appointment_call": NOT_APPLICABLE,
+        }
+        form_validator = self.validate_form_validator(cleaned_data)
+        self.assertIn("missed_appointment_call", form_validator._errors)
+        self.assertIn(
+            "This field is applicable",
+            str(form_validator._errors.get("missed_appointment_call")),
+        )
+
+        # Test no errors when has missed appointment, and answered call q
+        cleaned_data.update({"missed_appointment": YES, "missed_appointment_call": YES})
+        form_validator = self.validate_form_validator(cleaned_data)
+        self.assertNotIn("missed_appointment_call", form_validator._errors)
+
+    def test_missed_appointment_call_not_applicable_if_not_missed_appointment(self):
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "report_datetime": self.subject_visit.report_datetime,
+            "receive_health_talk_messages": NO,
+            "additional_health_advice": NO,
+            "hospital_card": NO,
+            "missed_appointment": NO,
+        }
+        form_validator = self.validate_form_validator(cleaned_data)
+        self.assertNotIn("missed_appointment_call", form_validator._errors)
+
+        # Test raises error if completed when not required
+        cleaned_data.update({"missed_appointment": NO, "missed_appointment_call": NO})
+        form_validator = self.validate_form_validator(cleaned_data)
+        self.assertIn("missed_appointment_call", form_validator._errors)
+        self.assertIn(
+            "This field is not applicable",
+            str(form_validator._errors.get("missed_appointment_call")),
+        )
+
+    def test_who_called_applicable_if_received_missed_visit_call(self):
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "report_datetime": self.subject_visit.report_datetime,
+            "receive_health_talk_messages": NO,
+            "additional_health_advice": NO,
+            "hospital_card": NO,
+            "missed_appointment": YES,
+            "missed_appointment_call": YES,
+            "missed_appointment_call_who": NOT_APPLICABLE,
+        }
+        form_validator = self.validate_form_validator(cleaned_data)
+        self.assertIn("missed_appointment_call_who", form_validator._errors)
+        self.assertIn(
+            "This field is applicable",
+            str(form_validator._errors.get("missed_appointment_call_who")),
+        )
+
+        # Test no errors when has missed appointment call, and answered who q
+        cleaned_data.update(
+            {"missed_appointment_call": YES, "missed_appointment_call_who": NURSE}
+        )
+        form_validator = self.validate_form_validator(cleaned_data)
+        self.assertNotIn("missed_appointment_call_who", form_validator._errors)
+
+    def test_who_called_not_applicable_if_not_received_missed_visit_call(self):
+        cleaned_data = {
+            "subject_visit": self.subject_visit,
+            "report_datetime": self.subject_visit.report_datetime,
+            "receive_health_talk_messages": NO,
+            "additional_health_advice": NO,
+            "hospital_card": NO,
+            "missed_appointment": YES,
+            "missed_appointment_call": NO,
+        }
+        form_validator = self.validate_form_validator(cleaned_data)
+        self.assertNotIn("missed_appointment_call_who", form_validator._errors)
+
+        # Test raises errors if completed when not required
+        cleaned_data.update(
+            {"missed_appointment_call": NO, "missed_appointment_call_who": NURSE}
+        )
+        form_validator = self.validate_form_validator(cleaned_data)
+        self.assertIn("missed_appointment_call_who", form_validator._errors)
+        self.assertIn(
+            "This field is not applicable",
+            str(form_validator._errors.get("missed_appointment_call_who")),
+        )

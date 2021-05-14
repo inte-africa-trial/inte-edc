@@ -17,7 +17,7 @@ from edc_constants.constants import (
 from edc_offstudy.constants import LATE_EXCLUSION, WITHDRAWAL
 from edc_transfer.constants import TRANSFERRED
 
-from inte_subject.constants import INTEGRATED, NCD
+from inte_subject.constants import INTEGRATED, NCD, NURSE
 
 list_data = {
     "inte_lists.transferreasons": [
@@ -35,7 +35,7 @@ list_data = {
         (HIV, "Patient has HIV infection (HIV+)"),
     ],
     "inte_lists.healthadvisors": [
-        ("nurse", "Nurse"),
+        (NURSE, "Nurse"),
         ("expert_patient_or_volunteer", "Expert patient/Volunteer"),
         ("clinical_or_medical_officer", "Clinical or medical officer"),
         (OTHER, "Other (specify below)"),

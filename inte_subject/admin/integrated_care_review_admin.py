@@ -44,6 +44,26 @@ class IntegratedCareReviewAdmin(
                 )
             },
         ),
+        (
+            "Part 2: Pharmacy Services",
+            {"fields": ()},
+        ),
+        (
+            "Part 3: Managing Clinic Records and Appointments",
+            {
+                "fields": (
+                    "hospital_card",
+                    "hospital_card_type",
+                    "missed_appointment",
+                    "missed_appointment_call",
+                    "missed_appointment_call_who",
+                )
+            },
+        ),
+        (
+            "Part 4: Laboratory Services",
+            {"fields": ()},
+        ),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
     )
@@ -51,6 +71,11 @@ class IntegratedCareReviewAdmin(
     radio_fields = {
         "receive_health_talk_messages": admin.VERTICAL,
         "additional_health_advice": admin.VERTICAL,
+        "hospital_card": admin.VERTICAL,
+        "hospital_card_type": admin.VERTICAL,
+        "missed_appointment": admin.VERTICAL,
+        "missed_appointment_call": admin.VERTICAL,
+        "missed_appointment_call_who": admin.VERTICAL,
     }
 
     filter_horizontal = [
