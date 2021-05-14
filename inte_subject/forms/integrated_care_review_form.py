@@ -63,6 +63,23 @@ class IntegratedCareReviewFormValidator(
             other_specify_field="missed_appointment_call_who_other",
         )
 
+        #################################################
+        self.applicable_if(
+            YES,
+            field="laboratory_tests",
+            field_applicable="pay_for_laboratory_tests",
+        )
+        self.m2m_required_if(
+            response=YES,
+            field="pay_for_laboratory_tests",
+            m2m_field="which_laboratory_tests_charged_for",
+        )
+        self.m2m_other_specify(
+            OTHER,
+            m2m_field="which_laboratory_tests_charged_for",
+            field_other="which_laboratory_tests_charged_for_other",
+        )
+
 
 class IntegratedCareReviewForm(CrfModelFormMixin, forms.ModelForm):
 

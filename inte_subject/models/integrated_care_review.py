@@ -7,6 +7,7 @@ from inte_lists.models import (
     HealthAdvisors,
     HealthInterventionTypes,
     HealthTalkConditions,
+    LaboratoryTests,
 )
 from inte_subject.choices import CARD_TYPE_CHOICES, MISSED_VISIT_CALLER_CHOICES
 
@@ -109,6 +110,28 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     missed_appointment_call_who_other = edc_models.OtherCharField()
+
+    #################################################
+    laboratory_tests = models.CharField(
+        verbose_name="Have you done any laboratory tests since you started in this clinic?",
+        max_length=15,
+        choices=YES_NO,
+    )
+
+    pay_for_laboratory_tests = models.CharField(
+        verbose_name="If yes, did you pay for any of the tests?",
+        max_length=15,
+        choices=YES_NO_NA,
+        default=NOT_APPLICABLE,
+    )
+
+    which_laboratory_tests_charged_for = models.ManyToManyField(
+        LaboratoryTests,
+        verbose_name="If yes, what tests are you charged for?",
+        blank=True,
+    )
+
+    which_laboratory_tests_charged_for_other = edc_models.OtherCharField()
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
         verbose_name = "Integrated Care Review"

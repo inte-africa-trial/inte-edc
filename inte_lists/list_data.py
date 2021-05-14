@@ -52,6 +52,12 @@ list_data = {
         (HYPERTENSION, "Hypertension"),
         (OTHER, "Other condition (specify below)"),
     ],
+    "inte_lists.laboratorytests": [
+        ("blood_pressure_checks", "Blood pressure checks"),
+        ("blood_sugar_checks", "Blood sugar checks"),
+        ("viral_load_checks", "Viral load checks"),
+        (OTHER, "Other test (specify below)"),
+    ],
     "inte_lists.refillconditions": [
         (HYPERTENSION, "Hypertension"),
         (DIABETES, "Diabetes"),

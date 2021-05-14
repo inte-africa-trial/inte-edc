@@ -63,7 +63,14 @@ class IntegratedCareReviewAdmin(
         ),
         (
             "Part 4: Laboratory Services",
-            {"fields": ()},
+            {
+                "fields": (
+                    "laboratory_tests",
+                    "pay_for_laboratory_tests",
+                    "which_laboratory_tests_charged_for",
+                    "which_laboratory_tests_charged_for_other",
+                )
+            },
         ),
         crf_status_fieldset_tuple,
         audit_fieldset_tuple,
@@ -77,6 +84,8 @@ class IntegratedCareReviewAdmin(
         "missed_appointment": admin.VERTICAL,
         "missed_appointment_call": admin.VERTICAL,
         "missed_appointment_call_who": admin.VERTICAL,
+        "laboratory_tests": admin.VERTICAL,
+        "pay_for_laboratory_tests": admin.VERTICAL,
     }
 
     filter_horizontal = [
@@ -85,4 +94,5 @@ class IntegratedCareReviewAdmin(
         "health_talk_presenters",
         "health_advice_advisor",
         "health_advice_focus",
+        "which_laboratory_tests_charged_for",
     ]
