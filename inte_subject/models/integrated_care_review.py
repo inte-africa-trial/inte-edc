@@ -83,7 +83,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     hospital_card_type = models.CharField(
-        verbose_name="If yes, what type of card is this?",
+        verbose_name="If YES, what type of card is this?",
         max_length=15,
         choices=CARD_TYPE_CHOICES,
         default=NOT_APPLICABLE,
@@ -96,14 +96,14 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     missed_appointment_call = models.CharField(
-        verbose_name="If yes, did you get a phone call from the clinic about the missed visit?",
+        verbose_name="If YES, did you get a phone call from the clinic about the missed visit?",
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
     )
 
     missed_appointment_call_who = models.CharField(
-        verbose_name="If yes, who called you about the missed visit?",
+        verbose_name="If YES, who called you about the missed visit?",
         max_length=15,
         choices=MISSED_VISIT_CALLER_CHOICES,
         default=NOT_APPLICABLE,
@@ -119,7 +119,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     pay_for_laboratory_tests = models.CharField(
-        verbose_name="If yes, did you pay for any of the tests?",
+        verbose_name="If YES, did you pay for any of the tests?",
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
@@ -127,7 +127,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
 
     which_laboratory_tests_charged_for = models.ManyToManyField(
         LaboratoryTests,
-        verbose_name="If yes, what tests are you charged for?",
+        verbose_name="If YES, what tests are you charged for?",
         blank=True,
     )
 
