@@ -21,6 +21,7 @@ def post_migrate_update_edc_auth(sender=None, **kwargs):
 
 class AppConfig(DjangoAppConfig):
     name = "inte_edc"
+    default_auto_field = "django.db.models.BigAutoField"
 
     def ready(self):
         post_migrate.connect(post_migrate_update_edc_auth, sender=self)

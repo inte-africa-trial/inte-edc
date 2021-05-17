@@ -5,6 +5,7 @@ from edc_facility.apps import AppConfig as BaseEdcFacilityAppConfig
 
 class AppConfig(DjangoAppConfig):
     name = "inte_reports"
+    default_auto_field = "django.db.models.BigAutoField"
 
 
 if settings.APP_NAME == "inte_reports":

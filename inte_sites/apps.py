@@ -6,3 +6,4 @@ style = color_style()
 
 class AppConfig(DjangoAppConfig):
     name = "inte_sites"
+    default_auto_field = "django.db.models.BigAutoField"
