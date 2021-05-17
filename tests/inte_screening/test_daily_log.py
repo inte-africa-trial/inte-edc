@@ -45,7 +45,7 @@ class TestDailyLog(InteTestCaseMixin, TestCase):
         form.is_valid()
         self.assertIn("clinic_services", form._errors)
 
-    @tag("daily1")
+    @tag("daily")
     @override_settings(SITE_ID=103)
     def test_numbers(self):
         IntegratedCareClinicRegistration.objects.create(date_opened=get_utcnow().date())

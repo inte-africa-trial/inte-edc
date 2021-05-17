@@ -1,3 +1,5 @@
+import pdb
+
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
@@ -23,12 +25,17 @@ class HomeView(EdcViewMixin, NavbarViewMixin, TemplateView):
                 IntegratedCareClinicRegistration.objects.get(site__id=settings.SITE_ID)
             except ObjectDoesNotExist:
                 icc_registration_outstanding = True
-        context.update(icc_registration_outstanding=icc_registration_outstanding,
-                       daily_closing_log_url=self.get_daily_closing_log_url())
+        context.update(
+            icc_registration_outstanding=icc_registration_outstanding,
+            daily_closing_log_url=self.get_daily_closing_log_url(),
+        )
         return context
 
     @staticmethod
     def get_daily_closing_log_url():
+
         if get_utcnow() >= settings.INTE_SCREENING_DCL_REVISION_DATE:
-            return reverse("inte_screening_admin:inte_screening_dailyclosinglogrevised_changelist")
+            return reverse(
+                "inte_screening_admin:inte_screening_dailyclosinglogrevised_changelist"
+            )
         return reverse("inte_screening_admin:inte_screening_dailyclosinglog_changelist")

@@ -1,15 +1,24 @@
+import pdb
+from datetime import datetime
+from pprint import pprint
+
+from dateutil.relativedelta import relativedelta
+from django.conf import settings
 from django.contrib.sites.models import Site
 from django.test import TestCase, override_settings, tag
+from django.urls import reverse
+from django_webtest import WebTest
+from edc_auth import AUDITOR, EVERYONE, SCREENING
 from edc_utils import get_utcnow
-from inte_screening.constants import SEQUENTIAL
+from pytz import UTC
 
 from inte_prn.models import IntegratedCareClinicRegistration
 from inte_screening.forms import DailyClosingLogRevisedForm
-from inte_subject.constants import INTEGRATED
+from inte_subject.constants import INTEGRATED, VERTICAL
 from tests.inte_test_case_mixin import InteTestCaseMixin
 
 
-class TestDailyLogRevised(InteTestCaseMixin, TestCase):
+class TestDailyLogRevised(InteTestCaseMixin, WebTest):
     def setUp(self):
         super().setUp()
 
@@ -20,7 +29,6 @@ class TestDailyLogRevised(InteTestCaseMixin, TestCase):
             "attended": 10,
             "clinic_start_time": "08:00",
             "clinic_end_time": "18:00",
-
         }
 
     @tag("daily")
@@ -51,10 +59,7 @@ class TestDailyLogRevised(InteTestCaseMixin, TestCase):
             "site": Site.objects.get_current(),
             "log_date": get_utcnow(),
             "clinic_services": INTEGRATED,
-            "selection_method": SEQUENTIAL,
             "attended": 10,
-            "approached": 10,
-            "agreed_to_screen": 10,
             "clinic_start_time": "08:00",
             "clinic_end_time": "18:00",
         }
@@ -62,7 +67,7 @@ class TestDailyLogRevised(InteTestCaseMixin, TestCase):
         form.is_valid()
         self.assertDictEqual({}, form._errors)
 
-        data.update(clinic_start_time="04:00")
+        data.update(clinic_start_time="19:00")
 
         form = DailyClosingLogRevisedForm(data=data)
         form.is_valid()
@@ -73,3 +78,30 @@ class TestDailyLogRevised(InteTestCaseMixin, TestCase):
         form = DailyClosingLogRevisedForm(data=data)
         form.is_valid()
         self.assertIn("clinic_start_time", form._errors)
+
+    @tag("webtest1")
+    @override_settings(INTE_SCREENING_DCL_REVISION_DATE=get_utcnow() + relativedelta(days=1))
+    def test_response_has_closing_log_url(self):
+        closing_log_url = reverse(
+            "inte_screening_admin:inte_screening_dailyclosinglog_changelist"
+        )
+        closing_log_revise_url = reverse(
+            "inte_screening_admin:inte_screening_dailyclosinglogrevised_changelist"
+        )
+        self.login(superuser=False, groups=[EVERYONE, AUDITOR, SCREENING])
+        response = self.app.get("/", user=self.user, status=200)
+        self.assertNotIn(closing_log_revise_url, response)
+        self.assertIn(closing_log_url, response)
+
+    @tag("webtest1")
+    @override_settings(INTE_SCREENING_DCL_REVISION_DATE=get_utcnow() - relativedelta(days=1))
+    def test_response_has_closing_log_revised_url(self):
+        closing_log_url = reverse(
+            "inte_screening_admin:inte_screening_dailyclosinglog_changelist"
+        )
+        closing_log_revise_url = reverse(
+            "inte_screening_admin:inte_screening_dailyclosinglogrevised_changelist"
+        )
+        response = self.app.get("/", user=self.user, status=200)
+        self.assertNotIn(closing_log_url, response)
+        self.assertIn(closing_log_revise_url, response)
