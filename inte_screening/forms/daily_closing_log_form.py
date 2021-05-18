@@ -66,4 +66,13 @@ class DailyClosingLogForm(forms.ModelForm):
 
     class Meta:
         model = DailyClosingLog
-        fields = "__all__"
+        fields = [
+            "agreed_to_screen",
+            "approached",
+            "attended",
+            "clinic_services",
+            "comment",
+            "log_date",
+            "selection_method",
+            "site",
+        ]

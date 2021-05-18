@@ -323,8 +323,10 @@ LABEL_TEMPLATE_FOLDER = env.str("DJANGO_LABEL_TEMPLATE_FOLDER") or os.path.join(
 )
 CUPS_SERVERS = env.dict("DJANGO_CUPS_SERVERS")
 
-# cuttoff date for HE rev 1
+# cutoff date for HE rev 1
 INTE_SUBJECT_HE_REVISION_DATE = datetime(2021, 4, 25, 23, 59, 0, tzinfo=UTC)
+# cutoff date for DCL rev
+INTE_SCREENING_DCL_REVISION_DATE = datetime(2021, 5, 11, 23, 59, 0, tzinfo=UTC)
 
 LIST_MODEL_APP_LABEL = env.str("EDC_LIST_MODEL_APP_LABEL")
 SUBJECT_APP_LABEL = env.str("EDC_SUBJECT_APP_LABEL")
