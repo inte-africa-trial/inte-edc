@@ -36,7 +36,7 @@ LOGGING = {
             "level": LOGGING_SYSLOG_LEVEL,
             "class": "logging.handlers.SysLogHandler",
             "facility": "local7",
-            "address": "/dev/log",
+            # "address": "/dev/log",
             "formatter": "verbose",
         },
     },
@@ -48,7 +48,7 @@ LOGGING = {
         },
         # root logger
         "": {"handlers": ["syslog"], "level": LOGGING_SYSLOG_LEVEL, "disabled": False},
-        "ambition": {
+        "inte-trial": {
             "handlers": ["syslog"],
             "level": LOGGING_SYSLOG_LEVEL,
             "propagate": False,

@@ -52,7 +52,6 @@ urlpatterns = [
     path("sentry-debug/", trigger_error),
     path("accounts/", include("edc_auth.urls")),
     path("admin/", include("edc_auth.urls")),
-    path("admin/", admin.site.urls),
     path("admin/", edc_appointment_admin.urls),
     path("admin/", edc_adverse_event_admin.urls),
     path("admin/", edc_crf_admin.urls),
@@ -80,12 +79,13 @@ urlpatterns = [
     path("admin/", edc_pharmacy_admin.urls),
     path("admin/", include("defender.urls")),  # defender admin
     path("admin/edc_visit_schedule/", edc_visit_schedule_admin.urls),
-    path("administration/", AdministrationView.as_view(), name="administration_url"),
     path(
         "admin/inte_subject/",
         RedirectView.as_view(url="admin/inte_subject/"),
         name="subject_models_url",
     ),
+    path("admin/", admin.site.urls),
+    path("administration/", AdministrationView.as_view(), name="administration_url"),
     path("inte_consent/", include("inte_consent.urls")),
     path("inte_subject/", include("inte_subject.urls")),
     path("inte_ae/", include("inte_ae.urls")),
