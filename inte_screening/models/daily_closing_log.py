@@ -70,7 +70,7 @@ class DailyClosingLog(SiteModelMixin, BaseUuidModel):
         return self.log_date.strftime(convert_php_dateformat(settings.DATE_FORMAT))
 
     def natural_key(self):
-        return (self.log_date, self.site)
+        return tuple(self.log_date, self.site)
 
     class Meta:
         verbose_name = "Daily Closing Log"

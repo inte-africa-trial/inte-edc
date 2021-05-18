@@ -8,3 +8,4 @@ class AppConfig(DjangoApponfig):
     screening_age_adult_lower = 18
     include_in_administration_section = True
     has_exportable_data = True
+    default_auto_field = "django.db.models.BigAutoField"
