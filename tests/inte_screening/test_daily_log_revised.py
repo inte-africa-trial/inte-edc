@@ -1,16 +1,10 @@
-import pdb
-from datetime import datetime
-from pprint import pprint
-
 from dateutil.relativedelta import relativedelta
-from django.conf import settings
 from django.contrib.sites.models import Site
 from django.test import TestCase, override_settings, tag
 from django.urls import reverse
 from django_webtest import WebTest
 from edc_auth import AUDITOR, EVERYONE, SCREENING
 from edc_utils import get_utcnow
-from pytz import UTC
 
 from inte_prn.models import IntegratedCareClinicRegistration
 from inte_screening.forms import DailyClosingLogRevisedForm
