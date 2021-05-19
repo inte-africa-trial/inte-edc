@@ -4,12 +4,18 @@ from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
 
 from inte_lists.models import (
+    DrugDispensaries,
+    DrugDispensers,
     HealthAdvisors,
     HealthInterventionTypes,
     HealthTalkConditions,
     LaboratoryTests,
 )
-from inte_subject.choices import CARD_TYPE_CHOICES, MISSED_VISIT_CALLER_CHOICES
+from inte_subject.choices import (
+    CARD_TYPE_CHOICES,
+    HCF_PRESCRIPTION_COLLECTION_CHOICES,
+    MISSED_VISIT_CALLER_CHOICES,
+)
 
 from ..model_mixins import CrfModelMixin
 
@@ -74,6 +80,35 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     health_advice_focus_other = edc_models.OtherCharField()
+
+    #################################################
+    receive_prescription_today = models.CharField(
+        verbose_name="Did you receive a drug prescription today?",
+        max_length=15,
+        choices=YES_NO,
+    )
+
+    prescription_collection_hcf = models.CharField(
+        verbose_name="If YES, are you collecting it from the healthcare facility?",
+        max_length=15,
+        choices=HCF_PRESCRIPTION_COLLECTION_CHOICES,
+    )
+
+    where_drugs_dispensed = models.ManyToManyField(
+        DrugDispensaries,
+        verbose_name="If YES, where in the healthcare facility are your drugs dispensed from?",
+        blank=True,
+    )
+
+    where_drugs_dispensed_other = edc_models.OtherCharField()
+
+    who_dispenses_drugs = models.ManyToManyField(
+        DrugDispensers,
+        verbose_name="If YES, who in the healthcare facility is responsible for dispensing your drugs?",
+        blank=True,
+    )
+
+    who_dispenses_drugs_other = edc_models.OtherCharField()
 
     #################################################
     hospital_card = models.CharField(

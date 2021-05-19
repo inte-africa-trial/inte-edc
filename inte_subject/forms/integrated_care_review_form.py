@@ -43,6 +43,28 @@ class IntegratedCareReviewFormValidator(
             )
 
         #################################################
+        if not self.cleaned_data.get("receive_prescription_today"):
+            self.raise_required(field="receive_prescription_today")
+
+        self.required_if(
+            YES,
+            field="receive_prescription_today",
+            field_required="prescription_collection_hcf",
+        )
+
+        for m2m_field in ["where_drugs_dispensed", "who_dispenses_drugs"]:
+            self.m2m_required_if(
+                response=YES,
+                field="prescription_collection_hcf",
+                m2m_field=m2m_field,
+            )
+            self.m2m_other_specify(
+                OTHER,
+                m2m_field=m2m_field,
+                field_other=f"{m2m_field}_other",
+            )
+
+        #################################################
         self.applicable_if(
             YES,
             field="hospital_card",

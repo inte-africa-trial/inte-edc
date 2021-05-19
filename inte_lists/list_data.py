@@ -17,7 +17,7 @@ from edc_constants.constants import (
 from edc_offstudy.constants import LATE_EXCLUSION, WITHDRAWAL
 from edc_transfer.constants import TRANSFERRED
 
-from inte_subject.constants import INTEGRATED, NCD, NURSE
+from inte_subject.constants import INTEGRATED, NCD, NURSE, PATIENT_CLUB
 
 list_data = {
     "inte_lists.transferreasons": [
@@ -33,6 +33,18 @@ list_data = {
         (HYPERTENSION, "Patient has high blood pressure (Hypertension)"),
         (DIABETES, "Patient has high blood sugar (Diabetes)"),
         (HIV, "Patient has HIV infection (HIV+)"),
+    ],
+    "inte_lists.drugdispensaries": [
+        ("pharmacy", "Pharmacy"),
+        ("consulting_room", "Consulting room"),
+        (PATIENT_CLUB, "Patient club"),
+        (OTHER, "Other (specify below)"),
+    ],
+    "inte_lists.drugdispensers": [
+        ("pharmacist", "Pharmacist"),
+        ("doctor", "Doctor"),
+        (NURSE, "Nurse"),
+        (OTHER, "Other (specify below)"),
     ],
     "inte_lists.healthadvisors": [
         (NURSE, "Nurse"),
@@ -212,7 +224,7 @@ list_data = {
     "inte_lists.drugpaysources": [
         ("own_cash", "Own cash"),
         ("insurance", "Insurance"),
-        ("club", "Patient support group / club"),
+        (PATIENT_CLUB, "Patient support group / club"),
         ("relative", "Relative or others paying"),
         (FREE_OF_CHARGE, "Free drugs from the pharmacy"),
         (OTHER, "Other pay source (specify below)"),

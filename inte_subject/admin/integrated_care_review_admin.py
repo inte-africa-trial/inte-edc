@@ -46,7 +46,16 @@ class IntegratedCareReviewAdmin(
         ),
         (
             "Part 2: Pharmacy Services",
-            {"fields": ()},
+            {
+                "fields": (
+                    "receive_prescription_today",
+                    "prescription_collection_hcf",
+                    "where_drugs_dispensed",
+                    "where_drugs_dispensed_other",
+                    "who_dispenses_drugs",
+                    "who_dispenses_drugs_other",
+                )
+            },
         ),
         (
             "Part 3: Managing Clinic Records and Appointments",
@@ -79,6 +88,8 @@ class IntegratedCareReviewAdmin(
     radio_fields = {
         "receive_health_talk_messages": admin.VERTICAL,
         "additional_health_advice": admin.VERTICAL,
+        "receive_prescription_today": admin.VERTICAL,
+        "prescription_collection_hcf": admin.VERTICAL,
         "hospital_card": admin.VERTICAL,
         "hospital_card_type": admin.VERTICAL,
         "missed_appointment": admin.VERTICAL,
@@ -94,5 +105,7 @@ class IntegratedCareReviewAdmin(
         "health_talk_presenters",
         "health_advice_advisor",
         "health_advice_focus",
+        "where_drugs_dispensed",
+        "who_dispenses_drugs",
         "which_laboratory_tests_charged_for",
     ]

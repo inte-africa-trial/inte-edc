@@ -1,4 +1,4 @@
-from edc_constants.constants import NEVER, NO, NOT_APPLICABLE, OTHER
+from edc_constants.constants import NEVER, NO, NOT_APPLICABLE, OTHER, YES
 from edc_reportable import (
     MILLIGRAMS_PER_DECILITER,
     MILLIMOLES_PER_LITER,
@@ -113,6 +113,12 @@ CHILDCARE_CHOICES = (
 GLUCOSE_UNITS = (
     (MILLIGRAMS_PER_DECILITER, MILLIGRAMS_PER_DECILITER),
     (MILLIMOLES_PER_LITER, MILLIMOLES_PER_LITER_DISPLAY),
+    (NOT_APPLICABLE, "Not applicable"),
+)
+
+HCF_PRESCRIPTION_COLLECTION_CHOICES = (
+    (YES, "Yes"),
+    (NO, "No, I buy my own drugs"),
     (NOT_APPLICABLE, "Not applicable"),
 )
 

@@ -31,6 +31,18 @@ class DmTreatments(ListModelMixin):
         verbose_name_plural = "Diabetes Treatments"
 
 
+class DrugDispensaries(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Drug Dispensaries"
+        verbose_name_plural = "Drug Dispensaries"
+
+
+class DrugDispensers(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Drug Dispensers"
+        verbose_name_plural = "Drug Dispensers"
+
+
 class HealthAdvisors(ListModelMixin):
     class Meta(ListModelMixin.Meta):
         verbose_name = "Health Advisors"
