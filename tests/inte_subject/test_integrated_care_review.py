@@ -206,7 +206,7 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
         for (field_name, valid_qs) in [
             ("health_talk_conditions", HealthTalkConditions.objects.filter(name=HIV)),
             ("health_talk_focus", HealthInterventionTypes.objects.filter(name="lifestyle")),
-            ("health_talk_presenters", HealthAdvisors.objects.filter(name="nurse")),
+            ("health_talk_presenters", HealthAdvisors.objects.filter(name=NURSE)),
         ]:
             with self.subTest(
                 f"Testing '{field_name}' is required",
@@ -231,7 +231,7 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             "receive_health_talk_messages": NO,
             "health_talk_conditions": HealthTalkConditions.objects.filter(name=HIV),
             "health_talk_focus": HealthInterventionTypes.objects.filter(name="lifestyle"),
-            "health_talk_presenters": HealthAdvisors.objects.filter(name="nurse"),
+            "health_talk_presenters": HealthAdvisors.objects.filter(name=NURSE),
         }
 
         for field_name in [
@@ -263,7 +263,7 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
         }
 
         for (field_name, valid_qs) in [
-            ("health_advice_advisor", HealthAdvisors.objects.filter(name="nurse")),
+            ("health_advice_advisor", HealthAdvisors.objects.filter(name=NURSE)),
             ("health_advice_focus", HealthInterventionTypes.objects.filter(name="lifestyle")),
         ]:
             with self.subTest(
@@ -287,7 +287,7 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             "subject_visit": self.subject_visit,
             "report_datetime": self.subject_visit.report_datetime,
             "additional_health_advice": NO,
-            "health_advice_advisor": HealthAdvisors.objects.filter(name="nurse"),
+            "health_advice_advisor": HealthAdvisors.objects.filter(name=NURSE),
             "health_advice_focus": HealthInterventionTypes.objects.filter(name="lifestyle"),
         }
 
