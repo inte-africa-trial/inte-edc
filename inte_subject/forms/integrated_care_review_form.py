@@ -17,9 +17,13 @@ class IntegratedCareReviewFormValidator(
 ):
     def clean(self):
         raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
-
         raise_if_intervention_site_without_icc_registration()
+        self.clean_health_messages_and_advice()
+        self.clean_pharmacy_services()
+        self.clean_managing_clinic_records_and_appointments()
+        self.clean_laboratory_services()
 
+    def clean_health_messages_and_advice(self):
         health_message_q = "receive_health_talk_messages"
         health_advice_q = "additional_health_advice"
         parent_dependants = [
@@ -29,7 +33,6 @@ class IntegratedCareReviewFormValidator(
             (health_advice_q, "health_advice_advisor"),
             (health_advice_q, "health_advice_focus"),
         ]
-
         for (parent_q, dependant_q) in parent_dependants:
             self.m2m_required_if(
                 response=YES,
@@ -42,16 +45,14 @@ class IntegratedCareReviewFormValidator(
                 field_other=f"{dependant_q}_other",
             )
 
-        #################################################
+    def clean_pharmacy_services(self):
         if not self.cleaned_data.get("receive_prescription_today"):
             self.raise_required(field="receive_prescription_today")
-
         self.required_if(
             YES,
             field="receive_prescription_today",
             field_required="prescription_collection_hcf",
         )
-
         for m2m_field in ["where_drugs_dispensed", "who_dispenses_drugs"]:
             self.m2m_required_if(
                 response=YES,
@@ -64,7 +65,7 @@ class IntegratedCareReviewFormValidator(
                 field_other=f"{m2m_field}_other",
             )
 
-        #################################################
+    def clean_managing_clinic_records_and_appointments(self):
         self.applicable_if(
             YES,
             field="hospital_card",
@@ -85,7 +86,7 @@ class IntegratedCareReviewFormValidator(
             other_specify_field="missed_appointment_call_who_other",
         )
 
-        #################################################
+    def clean_laboratory_services(self):
         self.applicable_if(
             YES,
             field="laboratory_tests",
