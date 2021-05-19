@@ -92,6 +92,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
         verbose_name="If YES, are you collecting it from the healthcare facility?",
         max_length=15,
         choices=HCF_PRESCRIPTION_COLLECTION_CHOICES,
+        default=NOT_APPLICABLE,
     )
 
     where_drugs_dispensed = models.ManyToManyField(
