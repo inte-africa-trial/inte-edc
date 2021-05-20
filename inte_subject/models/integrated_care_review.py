@@ -11,12 +11,12 @@ from inte_lists.models import (
     HealthTalkConditions,
     LaboratoryTests,
 )
-from inte_subject.choices import (
+
+from ..choices import (
     CARD_TYPE_CHOICES,
     HCF_PRESCRIPTION_COLLECTION_CHOICES,
     MISSED_VISIT_CALLER_CHOICES,
 )
-
 from ..model_mixins import CrfModelMixin
 
 
@@ -105,7 +105,9 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
 
     who_dispenses_drugs = models.ManyToManyField(
         DrugDispensers,
-        verbose_name="If YES, who in the healthcare facility is responsible for dispensing your drugs?",
+        verbose_name=(
+            "If YES, who in the healthcare facility is responsible for dispensing your drugs?"
+        ),
         blank=True,
     )
 
@@ -132,7 +134,9 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     missed_appointment_call = models.CharField(
-        verbose_name="If YES, did you get a phone call from the clinic about the missed visit?",
+        verbose_name=(
+            "If YES, did you get a phone call from the clinic about the missed visit?"
+        ),
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
