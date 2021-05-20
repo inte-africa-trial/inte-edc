@@ -4,8 +4,6 @@ from edc_appointment.constants import COMPLETE_APPT, INCOMPLETE_APPT
 from edc_appointment.creators import UnscheduledAppointmentCreator
 from edc_constants.choices import YES_NO_DONT_KNOW
 from edc_constants.constants import COMPLETE, HIV, NO, NOT_APPLICABLE, OTHER, YES
-from edc_metadata import REQUIRED
-from edc_metadata.models import CrfMetadata
 from edc_utils import get_utcnow
 from edc_visit_schedule.constants import MONTH6, MONTH12
 from edc_visit_tracking.constants import UNSCHEDULED
@@ -44,16 +42,6 @@ class TestIntegratedCareReview(InteTestCaseMixin, TestCase):
         self.subject_visit = self.get_subject_visit(
             subject_screening=self.subject_screening,
             subject_consent=self.subject_consent,
-        )
-
-    # TODO: Extract to InteTestCaseMixin
-    @staticmethod
-    def get_crf_metadata(subject_visit):
-        return CrfMetadata.objects.filter(
-            subject_identifier=subject_visit.subject_identifier,
-            visit_code=subject_visit.visit_code,
-            visit_code_sequence=subject_visit.visit_code_sequence,
-            entry_status=REQUIRED,
         )
 
     @staticmethod
