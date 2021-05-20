@@ -83,26 +83,26 @@ class IntegratedCareReviewAdmin(CrfModelAdminMixin, SimpleHistoryAdmin):
     )
 
     radio_fields = {
-        "receive_health_talk_messages": admin.VERTICAL,
         "additional_health_advice": admin.VERTICAL,
-        "receive_rx_today": admin.VERTICAL,
-        "rx_collection_hcf": admin.VERTICAL,
         "hospital_card": admin.VERTICAL,
         "hospital_card_type": admin.VERTICAL,
+        "lab_tests": admin.VERTICAL,
         "missed_appt": admin.VERTICAL,
         "missed_appt_call": admin.VERTICAL,
         "missed_appt_call_who": admin.VERTICAL,
-        "lab_tests": admin.VERTICAL,
         "pay_for_lab_tests": admin.VERTICAL,
+        "receive_health_talk_messages": admin.VERTICAL,
+        "receive_rx_today": admin.VERTICAL,
+        "rx_collection_hcf": admin.VERTICAL,
     }
 
     filter_horizontal = [
+        "health_advice_advisor",
+        "health_advice_focus",
         "health_talk_conditions",
         "health_talk_focus",
         "health_talk_presenters",
-        "health_advice_advisor",
-        "health_advice_focus",
         "where_rx_dispensed",
-        "who_dispenses_rx",
         "which_lab_tests_charged_for",
+        "who_dispenses_rx",
     ]
