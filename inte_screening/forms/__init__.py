@@ -1,3 +1,4 @@
 from .daily_closing_log_form import DailyClosingLogForm
+from .daily_closing_log_revised_form import DailyClosingLogRevisedForm
 from .subject_refusal_form import SubjectRefusalForm
 from .subject_screening_form import SubjectScreeningForm

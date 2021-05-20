@@ -28,6 +28,7 @@ auditor += [
     "inte_prn.view_unblindingrequestoruser",
     "inte_prn.view_unblindingrevieweruser",
     "inte_screening.view_dailyclosinglog",
+    "inte_screening.view_dailyclosinglogrevised",
     "inte_screening.view_historicaldailyclosinglog",
     "inte_screening.view_historicalsubjectrefusal",
     "inte_screening.view_historicalsubjectscreening",
