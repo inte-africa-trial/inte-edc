@@ -46,17 +46,17 @@ class IntegratedCareReviewFormValidator(
             )
 
     def clean_pharmacy_services(self):
-        if not self.cleaned_data.get("receive_prescription_today"):
-            self.raise_required(field="receive_prescription_today")
+        if not self.cleaned_data.get("receive_rx_today"):
+            self.raise_required(field="receive_rx_today")
         self.required_if(
             YES,
-            field="receive_prescription_today",
-            field_required="prescription_collection_hcf",
+            field="receive_rx_today",
+            field_required="rx_collection_hcf",
         )
-        for m2m_field in ["where_drugs_dispensed", "who_dispenses_drugs"]:
+        for m2m_field in ["where_rx_dispensed", "who_dispenses_rx"]:
             self.m2m_required_if(
                 response=YES,
-                field="prescription_collection_hcf",
+                field="rx_collection_hcf",
                 m2m_field=m2m_field,
             )
             self.m2m_other_specify(
@@ -73,34 +73,34 @@ class IntegratedCareReviewFormValidator(
         )
         self.applicable_if(
             YES,
-            field="missed_appointment",
-            field_applicable="missed_appointment_call",
+            field="missed_appt",
+            field_applicable="missed_appt_call",
         )
         self.applicable_if(
             YES,
-            field="missed_appointment_call",
-            field_applicable="missed_appointment_call_who",
+            field="missed_appt_call",
+            field_applicable="missed_appt_call_who",
         )
         self.validate_other_specify(
-            field="missed_appointment_call_who",
-            other_specify_field="missed_appointment_call_who_other",
+            field="missed_appt_call_who",
+            other_specify_field="missed_appt_call_who_other",
         )
 
     def clean_laboratory_services(self):
         self.applicable_if(
             YES,
-            field="laboratory_tests",
-            field_applicable="pay_for_laboratory_tests",
+            field="lab_tests",
+            field_applicable="pay_for_lab_tests",
         )
         self.m2m_required_if(
             response=YES,
-            field="pay_for_laboratory_tests",
-            m2m_field="which_laboratory_tests_charged_for",
+            field="pay_for_lab_tests",
+            m2m_field="which_lab_tests_charged_for",
         )
         self.m2m_other_specify(
             OTHER,
-            m2m_field="which_laboratory_tests_charged_for",
-            field_other="which_laboratory_tests_charged_for_other",
+            m2m_field="which_lab_tests_charged_for",
+            field_other="which_lab_tests_charged_for_other",
         )
 
 

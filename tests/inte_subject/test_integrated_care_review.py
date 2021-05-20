@@ -304,19 +304,19 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": YES,
             "additional_health_advice": YES,
-            "receive_prescription_today": YES,
-            "prescription_collection_hcf": YES,
-            "missed_appointment": YES,
-            "missed_appointment_call": YES,
-            "laboratory_tests": YES,
-            "pay_for_laboratory_tests": YES,
+            "receive_rx_today": YES,
+            "rx_collection_hcf": YES,
+            "missed_appt": YES,
+            "missed_appt_call": YES,
+            "lab_tests": YES,
+            "pay_for_lab_tests": YES,
         }
         other_condition = HealthTalkConditions.objects.filter(name=OTHER)
         other_category = HealthInterventionTypes.objects.filter(name=OTHER)
         other_presenter = HealthAdvisors.objects.filter(name=OTHER)
         other_dispensary = DrugDispensaries.objects.filter(name=OTHER)
         other_dispenser = DrugDispensers.objects.filter(name=OTHER)
-        other_laboratory_test = LaboratoryTests.objects.filter(name=OTHER)
+        other_lab_test = LaboratoryTests.objects.filter(name=OTHER)
 
         for (field_name, valid_qs) in [
             ("health_talk_conditions", other_condition),
@@ -324,10 +324,10 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             ("health_talk_presenters", other_presenter),
             ("health_advice_advisor", other_presenter),
             ("health_advice_focus", other_category),
-            ("where_drugs_dispensed", other_dispensary),
-            ("who_dispenses_drugs", other_dispenser),
-            ("missed_appointment_call_who", OTHER),
-            ("which_laboratory_tests_charged_for", other_laboratory_test),
+            ("where_rx_dispensed", other_dispensary),
+            ("who_dispenses_rx", other_dispenser),
+            ("missed_appt_call_who", OTHER),
+            ("which_lab_tests_charged_for", other_lab_test),
         ]:
             # Select 'other', then test it's required
             cleaned_data.update({field_name: valid_qs})
@@ -348,7 +348,7 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             # Complete 'other' field, and move onto next test
             cleaned_data.update({field_name_other: "Some other value"})
 
-    def test_receive_prescription_today_required(self):
+    def test_receive_rx_today_required(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
             "report_datetime": self.subject_visit.report_datetime,
@@ -356,74 +356,74 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             "additional_health_advice": NO,
         }
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertIn("receive_prescription_today", form_validator._errors)
+        self.assertIn("receive_rx_today", form_validator._errors)
         self.assertIn(
             "This field is required",
-            str(form_validator._errors.get("receive_prescription_today")),
+            str(form_validator._errors.get("receive_rx_today")),
         )
         self.assertEqual(len(form_validator._errors), 1, form_validator._errors)
 
         # Complete field, and confirm no longer a listed error
-        cleaned_data.update({"receive_prescription_today": NO})
+        cleaned_data.update({"receive_rx_today": NO})
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertNotIn("receive_prescription_today", form_validator._errors)
+        self.assertNotIn("receive_rx_today", form_validator._errors)
 
-    def test_prescription_collection_hcf_required_if_receive_prescription_today(self):
+    def test_rx_collection_hcf_required_if_receive_rx_today(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": NO,
             "additional_health_advice": NO,
-            "receive_prescription_today": YES,
+            "receive_rx_today": YES,
         }
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertIn("prescription_collection_hcf", form_validator._errors)
+        self.assertIn("rx_collection_hcf", form_validator._errors)
         self.assertIn(
             "This field is required",
-            str(form_validator._errors.get("prescription_collection_hcf")),
+            str(form_validator._errors.get("rx_collection_hcf")),
         )
 
         # Test no errors when q answered
-        cleaned_data.update({"prescription_collection_hcf": YES})
+        cleaned_data.update({"rx_collection_hcf": YES})
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertNotIn("prescription_collection_hcf", form_validator._errors)
+        self.assertNotIn("rx_collection_hcf", form_validator._errors)
 
-    def test_prescription_collection_hcf_not_applicable_if_receive_no_prescription_today(self):
+    def test_rx_collection_hcf_not_applicable_if_receive_no_prescription_today(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": NO,
             "additional_health_advice": NO,
-            "receive_prescription_today": NO,
-            "prescription_collection_hcf": NOT_APPLICABLE,
+            "receive_rx_today": NO,
+            "rx_collection_hcf": NOT_APPLICABLE,
         }
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertNotIn("prescription_collection_hcf", form_validator._errors)
+        self.assertNotIn("rx_collection_hcf", form_validator._errors)
 
         # Test raises error when not required, but IS selected
         for answer, _ in HCF_PRESCRIPTION_COLLECTION_CHOICES:
             if answer != NOT_APPLICABLE:
-                cleaned_data.update({"prescription_collection_hcf": answer})
+                cleaned_data.update({"rx_collection_hcf": answer})
                 form_validator = self.validate_form_validator(cleaned_data)
-                self.assertIn("prescription_collection_hcf", form_validator._errors)
+                self.assertIn("rx_collection_hcf", form_validator._errors)
                 self.assertIn(
                     "This field is not required",
-                    str(form_validator._errors.get("prescription_collection_hcf")),
+                    str(form_validator._errors.get("rx_collection_hcf")),
                 )
 
-    def test_follow_up_questions_required_if_prescription_collection_hcf(self):
+    def test_follow_up_questions_required_if_rx_collection_hcf(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": NO,
             "additional_health_advice": NO,
-            "receive_prescription_today": YES,
-            "prescription_collection_hcf": YES,
+            "receive_rx_today": YES,
+            "rx_collection_hcf": YES,
         }
 
         for (field_name, valid_qs) in [
-            ("where_drugs_dispensed", DrugDispensaries.objects.filter(name="pharmacy")),
-            ("who_dispenses_drugs", DrugDispensers.objects.filter(name="pharmacist")),
+            ("where_rx_dispensed", DrugDispensaries.objects.filter(name="pharmacy")),
+            ("who_dispenses_rx", DrugDispensers.objects.filter(name="pharmacist")),
         ]:
             with self.subTest(
                 f"Testing '{field_name}' is required",
@@ -441,21 +441,21 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
                 # Complete field, and move onto testing next one is required
                 cleaned_data.update({field_name: valid_qs})
 
-    def test_follow_up_questions_not_required_if_not_prescription_collection_hcf(self):
+    def test_follow_up_questions_not_required_if_not_rx_collection_hcf(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": NO,
             "additional_health_advice": NO,
-            "receive_prescription_today": YES,
-            "prescription_collection_hcf": NO,
-            "where_drugs_dispensed": DrugDispensaries.objects.filter(name="pharmacy"),
-            "who_dispenses_drugs": DrugDispensers.objects.filter(name="pharmacist"),
+            "receive_rx_today": YES,
+            "rx_collection_hcf": NO,
+            "where_rx_dispensed": DrugDispensaries.objects.filter(name="pharmacy"),
+            "who_dispenses_rx": DrugDispensers.objects.filter(name="pharmacist"),
         }
 
         for field_name in [
-            "where_drugs_dispensed",
-            "who_dispenses_drugs",
+            "where_rx_dispensed",
+            "who_dispenses_rx",
         ]:
             with self.subTest(
                 f"Testing '{field_name}' is not required",
@@ -478,7 +478,7 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": NO,
             "additional_health_advice": NO,
-            "receive_prescription_today": NO,
+            "receive_rx_today": NO,
             "hospital_card": YES,
             "hospital_card_type": NOT_APPLICABLE,
         }
@@ -500,7 +500,7 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": NO,
             "additional_health_advice": NO,
-            "receive_prescription_today": NO,
+            "receive_rx_today": NO,
         }
         for answer, _ in YES_NO_DONT_KNOW:
             if answer != YES:
@@ -523,49 +523,49 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
                     str(form_validator._errors.get("hospital_card_type")),
                 )
 
-    def test_missed_appointment_call_applicable_if_has_missed_appointment(self):
+    def test_missed_appt_call_applicable_if_has_missed_appt(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": NO,
             "additional_health_advice": NO,
-            "receive_prescription_today": NO,
+            "receive_rx_today": NO,
             "hospital_card": NO,
-            "missed_appointment": YES,
-            "missed_appointment_call": NOT_APPLICABLE,
+            "missed_appt": YES,
+            "missed_appt_call": NOT_APPLICABLE,
         }
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertIn("missed_appointment_call", form_validator._errors)
+        self.assertIn("missed_appt_call", form_validator._errors)
         self.assertIn(
             "This field is applicable",
-            str(form_validator._errors.get("missed_appointment_call")),
+            str(form_validator._errors.get("missed_appt_call")),
         )
 
         # Test no errors when has missed appointment, and answered call q
-        cleaned_data.update({"missed_appointment": YES, "missed_appointment_call": YES})
+        cleaned_data.update({"missed_appt": YES, "missed_appt_call": YES})
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertNotIn("missed_appointment_call", form_validator._errors)
+        self.assertNotIn("missed_appt_call", form_validator._errors)
 
-    def test_missed_appointment_call_not_applicable_if_not_missed_appointment(self):
+    def test_missed_appt_call_not_applicable_if_not_missed_appt(self):
         cleaned_data = {
             "subject_visit": self.subject_visit,
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": NO,
             "additional_health_advice": NO,
-            "receive_prescription_today": NO,
+            "receive_rx_today": NO,
             "hospital_card": NO,
-            "missed_appointment": NO,
+            "missed_appt": NO,
         }
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertNotIn("missed_appointment_call", form_validator._errors)
+        self.assertNotIn("missed_appt_call", form_validator._errors)
 
         # Test raises error if completed when not required
-        cleaned_data.update({"missed_appointment": NO, "missed_appointment_call": NO})
+        cleaned_data.update({"missed_appt": NO, "missed_appt_call": NO})
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertIn("missed_appointment_call", form_validator._errors)
+        self.assertIn("missed_appt_call", form_validator._errors)
         self.assertIn(
             "This field is not applicable",
-            str(form_validator._errors.get("missed_appointment_call")),
+            str(form_validator._errors.get("missed_appt_call")),
         )
 
     def test_who_called_applicable_if_received_missed_visit_call(self):
@@ -574,25 +574,23 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": NO,
             "additional_health_advice": NO,
-            "receive_prescription_today": NO,
+            "receive_rx_today": NO,
             "hospital_card": NO,
-            "missed_appointment": YES,
-            "missed_appointment_call": YES,
-            "missed_appointment_call_who": NOT_APPLICABLE,
+            "missed_appt": YES,
+            "missed_appt_call": YES,
+            "missed_appt_call_who": NOT_APPLICABLE,
         }
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertIn("missed_appointment_call_who", form_validator._errors)
+        self.assertIn("missed_appt_call_who", form_validator._errors)
         self.assertIn(
             "This field is applicable",
-            str(form_validator._errors.get("missed_appointment_call_who")),
+            str(form_validator._errors.get("missed_appt_call_who")),
         )
 
         # Test no errors when has missed appointment call, and answered who q
-        cleaned_data.update(
-            {"missed_appointment_call": YES, "missed_appointment_call_who": NURSE}
-        )
+        cleaned_data.update({"missed_appt_call": YES, "missed_appt_call_who": NURSE})
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertNotIn("missed_appointment_call_who", form_validator._errors)
+        self.assertNotIn("missed_appt_call_who", form_validator._errors)
 
     def test_who_called_not_applicable_if_not_received_missed_visit_call(self):
         cleaned_data = {
@@ -600,23 +598,21 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": NO,
             "additional_health_advice": NO,
-            "receive_prescription_today": NO,
+            "receive_rx_today": NO,
             "hospital_card": NO,
-            "missed_appointment": YES,
-            "missed_appointment_call": NO,
+            "missed_appt": YES,
+            "missed_appt_call": NO,
         }
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertNotIn("missed_appointment_call_who", form_validator._errors)
+        self.assertNotIn("missed_appt_call_who", form_validator._errors)
 
         # Test raises errors if completed when not required
-        cleaned_data.update(
-            {"missed_appointment_call": NO, "missed_appointment_call_who": NURSE}
-        )
+        cleaned_data.update({"missed_appt_call": NO, "missed_appt_call_who": NURSE})
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertIn("missed_appointment_call_who", form_validator._errors)
+        self.assertIn("missed_appt_call_who", form_validator._errors)
         self.assertIn(
             "This field is not applicable",
-            str(form_validator._errors.get("missed_appointment_call_who")),
+            str(form_validator._errors.get("missed_appt_call_who")),
         )
 
     def test_pay_for_lab_test_applicable_if_had_lab_tests(self):
@@ -625,23 +621,23 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": NO,
             "additional_health_advice": NO,
-            "receive_prescription_today": NO,
+            "receive_rx_today": NO,
             "hospital_card": NO,
-            "missed_appointment": NO,
-            "laboratory_tests": YES,
-            "pay_for_laboratory_tests": NOT_APPLICABLE,
+            "missed_appt": NO,
+            "lab_tests": YES,
+            "pay_for_lab_tests": NOT_APPLICABLE,
         }
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertIn("pay_for_laboratory_tests", form_validator._errors)
+        self.assertIn("pay_for_lab_tests", form_validator._errors)
         self.assertIn(
             "This field is applicable",
-            str(form_validator._errors.get("pay_for_laboratory_tests")),
+            str(form_validator._errors.get("pay_for_lab_tests")),
         )
 
         # Test no errors when had lab tests and pay for q answered
-        cleaned_data.update({"laboratory_tests": YES, "pay_for_laboratory_tests": NO})
+        cleaned_data.update({"lab_tests": YES, "pay_for_lab_tests": NO})
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertNotIn("pay_for_laboratory_tests", form_validator._errors)
+        self.assertNotIn("pay_for_lab_tests", form_validator._errors)
 
     def test_pay_for_lab_test_not_applicable_if_not_had_lab_tests(self):
         cleaned_data = {
@@ -649,22 +645,22 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": NO,
             "additional_health_advice": NO,
-            "receive_prescription_today": NO,
+            "receive_rx_today": NO,
             "hospital_card": NO,
-            "missed_appointment": NO,
-            "laboratory_tests": NO,
-            "pay_for_laboratory_tests": NOT_APPLICABLE,
+            "missed_appt": NO,
+            "lab_tests": NO,
+            "pay_for_lab_tests": NOT_APPLICABLE,
         }
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertNotIn("pay_for_laboratory_tests", form_validator._errors)
+        self.assertNotIn("pay_for_lab_tests", form_validator._errors)
 
         # Test raises error if completed when not required
-        cleaned_data.update({"laboratory_tests": NO, "pay_for_laboratory_tests": NO})
+        cleaned_data.update({"lab_tests": NO, "pay_for_lab_tests": NO})
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertIn("pay_for_laboratory_tests", form_validator._errors)
+        self.assertIn("pay_for_lab_tests", form_validator._errors)
         self.assertIn(
             "This field is not applicable",
-            str(form_validator._errors.get("pay_for_laboratory_tests")),
+            str(form_validator._errors.get("pay_for_lab_tests")),
         )
 
     def test_follow_up_questions_required_if_paid_for_tests(self):
@@ -673,17 +669,17 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": NO,
             "additional_health_advice": NO,
-            "receive_prescription_today": NO,
+            "receive_rx_today": NO,
             "hospital_card": NO,
-            "missed_appointment": NO,
-            "laboratory_tests": YES,
-            "pay_for_laboratory_tests": YES,
+            "missed_appt": NO,
+            "lab_tests": YES,
+            "pay_for_lab_tests": YES,
         }
         form_validator = self.validate_form_validator(cleaned_data)
-        self.assertIn("which_laboratory_tests_charged_for", form_validator._errors)
+        self.assertIn("which_lab_tests_charged_for", form_validator._errors)
         self.assertIn(
             "This field is required",
-            str(form_validator._errors.get("which_laboratory_tests_charged_for")),
+            str(form_validator._errors.get("which_lab_tests_charged_for")),
         )
         self.assertEqual(len(form_validator._errors), 1, form_validator._errors)
 
@@ -693,33 +689,33 @@ class TestIntegratedCareReviewFormValidation(InteTestCaseMixin, TestCase):
             "report_datetime": self.subject_visit.report_datetime,
             "receive_health_talk_messages": NO,
             "additional_health_advice": NO,
-            "receive_prescription_today": NO,
+            "receive_rx_today": NO,
             "hospital_card": NO,
-            "missed_appointment": NO,
-            "which_laboratory_tests_charged_for": LaboratoryTests.objects.filter(
+            "missed_appt": NO,
+            "which_lab_tests_charged_for": LaboratoryTests.objects.filter(
                 name="blood_pressure_checks"
             ),
         }
 
         for cd_update in [
             {
-                "laboratory_tests": YES,
-                "pay_for_laboratory_tests": NO,
+                "lab_tests": YES,
+                "pay_for_lab_tests": NO,
             },
             {
-                "laboratory_tests": NO,
-                "pay_for_laboratory_tests": NOT_APPLICABLE,
+                "lab_tests": NO,
+                "pay_for_lab_tests": NOT_APPLICABLE,
             },
         ]:
             cleaned_data.update(cd_update)
 
             with self.subTest(
-                f"Testing 'which_laboratory_tests_charged_for' not required for {cd_update}",
+                f"Testing 'which_lab_tests_charged_for' not required for {cd_update}",
             ):
                 form_validator = self.validate_form_validator(cleaned_data)
-                self.assertIn("which_laboratory_tests_charged_for", form_validator._errors)
+                self.assertIn("which_lab_tests_charged_for", form_validator._errors)
                 self.assertIn(
                     "This field is not required",
-                    str(form_validator._errors.get("which_laboratory_tests_charged_for")),
+                    str(form_validator._errors.get("which_lab_tests_charged_for")),
                 )
                 self.assertEqual(len(form_validator._errors), 1, form_validator._errors)

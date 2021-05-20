@@ -45,12 +45,12 @@ class IntegratedCareReviewAdmin(CrfModelAdminMixin, SimpleHistoryAdmin):
             "Part 2: Pharmacy Services",
             {
                 "fields": (
-                    "receive_prescription_today",
-                    "prescription_collection_hcf",
-                    "where_drugs_dispensed",
-                    "where_drugs_dispensed_other",
-                    "who_dispenses_drugs",
-                    "who_dispenses_drugs_other",
+                    "receive_rx_today",
+                    "rx_collection_hcf",
+                    "where_rx_dispensed",
+                    "where_rx_dispensed_other",
+                    "who_dispenses_rx",
+                    "who_dispenses_rx_other",
                 )
             },
         ),
@@ -60,10 +60,10 @@ class IntegratedCareReviewAdmin(CrfModelAdminMixin, SimpleHistoryAdmin):
                 "fields": (
                     "hospital_card",
                     "hospital_card_type",
-                    "missed_appointment",
-                    "missed_appointment_call",
-                    "missed_appointment_call_who",
-                    "missed_appointment_call_who_other",
+                    "missed_appt",
+                    "missed_appt_call",
+                    "missed_appt_call_who",
+                    "missed_appt_call_who_other",
                 )
             },
         ),
@@ -71,10 +71,10 @@ class IntegratedCareReviewAdmin(CrfModelAdminMixin, SimpleHistoryAdmin):
             "Part 4: Laboratory Services",
             {
                 "fields": (
-                    "laboratory_tests",
-                    "pay_for_laboratory_tests",
-                    "which_laboratory_tests_charged_for",
-                    "which_laboratory_tests_charged_for_other",
+                    "lab_tests",
+                    "pay_for_lab_tests",
+                    "which_lab_tests_charged_for",
+                    "which_lab_tests_charged_for_other",
                 )
             },
         ),
@@ -85,15 +85,15 @@ class IntegratedCareReviewAdmin(CrfModelAdminMixin, SimpleHistoryAdmin):
     radio_fields = {
         "receive_health_talk_messages": admin.VERTICAL,
         "additional_health_advice": admin.VERTICAL,
-        "receive_prescription_today": admin.VERTICAL,
-        "prescription_collection_hcf": admin.VERTICAL,
+        "receive_rx_today": admin.VERTICAL,
+        "rx_collection_hcf": admin.VERTICAL,
         "hospital_card": admin.VERTICAL,
         "hospital_card_type": admin.VERTICAL,
-        "missed_appointment": admin.VERTICAL,
-        "missed_appointment_call": admin.VERTICAL,
-        "missed_appointment_call_who": admin.VERTICAL,
-        "laboratory_tests": admin.VERTICAL,
-        "pay_for_laboratory_tests": admin.VERTICAL,
+        "missed_appt": admin.VERTICAL,
+        "missed_appt_call": admin.VERTICAL,
+        "missed_appt_call_who": admin.VERTICAL,
+        "lab_tests": admin.VERTICAL,
+        "pay_for_lab_tests": admin.VERTICAL,
     }
 
     filter_horizontal = [
@@ -102,7 +102,7 @@ class IntegratedCareReviewAdmin(CrfModelAdminMixin, SimpleHistoryAdmin):
         "health_talk_presenters",
         "health_advice_advisor",
         "health_advice_focus",
-        "where_drugs_dispensed",
-        "who_dispenses_drugs",
-        "which_laboratory_tests_charged_for",
+        "where_rx_dispensed",
+        "who_dispenses_rx",
+        "which_lab_tests_charged_for",
     ]

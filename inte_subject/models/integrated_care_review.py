@@ -82,28 +82,28 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     health_advice_focus_other = edc_models.OtherCharField()
 
     #################################################
-    receive_prescription_today = models.CharField(
+    receive_rx_today = models.CharField(
         verbose_name="Did you receive a drug prescription today?",
         max_length=15,
         choices=YES_NO,
     )
 
-    prescription_collection_hcf = models.CharField(
+    rx_collection_hcf = models.CharField(
         verbose_name="If YES, are you collecting it from the healthcare facility?",
         max_length=15,
         choices=HCF_PRESCRIPTION_COLLECTION_CHOICES,
         default=NOT_APPLICABLE,
     )
 
-    where_drugs_dispensed = models.ManyToManyField(
+    where_rx_dispensed = models.ManyToManyField(
         DrugDispensaries,
         verbose_name="If YES, where in the healthcare facility are your drugs dispensed from?",
         blank=True,
     )
 
-    where_drugs_dispensed_other = edc_models.OtherCharField()
+    where_rx_dispensed_other = edc_models.OtherCharField()
 
-    who_dispenses_drugs = models.ManyToManyField(
+    who_dispenses_rx = models.ManyToManyField(
         DrugDispensers,
         verbose_name=(
             "If YES, who in the healthcare facility is responsible for dispensing your drugs?"
@@ -111,7 +111,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
         blank=True,
     )
 
-    who_dispenses_drugs_other = edc_models.OtherCharField()
+    who_dispenses_rx_other = edc_models.OtherCharField()
 
     #################################################
     hospital_card = models.CharField(
@@ -127,13 +127,13 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
         default=NOT_APPLICABLE,
     )
 
-    missed_appointment = models.CharField(
+    missed_appt = models.CharField(
         verbose_name="Have you missed an appointment since you started attending this clinic?",
         max_length=15,
         choices=YES_NO,
     )
 
-    missed_appointment_call = models.CharField(
+    missed_appt_call = models.CharField(
         verbose_name=(
             "If YES, did you get a phone call from the clinic about the missed visit?"
         ),
@@ -142,36 +142,36 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
         default=NOT_APPLICABLE,
     )
 
-    missed_appointment_call_who = models.CharField(
+    missed_appt_call_who = models.CharField(
         verbose_name="If YES, who called you about the missed visit?",
         max_length=15,
         choices=MISSED_VISIT_CALLER_CHOICES,
         default=NOT_APPLICABLE,
     )
 
-    missed_appointment_call_who_other = edc_models.OtherCharField()
+    missed_appt_call_who_other = edc_models.OtherCharField()
 
     #################################################
-    laboratory_tests = models.CharField(
+    lab_tests = models.CharField(
         verbose_name="Have you done any laboratory tests since you started in this clinic?",
         max_length=15,
         choices=YES_NO,
     )
 
-    pay_for_laboratory_tests = models.CharField(
+    pay_for_lab_tests = models.CharField(
         verbose_name="If YES, did you pay for any of the tests?",
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
     )
 
-    which_laboratory_tests_charged_for = models.ManyToManyField(
+    which_lab_tests_charged_for = models.ManyToManyField(
         LaboratoryTests,
         verbose_name="If YES, what tests are you charged for?",
         blank=True,
     )
 
-    which_laboratory_tests_charged_for_other = edc_models.OtherCharField()
+    which_lab_tests_charged_for_other = edc_models.OtherCharField()
 
     class Meta(CrfModelMixin.Meta, edc_models.BaseUuidModel.Meta):
         verbose_name = "Integrated Care Review"
