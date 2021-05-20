@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django_audit_fields.admin import audit_fieldset_tuple
 from edc_crf.admin import crf_status_fieldset_tuple
-from edc_form_label import FormLabelModelAdminMixin
 from edc_model_admin import SimpleHistoryAdmin
 
 from ..admin_site import inte_subject_admin
@@ -11,9 +10,7 @@ from .modeladmin_mixins import CrfModelAdminMixin
 
 
 @admin.register(IntegratedCareReview, site=inte_subject_admin)
-class IntegratedCareReviewAdmin(
-    CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHistoryAdmin
-):
+class IntegratedCareReviewAdmin(CrfModelAdminMixin, SimpleHistoryAdmin):
 
     form = IntegratedCareReviewForm
     fieldsets = (
