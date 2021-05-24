@@ -32,7 +32,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     health_talk_conditions = models.ManyToManyField(
         HealthTalkConditions,
         related_name="+",
-        verbose_name="If YES, what disease conditions were discussed during the health talks?",
+        verbose_name="If YES, what disease conditions were discussed during the health talk?",
         blank=True,
     )
 
