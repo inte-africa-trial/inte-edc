@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django_audit_fields.admin import audit_fieldset_tuple
-from edc_model_admin import ModelAdminFormInstructionsMixin, TemplatesModelAdminMixin
+from edc_model_admin.dashboard import ModelAdminSubjectDashboardMixin
 from edc_model_admin.model_admin_simple_history import SimpleHistoryAdmin
 
 from ..admin_site import inte_screening_admin
@@ -10,14 +10,12 @@ from ..models import DailyClosingLog
 
 
 @admin.register(DailyClosingLog, site=inte_screening_admin)
-class DailyClosingLogAdmin(
-    TemplatesModelAdminMixin, ModelAdminFormInstructionsMixin, SimpleHistoryAdmin
-):
+class DailyClosingLogAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin):
     form = DailyClosingLogForm
     date_hierarchy = "log_date"
     show_object_tools = True
     additional_instructions = mark_safe(
-        "<font color='orange'><B>This form should be completed "
+        "<font color='orange'><B>This form should be completed once per site "
         "at the end of each clinic day.</B></font>"
     )
 
