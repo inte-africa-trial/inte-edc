@@ -9,6 +9,7 @@ from .mixins import (
     DiagnosisFormValidatorMixin,
     HealthEconomicsFormValidatorMixin,
     raise_if_clinical_review_does_not_exist,
+    raise_if_intervention_site_without_icc_registration,
 )
 
 
@@ -21,7 +22,7 @@ class HealthEconomicsRevisedFormValidator(
     def clean(self):
         raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
 
-        self.require_icc_registration()
+        raise_if_intervention_site_without_icc_registration()
 
         self.clean_education()
 

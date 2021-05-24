@@ -1,7 +1,5 @@
 from django.test import TestCase
 from edc_appointment.constants import INCOMPLETE_APPT
-from edc_metadata import REQUIRED
-from edc_metadata.models import CrfMetadata
 from edc_utils import get_utcnow
 from model_bakery import baker
 
@@ -24,20 +22,11 @@ class TestFamilyHistory(InteTestCaseMixin, TestCase):
         )
 
     def test_not_required_at_baseline(self):
-        crfs = CrfMetadata.objects.filter(
-            subject_identifier=self.subject_visit.subject_identifier,
-            visit_code=self.subject_visit.visit_code,
-            visit_code_sequence=self.subject_visit.visit_code_sequence,
-            entry_status=REQUIRED,
-        )
+        crfs = self.get_crf_metadata(self.subject_visit)
         self.assertNotIn("inte_subject.familyhistory", [o.model for o in crfs.all()])
         self.subject_visit.save()
-        crfs = CrfMetadata.objects.filter(
-            subject_identifier=self.subject_visit.subject_identifier,
-            visit_code=self.subject_visit.visit_code,
-            visit_code_sequence=self.subject_visit.visit_code_sequence,
-            entry_status=REQUIRED,
-        )
+
+        crfs = self.get_crf_metadata(self.subject_visit)
         self.assertNotIn("inte_subject.familyhistory", [o.model for o in crfs.all()])
 
     def test_required_at_next_visit(self):
@@ -51,12 +40,7 @@ class TestFamilyHistory(InteTestCaseMixin, TestCase):
             visit_code=self.subject_visit.appointment.next.visit_code,
         )
 
-        crfs = CrfMetadata.objects.filter(
-            subject_identifier=subject_visit.subject_identifier,
-            visit_code=subject_visit.visit_code,
-            visit_code_sequence=subject_visit.visit_code_sequence,
-            entry_status=REQUIRED,
-        )
+        crfs = self.get_crf_metadata(subject_visit)
         self.assertIn("inte_subject.familyhistory", [o.model for o in crfs.all()])
 
     def test_required_at_next_visit_if_not_completed_previously(self):
@@ -83,10 +67,5 @@ class TestFamilyHistory(InteTestCaseMixin, TestCase):
             subject_consent=self.subject_consent,
             visit_code=subject_visit.appointment.next.visit_code,
         )
-        crfs = CrfMetadata.objects.filter(
-            subject_identifier=subject_visit.subject_identifier,
-            visit_code=subject_visit.visit_code,
-            visit_code_sequence=subject_visit.visit_code_sequence,
-            entry_status=REQUIRED,
-        )
+        crfs = self.get_crf_metadata(subject_visit)
         self.assertNotIn("inte_subject.familyhistory", [o.model for o in crfs.all()])

@@ -12,8 +12,6 @@ from edc_constants.constants import (
     OTHER,
     YES,
 )
-from edc_metadata import REQUIRED
-from edc_metadata.models import CrfMetadata
 from edc_visit_schedule.constants import MONTH6
 from model_bakery import baker
 from pytz import UTC
@@ -55,15 +53,6 @@ class TestHealthEconomicsRevisionRequired(InteTestCaseMixin, TestCase):
         baker.make(
             "hivinitialreview",
             subject_visit=self.subject_visit,
-        )
-
-    @staticmethod
-    def get_crf_metadata(subject_visit):
-        return CrfMetadata.objects.filter(
-            subject_identifier=subject_visit.subject_identifier,
-            visit_code=subject_visit.visit_code,
-            visit_code_sequence=subject_visit.visit_code_sequence,
-            entry_status=REQUIRED,
         )
 
     def test_he_rev_one_required_at_6m_by_date(self):
@@ -525,24 +514,15 @@ class TestHealthEconomicsRevisedFormValidator(InteTestCaseMixin, TestCase):
         self.assertDictEqual({}, form_validator._errors)
 
     def test_not_required_at_baseline(self):
-        crfs = CrfMetadata.objects.filter(
-            subject_identifier=self.subject_visit.subject_identifier,
-            visit_code=self.subject_visit.visit_code,
-            visit_code_sequence=self.subject_visit.visit_code_sequence,
-            entry_status=REQUIRED,
-        )
+        crfs = self.get_crf_metadata(self.subject_visit)
         self.assertNotIn("inte_subject.healtheconomics", [o.model for o in crfs.all()])
         self.assertNotIn("inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()])
         self.assertNotIn(
             "inte_subject.healtheconomicsrevisedtwo", [o.model for o in crfs.all()]
         )
         self.subject_visit.save()
-        crfs = CrfMetadata.objects.filter(
-            subject_identifier=self.subject_visit.subject_identifier,
-            visit_code=self.subject_visit.visit_code,
-            visit_code_sequence=self.subject_visit.visit_code_sequence,
-            entry_status=REQUIRED,
-        )
+
+        crfs = self.get_crf_metadata(self.subject_visit)
         self.assertNotIn("inte_subject.healtheconomics", [o.model for o in crfs.all()])
         self.assertNotIn("inte_subject.healtheconomicsrevised", [o.model for o in crfs.all()])
         self.assertNotIn(
