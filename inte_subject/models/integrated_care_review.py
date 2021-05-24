@@ -24,7 +24,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     """FORM 26 - Participant Review of Integrated Care."""
 
     receive_health_talk_messages = models.CharField(
-        verbose_name="Do you receive health messages when attending this clinic?",
+        verbose_name="Do you receive any health talks when attending this clinic?",
         max_length=15,
         choices=YES_NO,
     )
@@ -32,7 +32,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     health_talk_conditions = models.ManyToManyField(
         HealthTalkConditions,
         related_name="+",
-        verbose_name="If YES, what disease conditions are discussed during health talks?",
+        verbose_name="If YES, what disease conditions are discussed during the health talks?",
         blank=True,
     )
 
@@ -89,7 +89,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     rx_collection_hcf = models.CharField(
-        verbose_name="If YES, are you collecting it from the healthcare facility?",
+        verbose_name="If YES, are you collecting it from this healthcare facility?",
         max_length=15,
         choices=HCF_PRESCRIPTION_COLLECTION_CHOICES,
         default=NOT_APPLICABLE,
@@ -97,7 +97,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
 
     where_rx_dispensed = models.ManyToManyField(
         DrugDispensaries,
-        verbose_name="If YES, where in the healthcare facility are your drugs dispensed from?",
+        verbose_name="If YES, where in this healthcare facility are your drugs dispensed from?",
         blank=True,
     )
 
@@ -106,7 +106,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     who_dispenses_rx = models.ManyToManyField(
         DrugDispensers,
         verbose_name=(
-            "If YES, who in the healthcare facility is responsible for dispensing your drugs?"
+            "If YES, who in this healthcare facility is responsible for dispensing your drugs?"
         ),
         blank=True,
     )
@@ -115,27 +115,27 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
 
     #################################################
     hospital_card = models.CharField(
-        verbose_name="Do you have a hospital card used in the clinic?",
+        verbose_name="Do you have a hospital record stored in the clinic?",
         max_length=15,
         choices=YES_NO_DONT_KNOW,
     )
 
     hospital_card_type = models.CharField(
-        verbose_name="If YES, what type of card is this?",
+        verbose_name="If YES, what type of hospital record is this?",
         max_length=15,
         choices=CARD_TYPE_CHOICES,
         default=NOT_APPLICABLE,
     )
 
     missed_appt = models.CharField(
-        verbose_name="Have you missed an appointment since you started attending this clinic?",
+        verbose_name="Have you missed an appointment since attending this clinic?",
         max_length=15,
         choices=YES_NO,
     )
 
     missed_appt_call = models.CharField(
         verbose_name=(
-            "If YES, did you get a phone call from the clinic about the missed visit?"
+            "If YES, did you get a phone call from the clinic about the missed appointment?"
         ),
         max_length=15,
         choices=YES_NO_NA,
@@ -143,7 +143,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     missed_appt_call_who = models.CharField(
-        verbose_name="If YES, who called you about the missed visit?",
+        verbose_name="If YES, who called you about the missed appointment?",
         max_length=15,
         choices=MISSED_VISIT_CALLER_CHOICES,
         default=NOT_APPLICABLE,
@@ -159,7 +159,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     )
 
     pay_for_lab_tests = models.CharField(
-        verbose_name="If YES, did you pay for any of the tests?",
+        verbose_name="If YES, did you pay for any of these tests?",
         max_length=15,
         choices=YES_NO_NA,
         default=NOT_APPLICABLE,
@@ -167,7 +167,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
 
     which_lab_tests_charged_for = models.ManyToManyField(
         LaboratoryTests,
-        verbose_name="If YES, what tests are you charged for?",
+        verbose_name="If YES, which tests were you charged for?",
         blank=True,
     )
 
