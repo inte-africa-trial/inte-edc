@@ -328,7 +328,7 @@ INTE_SUBJECT_HE_REVISION_DATE = datetime(2021, 4, 25, 23, 59, 0, tzinfo=UTC)
 
 # cutoff date for daily closing log / daily closing log revised
 INTE_SCREENING_DCL_REVISION_DATETIME = get_datetime_from_env(
-    "INTE_SCREENING_DCL_REVISION_DATETIME"
+    *env.list("INTE_SCREENING_DCL_REVISION_DATETIME")
 )
 
 LIST_MODEL_APP_LABEL = env.str("EDC_LIST_MODEL_APP_LABEL")
