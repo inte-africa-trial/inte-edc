@@ -89,7 +89,8 @@ list_data = {
         (LATE_EXCLUSION, "Patient fulfilled late exclusion criteria*"),
         (
             TRANSFERRED,
-            "Patient has been transferred to another health centre (Submit Transfer Report first)",
+            "Patient has been transferred to another health "
+            "centre (Submit Transfer Report first)",
         ),
         (
             OTHER,

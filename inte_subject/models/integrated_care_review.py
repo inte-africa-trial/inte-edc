@@ -24,7 +24,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     """FORM 26 - Participant Review of Integrated Care."""
 
     receive_health_talk_messages = models.CharField(
-        verbose_name="Did you receive health talks when attending the clinic today?",
+        verbose_name="Did you receive a health talk when attending the clinic today?",
         max_length=15,
         choices=YES_NO,
     )
@@ -32,7 +32,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     health_talk_conditions = models.ManyToManyField(
         HealthTalkConditions,
         related_name="+",
-        verbose_name="If YES, what disease conditions were discussed during the health talk?",
+        verbose_name="If YES, what disease conditions were discussed?",
         blank=True,
     )
 
@@ -41,7 +41,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     health_talk_focus = models.ManyToManyField(
         HealthInterventionTypes,
         related_name="+",
-        verbose_name="If YES, what type of messages were covered during the health talk?",
+        verbose_name="If YES, what type of messages were covered?",
         blank=True,
     )
 
