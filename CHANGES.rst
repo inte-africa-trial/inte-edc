@@ -1,8 +1,15 @@
 Changes
 =======
 
-Unreleased
-----------
+0.1.67
+------
+- bump to edc 0.3.18
+- revised daily closing log (gh-4)
+
+0.1.66
+------
+- bump to edc 0.3.17
+- add support for DJ 3.2
 
 0.1.65
 ------

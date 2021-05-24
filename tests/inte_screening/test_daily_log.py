@@ -1,5 +1,6 @@
 import pdb
 
+from dateutil.relativedelta import relativedelta
 from django.contrib.sites.models import Site
 from django.test import TestCase, override_settings, tag
 from edc_utils import get_utcnow
@@ -26,7 +27,10 @@ class TestDailyLog(InteTestCaseMixin, TestCase):
         }
 
     @tag("daily")
-    @override_settings(SITE_ID=103)
+    @override_settings(
+        SITE_ID=103,
+        INTE_SCREENING_DCL_REVISION_DATE=get_utcnow().date() + relativedelta(days=1),
+    )
     def test_integrated_for_intervention_site(self):
         form = DailyClosingLogForm(data=self.data)
         form.is_valid()
@@ -39,14 +43,20 @@ class TestDailyLog(InteTestCaseMixin, TestCase):
         self.assertNotIn("clinic_services", form._errors)
 
     @tag("daily")
-    @override_settings(SITE_ID=101)
+    @override_settings(
+        SITE_ID=101,
+        INTE_SCREENING_DCL_REVISION_DATE=get_utcnow().date() + relativedelta(days=1),
+    )
     def test_integrated_for_control_site(self):
         form = DailyClosingLogForm(data=self.data)
         form.is_valid()
         self.assertIn("clinic_services", form._errors)
 
     @tag("daily")
-    @override_settings(SITE_ID=103)
+    @override_settings(
+        SITE_ID=103,
+        INTE_SCREENING_DCL_REVISION_DATE=get_utcnow().date() + relativedelta(days=1),
+    )
     def test_numbers(self):
         IntegratedCareClinicRegistration.objects.create(date_opened=get_utcnow().date())
         data = {

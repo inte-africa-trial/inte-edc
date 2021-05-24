@@ -1,6 +1,6 @@
 import os
 import sys
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 
 import environ
@@ -326,7 +326,7 @@ CUPS_SERVERS = env.dict("DJANGO_CUPS_SERVERS")
 # cutoff date for HE rev 1
 INTE_SUBJECT_HE_REVISION_DATE = datetime(2021, 4, 25, 23, 59, 0, tzinfo=UTC)
 # cutoff date for DCL rev
-INTE_SCREENING_DCL_REVISION_DATE = datetime(2021, 5, 11, 23, 59, 0, tzinfo=UTC)
+INTE_SCREENING_DCL_REVISION_DATE = date(2021, 5, 11)
 
 LIST_MODEL_APP_LABEL = env.str("EDC_LIST_MODEL_APP_LABEL")
 SUBJECT_APP_LABEL = env.str("EDC_SUBJECT_APP_LABEL")
@@ -338,7 +338,7 @@ SUBJECT_VISIT_MISSED_REASONS_MODEL = env.str("EDC_SUBJECT_VISIT_MISSED_REASONS_M
 SUBJECT_VISIT_MODEL = env.str("EDC_SUBJECT_VISIT_MODEL")
 
 EDC_NAVBAR_DEFAULT = env("EDC_NAVBAR_DEFAULT")
-
+eval
 # edc dashboards
 EDC_BOOTSTRAP = env("DJANGO_EDC_BOOTSTRAP")
 DASHBOARD_URL_NAMES = env.dict("DJANGO_DASHBOARD_URL_NAMES")

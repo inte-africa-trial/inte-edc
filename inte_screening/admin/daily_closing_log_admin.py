@@ -4,6 +4,8 @@ from django_audit_fields.admin import audit_fieldset_tuple
 from edc_model_admin import ModelAdminFormInstructionsMixin, TemplatesModelAdminMixin
 from edc_model_admin.model_admin_simple_history import SimpleHistoryAdmin
 
+from inte_screening.models.daily_closing_log_revised import get_daily_log_revision_date
+
 from ..admin_site import inte_screening_admin
 from ..forms import DailyClosingLogForm
 from ..models import DailyClosingLog
@@ -77,3 +79,7 @@ class DailyClosingLogAdmin(
                 site_id = None
             kwargs["queryset"] = db_field.related_model.objects.filter(pk=site_id)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.filter(log_date__lt=get_daily_log_revision_date())

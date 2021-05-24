@@ -8,7 +8,7 @@ import django
 from django.conf import settings
 from django.test.runner import DiscoverRunner
 from edc_test_utils import DefaultTestSettings
-from edc_utils import get_datetime_from_env
+from edc_utils import get_datetime_from_env, get_utcnow
 from multisite import SiteID
 
 app_name = "inte_edc"
@@ -19,6 +19,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
     BASE_DIR=base_dir,
     APP_NAME=app_name,
     SITE_ID=SiteID(default=101),
+    INTE_SCREENING_DCL_REVISION_DATE=get_utcnow(),
     EDC_SITES_MODULE_NAME="inte_sites.sites",
     SUBJECT_VISIT_MODEL="inte_subject.subjectvisit",
     SUBJECT_VISIT_MISSED_MODEL="inte_subject.subjectvisitmissed",

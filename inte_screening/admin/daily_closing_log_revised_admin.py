@@ -1,10 +1,12 @@
 from django.contrib import admin
 from django_audit_fields.admin import audit_fieldset_tuple
-from .daily_closing_log_admin import DailyClosingLogAdmin
+
+from inte_screening.models.daily_closing_log_revised import get_daily_log_revision_date
 
 from ..admin_site import inte_screening_admin
 from ..forms import DailyClosingLogRevisedForm
 from ..models import DailyClosingLogRevised
+from .daily_closing_log_admin import DailyClosingLogAdmin
 
 
 @admin.register(DailyClosingLogRevised, site=inte_screening_admin)
@@ -35,3 +37,7 @@ class DailyClosingLogRevisedAdmin(DailyClosingLogAdmin):
         "clinic_start_time",
         "clinic_end_time",
     )
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.filter(log_date__gte=get_daily_log_revision_date())

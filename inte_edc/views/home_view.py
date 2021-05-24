@@ -1,5 +1,3 @@
-import pdb
-
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
@@ -9,6 +7,7 @@ from edc_navbar import NavbarViewMixin
 from edc_utils import get_utcnow
 
 from inte_prn.models import IntegratedCareClinicRegistration
+from inte_screening.models.daily_closing_log_revised import get_daily_log_revision_date
 from inte_sites.is_intervention_site import is_intervention_site
 
 
@@ -34,7 +33,7 @@ class HomeView(EdcViewMixin, NavbarViewMixin, TemplateView):
     @staticmethod
     def get_daily_closing_log_url():
 
-        if get_utcnow() >= settings.INTE_SCREENING_DCL_REVISION_DATE:
+        if get_utcnow() >= get_daily_log_revision_date():
             return reverse(
                 "inte_screening_admin:inte_screening_dailyclosinglogrevised_changelist"
             )
