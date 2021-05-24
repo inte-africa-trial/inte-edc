@@ -29,7 +29,7 @@ class TestDailyLog(InteTestCaseMixin, TestCase):
     @tag("daily")
     @override_settings(
         SITE_ID=103,
-        INTE_SCREENING_DCL_REVISION_DATE=get_utcnow().date() + relativedelta(days=1),
+        INTE_SCREENING_DCL_REVISION_DATETIME=get_utcnow().date() + relativedelta(days=1),
     )
     def test_integrated_for_intervention_site(self):
         form = DailyClosingLogForm(data=self.data)
@@ -45,7 +45,7 @@ class TestDailyLog(InteTestCaseMixin, TestCase):
     @tag("daily")
     @override_settings(
         SITE_ID=101,
-        INTE_SCREENING_DCL_REVISION_DATE=get_utcnow().date() + relativedelta(days=1),
+        INTE_SCREENING_DCL_REVISION_DATETIME=get_utcnow().date() + relativedelta(days=1),
     )
     def test_integrated_for_control_site(self):
         form = DailyClosingLogForm(data=self.data)
@@ -55,7 +55,7 @@ class TestDailyLog(InteTestCaseMixin, TestCase):
     @tag("daily")
     @override_settings(
         SITE_ID=103,
-        INTE_SCREENING_DCL_REVISION_DATE=get_utcnow().date() + relativedelta(days=1),
+        INTE_SCREENING_DCL_REVISION_DATETIME=get_utcnow().date() + relativedelta(days=1),
     )
     def test_numbers(self):
         IntegratedCareClinicRegistration.objects.create(date_opened=get_utcnow().date())

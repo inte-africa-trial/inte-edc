@@ -5,9 +5,9 @@ from .daily_closing_log import DailyClosingLog
 
 def get_daily_log_revision_date():
     try:
-        return settings.INTE_SCREENING_DCL_REVISION_DATE.date()
+        return settings.INTE_SCREENING_DCL_REVISION_DATETIME.date()
     except AttributeError:
-        return settings.INTE_SCREENING_DCL_REVISION_DATE
+        return settings.INTE_SCREENING_DCL_REVISION_DATETIME
 
 
 class DailyClosingLogRevised(DailyClosingLog):

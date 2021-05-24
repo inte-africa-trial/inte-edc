@@ -1,6 +1,6 @@
 import os
 import sys
-from datetime import date, datetime
+from datetime import datetime
 from pathlib import Path
 
 import environ
@@ -325,8 +325,11 @@ CUPS_SERVERS = env.dict("DJANGO_CUPS_SERVERS")
 
 # cutoff date for HE rev 1
 INTE_SUBJECT_HE_REVISION_DATE = datetime(2021, 4, 25, 23, 59, 0, tzinfo=UTC)
-# cutoff date for DCL rev
-INTE_SCREENING_DCL_REVISION_DATE = date(2021, 5, 11)
+
+# cutoff date for daily closing log / daily closing log revised
+INTE_SCREENING_DCL_REVISION_DATETIME = get_datetime_from_env(
+    "INTE_SCREENING_DCL_REVISION_DATETIME"
+)
 
 LIST_MODEL_APP_LABEL = env.str("EDC_LIST_MODEL_APP_LABEL")
 SUBJECT_APP_LABEL = env.str("EDC_SUBJECT_APP_LABEL")

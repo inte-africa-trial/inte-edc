@@ -1,8 +1,6 @@
-import pdb
-
 from dateutil.relativedelta import relativedelta
 from django.contrib.sites.models import Site
-from django.test import TestCase, override_settings, tag
+from django.test import override_settings, tag
 from django.urls import reverse
 from django_webtest import WebTest
 from edc_auth import AUDITOR, EVERYONE, SCREENING
@@ -10,7 +8,7 @@ from edc_utils import get_utcnow
 
 from inte_prn.models import IntegratedCareClinicRegistration
 from inte_screening.forms import DailyClosingLogRevisedForm
-from inte_subject.constants import INTEGRATED, VERTICAL
+from inte_subject.constants import INTEGRATED
 from tests.inte_test_case_mixin import InteTestCaseMixin
 
 
@@ -30,7 +28,7 @@ class TestDailyLogRevised(InteTestCaseMixin, WebTest):
     @tag("daily")
     @override_settings(
         SITE_ID=103,
-        INTE_SCREENING_DCL_REVISION_DATE=get_utcnow().date() + relativedelta(days=-10),
+        INTE_SCREENING_DCL_REVISION_DATETIME=get_utcnow().date() - relativedelta(days=10),
     )
     def test_integrated_for_intervention_site(self):
         form = DailyClosingLogRevisedForm(data=self.data)
@@ -46,7 +44,7 @@ class TestDailyLogRevised(InteTestCaseMixin, WebTest):
     @tag("daily")
     @override_settings(
         SITE_ID=101,
-        INTE_SCREENING_DCL_REVISION_DATE=get_utcnow().date() + relativedelta(days=-10),
+        INTE_SCREENING_DCL_REVISION_DATETIME=get_utcnow().date() - relativedelta(days=10),
     )
     def test_integrated_for_control_site(self):
         form = DailyClosingLogRevisedForm(data=self.data)
@@ -56,7 +54,7 @@ class TestDailyLogRevised(InteTestCaseMixin, WebTest):
     @tag("daily")
     @override_settings(
         SITE_ID=103,
-        INTE_SCREENING_DCL_REVISION_DATE=get_utcnow().date() + relativedelta(days=-10),
+        INTE_SCREENING_DCL_REVISION_DATETIME=get_utcnow().date() - relativedelta(days=10),
     )
     def test_clinic_start_time(self):
         IntegratedCareClinicRegistration.objects.create(date_opened=get_utcnow().date())
@@ -85,7 +83,9 @@ class TestDailyLogRevised(InteTestCaseMixin, WebTest):
         self.assertIn("clinic_start_time", form._errors)
 
     @tag("webtest1")
-    @override_settings(INTE_SCREENING_DCL_REVISION_DATE=get_utcnow() + relativedelta(days=1))
+    @override_settings(
+        INTE_SCREENING_DCL_REVISION_DATETIME=get_utcnow() + relativedelta(days=1)
+    )
     def test_response_has_closing_log_url(self):
         closing_log_url = reverse(
             "inte_screening_admin:inte_screening_dailyclosinglog_changelist"
@@ -99,7 +99,9 @@ class TestDailyLogRevised(InteTestCaseMixin, WebTest):
         self.assertIn(closing_log_url, response)
 
     @tag("webtest1")
-    @override_settings(INTE_SCREENING_DCL_REVISION_DATE=get_utcnow() - relativedelta(days=1))
+    @override_settings(
+        INTE_SCREENING_DCL_REVISION_DATETIME=get_utcnow() - relativedelta(days=1)
+    )
     def test_response_has_closing_log_revised_url(self):
         closing_log_url = reverse(
             "inte_screening_admin:inte_screening_dailyclosinglog_changelist"

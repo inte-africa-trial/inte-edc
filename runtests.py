@@ -19,7 +19,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
     BASE_DIR=base_dir,
     APP_NAME=app_name,
     SITE_ID=SiteID(default=101),
-    INTE_SCREENING_DCL_REVISION_DATE=get_utcnow(),
+    INTE_SCREENING_DCL_REVISION_DATETIME=get_utcnow(),
     EDC_SITES_MODULE_NAME="inte_sites.sites",
     SUBJECT_VISIT_MODEL="inte_subject.subjectvisit",
     SUBJECT_VISIT_MISSED_MODEL="inte_subject.subjectvisitmissed",
