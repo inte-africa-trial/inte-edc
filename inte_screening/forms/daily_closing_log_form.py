@@ -1,4 +1,7 @@
 from django import forms
+from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
+from edc_utils import convert_php_dateformat
 
 from inte_prn.icc_registered import (
     InterventionSiteNotRegistered,
@@ -13,6 +16,22 @@ from inte_sites.is_intervention_site import NotInterventionSite
 from inte_subject.constants import INTEGRATED
 
 from ..models import DailyClosingLog
+
+
+def validate_is_singleton(model_cls, cleaned_data):
+    try:
+        model_cls.objects.get(
+            log_date=cleaned_data.get("log_date"), site=cleaned_data.get("site")
+        )
+    except ObjectDoesNotExist:
+        pass
+    else:
+        formatted_date = cleaned_data.get("log_date").strftime(
+            convert_php_dateformat(settings.SHORT_DATE_FORMAT)
+        )
+        raise forms.ValidationError(
+            f"A report for {formatted_date} has already been submitted."
+        )
 
 
 def raise_if_integrated_and_icc_not_open(cleaned_data):
@@ -42,6 +61,7 @@ def raise_if_integrated_and_icc_not_open(cleaned_data):
 class DailyClosingLogForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
+        validate_is_singleton(self._meta.model, cleaned_data)
         raise_if_integrated_and_icc_not_open(cleaned_data)
         self.raise_if_incorrect_revision(cleaned_data)
         self.validate_approached_less_than_attended(cleaned_data)

@@ -10,6 +10,7 @@ from ..models import (
 from .daily_closing_log_form import (
     DailyClosingLogForm,
     raise_if_integrated_and_icc_not_open,
+    validate_is_singleton,
 )
 
 
@@ -20,6 +21,7 @@ class DailyClosingLogRevisedForm(DailyClosingLogForm):
 
     def clean(self):
         cleaned_data = super().clean()
+        validate_is_singleton(self._meta.model, cleaned_data)
         raise_if_integrated_and_icc_not_open(cleaned_data)
         self.raise_if_incorrect_revision(cleaned_data)
         self.validate_start_time(cleaned_data)
