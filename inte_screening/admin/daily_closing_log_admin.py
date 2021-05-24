@@ -15,7 +15,7 @@ class DailyClosingLogAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin):
     date_hierarchy = "log_date"
     show_object_tools = True
     additional_instructions = mark_safe(
-        "<font color='orange'><B>This form should be completed once per site "
+        "<font color='orange'><B>This form should be completed "
         "at the end of each clinic day.</B></font>"
     )
 
@@ -75,3 +75,6 @@ class DailyClosingLogAdmin(ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin):
                 site_id = None
             kwargs["queryset"] = db_field.related_model.objects.filter(pk=site_id)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def view_on_site(self, obj):
+        return True
