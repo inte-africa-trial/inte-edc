@@ -33,7 +33,7 @@ class HomeView(EdcViewMixin, NavbarViewMixin, TemplateView):
     @staticmethod
     def get_daily_closing_log_url():
 
-        if get_utcnow() >= get_daily_log_revision_date():
+        if get_utcnow().date() >= get_daily_log_revision_date():
             return reverse(
                 "inte_screening_admin:inte_screening_dailyclosinglogrevised_changelist"
             )
