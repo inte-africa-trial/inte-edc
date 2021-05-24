@@ -4,15 +4,26 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from edc_model.models import BaseUuidModel
 from edc_model.models.historical_records import HistoricalRecords
-from edc_sites.models import CurrentSiteManager, SiteModelMixin
+from edc_sites.models import CurrentSiteManager as BaseCurrentSiteManager
+from edc_sites.models import SiteModelMixin
 from edc_utils import convert_php_dateformat, get_utcnow
 
 from ..choices import CLINIC_DAYS, SELECTION_METHOD
+from .utils import get_daily_log_revision_date
 
 
-class DailyClosingLogManager(models.Manager):
-    def get_by_natural_key(self, log_identifier):
-        return self.get(log_identifier=log_identifier)
+class CurrentSiteManager(BaseCurrentSiteManager):
+    def get_by_natural_key(self, log_date, site):
+        return self.get(log_date=log_date, site=site)
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(log_date__lt=get_daily_log_revision_date())
+
+
+class DailyClosingLogManager(BaseCurrentSiteManager):
+    def get_by_natural_key(self, log_date, site):
+        return self.get(log_date=log_date, site=site)
 
 
 class DailyClosingLog(SiteModelMixin, BaseUuidModel):

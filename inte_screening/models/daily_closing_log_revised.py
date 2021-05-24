@@ -1,17 +1,32 @@
-from django.conf import settings
+from edc_model.models import HistoricalRecords
+from edc_sites.models import CurrentSiteManager as BaseCurrentSiteManager
 
 from .daily_closing_log import DailyClosingLog
+from .utils import get_daily_log_revision_date
 
 
-def get_daily_log_revision_date():
-    try:
-        return settings.INTE_SCREENING_DCL_REVISION_DATETIME.date()
-    except AttributeError:
-        return settings.INTE_SCREENING_DCL_REVISION_DATETIME
+class CurrentSiteManager(BaseCurrentSiteManager):
+    def get_by_natural_key(self, log_date, site):
+        return self.get(log_date=log_date, site=site)
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(log_date__gte=get_daily_log_revision_date())
+
+
+class DailyClosingLogRevisedManager(BaseCurrentSiteManager):
+    def get_by_natural_key(self, log_date, site):
+        return self.get(log_date=log_date, site=site)
 
 
 class DailyClosingLogRevised(DailyClosingLog):
     """Second iteration of Daily Closing Log form."""
+
+    on_site = CurrentSiteManager()
+
+    objects = DailyClosingLogRevisedManager()
+
+    history = HistoricalRecords()
 
     class Meta:
         proxy = True
