@@ -56,7 +56,6 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
 
     health_talk_presenters_other = edc_models.OtherCharField()
 
-    #################################################
     additional_health_advice = models.CharField(
         verbose_name="Did you receive any additional health advice during your visit?",
         max_length=15,
@@ -81,7 +80,6 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
 
     health_advice_focus_other = edc_models.OtherCharField()
 
-    #################################################
     receive_rx_today = models.CharField(
         verbose_name="Did you receive a drug prescription today?",
         max_length=15,
@@ -97,7 +95,9 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
 
     where_rx_dispensed = models.ManyToManyField(
         DrugDispensaries,
-        verbose_name="If YES, where in this healthcare facility are your drugs dispensed from?",
+        verbose_name=(
+            "If YES, where in this healthcare facility are your drugs dispensed from?"
+        ),
         blank=True,
     )
 
@@ -113,7 +113,6 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
 
     who_dispenses_rx_other = edc_models.OtherCharField()
 
-    #################################################
     hospital_card = models.CharField(
         verbose_name="Do you have a hospital record stored in the clinic?",
         max_length=15,
@@ -151,7 +150,6 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
 
     missed_appt_call_who_other = edc_models.OtherCharField()
 
-    #################################################
     lab_tests = models.CharField(
         verbose_name="Have you done any laboratory tests since you started in this clinic?",
         max_length=15,
