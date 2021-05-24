@@ -24,7 +24,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     """FORM 26 - Participant Review of Integrated Care."""
 
     receive_health_talk_messages = models.CharField(
-        verbose_name="Do you receive health messages when attending this clinic?",
+        verbose_name="Did you receive health messages when attending the clinic today?",
         max_length=15,
         choices=YES_NO,
     )
@@ -32,7 +32,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     health_talk_conditions = models.ManyToManyField(
         HealthTalkConditions,
         related_name="+",
-        verbose_name="If YES, what disease conditions are discussed during health talks?",
+        verbose_name="If YES, what disease conditions were discussed during the health talks?",
         blank=True,
     )
 
@@ -41,7 +41,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     health_talk_focus = models.ManyToManyField(
         HealthInterventionTypes,
         related_name="+",
-        verbose_name="If YES, what type of messages are delivered during health talks?",
+        verbose_name="If YES, what type of messages were covered during the health talk?",
         blank=True,
     )
 
@@ -50,7 +50,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
     health_talk_presenters = models.ManyToManyField(
         HealthAdvisors,
         related_name="+",
-        verbose_name="If YES, who gives the health talks?",
+        verbose_name="If YES, who gave the health talk?",
         blank=True,
     )
 
@@ -58,7 +58,7 @@ class IntegratedCareReview(CrfModelMixin, edc_models.BaseUuidModel):
 
     #################################################
     additional_health_advice = models.CharField(
-        verbose_name="Did you receive any additional health advice during your visits?",
+        verbose_name="Did you receive any additional health advice during your visit?",
         max_length=15,
         choices=YES_NO,
     )
