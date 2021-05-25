@@ -31,16 +31,52 @@ class DmTreatments(ListModelMixin):
         verbose_name_plural = "Diabetes Treatments"
 
 
+class DrugDispensaries(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Drug Dispensaries"
+        verbose_name_plural = "Drug Dispensaries"
+
+
+class DrugDispensers(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Drug Dispensers"
+        verbose_name_plural = "Drug Dispensers"
+
+
+class HealthAdvisors(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Health Advisors"
+        verbose_name_plural = "Health Advisors"
+
+
+class HealthInterventionTypes(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Health Intervention Types"
+        verbose_name_plural = "Health Intervention Types"
+
+
 class HealthServices(ListModelMixin):
     class Meta(ListModelMixin.Meta):
         verbose_name = "Health Services"
         verbose_name_plural = "Health Services"
 
 
+class HealthTalkConditions(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Health Talk Conditions"
+        verbose_name_plural = "Health Talk Conditions"
+
+
 class HtnTreatments(ListModelMixin):
     class Meta(ListModelMixin.Meta):
         verbose_name = "Hypertension Treatments"
         verbose_name_plural = "Hypertension Treatments"
+
+
+class LaboratoryTests(ListModelMixin):
+    class Meta(ListModelMixin.Meta):
+        verbose_name = "Laboratory Tests"
+        verbose_name_plural = "Laboratory Tests"
 
 
 class OffstudyReasons(ListModelMixin):

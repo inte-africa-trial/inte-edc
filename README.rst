@@ -24,18 +24,18 @@ Installation
 
 To setup and run a test server locally
 
-You'll need mysql. Create the database
+You'll need mysql and Redis. Create the database
 
 .. code-block:: bash
 
   mysql -Bse 'create database inte character set utf8;'
 
 
-Create a virtualenv, clone the main repo and checkout master
+Create and activate a virtual environment
 
 .. code-block:: bash
 
-  conda create -n edc python=3.8
+  conda create -n edc python=3.9
   conda activate edc
 
 
@@ -44,8 +44,8 @@ Clone the main repo and checkout master
 .. code-block:: bash
 
   mkdir ~/app
-  cd app
-  https://github.com/inte-africa-trial/inte-edc.git
+  cd ~/app
+  git clone https://github.com/inte-africa-trial/inte-edc.git
   cd ~/app/inte-edc
   git checkout master
 
@@ -56,7 +56,7 @@ Copy the test environment file
 
   cd ~/app/inte-edc
   git checkout master
-  cp .env.tests .env
+  cp .env-tests .env
 
 
 Edit the environment file (.env) to include your mysql password in the ``DATABASE_URL``.
@@ -73,11 +73,18 @@ Continue with the installation
 
   cd ~/app/inte-edc
   git checkout master
-  pip install .
-  pip install -U -r requirements
+  pip install -U -r requirements.txt
   python manage.py migrate
   python manage.py import_randomization_list
   python manage.py import_holidays
+
+
+Ensure Redis is running
+
+.. code-block:: bash
+
+  $ redis-cli ping
+  PONG
 
 
 Create a user and start up `runserver`

@@ -1,3 +1,4 @@
 from .daily_closing_log_admin import DailyClosingLogAdmin
+from .daily_closing_log_revised_admin import DailyClosingLogRevisedAdmin
 from .subject_refusal_admin import SubjectRefusalAdmin
 from .subject_screening_admin import SubjectScreeningAdmin

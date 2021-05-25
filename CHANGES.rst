@@ -1,8 +1,12 @@
 Changes
 =======
 
-Unreleased
-----------
+0.1.66
+------
+- bump to edc 0.3.18
+- revised daily closing log (gh-4)
+- add integrated care review CRF (Form 26), required at 6m and 12m visits
+- add support for DJ 3.2
 
 0.1.65
 ------

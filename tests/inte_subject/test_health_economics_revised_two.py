@@ -25,7 +25,7 @@ from ..inte_test_case_mixin import InteTestCaseMixin
 
 
 @override_settings(INTE_SUBJECT_HE_REVISION_DATE=datetime(2021, 4, 26, 0, 0, tzinfo=UTC))
-class TestHealthEconomicsRevisionTwoFormValidator(InteTestCaseMixin, TestCase):
+class TestHealthEconomicsRevisedTwoFormValidator(InteTestCaseMixin, TestCase):
 
     sid_count_for_tests = 1
     form_validator_default_form_cls = HealthEconomicsRevisedTwoFormValidator

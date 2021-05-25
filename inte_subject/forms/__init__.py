@@ -29,6 +29,7 @@ from .htn_initial_review_form import HtnInitialReviewForm
 from .htn_medication_adherence_form import HtnMedicationAdherenceForm
 from .htn_review_form import HtnReviewForm
 from .indicators_form import IndicatorsForm
+from .integrated_care_review_form import IntegratedCareReviewForm
 from .medications_form import MedicationsForm
 from .next_appointment_form import NextAppointmentForm
 from .other_baseline_data_form import OtherBaselineDataForm

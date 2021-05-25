@@ -29,12 +29,16 @@ class BaseStudyTerminationConclusion(models.Model):
         null=True,
     )
 
+    x = models.TimeField()
+
     on_site = ActionIdentifierSiteManager()
 
     objects = ActionIdentifierManager()
 
     def natural_key(self):
-        return (self.action_identifier,)
+        return tuple(
+            self.action_identifier,
+        )
 
     class Meta:
         abstract = True

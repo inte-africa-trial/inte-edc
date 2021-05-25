@@ -9,6 +9,7 @@ class AppConfig(DjangoAppConfig):
     name = "inte_dashboard"
     admin_site_name = "inte_test_admin"
     include_in_administration_section = False
+    default_auto_field = "django.db.models.BigAutoField"
 
 
 if settings.APP_NAME == "inte_dashboard":

@@ -288,6 +288,7 @@ DATETIME_FORMAT = "j N Y H:i"
 SHORT_DATE_FORMAT = "d/m/Y"
 SHORT_DATETIME_FORMAT = "d/m/Y H:i"
 
+# See also any inte_* or edc_* apps.py
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # edc-action-item
@@ -322,8 +323,13 @@ LABEL_TEMPLATE_FOLDER = env.str("DJANGO_LABEL_TEMPLATE_FOLDER") or os.path.join(
 )
 CUPS_SERVERS = env.dict("DJANGO_CUPS_SERVERS")
 
-# cuttoff date for HE rev 1
+# cutoff date for HE rev 1
 INTE_SUBJECT_HE_REVISION_DATE = datetime(2021, 4, 25, 23, 59, 0, tzinfo=UTC)
+
+# cutoff date for daily closing log / daily closing log revised
+INTE_SCREENING_DCL_REVISION_DATETIME = get_datetime_from_env(
+    *env.list("INTE_SCREENING_DCL_REVISION_DATETIME")
+)
 
 LIST_MODEL_APP_LABEL = env.str("EDC_LIST_MODEL_APP_LABEL")
 SUBJECT_APP_LABEL = env.str("EDC_SUBJECT_APP_LABEL")
@@ -335,7 +341,7 @@ SUBJECT_VISIT_MISSED_REASONS_MODEL = env.str("EDC_SUBJECT_VISIT_MISSED_REASONS_M
 SUBJECT_VISIT_MODEL = env.str("EDC_SUBJECT_VISIT_MODEL")
 
 EDC_NAVBAR_DEFAULT = env("EDC_NAVBAR_DEFAULT")
-
+eval
 # edc dashboards
 EDC_BOOTSTRAP = env("DJANGO_EDC_BOOTSTRAP")
 DASHBOARD_URL_NAMES = env.dict("DJANGO_DASHBOARD_URL_NAMES")
@@ -475,9 +481,9 @@ if SENTRY_ENABLED and SENTRY_DSN:
         traces_sample_rate=1.0,
         send_default_pii=True,
     )
-# else:
-#     if env("DJANGO_LOGGING_ENABLED"):
-#         from .logging.standard import LOGGING  # noqa
+
+if env("DJANGO_LOGGING_ENABLED"):
+    from .logging import LOGGING  # noqa
 
 
 # if running tests ...

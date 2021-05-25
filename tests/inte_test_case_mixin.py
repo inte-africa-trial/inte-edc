@@ -3,7 +3,7 @@ from random import choices
 
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from django.contrib.sites.models import Site
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
@@ -11,6 +11,8 @@ from edc_appointment.tests.appointment_test_case_mixin import AppointmentTestCas
 from edc_constants.constants import MALE, NO, NOT_APPLICABLE, RANDOM_SAMPLING, YES
 from edc_facility.import_holidays import import_holidays
 from edc_form_validators import FormValidatorTestCaseMixin
+from edc_metadata import REQUIRED
+from edc_metadata.models import CrfMetadata
 from edc_randomization.randomization_list_importer import RandomizationListImporter
 from edc_sites import get_sites_by_country
 from edc_sites.tests.site_test_case_mixin import SiteTestCaseMixin
@@ -51,6 +53,9 @@ class InteTestCaseMixin(
                 name="default",
                 sid_count_for_tests=cls.sid_count_for_tests,
             )
+
+    def setUp(self):
+        self.user = User.objects.create_superuser("user_login", "u@example.com", "pass")
 
     def login(self, user=None, superuser=None, groups=None):
         user = self.user if user is None else user
@@ -179,4 +184,13 @@ class InteTestCaseMixin(
                 subject_identifier=subject_visit.subject_identifier
             ),
             report_datetime=report_datetime,
+        )
+
+    @staticmethod
+    def get_crf_metadata(subject_visit):
+        return CrfMetadata.objects.filter(
+            subject_identifier=subject_visit.subject_identifier,
+            visit_code=subject_visit.visit_code,
+            visit_code_sequence=subject_visit.visit_code_sequence,
+            entry_status=REQUIRED,
         )

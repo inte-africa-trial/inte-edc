@@ -63,7 +63,6 @@ class SubjectConsentAdmin(
     search_fields = ("subject_identifier", "screening_identifier", "identity")
 
     radio_fields = {
-        "gender": admin.VERTICAL,
         "assessment_score": admin.VERTICAL,
         "clinic_type": admin.VERTICAL,
         "consent_copy": admin.VERTICAL,

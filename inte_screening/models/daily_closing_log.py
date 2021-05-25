@@ -4,15 +4,26 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from edc_model.models import BaseUuidModel
 from edc_model.models.historical_records import HistoricalRecords
-from edc_sites.models import CurrentSiteManager, SiteModelMixin
+from edc_sites.models import CurrentSiteManager as BaseCurrentSiteManager
+from edc_sites.models import SiteModelMixin
 from edc_utils import convert_php_dateformat, get_utcnow
 
 from ..choices import CLINIC_DAYS, SELECTION_METHOD
+from .utils import get_daily_log_revision_date
 
 
-class DailyClosingLogManager(models.Manager):
-    def get_by_natural_key(self, log_identifier):
-        return self.get(log_identifier=log_identifier)
+class CurrentSiteManager(BaseCurrentSiteManager):
+    def get_by_natural_key(self, log_date, site):
+        return self.get(log_date=log_date, site=site)
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(log_date__lt=get_daily_log_revision_date())
+
+
+class DailyClosingLogManager(BaseCurrentSiteManager):
+    def get_by_natural_key(self, log_date, site):
+        return self.get(log_date=log_date, site=site)
 
 
 class DailyClosingLog(SiteModelMixin, BaseUuidModel):
@@ -22,7 +33,6 @@ class DailyClosingLog(SiteModelMixin, BaseUuidModel):
         on_delete=models.PROTECT,
         null=True,
         related_name="+",
-        blank=False,
     )
 
     log_date = models.DateField(verbose_name="Clinic date", default=get_utcnow)
@@ -42,16 +52,31 @@ class DailyClosingLog(SiteModelMixin, BaseUuidModel):
         verbose_name="How were patients selected to be approached?",
         max_length=25,
         choices=SELECTION_METHOD,
+        null=True,
     )
 
     approached = models.IntegerField(
         verbose_name="Of those who attended, how many were approached by the study team",
         validators=[MinValueValidator(0)],
+        null=True,
     )
 
     agreed_to_screen = models.IntegerField(
         verbose_name="Of those approached, how many agreed to be screened",
         validators=[MinValueValidator(0)],
+        null=True,
+    )
+
+    clinic_start_time = models.TimeField(
+        verbose_name="Clinic start time",
+        null=True,
+        help_text="Use 24HRS format. For example 17:00",
+    )
+
+    clinic_end_time = models.TimeField(
+        verbose_name="Clinic End time",
+        null=True,
+        help_text="Use 24HRS format. For example 17:00",
     )
 
     comment = models.TextField(
@@ -70,7 +95,7 @@ class DailyClosingLog(SiteModelMixin, BaseUuidModel):
         return self.log_date.strftime(convert_php_dateformat(settings.DATE_FORMAT))
 
     def natural_key(self):
-        return (self.log_date, self.site)
+        return tuple(self.log_date, self.site)
 
     class Meta:
         verbose_name = "Daily Closing Log"
