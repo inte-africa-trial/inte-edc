@@ -1,18 +1,11 @@
 Changes
 =======
 
-Unreleased
-----------
-- add integrated care review CRF (Form 26), required at 6m and 12m visits
-
-0.1.67
+0.1.66
 ------
 - bump to edc 0.3.18
 - revised daily closing log (gh-4)
-
-0.1.66
-------
-- bump to edc 0.3.17
+- add integrated care review CRF (Form 26), required at 6m and 12m visits
 - add support for DJ 3.2
 
 0.1.65
