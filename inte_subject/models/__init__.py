@@ -29,6 +29,7 @@ from .investigations import Investigations
 from .medications import Medications
 from .next_appointment import NextAppointment
 from .other_baseline_data import OtherBaselineData
+from .proxy_models import ArvRegimens
 from .reason_for_visit import ReasonForVisit
 from .subject_requisition import SubjectRequisition
 from .subject_visit import SubjectVisit

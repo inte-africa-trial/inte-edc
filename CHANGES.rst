@@ -1,6 +1,19 @@
 Changes
 =======
 
+0.1.68
+------
+- fix drug refill forms autocomplete field not using proxy model
+- fix intial review forms not updating estimated dx date
+  if dx ago is provided
+- add data migration to update existing initial review instances
+- fix order of urls paths
+- bump respond-africa to 0.1.10
+
+0.1.67
+------
+- bump to edc 0.3.21
+
 0.1.66
 ------
 - bump to edc 0.3.18

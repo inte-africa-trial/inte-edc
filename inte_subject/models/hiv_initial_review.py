@@ -6,9 +6,10 @@ from edc_constants.constants import NOT_APPLICABLE, YES
 from edc_lab.choices import VL_QUANTIFIER_NA
 from edc_model import models as edc_models
 from edc_reportable import CELLS_PER_MILLIMETER_CUBED_DISPLAY, COPIES_PER_MILLILITER
+from respond_models.mixins import InitialReviewModelMixin
 
 from ..choices import CARE_ACCESS
-from ..model_mixins import CrfModelMixin, InitialReviewModelMixin
+from ..model_mixins import CrfModelMixin
 
 
 class HivInitialReview(InitialReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel):

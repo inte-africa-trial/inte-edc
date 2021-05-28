@@ -2,9 +2,10 @@ from django.db import models
 from edc_constants.choices import YES_NO
 from edc_constants.constants import NOT_APPLICABLE, YES
 from edc_model import models as edc_models
+from respond_models.mixins import InitialReviewModelMixin
 
 from ..choices import HTN_MANAGEMENT
-from ..model_mixins import CrfModelMixin, InitialReviewModelMixin
+from ..model_mixins import CrfModelMixin
 
 
 class HtnInitialReview(InitialReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel):

@@ -169,6 +169,7 @@ clinic += [
     "inte_subject.delete_subjectvisit",
     "inte_subject.delete_subjectvisitmissed",
     "inte_subject.delete_viralloadresult",
+    "inte_subject.view_arvregimens",
     "inte_subject.view_cd4result",
     "inte_subject.view_clinicalreview",
     "inte_subject.view_clinicalreviewbaseline",
