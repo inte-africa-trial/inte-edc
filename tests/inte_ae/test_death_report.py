@@ -68,7 +68,12 @@ class TestDeathReport(InteTestCaseMixin, TestCase):
             "subject_identifier": self.subject_consent.subject_identifier,
             "report_datetime": get_utcnow(),
             "death_date": get_utcnow() - relativedelta(days=5),
+            "death_location": "home",
+            "hospital_death": NO,
+            "informant": "spouse",
+            "confirmed_by": "tel",
             "comment": "",
+            "narrative": "some narrative",
         }
 
         form_validator = self.validate_form_validator(cleaned_data)
