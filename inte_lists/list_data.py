@@ -17,7 +17,13 @@ from edc_constants.constants import (
 from edc_offstudy.constants import LATE_EXCLUSION, WITHDRAWAL
 from edc_transfer.constants import TRANSFERRED
 
-from inte_subject.constants import INTEGRATED, NCD, NURSE, PATIENT_CLUB
+from inte_subject.constants import (
+    INTEGRATED,
+    NCD,
+    NURSE,
+    PATIENT_CLUB,
+    VIT_B_FOLIC_ACID,
+)
 
 list_data = {
     "inte_lists.transferreasons": [
@@ -104,6 +110,7 @@ list_data = {
         ("atorvastatin", "Atorvastatin"),
         ("bendroflumethiazide", "Bendroflumethiazide"),
         ("bisoprolol", "Bisoprolol"),
+        ("candesartan", "Candesartan"),
         ("captopril", "Captopril"),
         ("carvedilol", "Carvedilol"),
         ("clopidogrel", "Clopidogrel"),
@@ -111,15 +118,24 @@ list_data = {
         ("frusemide", "Frusemide"),
         ("hydralazine", "Hydralazine"),
         ("hydrochlorothiazide", "Hydrochlorothiazide"),
+        ("irbesartan", "Irbesartan"),
+        ("irbesartan_hydrochlorothiazide", "Irbesartan Hydrochlorothiazide"),
         ("junior_aspirin", "Junior Aspirin"),
+        ("lisinopril", "Lisinopril"),
         ("losartan_h", "losartan Hydrochlorothiazide (Losartan H/Repace H)"),
         ("losartan", "losartan"),
+        ("methyldopa", "Methyldopa"),
         ("metoprolol", "Metoprolol"),
         ("nifedipine", "Nifedipine"),
+        ("olmesartan", "Olmesartan"),
         ("propanolol", "Propanolol"),
         ("ramipril", "Ramipril"),
+        ("rosuvastatin", "Rosuvastatin"),
+        ("s-amlodipine", "S-Amlodipine"),
         ("simvastatin", "Simvastatin"),
+        ("telmisartan", "Telmisartan"),
         ("valsartan", "Valsartan"),
+        (VIT_B_FOLIC_ACID, "Vitamin Bs + Folic Acid"),
         (OTHER, "Other treatment (specify below)"),
     ],
     "inte_lists.arvregimens": [
@@ -176,10 +192,7 @@ list_data = {
         ("metformin_b", "Metformin (B)"),
         ("pioglitazone", "Pioglitazone"),
         ("pregabalin", "Pregabalin (diabetic neuropathy)"),
-        (
-            "vitamin_b_folic_acid",
-            "Vitamin Bs + Folic Acid (Neuroton- diabetic neuropathy)",
-        ),
+        (VIT_B_FOLIC_ACID, "Vitamin Bs + Folic Acid (Neuroton- diabetic neuropathy)"),
         (OTHER, "Other, specify"),
     ],
     "inte_lists.healthservices": [
