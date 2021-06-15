@@ -79,7 +79,7 @@ class TestDeathReport(InteTestCaseMixin, TestCase):
         self.assertDictEqual({}, form._errors)
 
     @tag("death")
-    def test_death_report_form(self):
+    def test_death_report_form_2(self):
         self.prepare()
         action_type = ActionType.objects.get(name=DeathReportAction.name)
         action_item = ActionItem.objects.create(

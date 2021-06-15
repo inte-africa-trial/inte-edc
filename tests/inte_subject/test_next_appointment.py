@@ -80,7 +80,7 @@ class TestNextAppointment(InteTestCaseMixin, TestCase):
         form_validator = NextAppointmentFormValidator(cleaned_data=cleaned_data)
         try:
             form_validator.validate()
-        except ValidationError as e:
+        except ValidationError:
             self.assertIn("integrated_clinic_appt_date", form_validator._errors)
             self.assertNotIn("hiv_clinic_appt_date", form_validator._errors)
             self.assertNotIn("htn_clinic_appt_date", form_validator._errors)
@@ -107,7 +107,7 @@ class TestNextAppointment(InteTestCaseMixin, TestCase):
         form_validator = NextAppointmentFormValidator(cleaned_data=cleaned_data)
         try:
             form_validator.validate()
-        except ValidationError as e:
+        except ValidationError:
             self.fail("ValidationError unexpectedly raised.")
         else:
             self.assertNotIn("hiv_clinic_appt_date", form_validator._errors)
