@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        codebase: ['Supported', 'Dev']
+        codebase: ['Supported', 'Develop']
         django-version: ['3.2', 'dev']
         python-version: ['3.8', '3.9']
         exclude:
