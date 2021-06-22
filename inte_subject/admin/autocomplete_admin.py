@@ -6,5 +6,5 @@ from ..models import ArvRegimens
 
 
 @admin.register(ArvRegimens, site=inte_subject_admin)
-class ArvRegimensAdmin(ListModelAdminMixin, admin.ModelAdmin):
+class ArvRegimensAdmin(ListModelAdminMixin):
     pass
