@@ -1,11 +1,8 @@
 from django.urls.conf import path
-from django.views.generic.base import RedirectView
-
-from .admin_site import inte_subject_admin
+from django.views.generic import RedirectView
 
 app_name = "inte_subject"
 
 urlpatterns = [
-    path("admin/", inte_subject_admin.urls),
-    path("", RedirectView.as_view(url="admin/"), name="home_url"),
+    path("", RedirectView.as_view(url="/inte_subject_admin/"), name="home_url"),
 ]
