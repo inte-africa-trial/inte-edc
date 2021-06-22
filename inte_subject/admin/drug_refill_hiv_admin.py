@@ -32,7 +32,9 @@ class DrugRefillHivAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHis
         '<span style="color:orange">Note: Medications CRF must be completed first.</span>'
     )
 
-    autocomplete_fields = ["rx"]
+    # FIXME: Temporarily(?) disable autocomplete - has issues following Django 3.2 release
+    #  (https://code.djangoproject.com/ticket/32659)
+    # autocomplete_fields = ["rx"]
 
     fieldsets = (
         (None, {"fields": ("subject_visit", "report_datetime")}),
@@ -69,5 +71,6 @@ class DrugRefillHivAdmin(CrfModelAdminMixin, FormLabelModelAdminMixin, SimpleHis
 
     radio_fields = {
         "crf_status": admin.VERTICAL,
+        "rx": admin.VERTICAL,
         "rx_modified": admin.VERTICAL,
     }

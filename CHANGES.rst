@@ -3,6 +3,7 @@ Changes
 
 0.1.68
 ------
+- fix HIV drug refill autocomplete failure to load by (temporarily) converting to radio list
 - fix drug refill forms autocomplete field not using proxy model
 - fix initial review forms not updating estimated dx date
   if dx ago is provided
