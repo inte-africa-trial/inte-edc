@@ -6,29 +6,47 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('inte_lists', '0011_auto_20210524_1533'),
-        ('inte_subject', '0082_auto_20210524_1945'),
+        ("inte_lists", "0011_auto_20210524_1533"),
+        ("inte_subject", "0082_auto_20210524_1945"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='historicalintegratedcarereview',
-            name='receive_health_talk_messages',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=15, verbose_name='Did you receive a health talk when attending the clinic today?'),
+            model_name="historicalintegratedcarereview",
+            name="receive_health_talk_messages",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=15,
+                verbose_name="Did you receive a health talk when attending the clinic today?",
+            ),
         ),
         migrations.AlterField(
-            model_name='integratedcarereview',
-            name='health_talk_conditions',
-            field=models.ManyToManyField(blank=True, related_name='_inte_subject_integratedcarereview_health_talk_conditions_+', to='inte_lists.HealthTalkConditions', verbose_name='If YES, what disease conditions were discussed?'),
+            model_name="integratedcarereview",
+            name="health_talk_conditions",
+            field=models.ManyToManyField(
+                blank=True,
+                related_name="_inte_subject_integratedcarereview_health_talk_conditions_+",
+                to="inte_lists.HealthTalkConditions",
+                verbose_name="If YES, what disease conditions were discussed?",
+            ),
         ),
         migrations.AlterField(
-            model_name='integratedcarereview',
-            name='health_talk_focus',
-            field=models.ManyToManyField(blank=True, related_name='_inte_subject_integratedcarereview_health_talk_focus_+', to='inte_lists.HealthInterventionTypes', verbose_name='If YES, what type of messages were covered?'),
+            model_name="integratedcarereview",
+            name="health_talk_focus",
+            field=models.ManyToManyField(
+                blank=True,
+                related_name="_inte_subject_integratedcarereview_health_talk_focus_+",
+                to="inte_lists.HealthInterventionTypes",
+                verbose_name="If YES, what type of messages were covered?",
+            ),
         ),
         migrations.AlterField(
-            model_name='integratedcarereview',
-            name='receive_health_talk_messages',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], max_length=15, verbose_name='Did you receive a health talk when attending the clinic today?'),
+            model_name="integratedcarereview",
+            name="receive_health_talk_messages",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                max_length=15,
+                verbose_name="Did you receive a health talk when attending the clinic today?",
+            ),
         ),
     ]

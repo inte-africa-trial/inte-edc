@@ -7,15 +7,15 @@ import inte_screening.models.daily_closing_log
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('inte_screening', '0017_historicaldailyclosinglogrevised'),
+        ("inte_screening", "0017_historicaldailyclosinglogrevised"),
     ]
 
     operations = [
         migrations.AlterModelManagers(
-            name='dailyclosinglog',
+            name="dailyclosinglog",
             managers=[
-                ('on_site', inte_screening.models.daily_closing_log.CurrentSiteManager()),
-                ('objects', inte_screening.models.daily_closing_log.DailyClosingLogManager()),
+                ("on_site", inte_screening.models.daily_closing_log.CurrentSiteManager()),
+                ("objects", inte_screening.models.daily_closing_log.DailyClosingLogManager()),
             ],
         ),
     ]

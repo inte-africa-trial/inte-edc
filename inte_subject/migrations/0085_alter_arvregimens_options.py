@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('inte_subject', '0084_auto_20210526_1640'),
+        ("inte_subject", "0084_auto_20210526_1640"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='arvregimens',
-            options={'verbose_name': 'ARV Regimens', 'verbose_name_plural': 'ARV Regimens'},
+            name="arvregimens",
+            options={"verbose_name": "ARV Regimens", "verbose_name_plural": "ARV Regimens"},
         ),
     ]
