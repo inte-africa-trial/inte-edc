@@ -6,6 +6,7 @@ from django.views.defaults import page_not_found, server_error  # noqa
 from edc_action_item.admin_site import edc_action_item_admin
 from edc_adverse_event.admin_site import edc_adverse_event_admin
 from edc_appointment.admin_site import edc_appointment_admin
+from edc_auth.admin_site import edc_auth_admin
 from edc_crf.admin_site import edc_crf_admin
 from edc_dashboard.views import AdministrationView
 from edc_data_manager.admin_site import edc_data_manager_admin
@@ -52,13 +53,7 @@ admin.site.final_catch_all_view = False
 urlpatterns = [
     path("sentry-debug/", trigger_error),
     path("accounts/", include("edc_auth.urls")),
-    path("admin/", include("edc_auth.urls")),
-    path("admin/edc_visit_schedule/", edc_visit_schedule_admin.urls),
-    # path(
-    #     "admin/inte_subject/",
-    #     RedirectView.as_view(url="admin/inte_subject/"),
-    #     name="subject_models_url",
-    # ),
+    path("edc_auth/", include("edc_auth.urls")),
     path("administration/", AdministrationView.as_view(), name="administration_url"),
     path("inte_consent/", include("inte_consent.urls")),
     path("inte_subject/", include("inte_subject.urls")),
@@ -95,24 +90,27 @@ urlpatterns = [
     path("edc_registration/", include("edc_registration.urls")),
     path("edc_subject_dashboard/", include("edc_subject_dashboard.urls")),
     path("edc_visit_schedule/", include("edc_visit_schedule.urls")),
-    path("edc_appointment_admin/", edc_appointment_admin.urls),
+    # admin sites
+    path("edc_action_item_admin/", edc_action_item_admin.urls),
     path("edc_adverse_event_admin/", edc_adverse_event_admin.urls),
+    path("edc_appointment_admin/", edc_appointment_admin.urls),
+    path("edc_auth_admin/", edc_auth_admin.urls),
     path("edc_crf_admin/", edc_crf_admin.urls),
-    path("edc_randomization_admin/", edc_randomization_admin.urls),
-    path("edc_lab_admin/", edc_lab_admin.urls),
     path("edc_data_manager_admin/", edc_data_manager_admin.urls),
     path("edc_export_admin/", edc_export_admin.urls),
-    path("edc_locator_admin/", edc_locator_admin.urls),
     path("edc_facility_admin/", edc_facility_admin.urls),
     path("edc_identifier_admin/", edc_identifier_admin.urls),
+    path("edc_lab_admin/", edc_lab_admin.urls),
+    path("edc_locator_admin/", edc_locator_admin.urls),
     path("edc_metadata_admin/", edc_metadata_admin.urls),
     path("edc_notification_admin/", edc_notification_admin.urls),
     path("edc_offstudy_admin/", edc_offstudy_admin.urls),
-    path("edc_registration_admin/", edc_registration_admin.urls),
-    path("edc_reference_admin/", edc_reference_admin.urls),
-    path("edc_action_item_admin/", edc_action_item_admin.urls),
     path("edc_pdutils_admin/", edc_pdutils_admin.urls),
     path("edc_pharmacy_admin/", edc_pharmacy_admin.urls),
+    path("edc_randomization_admin/", edc_randomization_admin.urls),
+    path("edc_reference_admin/", edc_reference_admin.urls),
+    path("edc_registration_admin/", edc_registration_admin.urls),
+    path("edc_visit_schedule_admin/", edc_visit_schedule_admin.urls),
     path("inte_consent_admin/", inte_consent_admin.urls),
     path("inte_subject_admin/", inte_subject_admin.urls),
     path("inte_ae_admin/", inte_ae_admin.urls),
