@@ -7,9 +7,10 @@ Changes
 - fix initial review forms not updating estimated dx date
   if dx ago is provided
 - add data migration to update existing initial review instances
-- fix order of urls paths
-- bump respond-africa to 0.1.10
+- fix order of urls paths and routes for custom admin sites
+- bump respond-africa to 0.1.11
 - add additional hypertension treatments
+- bump edc to 0.3.22
 
 0.1.67
 ------
