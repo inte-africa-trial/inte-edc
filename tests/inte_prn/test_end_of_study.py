@@ -76,6 +76,6 @@ class TestProtocolViolation(InteTestCaseMixin, TestCase):
         form_validator = EndOfStudyFormValidator(cleaned_data=cleaned_data)
         try:
             form_validator.validate()
-        except ValidationError as e:
+        except ValidationError:
             pprint(form_validator._errors)
             self.fail("ValidationError unexpectedly raised.")

@@ -11,7 +11,7 @@ db.sqlite3
 django_crypto_fields
 crypto_fields/
 etc/
-
+log/
 
 # Swap
 [._]*.s[a-v][a-z]

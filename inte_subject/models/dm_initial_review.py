@@ -2,9 +2,10 @@ from django.db import models
 from edc_constants.choices import YES_NO
 from edc_constants.constants import NOT_APPLICABLE, YES
 from edc_model import models as edc_models
+from respond_models.mixins import InitialReviewModelMixin
 
 from ..choices import DM_MANAGEMENT
-from ..model_mixins import CrfModelMixin, GlucoseModelMixin, InitialReviewModelMixin
+from ..model_mixins import CrfModelMixin, GlucoseModelMixin
 
 
 class DmInitialReview(
@@ -44,7 +45,7 @@ class DmInitialReview(
     )
 
     glucose_performed = models.CharField(
-        verbose_name=("Has the patient had their glucose measured in the last few months?"),
+        verbose_name="Has the patient had their glucose measured in the last few months?",
         max_length=15,
         choices=YES_NO,
     )

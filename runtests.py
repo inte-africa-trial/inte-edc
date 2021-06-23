@@ -24,7 +24,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
     SUBJECT_VISIT_MODEL="inte_subject.subjectvisit",
     SUBJECT_VISIT_MISSED_MODEL="inte_subject.subjectvisitmissed",
     SUBJECT_CONSENT_MODEL="inte_consent.subjectconsent",
-    SUBJECT_REQUISITION_MODEL=f"inte_subject.subjectrequisition",
+    SUBJECT_REQUISITION_MODEL="inte_subject.subjectrequisition",
     SUBJECT_APP_LABEL=f"{app_name.replace('edc', 'subject')}",
     RESPOND_DIAGNOSIS_LABELS=dict(hiv="HIV", htn="Hypertension", dm="Diabetes"),
     INTE_SUBJECT_HE_REVISION_DATE=get_datetime_from_env(2021, 4, 26, 0, 0, 0, "UTC"),
@@ -146,7 +146,7 @@ def main():
     django.setup()
     tags = [t.split("=")[1] for t in sys.argv if t.startswith("--tag")]
     failfast = True if [t for t in sys.argv if t == "--failfast"] else False
-    failures = DiscoverRunner(failfast=failfast, tags=tags).run_tests([f"tests"])
+    failures = DiscoverRunner(failfast=failfast, tags=tags).run_tests(["tests"])
     sys.exit(bool(failures))
 
 
