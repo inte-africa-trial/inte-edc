@@ -14,7 +14,7 @@ from edc_constants.constants import (
     STUDY_DEFINED_TIMEPOINT,
     UNWELL_VISIT,
 )
-from edc_offstudy.constants import LATE_EXCLUSION, WITHDRAWAL
+from edc_offstudy.constants import INVALID_ENROLMENT, LATE_EXCLUSION, WITHDRAWAL
 from edc_transfer.constants import TRANSFERRED
 
 from inte_subject.constants import (
@@ -97,6 +97,10 @@ list_data = {
             TRANSFERRED,
             "Patient has been transferred to another health "
             "centre (Submit Transfer Report first)",
+        ),
+        (
+            INVALID_ENROLMENT,
+            "Invalid enrolment (Submit Protocol Deviation/Violation first)",
         ),
         (
             OTHER,

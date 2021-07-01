@@ -1,12 +1,12 @@
 from django import forms
 from edc_form_validators.form_validator import FormValidator
+from respond_forms.utils import validate_total_days
 
 from ..models import DrugRefillHiv
 from .mixins import (
     CrfFormValidatorMixin,
     CrfModelFormMixin,
     DrugRefillFormValidatorMixin,
-    validate_total_days,
 )
 
 

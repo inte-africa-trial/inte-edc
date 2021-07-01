@@ -2,6 +2,7 @@ from django import forms
 from edc_action_item.forms.action_item_form_mixin import ActionItemFormMixin
 from edc_constants.constants import NO, OTHER, YES
 from edc_form_validators.form_validator import FormValidator
+from respond_forms.utils import raise_if_clinical_review_does_not_exist
 
 from inte_screening.constants import HIV_CLINIC
 
@@ -11,7 +12,6 @@ from .mixins import (
     CrfModelFormMixin,
     EstimatedDateFromAgoFormMixin,
     InitialReviewFormValidatorMixin,
-    raise_if_clinical_review_does_not_exist,
 )
 
 
