@@ -3,10 +3,9 @@ from django.conf import settings
 from edc_constants.constants import DM, HIV, HTN, NOT_APPLICABLE
 from edc_form_validators.form_validator import FormValidator
 from edc_utils import convert_php_dateformat
+from edc_visit_schedule.utils import is_baseline
 from respond_forms.utils import model_exists_or_raise
 from respond_models.diagnoses import Diagnoses, InitialReviewRequired
-
-from inte_visit_schedule.is_baseline import is_baseline
 
 from ..models import ClinicalReview, ClinicalReviewBaseline, Medications
 from .mixins import CrfFormValidatorMixin, CrfModelFormMixin

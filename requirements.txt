@@ -1,4 +1,4 @@
-edc==0.3.23
+edc==0.3.24
 respond-africa==0.1.11
 beautifulsoup4
 git+https://github.com/ecometrica/django-multisite.git@master#egg=django-multisite

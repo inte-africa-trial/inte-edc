@@ -7,9 +7,10 @@ from edc_crf.modelform_mixins import CrfModelFormMixin as BaseCrfModelFormMixin
 from edc_model import models as edc_models
 from edc_model.models import InvalidFormat
 from edc_utils import age
+from edc_visit_schedule.utils import is_baseline
 from respond_forms.utils import (
-    model_exists_or_raise,
     medications_exists_or_raise,
+    model_exists_or_raise,
     validate_total_days,
 )
 
@@ -20,7 +21,6 @@ from inte_prn.icc_registered import (
 )
 from inte_prn.models import IntegratedCareClinicRegistration
 from inte_sites.is_intervention_site import NotInterventionSite, is_intervention_site
-from inte_visit_schedule.is_baseline import is_baseline
 
 from ..models import ClinicalReviewBaseline
 
