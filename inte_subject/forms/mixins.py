@@ -11,6 +11,7 @@ from edc_visit_schedule.utils import is_baseline
 from respond_forms.utils import (
     medications_exists_or_raise,
     model_exists_or_raise,
+    raise_if_clinical_review_does_not_exist,
     validate_total_days,
 )
 
