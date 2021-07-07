@@ -16,6 +16,8 @@ jobs:
         exclude:
           - codebase: 'Supported'
             django-version: 'dev'
+          - codebase: 'Develop'
+            python-version: '3.8'
 
     services:
       mysql:
