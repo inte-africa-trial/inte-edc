@@ -15,7 +15,7 @@ class ViralLoadResultFormValidator(
         if self.cleaned_data.get("subject_visit"):
             raise_if_baseline(self.cleaned_data.get("subject_visit"))
             raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
-        self.validate_drawn_date_by_dx_date("hiv_dx_date", "HIV infection")
+        self.validate_drawn_date_by_dx_date("hiv", "HIV infection")
 
 
 class ViralLoadResultForm(CrfModelFormMixin, forms.ModelForm):
