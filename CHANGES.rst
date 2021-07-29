@@ -5,7 +5,10 @@ Unreleased
 ------
 - bump to edc 0.3.27
 - bump to respond-africa 0.1.12 (last version supporting Python 3.8)
-- fix missing form mixins import
+- fix
+    - missing form mixins import
+    - viral load PRN error (on save)
+    - unable to set visit report reason to "Missed visit"
 - Testing environment
     - drop Python 3.8 tests against bleeding edge/development codebase (`edcdev`)
     - bump Python version for tox lint tests (run under GH actions) from 3.8 to 3.9

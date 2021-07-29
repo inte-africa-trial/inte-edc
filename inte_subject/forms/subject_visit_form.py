@@ -27,8 +27,11 @@ class SubjectVisitFormValidator(VisitFormValidator):
             field_other="clinic_services_other",
         )
 
-        self.validate__clinic_services()
-        self.validate__health_services()
+        if self.cleaned_data.get("reason") != MISSED_VISIT:
+            self.validate__clinic_services()
+            self.validate__health_services()
+        else:
+            self.clean_missed_visit_report()
 
         self.applicable_if(
             SCHEDULED, UNSCHEDULED, field="reason", field_applicable="info_source"
@@ -85,6 +88,23 @@ class SubjectVisitFormValidator(VisitFormValidator):
         )
 
         self.m2m_single_selection_if(NOT_APPLICABLE, m2m_field="health_services")
+
+    def clean_missed_visit_report(self):
+        expected_na_msg = (
+            "Expected 'Not applicable' response only (if this is a missed visit report)."
+        )
+        self.m2m_selection_expected(
+            m2m_field="clinic_services",
+            response=NOT_APPLICABLE,
+            error_msg=expected_na_msg,
+        )
+        self.m2m_selection_expected(
+            m2m_field="health_services",
+            response=NOT_APPLICABLE,
+            error_msg=expected_na_msg,
+        )
+        if self.cleaned_data.get("info_source") != NOT_APPLICABLE:
+            raise forms.ValidationError({"info_source": expected_na_msg})
 
 
 class SubjectVisitForm(SiteModelFormMixin, FormValidatorMixin, forms.ModelForm):
