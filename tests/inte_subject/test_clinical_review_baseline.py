@@ -87,6 +87,25 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             report_datetime=self.baseline_datetime,
         )
 
+    @staticmethod
+    def get_valid_form_data(subject_visit):
+        return {
+            "subject_visit": subject_visit.pk,
+            "report_datetime": subject_visit.report_datetime,
+            "crf_status": INCOMPLETE,
+            "hiv_test": YES,
+            "hiv_test_ago": "1y",
+            "hiv_dx": YES,
+            "dm_test": YES,
+            "dm_test_ago": "1y",
+            "dm_dx": YES,
+            "htn_test": YES,
+            "htn_test_ago": "1y",
+            "htn_dx": YES,
+            "health_insurance": YES,
+            "patient_club": YES,
+        }
+
     def test_form_ok_hiv(self):
         data = {
             "subject_visit": self.subject_visit_hiv.pk,
@@ -297,28 +316,21 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                 self.assertNotIn(f"{cond}_test", form._errors)
                 self.assertNotIn(cond, form._errors)
 
-    def test_date_or_est_required_if_cond_tested(self):
-        valid_data = {
-            "subject_visit": self.subject_visit_htn.pk,
-            "report_datetime": self.subject_visit_htn.report_datetime,
-            "crf_status": INCOMPLETE,
-            "hiv_test": YES,
-            "hiv_test_ago": "1y",
-            "hiv_dx": YES,
-            "dm_test": YES,
-            "dm_test_ago": "1y",
-            "dm_dx": YES,
-            "htn_test": YES,
-            "htn_test_ago": "1y",
-            "htn_dx": YES,
-            "health_insurance": YES,
-            "patient_club": YES,
-        }
+    def test_get_valid_form_data_test_helper(self):
+        for subject_visit_type in [
+            self.subject_visit_hiv,
+            self.subject_visit_dm,
+            self.subject_visit_htn,
+        ]:
+            with self.subTest(subject_visit_type=subject_visit_type):
+                valid_data = self.get_valid_form_data(subject_visit=subject_visit_type)
 
-        # Validate assumption about valid data
-        form = ClinicalReviewBaselineForm(data=valid_data)
-        form.is_valid()
-        self.assertEqual(form._errors, {})
+                form = ClinicalReviewBaselineForm(data=valid_data)
+                form.is_valid()
+                self.assertEqual(form._errors, {})
+
+    def test_date_or_est_required_if_cond_tested(self):
+        valid_data = self.get_valid_form_data(subject_visit=self.subject_visit_htn)
 
         # Test as tested, diagnosed, but without any <cond>_test_ago field data
         for cond in ["hiv", "dm", "htn"]:
@@ -334,3 +346,28 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                     f"{cond.title()}: When was the subject tested? Either ",
                     form._errors["__all__"][0],
                 )
+
+    def test_related_test_required_for_vertical_screening_clinics(self):
+        for cond, cond_desc, subject_visit in [
+            ("hiv", "an HIV", self.subject_visit_hiv),
+            ("dm", "a Diabetes", self.subject_visit_dm),
+            ("htn", "an Hypertension", self.subject_visit_htn),
+        ]:
+            with self.subTest(codn=cond):
+                subtest_data = self.get_valid_form_data(subject_visit)
+                subtest_data.update(
+                    {
+                        f"{cond}_test": NO,
+                        f"{cond}_dx": NOT_APPLICABLE,
+                    }
+                )
+
+                form = ClinicalReviewBaselineForm(data=subtest_data)
+                form.is_valid()
+
+                self.assertIn(f"{cond}_test", form._errors)
+                self.assertIn(
+                    f"Patient was screened from {cond_desc} clinic, expected `Yes`.",
+                    str(form._errors.get(f"{cond}_test")),
+                )
+                self.assertEqual(len(form._errors), 1, form._errors)
