@@ -34,7 +34,7 @@ class ClinicalReviewBaselineFormValidator(
         self.required_if(YES, field="htn_test", field_required="htn_dx")
 
         self.estimated_date_from_ago("dm_test_ago")
-        self.when_tested_required(cond="diabetes")
+        self.when_tested_required(cond="dm")
         self.required_if(YES, field="dm_test", field_required="dm_dx")
 
     def when_tested_required(self, cond=None):

@@ -1,5 +1,7 @@
+import copy
+
 from dateutil.relativedelta import relativedelta
-from django.test import TestCase
+from django.test import TestCase, tag
 from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, YES
 from edc_utils import get_utcnow
 from pytz import timezone
@@ -19,6 +21,7 @@ def get_now():
     return get_utcnow().astimezone(timezone("Africa/Kampala"))
 
 
+@tag("crb")
 class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
@@ -293,3 +296,41 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                 self.assertNotIn("__all__", [k for k in form._errors.keys()])
                 self.assertNotIn(f"{cond}_test", form._errors)
                 self.assertNotIn(cond, form._errors)
+
+    def test_date_or_est_required_if_cond_tested(self):
+        valid_data = {
+            "subject_visit": self.subject_visit_htn.pk,
+            "report_datetime": self.subject_visit_htn.report_datetime,
+            "crf_status": INCOMPLETE,
+            "hiv_test": YES,
+            "hiv_test_ago": "1y",
+            "hiv_dx": YES,
+            "dm_test": YES,
+            "dm_test_ago": "1y",
+            "dm_dx": YES,
+            "htn_test": YES,
+            "htn_test_ago": "1y",
+            "htn_dx": YES,
+            "health_insurance": YES,
+            "patient_club": YES,
+        }
+
+        # Validate assumption about valid data
+        form = ClinicalReviewBaselineForm(data=valid_data)
+        form.is_valid()
+        self.assertEqual(form._errors, {})
+
+        # Test as tested, diagnosed, but without any <cond>_test_ago field data
+        for cond in ["hiv", "dm", "htn"]:
+            with self.subTest(codn=cond):
+                subtest_data = copy.deepcopy(valid_data)
+                subtest_data.update({f"{cond}_test_ago": None})
+
+                form = ClinicalReviewBaselineForm(data=subtest_data)
+                form.is_valid()
+
+                self.assertIn("__all__", [k for k in form._errors.keys()])
+                self.assertIn(
+                    f"{cond.title()}: When was the subject tested? Either ",
+                    form._errors["__all__"][0],
+                )
