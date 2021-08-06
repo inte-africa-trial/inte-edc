@@ -2,7 +2,7 @@ import copy
 import html
 
 from dateutil.relativedelta import relativedelta
-from django.test import TestCase, tag
+from django.test import TestCase
 from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, YES
 from edc_utils import get_utcnow
 from pytz import timezone
@@ -22,7 +22,6 @@ def get_now():
     return get_utcnow().astimezone(timezone("Africa/Kampala"))
 
 
-@tag("crb")
 class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
     def setUp(self):
         super().setUp()
