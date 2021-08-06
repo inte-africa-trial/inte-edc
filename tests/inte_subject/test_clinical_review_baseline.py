@@ -1,4 +1,5 @@
 import copy
+import html
 
 from dateutil.relativedelta import relativedelta
 from django.test import TestCase, tag
@@ -360,7 +361,7 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                 form.is_valid()
                 self.assertEqual(form._errors, {})
 
-    def test_related_test_required_for_vertical_screening_clinics(self):
+    def test_related_test_required_for_subjects_from_vertical_clinics(self):
         for cond, cond_desc, subject_visit in [
             ("hiv", "an HIV", self.subject_visit_hiv),
             ("dm", "a Diabetes", self.subject_visit_dm),
@@ -385,8 +386,35 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                 )
                 self.assertEqual(len(form._errors), 1, form._errors)
 
+    def test_cond_dx_response_required_when_subject_from_same_vertical_cond_clinic(
+        self,
+    ):
+        for cond, cond_desc, subject_visit in [
+            ("hiv", "an HIV", self.subject_visit_hiv),
+            ("dm", "a Diabetes", self.subject_visit_dm),
+            ("htn", "an Hypertension", self.subject_visit_htn),
+        ]:
+            with self.subTest(cond=cond, cond_desc=cond_desc, subject_visit=subject_visit):
+                subtest_data = self.get_valid_form_data(subject_visit=subject_visit)
+                subtest_data.update({f"{cond}_dx": NOT_APPLICABLE})
+
+                form = ClinicalReviewBaselineForm(data=subtest_data)
+                form.is_valid()
+
+                self.assertIn(f"{cond}_dx", form._errors)
+                self.assertIn(
+                    (
+                        f"Patient was screened from {cond_desc} clinic, "
+                        "expected 'Yes' or 'No' diagnosis."
+                    ),
+                    html.unescape(str(form._errors.get(f"{cond}_dx"))),
+                )
+                self.assertEqual(len(form._errors), 1, form._errors)
+
     @tag("crb2")
-    def test_positive_cond_dx_not_required_because_came_from_same_vertical_cond_clinic(self):
+    def test_cond_dx_no_response_for_subject_from_same_vertical_cond_clinic_ok(
+        self,
+    ):
         for cond, subject_visit in [
             ("hiv", self.subject_visit_hiv),
             ("dm", self.subject_visit_dm),
@@ -400,3 +428,128 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                 form.is_valid()
 
                 self.assertEqual(form._errors, {})
+
+    @tag("crb2")
+    def test_cond_dx_yes_response_for_subject_from_same_vertical_cond_clinic_ok(
+        self,
+    ):
+        for cond, subject_visit in [
+            ("hiv", self.subject_visit_hiv),
+            ("dm", self.subject_visit_dm),
+            ("htn", self.subject_visit_htn),
+        ]:
+            with self.subTest(cond=cond, subject_visit=subject_visit):
+                subtest_data = self.get_valid_form_data(subject_visit=subject_visit)
+                subtest_data.update({f"{cond}_dx": YES})
+
+                form = ClinicalReviewBaselineForm(data=subtest_data)
+                form.is_valid()
+
+                self.assertEqual(form._errors, {})
+
+    def test_dm_or_htn_test_required_for_subjects_from_ncd_clinics(self):
+        subtest_data = self.get_valid_form_data(self.subject_visit_ncd)
+
+        # Test no dm or htn test
+        subtest_data.update(
+            {
+                "dm_test": NO,
+                "dm_dx": NOT_APPLICABLE,
+                "htn_test": NO,
+                "htn_dx": NOT_APPLICABLE,
+            }
+        )
+
+        form = ClinicalReviewBaselineForm(data=subtest_data)
+        form.is_valid()
+
+        self.assertIn("__all__", form._errors)
+        self.assertIn(
+            (
+                "Patient was screened from an NCD clinic, expected to "
+                "have tested for either Hypertension and/or Diabetes."
+            ),
+            str(form._errors.get("__all__")),
+        )
+        self.assertEqual(len(form._errors), 1, form._errors)
+
+        # Test dm test only
+        subtest_data.update(
+            {
+                "dm_test": YES,
+                "dm_dx": YES,
+                "htn_test": NO,
+                "htn_dx": NOT_APPLICABLE,
+            }
+        )
+        form = ClinicalReviewBaselineForm(data=subtest_data)
+        form.is_valid()
+        self.assertEqual(form._errors, {})
+
+        # Test htn test only
+        subtest_data.update(
+            {
+                "dm_test": NO,
+                "dm_dx": NOT_APPLICABLE,
+                "htn_test": YES,
+                "htn_dx": YES,
+            }
+        )
+        form = ClinicalReviewBaselineForm(data=subtest_data)
+        form.is_valid()
+        self.assertEqual(form._errors, {})
+
+        # Test both dm and htn tests
+        subtest_data.update(
+            {
+                "dm_test": YES,
+                "dm_dx": YES,
+                "htn_test": YES,
+                "htn_dx": NO,
+            }
+        )
+        form = ClinicalReviewBaselineForm(data=subtest_data)
+        form.is_valid()
+        self.assertEqual(form._errors, {})
+
+    def test_positive_dm_or_htn_dx_not_required_because_subject_from_ncd_clinic(self):
+        subtest_data = self.get_valid_form_data(self.subject_visit_ncd)
+
+        # Tested for dm and htn, no dx for either
+        subtest_data.update(
+            {
+                "dm_test": YES,
+                "dm_dx": NO,
+                "htn_test": YES,
+                "htn_dx": NO,
+            }
+        )
+        form = ClinicalReviewBaselineForm(data=subtest_data)
+        form.is_valid()
+        self.assertEqual(form._errors, {})
+
+        # Tested for dm only, no dx
+        subtest_data.update(
+            {
+                "dm_test": YES,
+                "dm_dx": NO,
+                "htn_test": NO,
+                "htn_dx": NOT_APPLICABLE,
+            }
+        )
+        form = ClinicalReviewBaselineForm(data=subtest_data)
+        form.is_valid()
+        self.assertEqual(form._errors, {})
+
+        # Tested for htn only, no dx
+        subtest_data.update(
+            {
+                "dm_test": NO,
+                "dm_dx": NOT_APPLICABLE,
+                "htn_test": YES,
+                "htn_dx": NO,
+            }
+        )
+        form = ClinicalReviewBaselineForm(data=subtest_data)
+        form.is_valid()
+        self.assertEqual(form._errors, {})
