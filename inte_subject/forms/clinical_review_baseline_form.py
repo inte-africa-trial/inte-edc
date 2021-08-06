@@ -21,14 +21,20 @@ class ClinicalReviewBaselineFormValidator(
     CrfFormValidatorMixin, EstimatedDateFromAgoFormMixin, FormValidator
 ):
     def clean(self):
-        self.raise_if_hiv_clinic_and_no_hiv_test()
+        self.raise_if_vertical_clinic_with_no_related_cond_test(
+            clinic=HIV_CLINIC, cond="hiv", clinic_desc="HIV"
+        )
         self.estimated_date_from_ago("hiv_test_ago")
         self.when_tested_required(cond="hiv")
         self.raise_if_hiv_clinic_and_no_hiv_dx_result()
         self.required_if(YES, field="hiv_test", field_required="hiv_dx")
 
-        self.raise_if_htn_clinic_and_no_htn_test()
-        self.raise_if_dm_clinic_and_no_dm_test()
+        self.raise_if_vertical_clinic_with_no_related_cond_test(
+            clinic=HYPERTENSION_CLINIC, cond="htn", clinic_desc="Hypertension"
+        )
+        self.raise_if_vertical_clinic_with_no_related_cond_test(
+            clinic=DIABETES_CLINIC, cond="dm", clinic_desc="Diabetes"
+        )
         self.raise_if_ncd_clinic_and_no_ncd_test()
         self.raise_if_ncd_clinic_and_no_ncd_dx_result()
 
@@ -42,6 +48,19 @@ class ClinicalReviewBaselineFormValidator(
         self.raise_if_dm_clinic_and_no_dm_dx_result()
         self.required_if(YES, field="dm_test", field_required="dm_dx")
 
+    def raise_if_vertical_clinic_with_no_related_cond_test(self, clinic, cond, clinic_desc=""):
+        if (
+            self.subject_screening.clinic_type == clinic
+            and self.cleaned_data.get(f"{cond}_test") != YES
+        ):
+            raise forms.ValidationError(
+                {
+                    f"{cond}_test": (
+                        f"Patient was screened from {clinic_desc} clinic, expected `Yes`."
+                    ),
+                }
+            )
+
     def when_tested_required(self, cond=None):
         if self.cleaned_data.get(f"{cond}_test") == YES:
             if not self.cleaned_data.get(f"{cond}_test_ago") and not self.cleaned_data.get(
@@ -51,17 +70,6 @@ class ClinicalReviewBaselineFormValidator(
                     f"{cond.title()}: When was the subject tested? Either provide an "
                     "estimated time 'ago' or provide the exact date. See below."
                 )
-
-    def raise_if_hiv_clinic_and_no_hiv_test(self):
-        if (
-            self.subject_screening.clinic_type == HIV_CLINIC
-            and self.cleaned_data.get("hiv_test") != YES
-        ):
-            raise forms.ValidationError(
-                {
-                    "hiv_test": ("Patient was screened from an HIV clinic, expected `Yes`."),
-                }
-            )
 
     def raise_if_hiv_clinic_and_no_hiv_dx_result(self):
         if (
@@ -77,19 +85,6 @@ class ClinicalReviewBaselineFormValidator(
                 }
             )
 
-    def raise_if_htn_clinic_and_no_htn_test(self):
-        if (
-            self.subject_screening.clinic_type == HYPERTENSION_CLINIC
-            and self.cleaned_data.get("htn_test") != YES
-        ):
-            raise forms.ValidationError(
-                {
-                    "htn_test": (
-                        "Patient was screened from an Hypertension clinic, expected `Yes`."
-                    ),
-                }
-            )
-
     def raise_if_htn_clinic_and_no_htn_dx_result(self):
         if (
             self.subject_screening.clinic_type == HYPERTENSION_CLINIC
@@ -100,19 +95,6 @@ class ClinicalReviewBaselineFormValidator(
                     "htn_dx": (
                         "Patient was screened from an Hypertension clinic, "
                         "expected 'Yes' or 'No' diagnosis."
-                    ),
-                }
-            )
-
-    def raise_if_dm_clinic_and_no_dm_test(self):
-        if (
-            self.subject_screening.clinic_type == DIABETES_CLINIC
-            and self.cleaned_data.get("dm_test") != YES
-        ):
-            raise forms.ValidationError(
-                {
-                    "dm_test": (
-                        "Patient was screened from a Diabetes clinic, expected `Yes`."
                     ),
                 }
             )

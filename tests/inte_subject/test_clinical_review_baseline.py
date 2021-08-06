@@ -363,9 +363,9 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
 
     def test_related_test_required_for_subjects_from_vertical_clinics(self):
         for cond, cond_desc, subject_visit in [
-            ("hiv", "an HIV", self.subject_visit_hiv),
-            ("dm", "a Diabetes", self.subject_visit_dm),
-            ("htn", "an Hypertension", self.subject_visit_htn),
+            ("hiv", "HIV", self.subject_visit_hiv),
+            ("dm", "Diabetes", self.subject_visit_dm),
+            ("htn", "Hypertension", self.subject_visit_htn),
         ]:
             with self.subTest(cond=cond):
                 subtest_data = self.get_valid_form_data(subject_visit)
@@ -411,7 +411,6 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                 )
                 self.assertEqual(len(form._errors), 1, form._errors)
 
-    @tag("crb2")
     def test_cond_dx_no_response_for_subject_from_same_vertical_cond_clinic_ok(
         self,
     ):
@@ -429,7 +428,6 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
 
                 self.assertEqual(form._errors, {})
 
-    @tag("crb2")
     def test_cond_dx_yes_response_for_subject_from_same_vertical_cond_clinic_ok(
         self,
     ):
