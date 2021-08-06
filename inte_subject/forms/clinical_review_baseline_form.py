@@ -24,6 +24,7 @@ class ClinicalReviewBaselineFormValidator(
         self.raise_if_hiv_clinic_and_hiv_pos()
         self.estimated_date_from_ago("hiv_test_ago")
         self.when_tested_required(cond="hiv")
+        self.required_if(YES, field="hiv_test", field_required="hiv_dx")
 
         self.raise_if_clinic_and_not_htn()
         self.raise_if_clinic_and_not_diabetes()
@@ -58,16 +59,6 @@ class ClinicalReviewBaselineFormValidator(
                 }
             )
 
-        if (
-            self.subject_screening.clinic_type == HIV_CLINIC
-            and self.cleaned_data.get("hiv_dx") != YES
-        ):
-            raise forms.ValidationError(
-                {
-                    "hiv_dx": ("Patient was screened from an HIV clinic, expected `Yes`."),
-                }
-            )
-
     def raise_if_clinic_and_not_htn(self):
         if (
             self.subject_screening.clinic_type == HYPERTENSION_CLINIC
@@ -76,17 +67,6 @@ class ClinicalReviewBaselineFormValidator(
             raise forms.ValidationError(
                 {
                     "htn_test": (
-                        "Patient was screened from an Hypertension clinic, expected `Yes`."
-                    ),
-                }
-            )
-        if (
-            self.subject_screening.clinic_type == HYPERTENSION_CLINIC
-            and self.cleaned_data.get("htn_dx") != YES
-        ):
-            raise forms.ValidationError(
-                {
-                    "htn_dx": (
                         "Patient was screened from an Hypertension clinic, expected `Yes`."
                     ),
                 }
@@ -102,15 +82,6 @@ class ClinicalReviewBaselineFormValidator(
                     "dm_test": (
                         "Patient was screened from a Diabetes clinic, expected `Yes`."
                     ),
-                }
-            )
-        if (
-            self.subject_screening.clinic_type == DIABETES_CLINIC
-            and self.cleaned_data.get("dm_dx") != YES
-        ):
-            raise forms.ValidationError(
-                {
-                    "dm_dx": ("Patient was screened from a Diabetes clinic, expected `Yes`."),
                 }
             )
 
