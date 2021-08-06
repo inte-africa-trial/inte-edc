@@ -9,6 +9,9 @@ Unreleased
     - missing form mixins import
     - viral load PRN error (on save)
     - unable to set visit report reason to "Missed visit"
+- update clinical baseline review to allow patients from a clinic without
+  having a diagnosis of the condition treated by that clinic
+  (providing they have a related test, a diagnosis result and >=1 conditions overall)
 - Testing environment
     - drop Python 3.8 tests against bleeding edge/development codebase (`edcdev`)
     - bump Python version for tox lint tests (run under GH actions) from 3.8 to 3.9
