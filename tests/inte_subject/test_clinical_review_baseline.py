@@ -338,10 +338,10 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                 form = ClinicalReviewBaselineForm(data=subtest_data)
                 form.is_valid()
 
-                self.assertIn("__all__", [k for k in form._errors.keys()])
+                self.assertIn("__all__", form._errors)
                 self.assertIn(
                     f"{cond.title()}: When was the subject tested? Either ",
-                    form._errors["__all__"][0],
+                    str(form._errors.get("__all__")),
                 )
 
     def test_related_test_required_for_vertical_screening_clinics(self):
@@ -350,7 +350,7 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             ("dm", "a Diabetes", self.subject_visit_dm),
             ("htn", "an Hypertension", self.subject_visit_htn),
         ]:
-            with self.subTest(codn=cond):
+            with self.subTest(cond=cond):
                 subtest_data = self.get_valid_form_data(subject_visit)
                 subtest_data.update(
                     {
