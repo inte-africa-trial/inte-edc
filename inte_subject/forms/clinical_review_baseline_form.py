@@ -22,20 +22,20 @@ class ClinicalReviewBaselineFormValidator(
 ):
     def clean(self):
         self.raise_if_vertical_clinic_with_no_related_cond_test(
-            clinic=HIV_CLINIC, cond="hiv", clinic_desc="HIV"
+            clinic_type=HIV_CLINIC, cond="hiv", clinic_desc="HIV"
         )
         self.estimated_date_from_ago("hiv_test_ago")
         self.when_tested_required(cond="hiv")
         self.raise_if_vertical_clinic_with_no_related_cond_dx_result(
-            clinic=HIV_CLINIC, cond="hiv", clinic_desc="HIV"
+            clinic_type=HIV_CLINIC, cond="hiv", clinic_desc="HIV"
         )
         self.required_if(YES, field="hiv_test", field_required="hiv_dx")
 
         self.raise_if_vertical_clinic_with_no_related_cond_test(
-            clinic=HYPERTENSION_CLINIC, cond="htn", clinic_desc="Hypertension"
+            clinic_type=HYPERTENSION_CLINIC, cond="htn", clinic_desc="Hypertension"
         )
         self.raise_if_vertical_clinic_with_no_related_cond_test(
-            clinic=DIABETES_CLINIC, cond="dm", clinic_desc="Diabetes"
+            clinic_type=DIABETES_CLINIC, cond="dm", clinic_desc="Diabetes"
         )
         self.raise_if_ncd_clinic_and_no_ncd_test()
         self.raise_if_ncd_clinic_and_no_ncd_dx_result()
@@ -43,20 +43,22 @@ class ClinicalReviewBaselineFormValidator(
         self.estimated_date_from_ago("htn_test_ago")
         self.when_tested_required(cond="htn")
         self.raise_if_vertical_clinic_with_no_related_cond_dx_result(
-            clinic=HYPERTENSION_CLINIC, cond="htn", clinic_desc="Hypertension"
+            clinic_type=HYPERTENSION_CLINIC, cond="htn", clinic_desc="Hypertension"
         )
         self.required_if(YES, field="htn_test", field_required="htn_dx")
 
         self.estimated_date_from_ago("dm_test_ago")
         self.when_tested_required(cond="dm")
         self.raise_if_vertical_clinic_with_no_related_cond_dx_result(
-            clinic=DIABETES_CLINIC, cond="dm", clinic_desc="Diabetes"
+            clinic_type=DIABETES_CLINIC, cond="dm", clinic_desc="Diabetes"
         )
         self.required_if(YES, field="dm_test", field_required="dm_dx")
 
-    def raise_if_vertical_clinic_with_no_related_cond_test(self, clinic, cond, clinic_desc=""):
+    def raise_if_vertical_clinic_with_no_related_cond_test(
+        self, clinic_type, cond, clinic_desc=""
+    ):
         if (
-            self.subject_screening.clinic_type == clinic
+            self.subject_screening.clinic_type == clinic_type
             and self.cleaned_data.get(f"{cond}_test") != YES
         ):
             raise forms.ValidationError(
@@ -78,10 +80,10 @@ class ClinicalReviewBaselineFormValidator(
                 )
 
     def raise_if_vertical_clinic_with_no_related_cond_dx_result(
-        self, clinic, cond, clinic_desc=""
+        self, clinic_type, cond, clinic_desc=""
     ):
         if (
-            self.subject_screening.clinic_type == clinic
+            self.subject_screening.clinic_type == clinic_type
             and self.cleaned_data.get(f"{cond}_dx") == NOT_APPLICABLE
         ):
             raise forms.ValidationError(
