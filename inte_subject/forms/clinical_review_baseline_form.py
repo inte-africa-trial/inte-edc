@@ -34,6 +34,8 @@ class ClinicalReviewBaselineFormValidator(
             clinic_type=HYPERTENSION_CLINIC, cond="htn", clinic_desc="Hypertension"
         )
 
+        self.raise_if_no_hiv_or_ncd_conditions()
+
     def clean_condition_section(self, clinic_type, cond, clinic_desc=""):
         self.raise_if_vertical_clinic_with_no_related_cond_test(
             clinic_type=clinic_type, cond=cond, clinic_desc=clinic_desc
@@ -108,6 +110,18 @@ class ClinicalReviewBaselineFormValidator(
             raise forms.ValidationError(
                 "Patient was screened from an NCD clinic, expected "
                 "'Yes' or 'No' diagnosis for Hypertension and/or Diabetes."
+            )
+
+    def raise_if_no_hiv_or_ncd_conditions(self):
+        if not (
+            self.cleaned_data.get("hiv_dx") == YES
+            or self.cleaned_data.get("dm_dx") == YES
+            or self.cleaned_data.get("htn_dx") == YES
+        ):
+            raise forms.ValidationError(
+                "Patient expected to have at least one of the following "
+                "conditions: a positive HIV test, a diagnosis for Hypertension "
+                "or a diagnosis for Diabetes"
             )
 
 

@@ -565,3 +565,48 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
         form = ClinicalReviewBaselineForm(data=subtest_data)
         form.is_valid()
         self.assertEqual(form._errors, {})
+
+    def test_at_least_one_condition_required(self):
+        for cond, subject_visit in [
+            ("hiv", self.subject_visit_hiv),
+            ("dm", self.subject_visit_dm),
+            ("htn", self.subject_visit_htn),
+            ("dm", self.subject_visit_ncd),
+            ("htn", self.subject_visit_ncd),
+        ]:
+            with self.subTest(cond=cond, subject_visit=subject_visit):
+                subtest_data = self.get_valid_form_data(subject_visit=subject_visit)
+                subtest_data.update({f"{cond}_dx": YES})
+
+                # Set all conditions to not tested/na diagnosis
+                subtest_data.update(
+                    {
+                        "hiv_test": NO,
+                        "hiv_dx": NOT_APPLICABLE,
+                        "dm_test": NO,
+                        "dm_dx": NOT_APPLICABLE,
+                        "htn_test": NO,
+                        "htn_dx": NOT_APPLICABLE,
+                    }
+                )
+
+                # Configure required test (based on clinic type), and negative diagnosis
+                subtest_data.update(
+                    {
+                        f"{cond}_test": YES,
+                        f"{cond}_dx": NO,
+                    }
+                )
+
+                form = ClinicalReviewBaselineForm(data=subtest_data)
+                form.is_valid()
+
+                self.assertIn("__all__", form._errors)
+                self.assertIn(
+                    (
+                        "Patient expected to have at least one of the following "
+                        "conditions: a positive HIV test, a diagnosis for Hypertension "
+                        "or a diagnosis for Diabetes"
+                    ),
+                    str(form._errors.get("__all__")),
+                )
