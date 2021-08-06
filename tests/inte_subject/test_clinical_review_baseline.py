@@ -329,11 +329,13 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
     def test_date_or_est_required_if_cond_tested(self):
         valid_data = self.get_valid_form_data(subject_visit=self.subject_visit_htn)
 
-        # Test as tested, diagnosed, but without any <cond>_test_ago field data
+        # Test: subject tested, diagnosed, but no <cond>_test_ago <cond>_test_date field data
         for cond in ["hiv", "dm", "htn"]:
             with self.subTest(codn=cond):
                 subtest_data = copy.deepcopy(valid_data)
-                subtest_data.update({f"{cond}_test_ago": None})
+
+                # Test with neither set
+                subtest_data.update({f"{cond}_test_ago": None, f"{cond}_test_date": None})
 
                 form = ClinicalReviewBaselineForm(data=subtest_data)
                 form.is_valid()
@@ -343,6 +345,20 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                     f"{cond.title()}: When was the subject tested? Either ",
                     str(form._errors.get("__all__")),
                 )
+
+                # Test is ok with estimate provided
+                subtest_data.update({f"{cond}_test_ago": "1y", f"{cond}_test_date": None})
+                form = ClinicalReviewBaselineForm(data=subtest_data)
+                form.is_valid()
+                self.assertEqual(form._errors, {})
+
+                # Test is ok with date provided
+                subtest_data.update(
+                    {f"{cond}_test_ago": None, f"{cond}_test_date": get_utcnow()}
+                )
+                form = ClinicalReviewBaselineForm(data=subtest_data)
+                form.is_valid()
+                self.assertEqual(form._errors, {})
 
     def test_related_test_required_for_vertical_screening_clinics(self):
         for cond, cond_desc, subject_visit in [
@@ -370,7 +386,7 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                 self.assertEqual(len(form._errors), 1, form._errors)
 
     @tag("crb2")
-    def test_positive_cond_dx_not_required_just_because_came_from_cond_clinic(self):
+    def test_positive_cond_dx_not_required_because_came_from_same_vertical_cond_clinic(self):
         for cond, subject_visit in [
             ("hiv", self.subject_visit_hiv),
             ("dm", self.subject_visit_dm),
