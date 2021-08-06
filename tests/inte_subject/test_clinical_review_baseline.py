@@ -390,9 +390,9 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
         self,
     ):
         for cond, cond_desc, subject_visit in [
-            ("hiv", "an HIV", self.subject_visit_hiv),
-            ("dm", "a Diabetes", self.subject_visit_dm),
-            ("htn", "an Hypertension", self.subject_visit_htn),
+            ("hiv", "HIV", self.subject_visit_hiv),
+            ("dm", "Diabetes", self.subject_visit_dm),
+            ("htn", "Hypertension", self.subject_visit_htn),
         ]:
             with self.subTest(cond=cond, cond_desc=cond_desc, subject_visit=subject_visit):
                 subtest_data = self.get_valid_form_data(subject_visit=subject_visit)
