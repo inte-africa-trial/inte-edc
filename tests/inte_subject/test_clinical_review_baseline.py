@@ -294,6 +294,13 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                 form.is_valid()
                 # expects a test
                 self.assertIn("__all__", [k for k in form._errors.keys()])
+                self.assertIn(
+                    (
+                        "Patient was screened from an NCD clinic, expected to "
+                        "have tested for either Hypertension and/or Diabetes."
+                    ),
+                    str(form._errors.get("__all__")),
+                )
 
                 data.update(
                     {
@@ -306,6 +313,13 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                 form.is_valid()
                 # expects a diagnosis
                 self.assertIn("__all__", [k for k in form._errors.keys()])
+                self.assertIn(
+                    (
+                        "Patient was screened from an NCD clinic, expected "
+                        "'Yes' or 'No' diagnosis for Hypertension and/or Diabetes."
+                    ),
+                    html.unescape(str(form._errors.get("__all__"))),
+                )
 
                 data.update({f"{cond}_test": YES, f"{cond}_test_ago": "1y", f"{cond}_dx": YES})
                 form = ClinicalReviewBaselineForm(data=data)

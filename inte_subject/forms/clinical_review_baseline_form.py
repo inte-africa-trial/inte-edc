@@ -21,6 +21,9 @@ class ClinicalReviewBaselineFormValidator(
     CrfFormValidatorMixin, EstimatedDateFromAgoFormMixin, FormValidator
 ):
     def clean(self):
+        self.raise_if_ncd_clinic_and_no_ncd_test()
+        self.raise_if_ncd_clinic_and_no_ncd_dx_result()
+
         self.raise_if_vertical_clinic_with_no_related_cond_test(
             clinic_type=HIV_CLINIC, cond="hiv", clinic_desc="HIV"
         )
@@ -32,27 +35,24 @@ class ClinicalReviewBaselineFormValidator(
         self.required_if(YES, field="hiv_test", field_required="hiv_dx")
 
         self.raise_if_vertical_clinic_with_no_related_cond_test(
-            clinic_type=HYPERTENSION_CLINIC, cond="htn", clinic_desc="Hypertension"
-        )
-        self.raise_if_vertical_clinic_with_no_related_cond_test(
             clinic_type=DIABETES_CLINIC, cond="dm", clinic_desc="Diabetes"
         )
-        self.raise_if_ncd_clinic_and_no_ncd_test()
-        self.raise_if_ncd_clinic_and_no_ncd_dx_result()
-
-        self.estimated_date_from_ago("htn_test_ago")
-        self.when_tested_required(cond="htn")
-        self.raise_if_vertical_clinic_with_no_related_cond_dx_result(
-            clinic_type=HYPERTENSION_CLINIC, cond="htn", clinic_desc="Hypertension"
-        )
-        self.required_if(YES, field="htn_test", field_required="htn_dx")
-
         self.estimated_date_from_ago("dm_test_ago")
         self.when_tested_required(cond="dm")
         self.raise_if_vertical_clinic_with_no_related_cond_dx_result(
             clinic_type=DIABETES_CLINIC, cond="dm", clinic_desc="Diabetes"
         )
         self.required_if(YES, field="dm_test", field_required="dm_dx")
+
+        self.raise_if_vertical_clinic_with_no_related_cond_test(
+            clinic_type=HYPERTENSION_CLINIC, cond="htn", clinic_desc="Hypertension"
+        )
+        self.estimated_date_from_ago("htn_test_ago")
+        self.when_tested_required(cond="htn")
+        self.raise_if_vertical_clinic_with_no_related_cond_dx_result(
+            clinic_type=HYPERTENSION_CLINIC, cond="htn", clinic_desc="Hypertension"
+        )
+        self.required_if(YES, field="htn_test", field_required="htn_dx")
 
     def raise_if_vertical_clinic_with_no_related_cond_test(
         self, clinic_type, cond, clinic_desc=""
