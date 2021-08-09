@@ -1,9 +1,9 @@
 from dateutil.relativedelta import relativedelta
 from django import forms
 from django.test import TestCase, override_settings
-from edc_constants.constants import NOT_APPLICABLE, OTHER, STUDY_DEFINED_TIMEPOINT
+from edc_constants.constants import HIV, NOT_APPLICABLE, OTHER, STUDY_DEFINED_TIMEPOINT
 from edc_utils import get_utcnow
-from edc_visit_schedule.constants import DAY1
+from edc_visit_schedule.constants import DAY1, MONTH6, MONTH12
 from edc_visit_tracking.constants import MISSED_VISIT, SCHEDULED
 
 from inte_lists.list_data import list_data
@@ -50,6 +50,70 @@ class TestSubjectVisitFormValidator(InteTestCaseMixin, TestCase):
             "clinic_services": ClinicServices.objects.filter(name=NOT_APPLICABLE),
             "health_services": HealthServices.objects.filter(name=NOT_APPLICABLE),
             "info_source": NOT_APPLICABLE,
+        }
+        form_validator = self.validate_form_validator(cleaned_data)
+        self.assertDictEqual({}, form_validator._errors)
+
+    def test_13m_after_baseline_allows_missed_6m_visit_and_start_12m_visit(self):
+        baseline_datetime = get_utcnow() - relativedelta(months=13)
+        subject_screening = self.get_subject_screening(
+            report_datetime=baseline_datetime, clinic_type=HIV_CLINIC
+        )
+        subject_consent = self.get_subject_consent(
+            subject_screening=subject_screening,
+            clinic_type=HIV_CLINIC,
+            report_datetime=baseline_datetime,
+        )
+
+        # Create (and miss) baseline visit, 13 months ago
+        baseline_subject_visit = self.get_subject_visit(
+            subject_screening=subject_screening,
+            subject_consent=subject_consent,
+            visit_code=DAY1,
+        )
+        cleaned_data = {
+            "appointment": baseline_subject_visit.appointment,
+            "report_datetime": baseline_subject_visit.report_datetime,
+            "reason": MISSED_VISIT,
+            "clinic_services": ClinicServices.objects.filter(name=NOT_APPLICABLE),
+            "health_services": HealthServices.objects.filter(name=NOT_APPLICABLE),
+            "info_source": NOT_APPLICABLE,
+        }
+        form_validator = self.validate_form_validator(cleaned_data)
+        self.assertDictEqual({}, form_validator._errors)
+
+        # Create (and miss) 6m visit, now
+        month6_subject_visit = self.get_subject_visit(
+            subject_screening=subject_screening,
+            subject_consent=subject_consent,
+            report_datetime=get_utcnow(),
+            visit_code=MONTH6,
+        )
+        cleaned_data = {
+            "appointment": month6_subject_visit.appointment,
+            "report_datetime": get_utcnow(),
+            "reason": MISSED_VISIT,
+            "clinic_services": ClinicServices.objects.filter(name=NOT_APPLICABLE),
+            "health_services": HealthServices.objects.filter(name=NOT_APPLICABLE),
+            "info_source": NOT_APPLICABLE,
+        }
+        form_validator = self.validate_form_validator(cleaned_data)
+        self.assertDictEqual({}, form_validator._errors)
+
+        # Create (and start) 12m visit, now
+        month12_subject_visit = self.get_subject_visit(
+            subject_screening=subject_screening,
+            subject_consent=subject_consent,
+            report_datetime=get_utcnow(),
+            visit_code=MONTH12,
+        )
+        cleaned_data = {
+            "appointment": month12_subject_visit.appointment,
+            "report_datetime": get_utcnow(),
+            "reason": SCHEDULED,
+            "clinic_services": ClinicServices.objects.filter(name=STUDY_DEFINED_TIMEPOINT),
+            "health_services": HealthServices.objects.filter(name=HIV),
+            "info_source": "patient",
         }
         form_validator = self.validate_form_validator(cleaned_data)
         self.assertDictEqual({}, form_validator._errors)
