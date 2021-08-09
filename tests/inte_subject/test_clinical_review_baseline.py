@@ -332,6 +332,7 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
             self.subject_visit_hiv,
             self.subject_visit_dm,
             self.subject_visit_htn,
+            self.subject_visit_ncd,
         ]:
             with self.subTest(subject_visit_type=subject_visit_type):
                 valid_data = self.get_valid_form_data(subject_visit=subject_visit_type)
@@ -343,12 +344,11 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
     def test_date_or_est_required_if_cond_tested(self):
         valid_data = self.get_valid_form_data(subject_visit=self.subject_visit_htn)
 
-        # Test: subject tested, diagnosed, but no <cond>_test_ago <cond>_test_date field data
         for cond in ["hiv", "dm", "htn"]:
             with self.subTest(codn=cond):
                 subtest_data = copy.deepcopy(valid_data)
 
-                # Test with neither set
+                # Test with neither date, nor estimate set
                 subtest_data.update({f"{cond}_test_ago": None, f"{cond}_test_date": None})
 
                 form = ClinicalReviewBaselineForm(data=subtest_data)
@@ -424,7 +424,7 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
                 )
                 self.assertEqual(len(form._errors), 1, form._errors)
 
-    def test_cond_dx_no_response_for_subject_from_same_vertical_cond_clinic_ok(
+    def test_cond_dx_response_no_for_subject_from_same_vertical_cond_clinic_ok(
         self,
     ):
         for cond, subject_visit in [
@@ -441,7 +441,7 @@ class TestClinicalReviewBaseline(InteTestCaseMixin, TestCase):
 
                 self.assertEqual(form._errors, {})
 
-    def test_cond_dx_yes_response_for_subject_from_same_vertical_cond_clinic_ok(
+    def test_cond_dx_yes_response_yes_for_subject_from_same_vertical_cond_clinic_ok(
         self,
     ):
         for cond, subject_visit in [
