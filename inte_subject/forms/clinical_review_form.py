@@ -1,18 +1,15 @@
 from django import forms
 from edc_constants.constants import NO, YES
 from edc_form_validators.form_validator import FormValidator
+from respond_forms.form_validator_mixins import DiagnosisFormValidatorMixin
 
 from ..models import ClinicalReview
-from .mixins import (
-    CrfFormValidatorMixin,
-    CrfModelFormMixin,
-    DiagnosisFormValidatorMixin,
-)
+from .mixins import CrfFormValidatorMixin, CrfModelFormMixin
 
 
 class ClinicalReviewFormValidator(
-    DiagnosisFormValidatorMixin,
     CrfFormValidatorMixin,
+    DiagnosisFormValidatorMixin,
     FormValidator,
 ):
     def clean(self):

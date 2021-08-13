@@ -1,6 +1,7 @@
 from django import forms
 from edc_action_item.forms.action_item_form_mixin import ActionItemFormMixin
 from edc_form_validators.form_validator import FormValidator
+from respond_forms.utils import raise_if_clinical_review_does_not_exist
 
 from inte_subject.forms.mixins import InitialReviewFormValidatorMixin
 
@@ -10,7 +11,6 @@ from .mixins import (
     CrfFormValidatorMixin,
     CrfModelFormMixin,
     EstimatedDateFromAgoFormMixin,
-    raise_if_clinical_review_does_not_exist,
 )
 
 

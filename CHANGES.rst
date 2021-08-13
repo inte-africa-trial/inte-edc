@@ -1,6 +1,21 @@
 Changes
 =======
 
+0.1.69
+------
+- bump to edc 0.3.27
+- bump to respond-africa 0.1.12 (last version supporting Python 3.8)
+- fix
+    - missing form mixins import
+    - viral load PRN error (on save)
+    - unable to set visit report reason to "Missed visit"
+- update clinical baseline review to allow patients from clinic without
+  a diagnosis of condition treated by that clinic
+  (providing they have a related test, a diagnosis result and >=1 conditions overall)
+- Testing environment
+    - drop Python 3.8 tests against bleeding edge/development codebase (`edcdev`)
+    - bump Python version for tox lint tests (run under GH actions) from 3.8 to 3.9
+
 0.1.68
 ------
 - fix drug refill forms autocomplete field not using proxy model

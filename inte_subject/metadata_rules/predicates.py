@@ -3,8 +3,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from edc_metadata.metadata_rules import PredicateCollection
 from edc_visit_schedule.constants import MONTH6
-
-from inte_visit_schedule.is_baseline import is_baseline
+from edc_visit_schedule.utils import is_baseline
 
 
 def get_required_health_economics_model_name(visit):

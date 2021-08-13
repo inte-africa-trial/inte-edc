@@ -10,7 +10,7 @@ class BloodResultsFormValidatorMixin(
 ):
 
     reportable_grades = [GRADE3, GRADE4]
-    reference_list_name = "inte"
+    reference_range_collection_name = "inte"
     requisition_field = None
     assay_datetime_field = None
     field_names = []
@@ -58,5 +58,6 @@ class BloodResultsFormValidatorMixin(
                 )
 
         self.validate_reportable_fields(
-            reference_list_name=self.reference_list_name, **self.extra_options
+            reference_range_collection_name=self.reference_range_collection_name,
+            **self.extra_options,
         )

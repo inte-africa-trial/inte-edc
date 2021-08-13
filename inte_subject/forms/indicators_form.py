@@ -2,17 +2,13 @@ from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from edc_constants.constants import NO, NOT_REQUIRED, YES
 from edc_form_validators.form_validator import FormValidator
+from edc_visit_schedule.utils import is_baseline
+from respond_forms.utils import raise_if_clinical_review_does_not_exist
 
 from inte_subject.models import HtnInitialReview
-from inte_visit_schedule.is_baseline import is_baseline
 
 from ..models import Indicators
-from .mixins import (
-    BPFormValidatorMixin,
-    CrfFormValidatorMixin,
-    CrfModelFormMixin,
-    raise_if_clinical_review_does_not_exist,
-)
+from .mixins import BPFormValidatorMixin, CrfFormValidatorMixin, CrfModelFormMixin
 
 
 class IndicatorsFormValidator(BPFormValidatorMixin, CrfFormValidatorMixin, FormValidator):

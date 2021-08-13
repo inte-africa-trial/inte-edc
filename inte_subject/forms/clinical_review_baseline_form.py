@@ -1,5 +1,5 @@
 from django import forms
-from edc_constants.constants import YES
+from edc_constants.constants import NOT_APPLICABLE, YES
 from edc_form_validators.form_validator import FormValidator
 
 from inte_screening.constants import (
@@ -21,23 +21,50 @@ class ClinicalReviewBaselineFormValidator(
     CrfFormValidatorMixin, EstimatedDateFromAgoFormMixin, FormValidator
 ):
     def clean(self):
-        self.raise_if_hiv_clinic_and_hiv_pos()
-        self.estimated_date_from_ago("hiv_test_ago")
-        self.when_tested_required(cond="hiv")
+        self.raise_if_ncd_clinic_and_no_ncd_test()
+        self.raise_if_ncd_clinic_and_no_ncd_dx_result()
 
-        self.raise_if_clinic_and_not_htn()
-        self.raise_if_clinic_and_not_diabetes()
-        self.raise_if_ncd_clinic_and_not_both()
+        self.clean_condition_section(clinic_type=HIV_CLINIC, cond="hiv", clinic_desc="HIV")
 
-        self.estimated_date_from_ago("htn_test_ago")
-        self.when_tested_required(cond="htn")
-        self.required_if(YES, field="htn_test", field_required="htn_dx")
+        self.clean_condition_section(
+            clinic_type=DIABETES_CLINIC, cond="dm", clinic_desc="Diabetes"
+        )
 
-        self.estimated_date_from_ago("dm_test_ago")
-        self.when_tested_required(cond="diabetes")
-        self.required_if(YES, field="dm_test", field_required="dm_dx")
+        self.clean_condition_section(
+            clinic_type=HYPERTENSION_CLINIC, cond="htn", clinic_desc="Hypertension"
+        )
 
-    def when_tested_required(self, cond=None):
+        self.raise_if_no_hiv_or_ncd_conditions()
+
+    def clean_condition_section(self, clinic_type, cond, clinic_desc=""):
+        self.raise_if_vertical_clinic_with_no_related_cond_test(
+            clinic_type=clinic_type, cond=cond, clinic_desc=clinic_desc
+        )
+
+        self.estimated_date_from_ago(f"{cond}_test_ago")
+        self.raise_if_tested_but_no_est_or_exact_test_date(cond=cond)
+
+        self.raise_if_vertical_clinic_with_no_related_cond_dx_result(
+            clinic_type=clinic_type, cond=cond, clinic_desc=clinic_desc
+        )
+        self.required_if(YES, field=f"{cond}_test", field_required=f"{cond}_dx")
+
+    def raise_if_vertical_clinic_with_no_related_cond_test(
+        self, clinic_type, cond, clinic_desc=""
+    ):
+        if (
+            self.subject_screening.clinic_type == clinic_type
+            and self.cleaned_data.get(f"{cond}_test") != YES
+        ):
+            raise forms.ValidationError(
+                {
+                    f"{cond}_test": (
+                        f"Patient was screened from {clinic_desc} clinic, expected `Yes`."
+                    ),
+                }
+            )
+
+    def raise_if_tested_but_no_est_or_exact_test_date(self, cond=None):
         if self.cleaned_data.get(f"{cond}_test") == YES:
             if not self.cleaned_data.get(f"{cond}_test_ago") and not self.cleaned_data.get(
                 f"{cond}_test_date"
@@ -47,74 +74,23 @@ class ClinicalReviewBaselineFormValidator(
                     "estimated time 'ago' or provide the exact date. See below."
                 )
 
-    def raise_if_hiv_clinic_and_hiv_pos(self):
+    def raise_if_vertical_clinic_with_no_related_cond_dx_result(
+        self, clinic_type, cond, clinic_desc=""
+    ):
         if (
-            self.subject_screening.clinic_type == HIV_CLINIC
-            and self.cleaned_data.get("hiv_test") != YES
+            self.subject_screening.clinic_type == clinic_type
+            and self.cleaned_data.get(f"{cond}_dx") == NOT_APPLICABLE
         ):
             raise forms.ValidationError(
                 {
-                    "hiv_test": ("Patient was screened from an HIV clinic, expected `Yes`."),
-                }
-            )
-
-        if (
-            self.subject_screening.clinic_type == HIV_CLINIC
-            and self.cleaned_data.get("hiv_dx") != YES
-        ):
-            raise forms.ValidationError(
-                {
-                    "hiv_dx": ("Patient was screened from an HIV clinic, expected `Yes`."),
-                }
-            )
-
-    def raise_if_clinic_and_not_htn(self):
-        if (
-            self.subject_screening.clinic_type == HYPERTENSION_CLINIC
-            and self.cleaned_data.get("htn_test") != YES
-        ):
-            raise forms.ValidationError(
-                {
-                    "htn_test": (
-                        "Patient was screened from an Hypertension clinic, expected `Yes`."
-                    ),
-                }
-            )
-        if (
-            self.subject_screening.clinic_type == HYPERTENSION_CLINIC
-            and self.cleaned_data.get("htn_dx") != YES
-        ):
-            raise forms.ValidationError(
-                {
-                    "htn_dx": (
-                        "Patient was screened from an Hypertension clinic, expected `Yes`."
+                    f"{cond}_dx": (
+                        f"Patient was screened from {clinic_desc} clinic, "
+                        "expected 'Yes' or 'No' diagnosis."
                     ),
                 }
             )
 
-    def raise_if_clinic_and_not_diabetes(self):
-        if (
-            self.subject_screening.clinic_type == DIABETES_CLINIC
-            and self.cleaned_data.get("dm_test") != YES
-        ):
-            raise forms.ValidationError(
-                {
-                    "dm_test": (
-                        "Patient was screened from a Diabetes clinic, expected `Yes`."
-                    ),
-                }
-            )
-        if (
-            self.subject_screening.clinic_type == DIABETES_CLINIC
-            and self.cleaned_data.get("dm_dx") != YES
-        ):
-            raise forms.ValidationError(
-                {
-                    "dm_dx": ("Patient was screened from a Diabetes clinic, expected `Yes`."),
-                }
-            )
-
-    def raise_if_ncd_clinic_and_not_both(self):
+    def raise_if_ncd_clinic_and_no_ncd_test(self):
         if (
             self.subject_screening.clinic_type == NCD_CLINIC
             and self.cleaned_data.get("dm_test") != YES
@@ -125,18 +101,27 @@ class ClinicalReviewBaselineFormValidator(
                 "have tested for either Hypertension and/or Diabetes."
             )
 
+    def raise_if_ncd_clinic_and_no_ncd_dx_result(self):
         if (
             self.subject_screening.clinic_type == NCD_CLINIC
-            and (
-                self.cleaned_data.get("dm_test") == YES
-                or self.cleaned_data.get("htn_test") == YES
-            )
-            and self.cleaned_data.get("dm_dx") != YES
-            and self.cleaned_data.get("htn_dx") != YES
+            and self.cleaned_data.get("dm_dx") == NOT_APPLICABLE
+            and self.cleaned_data.get("htn_dx") == NOT_APPLICABLE
         ):
             raise forms.ValidationError(
-                "Patient was screened from an NCD clinic, expected to "
-                "have a diagnosis for either Hypertension and/or Diabetes."
+                "Patient was screened from an NCD clinic, expected "
+                "'Yes' or 'No' diagnosis for Hypertension and/or Diabetes."
+            )
+
+    def raise_if_no_hiv_or_ncd_conditions(self):
+        if not (
+            self.cleaned_data.get("hiv_dx") == YES
+            or self.cleaned_data.get("dm_dx") == YES
+            or self.cleaned_data.get("htn_dx") == YES
+        ):
+            raise forms.ValidationError(
+                "Patient expected to have at least one of the following "
+                "conditions: a positive HIV test, a diagnosis for Hypertension "
+                "or a diagnosis for Diabetes"
             )
 
 

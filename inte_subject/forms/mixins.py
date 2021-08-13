@@ -1,17 +1,18 @@
 from django import forms
 from django.apps import apps as django_apps
-from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.exceptions import ObjectDoesNotExist
 from edc_constants.constants import FREE_OF_CHARGE, NEVER, NO, OTHER, YES
 from edc_crf.modelform_mixins import CrfModelFormMixin as BaseCrfModelFormMixin
 from edc_model import models as edc_models
 from edc_model.models import InvalidFormat
-from edc_utils import age, convert_php_dateformat
-from respond_models.diagnoses import (
-    Diagnoses,
-    InitialReviewRequired,
-    MultipleInitialReviewsExist,
+from edc_utils import age
+from edc_visit_schedule.utils import is_baseline
+from respond_forms.utils import (
+    medications_exists_or_raise,
+    model_exists_or_raise,
+    raise_if_clinical_review_does_not_exist,
+    validate_total_days,
 )
 
 from inte_lists.models import DrugPaySources
@@ -21,70 +22,8 @@ from inte_prn.icc_registered import (
 )
 from inte_prn.models import IntegratedCareClinicRegistration
 from inte_sites.is_intervention_site import NotInterventionSite, is_intervention_site
-from inte_visit_schedule.is_baseline import is_baseline
 
-from ..models import (
-    ClinicalReview,
-    ClinicalReviewBaseline,
-    HivInitialReview,
-    HivReview,
-    Medications,
-)
-
-
-def art_initiation_date(subject_identifier=None, report_datetime=None):
-    """Returns date initiated on ART or None"""
-    art_date = None
-    try:
-        initial_review = HivInitialReview.objects.get(
-            subject_visit__subject_identifier=subject_identifier,
-            report_datetime__lte=report_datetime,
-        )
-    except ObjectDoesNotExist:
-        pass
-    else:
-        if initial_review.arv_initiated == YES:
-            art_date = initial_review.best_art_initiation_date
-        else:
-            for review in HivReview.objects.filter(
-                subject_visit__subject_identifier=subject_identifier,
-                report_datetime__lte=report_datetime,
-            ).order_by("-report_datetime"):
-                if review.arv_initiated == YES:
-                    art_date = review.arv_initiation_actual_date
-                    break
-    return art_date
-
-
-def model_exists_or_raise(subject_visit=None, model_cls=None, singleton=None):
-    singleton = False if singleton is None else singleton
-    if singleton:
-        opts = {"subject_visit__subject_identifier": subject_visit.subject_identifier}
-    else:
-        opts = {"subject_visit": subject_visit}
-    try:
-        model_cls.objects.get(**opts)
-    except ObjectDoesNotExist:
-        raise forms.ValidationError(
-            f"Complete the `{model_cls._meta.verbose_name}` CRF first."
-        )
-    return True
-
-
-def raise_if_baseline(subject_visit):
-    if subject_visit and is_baseline(subject_visit=subject_visit):
-        raise forms.ValidationError("This form is not available for completion at baseline.")
-
-
-def raise_if_clinical_review_does_not_exist(subject_visit):
-    if subject_visit:
-        if is_baseline(subject_visit):
-            model_exists_or_raise(
-                subject_visit=subject_visit,
-                model_cls=ClinicalReviewBaseline,
-            )
-        else:
-            model_exists_or_raise(subject_visit=subject_visit, model_cls=ClinicalReview)
+from ..models import ClinicalReviewBaseline
 
 
 def raise_if_intervention_site_without_icc_registration():
@@ -95,38 +34,6 @@ def raise_if_intervention_site_without_icc_registration():
             raise forms.ValidationError(
                 "This is an intervention site. Complete the "
                 f"`{IntegratedCareClinicRegistration._meta.verbose_name}` form first."
-            )
-
-
-def medications_exists_or_raise(subject_visit):
-    if subject_visit:
-        try:
-            Medications.objects.get(subject_visit=subject_visit)
-        except ObjectDoesNotExist:
-            raise forms.ValidationError(
-                f"Complete the `{Medications._meta.verbose_name}` CRF first."
-            )
-    return True
-
-
-def validate_total_days(form, return_in_days=None):
-    return_in_days = return_in_days or form.cleaned_data.get("return_in_days")
-    if (
-        form.cleaned_data.get("clinic_days")
-        and form.cleaned_data.get("club_days")
-        and form.cleaned_data.get("purchased_days")
-        and int(return_in_days or 0)
-    ):
-        total = (
-            form.cleaned_data.get("clinic_days")
-            or 0 + form.cleaned_data.get("club_days")
-            or 0 + form.cleaned_data.get("purchased_days")
-            or 0
-        )
-        if total != int(return_in_days or 0):
-            raise forms.ValidationError(
-                f"Patient to return for a drug refill in {return_in_days} days. "
-                "Check that the total days match."
             )
 
 
@@ -338,34 +245,6 @@ class CrfFormValidatorMixin:
         return self.cleaned_data.get("subject_visit").report_datetime
 
 
-class ResultFormValidatorMixin:
-    def validate_drawn_date_by_dx_date(self, attr, dx_msg_label, drawn_date_fld=None):
-        drawn_date_fld = drawn_date_fld or "drawn_date"
-        dx = Diagnoses(subject_visit=self.cleaned_data.get("subject_visit"), lte=True)
-        try:
-            dx_date = getattr(dx, attr)
-        except InitialReviewRequired:
-            dx_date = None
-        if not dx_date:
-            raise forms.ValidationError(
-                "This form is not relevant. "
-                f"Subject has not been diagnosed with {dx_msg_label}."
-            )
-        else:
-            if dx_date > self.cleaned_data.get(drawn_date_fld):
-                formatted_date = dx_date.strftime(
-                    convert_php_dateformat(settings.SHORT_DATE_FORMAT)
-                )
-                raise forms.ValidationError(
-                    {
-                        "drawn_date": (
-                            "Invalid. Subject was diagnosed with "
-                            f"{dx_msg_label} on {formatted_date}."
-                        )
-                    }
-                )
-
-
 class MedicationAdherenceFormValidatorMixin:
     def clean(self):
         raise_if_clinical_review_does_not_exist(self.cleaned_data.get("subject_visit"))
@@ -374,49 +253,6 @@ class MedicationAdherenceFormValidatorMixin:
         )
         self.m2m_other_specify(
             m2m_field="missed_pill_reason", field_other="other_missed_pill_reason"
-        )
-
-
-class DiagnosisFormValidatorMixin:
-    def get_diagnoses(self):
-        diagnoses = Diagnoses(
-            subject_identifier=self.subject_identifier,
-            report_datetime=self.report_datetime,
-        )
-        try:
-            diagnoses.initial_reviews
-        except InitialReviewRequired as e:
-            raise forms.ValidationError(e)
-        except MultipleInitialReviewsExist as e:
-            raise forms.ValidationError(e)
-        return diagnoses
-
-    def applicable_if_not_diagnosed(
-        self, diagnoses=None, field_dx=None, field_applicable=None, label=None
-    ):
-        diagnoses = diagnoses or self.get_diagnoses()
-
-        self.applicable_if_true(
-            getattr(diagnoses, field_dx) != YES,
-            field_applicable=field_applicable,
-            applicable_msg=(
-                f"Patient was not previously diagnosed with {label}. " "Expected YES or NO."
-            ),
-            not_applicable_msg=f"Patient was previously diagnosed with {label}.",
-        )
-
-    def applicable_if_diagnosed(
-        self, diagnoses=None, field_dx=None, field_applicable=None, label=None
-    ):
-        diagnoses = diagnoses or self.get_diagnoses()
-        # htn
-        self.applicable_if_true(
-            getattr(diagnoses, field_dx) == YES,
-            field_applicable=field_applicable,
-            applicable_msg=(
-                f"Patient was previously diagnosed with {label}. " "Expected YES or NO."
-            ),
-            not_applicable_msg=f"Patient was not previously diagnosed with {label}.",
         )
 
 
