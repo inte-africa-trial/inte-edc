@@ -1,7 +1,7 @@
 Changes
 =======
 
-Unreleased
+0.1.69
 ------
 - bump to edc 0.3.27
 - bump to respond-africa 0.1.12 (last version supporting Python 3.8)
