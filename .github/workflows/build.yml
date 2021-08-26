@@ -16,7 +16,6 @@ jobs:
         exclude:
           - codebase: 'Supported'
             django-version: 'dev'
-          - codebase: 'Develop'
             python-version: '3.9'
 
     services:
