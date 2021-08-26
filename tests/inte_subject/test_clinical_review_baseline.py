@@ -4,13 +4,10 @@ import html
 from dateutil.relativedelta import relativedelta
 from django.test import TestCase
 from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, YES
+from edc_dx_review.constants import DIABETES_CLINIC, HIV_CLINIC, HYPERTENSION_CLINIC
 from edc_utils import get_utcnow
 from pytz import timezone
-from edc_dx_review.constants import (
-    DIABETES_CLINIC,
-    HIV_CLINIC,
-    HYPERTENSION_CLINIC,
-)
+
 from inte_screening.constants import NCD_CLINIC
 from inte_subject.forms import ClinicalReviewBaselineForm
 
