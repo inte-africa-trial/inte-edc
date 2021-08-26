@@ -12,12 +12,12 @@ jobs:
       matrix:
         codebase: ['Supported', 'Develop']
         django-version: ['3.2', 'dev']
-        python-version: ['3.8', '3.9']
+        python-version: ['3.9']
         exclude:
           - codebase: 'Supported'
             django-version: 'dev'
           - codebase: 'Develop'
-            python-version: '3.8'
+            python-version: '3.9'
 
     services:
       mysql:
