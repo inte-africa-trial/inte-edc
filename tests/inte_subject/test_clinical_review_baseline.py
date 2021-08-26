@@ -6,13 +6,12 @@ from django.test import TestCase
 from edc_constants.constants import INCOMPLETE, NO, NOT_APPLICABLE, YES
 from edc_utils import get_utcnow
 from pytz import timezone
-
-from inte_screening.constants import (
+from edc_dx_review.constants import (
     DIABETES_CLINIC,
     HIV_CLINIC,
     HYPERTENSION_CLINIC,
-    NCD_CLINIC,
 )
+from inte_screening.constants import NCD_CLINIC
 from inte_subject.forms import ClinicalReviewBaselineForm
 
 from ..inte_test_case_mixin import InteTestCaseMixin

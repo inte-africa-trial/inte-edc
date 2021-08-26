@@ -178,3 +178,18 @@ class MedicationsRuleGroup(CrfRuleGroup):
     class Meta:
         app_label = "inte_subject"
         source_model = "inte_subject.medications"
+
+
+@register()
+class Hba1cRuleGroup(CrfRuleGroup):
+
+    hba1c = CrfRule(
+        predicate=pc.hba1c_required,
+        consequence=REQUIRED,
+        alternative=NOT_REQUIRED,
+        target_models=["bloodresultshba1c"],
+    )
+
+    class Meta:
+        app_label = "inte_subject"
+        source_model = "inte_subject.subjectvisit"

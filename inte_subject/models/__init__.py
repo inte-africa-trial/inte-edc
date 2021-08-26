@@ -1,3 +1,4 @@
+from .blood_results_hba1c import BloodResultsHba1c
 from .cd4_result import Cd4Result
 from .clinical_review import ClinicalReview
 from .clinical_review_baseline import ClinicalReviewBaseline

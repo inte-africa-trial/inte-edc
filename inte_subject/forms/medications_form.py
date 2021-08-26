@@ -1,11 +1,12 @@
 from django import forms
 from django.conf import settings
 from edc_constants.constants import DM, HIV, HTN, NOT_APPLICABLE
+from edc_dx import Diagnoses
+from edc_dx.diagnoses import InitialReviewRequired
 from edc_form_validators.form_validator import FormValidator
+from edc_model import model_exists_or_raise
 from edc_utils import convert_php_dateformat
 from edc_visit_schedule.utils import is_baseline
-from respond_forms.utils import model_exists_or_raise
-from respond_models.diagnoses import Diagnoses, InitialReviewRequired
 
 from ..models import ClinicalReview, ClinicalReviewBaseline, Medications
 from .mixins import CrfFormValidatorMixin, CrfModelFormMixin
@@ -37,7 +38,7 @@ class MedicationsFormValidator(CrfFormValidatorMixin, FormValidator):
         )
 
         try:
-            diagnoses.initial_reviews
+            diagnoses.get_initial_reviews()
         except InitialReviewRequired as e:
             raise forms.ValidationError(e)
 

@@ -26,7 +26,6 @@ DEFAULT_SETTINGS = DefaultTestSettings(
     SUBJECT_CONSENT_MODEL="inte_consent.subjectconsent",
     SUBJECT_REQUISITION_MODEL="inte_subject.subjectrequisition",
     SUBJECT_APP_LABEL=f"{app_name.replace('edc', 'subject')}",
-    RESPOND_DIAGNOSIS_LABELS=dict(hiv="HIV", htn="Hypertension", dm="Diabetes"),
     INTE_SUBJECT_HE_REVISION_DATE=get_datetime_from_env(2021, 4, 26, 0, 0, 0, "UTC"),
     EDC_PROTOCOL_STUDY_OPEN_DATETIME=get_datetime_from_env(2019, 6, 30, 0, 0, 0, "UTC"),
     EDC_PROTOCOL_STUDY_CLOSE_DATETIME=get_datetime_from_env(2024, 12, 31, 23, 59, 59, "UTC"),
@@ -54,6 +53,8 @@ DEFAULT_SETTINGS = DefaultTestSettings(
     LIVE_SYSTEM=False,
     EDC_RANDOMIZATION_LIST_PATH=join(base_dir, "tests", "etc"),
     EDC_RANDOMIZATION_REGISTER_DEFAULT_RANDOMIZER=False,
+    EDC_DX_LABELS=dict(hiv="HIV", htn="Hypertension", dm="Diabetes"),
+    EDC_DX_REVIEW_APP_LABEL="inte_subject",
     DATABASES={
         # required for tests when acting as a server that deserializes
         "default": {
@@ -89,6 +90,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
         "edc_dashboard.apps.AppConfig",
         "edc_data_manager.apps.AppConfig",
         "edc_device.apps.AppConfig",
+        # "edc_dx_review.apps.AppConfig",
         "edc_export.apps.AppConfig",
         "edc_fieldsets.apps.AppConfig",
         "edc_form_validators.apps.AppConfig",
@@ -97,6 +99,7 @@ DEFAULT_SETTINGS = DefaultTestSettings(
         "edc_label.apps.AppConfig",
         "edc_list_data.apps.AppConfig",
         "edc_locator.apps.AppConfig",
+        "edc_ltfu.apps.AppConfig",
         "edc_metadata.apps.AppConfig",
         "edc_model_admin.apps.AppConfig",
         "edc_model_wrapper.apps.AppConfig",

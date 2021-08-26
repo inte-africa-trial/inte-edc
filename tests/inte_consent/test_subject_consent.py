@@ -2,14 +2,15 @@ import uuid
 
 from dateutil.relativedelta import relativedelta
 from django import forms
-from django.test import TestCase, tag
+from django.test import TestCase
 from edc_constants.constants import MALE, MOBILE_NUMBER, NO, NOT_APPLICABLE, YES
+from edc_dx_review.constants import HIV_CLINIC
 from edc_utils import get_utcnow
 from pytz import timezone
 
 from inte_consent.forms import SubjectConsentForm, SubjectConsentFormValidator
 from inte_consent.models import InteSubjectConsentError
-from inte_screening.constants import HIV_CLINIC, NCD_CLINIC
+from inte_screening.constants import NCD_CLINIC
 
 from ..inte_test_case_mixin import InteTestCaseMixin
 

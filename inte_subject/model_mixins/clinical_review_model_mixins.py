@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils.safestring import mark_safe
-from edc_constants.choices import POS_NEG_NOTESTED, YES_NO, YES_NO_NA
-from edc_constants.constants import NO, NOT_APPLICABLE, POS, YES
+from edc_constants.choices import YES_NO, YES_NO_NA
+from edc_constants.constants import NOT_APPLICABLE
+from edc_model import duration_to_date
 from edc_model import models as edc_models
 from edc_model.models import date_not_future
 
@@ -69,7 +70,7 @@ class ClinicalReviewBaselineHivModelMixin(models.Model):
 
     def save(self, *args, **kwargs):
         if self.hiv_test_ago:
-            self.hiv_test_estimated_datetime = edc_models.duration_to_date(
+            self.hiv_test_estimated_datetime = duration_to_date(
                 self.hiv_test_ago, self.report_datetime
             )
         super().save(*args, **kwargs)
@@ -115,7 +116,7 @@ class ClinicalReviewBaselineHtnModelMixin(models.Model):
 
     def save(self, *args, **kwargs):
         if self.htn_test_ago:
-            self.htn_test_estimated_datetime = edc_models.duration_to_date(
+            self.htn_test_estimated_datetime = duration_to_date(
                 self.htn_test_ago, self.report_datetime
             )
         super().save(*args, **kwargs)
@@ -161,7 +162,7 @@ class ClinicalReviewBaselineDmModelMixin(models.Model):
 
     def save(self, *args, **kwargs):
         if self.dm_test_ago:
-            self.dm_test_estimated_datetime = edc_models.duration_to_date(
+            self.dm_test_estimated_datetime = duration_to_date(
                 self.dm_test_ago, self.report_datetime
             )
         super().save(*args, **kwargs)

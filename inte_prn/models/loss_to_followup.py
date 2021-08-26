@@ -4,8 +4,8 @@ from edc_identifier.model_mixins import (
     NonUniqueSubjectIdentifierFieldMixin,
     TrackingModelMixin,
 )
-from edc_ltfu.constants import LOSS_TO_FOLLOWUP_ACTION
-from edc_ltfu.model_mixins import LossToFollowupModelMixin
+from edc_ltfu.constants import LTFU_ACTION
+from edc_ltfu.model_mixins import LtfuModelMixin
 from edc_model.models.base_uuid_model import BaseUuidModel
 from edc_sites.models import CurrentSiteManager, SiteModelMixin
 from edc_visit_schedule.model_mixins import VisitScheduleFieldsModelMixin
@@ -17,7 +17,7 @@ from inte_visit_schedule.constants import SCHEDULE_HIV, SCHEDULE_NCD
 
 class LossToFollowup(
     NonUniqueSubjectIdentifierFieldMixin,
-    LossToFollowupModelMixin,
+    LtfuModelMixin,
     VisitScheduleFieldsModelMixin,
     SiteModelMixin,
     ActionModelMixin,
@@ -25,7 +25,7 @@ class LossToFollowup(
     BaseUuidModel,
 ):
 
-    action_name = LOSS_TO_FOLLOWUP_ACTION
+    action_name = LTFU_ACTION
 
     tracking_identifier_prefix = "LF"
 
@@ -37,7 +37,7 @@ class LossToFollowup(
 
     on_site = CurrentSiteManager()
 
-    class Meta(LossToFollowupModelMixin.Meta, BaseUuidModel.Meta):
+    class Meta(LtfuModelMixin.Meta, BaseUuidModel.Meta):
         indexes = [
             models.Index(fields=["subject_identifier", "action_identifier", "site", "id"])
         ]

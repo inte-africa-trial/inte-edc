@@ -9,11 +9,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 from edc_appointment.tests.appointment_test_case_mixin import AppointmentTestCaseMixin
 from edc_constants.constants import MALE, NO, NOT_APPLICABLE, RANDOM_SAMPLING, YES
+from edc_dx_review.constants import HIV_CLINIC
 from edc_facility.import_holidays import import_holidays
 from edc_form_validators import FormValidatorTestCaseMixin
 from edc_metadata import REQUIRED
 from edc_metadata.models import CrfMetadata
-from edc_randomization.randomization_list_importer import RandomizationListImporter
+from edc_randomization import Randomizer
+from edc_randomization.site_randomizers import site_randomizers
 from edc_sites import get_sites_by_country
 from edc_sites.tests.site_test_case_mixin import SiteTestCaseMixin
 from edc_utils.date import get_utcnow
@@ -22,7 +24,6 @@ from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED
 from model_bakery import baker
 
 from inte_consent.models import SubjectConsent
-from inte_screening.constants import HIV_CLINIC
 from inte_screening.forms import SubjectScreeningForm
 from inte_screening.models import SubjectScreening
 from inte_sites.sites import fqdn
@@ -42,16 +43,14 @@ class InteTestCaseMixin(
 
     subject_visit_model_cls = SubjectVisit
 
-    sid_count_for_tests = 1
+    sid_count_for_tests = 5
 
     @classmethod
     def setUpTestData(cls):
         import_holidays(test=True)
         if cls.import_randomization_list:
-            RandomizationListImporter(
-                verbose=False,
-                name="default",
-                sid_count_for_tests=cls.sid_count_for_tests,
+            site_randomizers.get("default").import_list(
+                verbose=False, sid_count_for_tests=cls.sid_count_for_tests
             )
 
     def setUp(self):

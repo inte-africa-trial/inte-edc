@@ -2,6 +2,7 @@ from django.db import models
 from edc_constants.choices import YES_NO_NA
 from edc_constants.constants import NOT_APPLICABLE
 from edc_model import models as edc_models
+from edc_vitals import models as edc_vitals
 
 from inte_subject.choices import HTN_MANAGEMENT
 
@@ -25,9 +26,9 @@ class HtnReview(ReviewModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
         default=NOT_APPLICABLE,
     )
 
-    sys_blood_pressure = edc_models.SystolicPressureField(null=True, blank=True)
+    sys_blood_pressure = edc_vitals.SystolicPressureField(null=True, blank=True)
 
-    dia_blood_pressure = edc_models.DiastolicPressureField(null=True, blank=True)
+    dia_blood_pressure = edc_vitals.DiastolicPressureField(null=True, blank=True)
 
     managed_by = models.CharField(
         verbose_name="How will the patient's hypertension be managed going forward?",

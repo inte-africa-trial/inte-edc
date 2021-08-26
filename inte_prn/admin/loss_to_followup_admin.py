@@ -1,5 +1,5 @@
 from django.contrib import admin
-from edc_ltfu.modeladmin_mixin import LossToFollowupModelAdminMixin
+from edc_ltfu.modeladmin_mixin import LtfuModelAdminMixin
 from edc_model_admin import SimpleHistoryAdmin
 from edc_model_admin.dashboard import ModelAdminSubjectDashboardMixin
 
@@ -10,7 +10,7 @@ from ..models import LossToFollowup, LossToFollowupHiv, LossToFollowupNcd
 
 @admin.register(LossToFollowup, site=inte_prn_admin)
 class LossToFollowupAdmin(
-    LossToFollowupModelAdminMixin, ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin
+    LtfuModelAdminMixin, ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin
 ):
 
     form = LossToFollowupForm
@@ -18,7 +18,7 @@ class LossToFollowupAdmin(
 
 @admin.register(LossToFollowupHiv, site=inte_prn_admin)
 class LossToFollowupHivAdmin(
-    LossToFollowupModelAdminMixin, ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin
+    LtfuModelAdminMixin, ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin
 ):
 
     form = LossToFollowupForm
@@ -26,7 +26,7 @@ class LossToFollowupHivAdmin(
 
 @admin.register(LossToFollowupNcd, site=inte_prn_admin)
 class LossToFollowupNcdAdmin(
-    LossToFollowupModelAdminMixin, ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin
+    LtfuModelAdminMixin, ModelAdminSubjectDashboardMixin, SimpleHistoryAdmin
 ):
 
     form = LossToFollowupForm

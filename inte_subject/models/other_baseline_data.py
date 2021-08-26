@@ -1,6 +1,7 @@
 from django.db import models
 from edc_constants.choices import SMOKER_STATUS_SIMPLE, YES_NO
 from edc_constants.constants import NOT_APPLICABLE
+from edc_model import duration_to_date
 from edc_model import models as edc_models
 
 from ..choices import ALCOHOL_CONSUMPTION, EDUCATION, EMPLOYMENT_STATUS, MARITAL_STATUS
@@ -62,7 +63,7 @@ class OtherBaselineData(CrfModelMixin, edc_models.BaseUuidModel):
 
     def save(self, *args, **kwargs):
         if self.smoker_quit_ago:
-            self.smoker_quit_estimated_date = edc_models.duration_to_date(
+            self.smoker_quit_estimated_date = duration_to_date(
                 self.smoker_quit_ago, self.report_datetime
             )
         super().save(*args, **kwargs)

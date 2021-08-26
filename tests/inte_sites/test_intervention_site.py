@@ -6,7 +6,8 @@ from inte_prn.models.integrated_care_clinic_registration import (
     IntegratedCareClinicRegistrationError,
 )
 from inte_sites.is_intervention_site import is_intervention_site
-from tests.inte_test_case_mixin import InteTestCaseMixin
+
+from ..inte_test_case_mixin import InteTestCaseMixin
 
 
 class TestIntervention(InteTestCaseMixin, TestCase):

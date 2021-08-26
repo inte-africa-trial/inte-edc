@@ -1,17 +1,17 @@
 from textwrap import fill
 
+from edc_auth import RANDO
 from edc_randomization.models import RandomizationList
 from edc_registration.models import RegisteredSubject
-from edc_reports.crf_pdf_report import CrfPdfReport
-from inte_permissions.group_names import RANDO
+from edc_reports.crf_pdf_report import CrfPdfReport as BaseCrfPdfReport
 from reportlab.lib.units import cm
 from reportlab.platypus import Table
 
-from inte_subject.models import Followup
+from inte_subject.models import Indicators
 
 
 def get_weight_for_timepoint(subject_identifier=None, reference_dt=None):
-    qs = Followup.objects.filter(
+    qs = Indicators.objects.filter(
         subject_visit__appointment__subject_identifier=subject_identifier,
         report_datetime__lte=reference_dt,
     ).order_by("-report_datetime")
@@ -20,7 +20,7 @@ def get_weight_for_timepoint(subject_identifier=None, reference_dt=None):
     return None
 
 
-class MetaCrfPdfReport(CrfPdfReport):
+class CrfPdfReport(BaseCrfPdfReport):
     logo_data = {
         "app_label": "inte_edc",
         "filename": "inte_logo.png",

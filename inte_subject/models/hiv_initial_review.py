@@ -3,10 +3,11 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from edc_constants.choices import YES_NO, YES_NO_NA, YES_NO_PENDING_NA
 from edc_constants.constants import NOT_APPLICABLE, YES
+from edc_dx_review.model_mixins import InitialReviewModelMixin
 from edc_lab.choices import VL_QUANTIFIER_NA
+from edc_model import duration_to_date
 from edc_model import models as edc_models
 from edc_reportable import CELLS_PER_MILLIMETER_CUBED_DISPLAY, COPIES_PER_MILLILITER
-from respond_models.mixins import InitialReviewModelMixin
 
 from ..choices import CARE_ACCESS
 from ..model_mixins import CrfModelMixin
@@ -125,11 +126,9 @@ class HivInitialReview(InitialReviewModelMixin, CrfModelMixin, edc_models.BaseUu
 
     def save(self, *args, **kwargs):
         if self.dx_ago:
-            self.dx_estimated_date = edc_models.duration_to_date(
-                self.dx_ago, self.report_datetime
-            )
+            self.dx_estimated_date = duration_to_date(self.dx_ago, self.report_datetime)
         if self.arv_initiation_ago:
-            self.arv_initiation_estimated_date = edc_models.duration_to_date(
+            self.arv_initiation_estimated_date = duration_to_date(
                 self.arv_initiation_ago, self.report_datetime
             )
         super().save(*args, **kwargs)

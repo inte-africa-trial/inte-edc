@@ -1,16 +1,12 @@
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
+from edc_dx_review.constants import DIABETES_CLINIC, HIV_CLINIC, HYPERTENSION_CLINIC
 from edc_randomization.site_randomizers import site_randomizers
 from edc_visit_schedule import OnScheduleError
 from edc_visit_schedule.site_visit_schedules import site_visit_schedules
 
-from inte_screening.constants import (
-    DIABETES_CLINIC,
-    HIV_CLINIC,
-    HYPERTENSION_CLINIC,
-    NCD_CLINIC,
-)
+from inte_screening.constants import NCD_CLINIC
 from inte_screening.models import SubjectScreening
 from inte_subject.models import SubjectVisit
 

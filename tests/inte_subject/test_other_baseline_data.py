@@ -1,10 +1,10 @@
 from dateutil.relativedelta import relativedelta
 from django.test import TestCase
 from edc_constants.constants import COMPLETE, NO, NONSMOKER, NOT_APPLICABLE, SMOKER
+from edc_dx_review.constants import HIV_CLINIC
 from edc_utils import get_utcnow
 from model_bakery import baker
 
-from inte_screening.constants import HIV_CLINIC
 from inte_subject.forms import OtherBaselineDataForm
 
 from ..inte_test_case_mixin import InteTestCaseMixin

@@ -3,8 +3,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import migrations
 from django.db.models.signals import pre_save
 from edc_constants.constants import NO, NOT_APPLICABLE, YES
+from edc_dx import Diagnoses
+from edc_dx.diagnoses import ClinicalReviewBaselineRequired
 from edc_utils import DisableSignals
-from respond_models.diagnoses import ClinicalReviewBaselineRequired, Diagnoses
 
 
 def update_medications(apps, schema_editor):
@@ -21,7 +22,8 @@ def update_medications(apps, schema_editor):
             diagnoses = Diagnoses(subject_visit=subject_visit)
         except ClinicalReviewBaselineRequired:
             print(
-                f"   * {subject_visit.subject_identifier}: ClinicalReviewBaselineRequired (skipping) [0060]"
+                f"   * {subject_visit.subject_identifier}: "
+                "ClinicalReviewBaselineRequired (skipping) [0060]"
             )
         else:
             medications = get_obj(medications_model_cls, subject_visit)

@@ -1,7 +1,7 @@
 from django import forms
 from edc_constants.constants import YES
 from edc_form_validators.form_validator import FormValidator
-from respond_forms.utils import model_exists_or_raise
+from edc_model.utils import model_exists_or_raise
 
 from ..models import ClinicalReviewBaseline, ComplicationsBaseline
 from .mixins import (

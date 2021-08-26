@@ -6,6 +6,7 @@ crfs_prn = FormsCollection(
     Crf(show_order=200, model="inte_subject.cd4result"),
     Crf(show_order=210, model="inte_subject.glucose"),
     Crf(show_order=220, model="inte_subject.viralloadresult"),
+    Crf(show_order=230, model="inte_subject.bloodresultshba1c"),
     name="prn",
 )
 
@@ -96,5 +97,6 @@ crfs_12m = FormsCollection(
     Crf(show_order=200, model="inte_subject.complicationsfollowup", required=False),
     Crf(show_order=220, model="inte_subject.familyhistory"),
     Crf(show_order=225, model="inte_subject.integratedcarereview"),
+    Crf(show_order=230, model="inte_subject.bloodresultshba1c"),
     name="12m",
 )

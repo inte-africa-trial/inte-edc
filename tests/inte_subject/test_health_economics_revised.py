@@ -2,7 +2,7 @@ from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
-from django.test import TestCase, override_settings
+from django.test import TestCase, override_settings, tag
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import (
     COMPLETE,
@@ -142,6 +142,7 @@ class TestHealthEconomicsRevisionRequired(InteTestCaseMixin, TestCase):
         )
 
 
+@tag("k")
 class TestHealthEconomicsRevisedFormValidator(InteTestCaseMixin, TestCase):
 
     sid_count_for_tests = 1

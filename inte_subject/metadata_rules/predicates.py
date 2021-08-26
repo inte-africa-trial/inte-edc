@@ -2,7 +2,7 @@ from django.apps import apps as django_apps
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from edc_metadata.metadata_rules import PredicateCollection
-from edc_visit_schedule.constants import MONTH6
+from edc_visit_schedule.constants import MONTH6, MONTH12
 from edc_visit_schedule.utils import is_baseline
 
 
@@ -56,3 +56,11 @@ class Predicates(PredicateCollection):
             ).exists():
                 required = True
         return required
+
+    @staticmethod
+    def hba1c_required(visit, **kwargs):
+        return (
+            visit.visit_code == MONTH12
+            and visit.visit_code_sequence == 0
+            and visit.site_id in [102, 105, 111, 115, 206, 209, 210, 215]
+        )

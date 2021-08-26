@@ -1,7 +1,7 @@
 from django import forms
 from edc_constants.constants import OTHER, YES
+from edc_dx_review.utils import raise_if_clinical_review_does_not_exist
 from edc_form_validators import FormValidator
-from respond_forms.utils import raise_if_clinical_review_does_not_exist
 
 from ..models import IntegratedCareReview
 from .mixins import (
