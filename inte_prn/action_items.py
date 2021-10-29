@@ -62,6 +62,7 @@ class LossToFollowupHivAction(BaseLossToFollowupAction):
     admin_site_name = "inte_prn_admin"
     name = LOSS_TO_FOLLOWUP_HIV_ACTION
     singleton = True
+    show_link_to_add = True
 
     def get_next_actions(self):
         next_actions = [END_OF_STUDY_HIV_ACTION]
@@ -73,6 +74,7 @@ class LossToFollowupNcdAction(BaseLossToFollowupAction):
     admin_site_name = "inte_prn_admin"
     name = LOSS_TO_FOLLOWUP_NCD_ACTION
     singleton = True
+    show_link_to_add = True
 
     def get_next_actions(self):
         next_actions = [END_OF_STUDY_NCD_ACTION]
