@@ -60,6 +60,7 @@ class EndOfStudyNcdAction(BaseEndOfStudyAction):
 class LossToFollowupHivAction(BaseLossToFollowupAction):
     reference_model = "inte_prn.losstofollowuphiv"
     admin_site_name = "inte_prn_admin"
+    display_name = "Loss to followup (HIV)"
     name = LOSS_TO_FOLLOWUP_HIV_ACTION
     singleton = True
     show_link_to_add = True
@@ -72,6 +73,7 @@ class LossToFollowupHivAction(BaseLossToFollowupAction):
 class LossToFollowupNcdAction(BaseLossToFollowupAction):
     reference_model = "inte_prn.losstofollowupncd"
     admin_site_name = "inte_prn_admin"
+    display_name = "Loss to followup (NCD)"
     name = LOSS_TO_FOLLOWUP_NCD_ACTION
     singleton = True
     show_link_to_add = True
