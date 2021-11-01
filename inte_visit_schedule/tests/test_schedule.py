@@ -1,4 +1,4 @@
-from django.test import TestCase, tag
+from django.test import TestCase
 
 from ..visit_schedules.schedule import schedule_hiv, schedule_ncd
 from ..visit_schedules.visit_schedule import visit_schedule

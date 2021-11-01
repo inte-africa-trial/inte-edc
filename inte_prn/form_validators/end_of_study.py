@@ -1,8 +1,11 @@
-from edc_adverse_event.form_validators import ValidateDeathReportMixin
+from edc_adverse_event.form_validator_mixins import (
+    RequiresDeathReportFormValidatorMixin,
+)
 from edc_consent.constants import CONSENT_WITHDRAWAL
-from edc_constants.constants import DEAD, LOST_TO_FOLLOWUP, OTHER
+from edc_constants.constants import DEAD, OTHER
 from edc_form_validators import FormValidator
-from edc_ltfu.modelform_mixins import LtfuFormValidatorMixin
+from edc_ltfu.constants import LTFU
+from edc_ltfu.forms import LtfuFormValidatorMixin
 from edc_offstudy.constants import OTHER_RX_DISCONTINUATION
 from edc_transfer.constants import TRANSFERRED
 from edc_transfer.form_validators import SubjectTransferFormValidatorMixin
@@ -11,7 +14,7 @@ from edc_transfer.form_validators import SubjectTransferFormValidatorMixin
 class EndOfStudyFormValidator(
     LtfuFormValidatorMixin,
     SubjectTransferFormValidatorMixin,
-    ValidateDeathReportMixin,
+    RequiresDeathReportFormValidatorMixin,
     FormValidator,
 ):
 
@@ -20,7 +23,7 @@ class EndOfStudyFormValidator(
 
     loss_to_followup_model = "inte_prn.losstofollowup"
     loss_to_followup_date_field = "ltfu_date"
-    loss_to_followup_reason = LOST_TO_FOLLOWUP
+    loss_to_followup_reason = LTFU
 
     subject_transfer_model = "inte_prn.subjecttransfer"
     subject_transfer_date_field = "transfer_date"
@@ -28,7 +31,7 @@ class EndOfStudyFormValidator(
 
     def clean(self):
 
-        self.validate_loss_to_followup()
+        self.validate_ltfu()
 
         self.validate_subject_transferred()
 

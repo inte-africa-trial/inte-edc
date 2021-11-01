@@ -11,13 +11,13 @@ from reportlab.platypus.tables import Table
 
 from inte_ae.models import DeathReport as DeathReportModel
 
-from .pdf_report import MetaCrfPdfReport
+from .pdf_report import CrfPdfReport
 
 User = get_user_model()
 p = inflect.engine()
 
 
-class DeathReport(MetaCrfPdfReport):
+class DeathReport(CrfPdfReport):
     model_attr = "death_report"
 
     def __init__(self, death_report=None, **kwargs):

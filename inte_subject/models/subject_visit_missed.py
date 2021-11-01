@@ -1,5 +1,5 @@
 from django.db import models
-from edc_crf.model_mixins import CrfWithActionModelMixin
+from edc_crf.crf_with_action_model_mixin import CrfWithActionModelMixin
 from edc_model import models as edc_models
 from edc_sites.models import SiteModelMixin
 from edc_visit_tracking.model_mixins import SubjectVisitMissedModelMixin

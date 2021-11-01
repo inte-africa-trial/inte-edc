@@ -1,12 +1,11 @@
 from edc_constants.constants import (
-    DEAD,
+    DECEASED,
     DIABETES,
     DWTA,
     FREE_OF_CHARGE,
     HIV,
     HOSPITALIZED,
     HYPERTENSION,
-    LOST_TO_FOLLOWUP,
     NOT_APPLICABLE,
     OTHER,
     REFILL,
@@ -14,7 +13,13 @@ from edc_constants.constants import (
     STUDY_DEFINED_TIMEPOINT,
     UNWELL_VISIT,
 )
-from edc_offstudy.constants import INVALID_ENROLMENT, LATE_EXCLUSION, WITHDRAWAL
+from edc_ltfu.constants import LTFU
+from edc_offstudy.constants import (
+    COMPLETED_FOLLOWUP,
+    INVALID_ENROLMENT,
+    LATE_EXCLUSION,
+    WITHDRAWAL,
+)
 from edc_transfer.constants import TRANSFERRED
 
 from inte_subject.constants import (
@@ -88,9 +93,9 @@ list_data = {
         (OTHER, "Other reason (specify below)"),
     ],
     "inte_lists.offstudyreasons": [
-        ("completed_followup", "Patient completed 12 months of follow-up"),
-        (LOST_TO_FOLLOWUP, "Patient lost to follow-up (Submit LTFU CRF first)"),
-        (DEAD, "Patient reported/known to have died (Submit Death Report first)"),
+        (COMPLETED_FOLLOWUP, "Patient completed 12 months of follow-up"),
+        (LTFU, "Patient lost to follow-up (Submit LTFU CRF first)"),
+        (DECEASED, "Patient reported/known to have died (Submit Death Report first)"),
         (WITHDRAWAL, "Patient withdrew consent to participate further"),
         (LATE_EXCLUSION, "Patient fulfilled late exclusion criteria*"),
         (

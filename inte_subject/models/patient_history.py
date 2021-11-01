@@ -6,6 +6,8 @@ from edc_lab.choices import RESULT_QUANTIFIER
 from edc_lab.constants import EQ
 from edc_model import models as edc_models
 from edc_reportable.units import COPIES_PER_MILLILITER
+from edc_vitals.model_mixins import SimpleBloodPressureModelMixin
+from edc_vitals.models import WeightField
 
 from inte_lists.models import VisitReasons
 
@@ -13,7 +15,7 @@ from ..choices import GLUCOSE_UNITS
 from ..model_mixins import CrfModelMixin
 
 
-class PatientHistory(CrfModelMixin, edc_models.BaseUuidModel):
+class PatientHistory(SimpleBloodPressureModelMixin, CrfModelMixin, edc_models.BaseUuidModel):
     visit_reason = models.ManyToManyField(
         VisitReasons,
         verbose_name="Reason for this visit",
@@ -39,7 +41,7 @@ class PatientHistory(CrfModelMixin, edc_models.BaseUuidModel):
         help_text="If yes, indicate below",
     )
 
-    weight = edc_models.WeightField(
+    weight = WeightField(
         null=True,
         blank=True,
     )
@@ -49,14 +51,6 @@ class PatientHistory(CrfModelMixin, edc_models.BaseUuidModel):
         max_length=15,
         choices=YES_NO,
         help_text="If yes, indicate below",
-    )
-
-    sys_blood_pressure = edc_models.SystolicPressureField(
-        verbose_name="Reading 1: Systolic pressure", null=True, blank=True
-    )
-
-    dia_blood_pressure = edc_models.DiastolicPressureField(
-        verbose_name="Reading 1: Diastolic pressure", null=True, blank=True
     )
 
     glucose_measured = models.CharField(

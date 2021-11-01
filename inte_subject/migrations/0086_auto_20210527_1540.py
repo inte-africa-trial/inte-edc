@@ -1,7 +1,7 @@
 import sys
 
 from django.db import migrations
-from respond_models.utils import calculate_dx_date_if_estimated
+from edc_dx.utils import calculate_dx_date_if_estimated
 from tqdm import tqdm
 
 

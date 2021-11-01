@@ -94,6 +94,7 @@ INSTALLED_APPS = [
     "edc_auth.apps.AppConfig",
     "edc_crf.apps.AppConfig",
     "edc_consent.apps.AppConfig",
+    # "edc_dx_review.apps.AppConfig",
     "edc_lab.apps.AppConfig",
     "edc_visit_schedule.apps.AppConfig",
     "edc_dashboard.apps.AppConfig",
@@ -107,6 +108,7 @@ INSTALLED_APPS = [
     "edc_label.apps.AppConfig",
     "edc_list_data.apps.AppConfig",
     "edc_locator.apps.AppConfig",
+    "edc_ltfu.apps.AppConfig",
     "edc_reference.apps.AppConfig",
     "edc_metadata.apps.AppConfig",
     "edc_model.apps.AppConfig",
@@ -297,6 +299,9 @@ ENFORCE_RELATED_ACTION_ITEM_EXISTS = False
 # edc-appointment
 DEFAULT_APPOINTMENT_TYPE = "hospital"
 
+# edc-dx and edc-dx-review
+EDC_DX_LABELS = dict(hiv="HIV", htn="Hypertension", dm="Diabetes")
+EDC_DX_REVIEW_APP_LABEL = ("inte_subject",)
 
 # edc-pdutils
 EXPORT_FILENAME_TIMESTAMP_FORMAT = "%Y%m%d"

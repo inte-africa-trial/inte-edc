@@ -2,12 +2,12 @@ from dateutil.relativedelta import relativedelta
 from django.test import TestCase, tag
 from edc_action_item.models import ActionItem, ActionType
 from edc_constants.constants import NO, OTHER, YES
+from edc_dx_review.constants import HIV_CLINIC
 from edc_utils import get_utcnow
 from model_bakery import baker
 
 from inte_ae.action_items import DeathReportAction
 from inte_ae.forms.death_report_form import DeathReportForm, DeathReportFormValidator
-from inte_screening.constants import HIV_CLINIC
 
 from ..inte_test_case_mixin import InteTestCaseMixin
 

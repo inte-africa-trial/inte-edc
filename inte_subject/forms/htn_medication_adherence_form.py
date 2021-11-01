@@ -1,5 +1,4 @@
 from django import forms
-from edc_constants.constants import YES
 from edc_form_validators.form_validator import FormValidator
 from edc_model.widgets import SliderWidget
 

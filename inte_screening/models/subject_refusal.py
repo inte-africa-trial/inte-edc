@@ -44,7 +44,7 @@ class SubjectRefusal(SiteModelMixin, BaseUuidModel):
         return self.screening_identifier
 
     def natural_key(self):
-        return (self.screening_identifier,)
+        return tuple(self.screening_identifier)
 
     @staticmethod
     def get_search_slug_fields():

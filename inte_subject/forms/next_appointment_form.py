@@ -1,15 +1,11 @@
 from django import forms
+from edc_dx_review.constants import DIABETES_CLINIC, HIV_CLINIC, HYPERTENSION_CLINIC
+from edc_dx_review.utils import raise_if_clinical_review_does_not_exist
 from edc_form_validators.form_validator import FormValidator
-from respond_forms.utils import raise_if_clinical_review_does_not_exist
 
 from inte_consent.models import SubjectConsent
 from inte_prn.icc_registered import icc_registered
-from inte_screening.constants import (
-    DIABETES_CLINIC,
-    HIV_CLINIC,
-    HYPERTENSION_CLINIC,
-    NCD_CLINIC,
-)
+from inte_screening.constants import NCD_CLINIC
 
 from ..models import (
     DmInitialReview,

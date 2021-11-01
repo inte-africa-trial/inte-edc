@@ -4,7 +4,8 @@ from django.test import TestCase, override_settings
 from inte_subject.forms.mixins import (
     raise_if_intervention_site_without_icc_registration,
 )
-from tests.inte_test_case_mixin import InteTestCaseMixin
+
+from ..inte_test_case_mixin import InteTestCaseMixin
 
 
 class TestFormMixins(InteTestCaseMixin, TestCase):

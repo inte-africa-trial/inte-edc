@@ -20,8 +20,6 @@ from .modeladmin_mixins import CrfModelAdmin
 @admin.register(SubjectRequisition, site=inte_subject_admin)
 class SubjectRequisitionAdmin(RequisitionAdminMixin, CrfModelAdmin):
 
-    # show_save_next = False
-
     form = SubjectRequisitionForm
 
     fieldsets = (

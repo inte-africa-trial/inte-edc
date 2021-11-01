@@ -1,8 +1,9 @@
 from django.db import models
 from edc_constants.choices import YES_NO
 from edc_constants.constants import NOT_APPLICABLE, YES
+from edc_dx_review.model_mixins import InitialReviewModelMixin
 from edc_model import models as edc_models
-from respond_models.mixins import InitialReviewModelMixin
+from edc_model.utils import duration_to_date
 
 from ..choices import HTN_MANAGEMENT
 from ..model_mixins import CrfModelMixin
@@ -42,7 +43,7 @@ class HtnInitialReview(InitialReviewModelMixin, CrfModelMixin, edc_models.BaseUu
 
     def save(self, *args, **kwargs):
         if self.med_start_ago:
-            self.med_start_estimated_date = edc_models.duration_to_date(
+            self.med_start_estimated_date = duration_to_date(
                 self.med_start_ago, self.report_datetime
             )
         super().save(*args, **kwargs)

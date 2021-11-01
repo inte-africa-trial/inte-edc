@@ -1,19 +1,27 @@
+from typing import Optional
+
 from django import forms
 from django.apps import apps as django_apps
+from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.exceptions import ObjectDoesNotExist
 from edc_constants.constants import FREE_OF_CHARGE, NEVER, NO, OTHER, YES
 from edc_crf.modelform_mixins import CrfModelFormMixin as BaseCrfModelFormMixin
-from edc_model import models as edc_models
-from edc_model.models import InvalidFormat
-from edc_utils import age
-from edc_visit_schedule.utils import is_baseline
-from respond_forms.utils import (
+from edc_dx import Diagnoses
+from edc_dx.diagnoses import InitialReviewRequired
+from edc_dx_review.utils import (
     medications_exists_or_raise,
-    model_exists_or_raise,
     raise_if_clinical_review_does_not_exist,
-    validate_total_days,
 )
+from edc_form_validators import FormValidator
+from edc_model import (
+    InvalidFormat,
+    duration_to_date,
+    estimated_date_from_ago,
+    model_exists_or_raise,
+)
+from edc_utils import age, convert_php_dateformat
+from edc_visit_schedule.utils import is_baseline
 
 from inte_lists.models import DrugPaySources
 from inte_prn.icc_registered import (
@@ -24,6 +32,27 @@ from inte_prn.models import IntegratedCareClinicRegistration
 from inte_sites.is_intervention_site import NotInterventionSite, is_intervention_site
 
 from ..models import ClinicalReviewBaseline
+
+
+def validate_total_days(form: forms.ModelForm, return_in_days: Optional[int] = None) -> None:
+    return_in_days = return_in_days or form.cleaned_data.get("return_in_days")
+    if (
+        form.cleaned_data.get("clinic_days")
+        and form.cleaned_data.get("club_days")
+        and form.cleaned_data.get("purchased_days")
+        and int(return_in_days or 0)
+    ):
+        total = (
+            form.cleaned_data.get("clinic_days")
+            or 0 + form.cleaned_data.get("club_days")
+            or 0 + form.cleaned_data.get("purchased_days")
+            or 0
+        )
+        if total != int(return_in_days or 0):
+            raise forms.ValidationError(
+                f"Patient to return for a drug refill in {return_in_days} days. "
+                "Check that the total days match."
+            )
 
 
 def raise_if_intervention_site_without_icc_registration():
@@ -94,7 +123,7 @@ class EstimatedDateFromAgoFormMixin:
         estimated_date = None
         if self.cleaned_data.get(f1):
             try:
-                estimated_date = edc_models.duration_to_date(
+                estimated_date = duration_to_date(
                     self.cleaned_data.get(f1),
                     self.cleaned_data.get("report_datetime").date(),
                 )
@@ -173,7 +202,8 @@ class GlucoseFormValidatorMixin:
     def validate_glucose_test(self):
         if self.cleaned_data.get("glucose_date") and self.cleaned_data.get("dx_ago"):
             if (
-                self.estimated_date_from_ago("dx_ago") - self.cleaned_data.get("glucose_date")
+                estimated_date_from_ago(self.cleaned_data, "dx_ago")
+                - self.cleaned_data.get("glucose_date")
             ).days > 1:
                 raise forms.ValidationError(
                     {"glucose_date": "Invalid. Cannot be before diagnosis."}
@@ -317,7 +347,7 @@ class HealthEconomicsFormValidatorMixin:
                 if self.cleaned_data.get(f"received_rx_{duration}") == YES:
                     self.applicable_if_diagnosed(
                         diagnoses=diagnoses,
-                        field_dx=f"{cond}_dx",
+                        prefix=cond,
                         field_applicable=f"rx_{cond}_{duration}",
                         label=label,
                     )
@@ -351,3 +381,43 @@ class HealthEconomicsFormValidatorMixin:
                 field_other=f"rx_{cond}_cost_{duration}",
                 field_other_evaluate_as_int=True,
             )
+
+
+class ResultFormValidatorMixin(FormValidator):
+    def validate_test_date_by_dx_date(
+        self, prefix: str, dx_msg_label: str, test_date_fld: Optional[str] = None
+    ) -> None:
+        return self.validate_drawn_date_by_dx_date(
+            prefix=prefix, dx_msg_label=dx_msg_label, drawn_date_fld=test_date_fld
+        )
+
+    def validate_drawn_date_by_dx_date(
+        self, prefix: str, dx_msg_label: str, drawn_date_fld: Optional[str] = None
+    ):
+        drawn_date_fld = drawn_date_fld or "drawn_date"
+        dx = Diagnoses(
+            subject_visit=self.cleaned_data.get("subject_visit"),
+            lte=True,
+            limit_to_single_condition_prefix=prefix,
+        )
+        try:
+            dx_date = dx.get_dx_date(prefix)
+        except InitialReviewRequired:
+            dx_date = None
+        if not dx_date:
+            raise forms.ValidationError(
+                f"A {dx_msg_label} diagnosis has not been reported for this subject."
+            )
+        else:
+            if dx_date > self.cleaned_data.get(drawn_date_fld):
+                formatted_date = dx_date.strftime(
+                    convert_php_dateformat(settings.SHORT_DATE_FORMAT)
+                )
+                raise forms.ValidationError(
+                    {
+                        "drawn_date": (
+                            "Invalid. Subject was diagnosed with "
+                            f"{dx_msg_label} on {formatted_date}."
+                        )
+                    }
+                )

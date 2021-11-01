@@ -3,12 +3,12 @@ from dateutil.relativedelta import relativedelta
 from django.test import TestCase
 from edc_appointment.constants import IN_PROGRESS_APPT, INCOMPLETE_APPT, NEW_APPT
 from edc_appointment.model_mixins import AppointmentWindowError
+from edc_dx_review.constants import HIV_CLINIC
 from edc_utils import get_utcnow
 from edc_visit_schedule.constants import DAY1, MONTH6
 from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED
 
-from inte_screening.constants import HIV_CLINIC
-from tests.inte_test_case_mixin import InteTestCaseMixin
+from ..inte_test_case_mixin import InteTestCaseMixin
 
 
 def weeks_between(start_date, end_date):

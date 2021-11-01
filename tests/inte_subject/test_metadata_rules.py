@@ -2,14 +2,14 @@ from dateutil.relativedelta import relativedelta
 from django.test import TestCase
 from edc_appointment.constants import INCOMPLETE_APPT
 from edc_constants.constants import NO, NOT_APPLICABLE, POS, YES
+from edc_dx_review.constants import HIV_CLINIC
 from edc_metadata import KEYED, REQUIRED
 from edc_metadata.models import CrfMetadata
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import UNSCHEDULED
 from model_bakery import baker
 
-from inte_screening.constants import HIV_CLINIC
-from tests.inte_test_case_mixin import InteTestCaseMixin
+from ..inte_test_case_mixin import InteTestCaseMixin
 
 
 class TestMetadataRules(InteTestCaseMixin, TestCase):

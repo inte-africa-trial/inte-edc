@@ -2,14 +2,15 @@ from dateutil.relativedelta import relativedelta
 from django.forms import ValidationError
 from django.test import TestCase, override_settings
 from edc_constants.constants import INCOMPLETE, YES
+from edc_dx_review.constants import HIV_CLINIC
 from edc_utils import get_utcnow
 from model_bakery import baker
 
 from inte_prn.models import IntegratedCareClinicRegistration
-from inte_screening.constants import HIV_CLINIC
 from inte_subject.forms import NextAppointmentForm
 from inte_subject.forms.next_appointment_form import NextAppointmentFormValidator
-from tests.inte_test_case_mixin import InteTestCaseMixin
+
+from ..inte_test_case_mixin import InteTestCaseMixin
 
 
 class TestNextAppointment(InteTestCaseMixin, TestCase):

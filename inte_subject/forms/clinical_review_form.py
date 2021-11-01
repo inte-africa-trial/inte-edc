@@ -1,7 +1,7 @@
 from django import forms
-from edc_constants.constants import NO, YES
+from edc_constants.constants import DM, HIV, HTN, NO, YES
+from edc_dx.form_validators import DiagnosisFormValidatorMixin
 from edc_form_validators.form_validator import FormValidator
-from respond_forms.form_validator_mixins import DiagnosisFormValidatorMixin
 
 from ..models import ClinicalReview
 from .mixins import CrfFormValidatorMixin, CrfModelFormMixin
@@ -18,7 +18,7 @@ class ClinicalReviewFormValidator(
         # htn
         self.applicable_if_not_diagnosed(
             diagnoses=diagnoses,
-            field_dx="htn_dx",
+            prefix=HTN,
             field_applicable="htn_test",
             label="hypertension",
         )
@@ -29,7 +29,7 @@ class ClinicalReviewFormValidator(
         # diabetes
         self.applicable_if_not_diagnosed(
             diagnoses=diagnoses,
-            field_dx="dm_dx",
+            prefix=DM,
             field_applicable="dm_test",
             label="diabetes",
         )
@@ -40,7 +40,7 @@ class ClinicalReviewFormValidator(
         # hiv
         self.applicable_if_not_diagnosed(
             diagnoses=diagnoses,
-            field_dx="hiv_dx",
+            prefix=HIV,
             field_applicable="hiv_test",
             label="HIV",
         )

@@ -10,12 +10,12 @@ import django_audit_fields.fields.userfield
 import django_audit_fields.fields.uuid_auto_field
 import django_audit_fields.models.audit_model_mixin
 import django_revision.revision_field
-import edc_model.models.fields.blood_pressure
 import edc_model.models.fields.other_charfield
 import edc_model.models.validators.date
 import edc_protocol.validators
 import edc_utils.date
 import edc_visit_tracking.managers
+import edc_vitals.models.fields.blood_pressure
 import simple_history.models
 from django.conf import settings
 from django.db import migrations, models
@@ -463,13 +463,13 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "sys_blood_pressure",
-                    edc_model.models.fields.blood_pressure.SystolicPressureField(
+                    edc_vitals.models.fields.blood_pressure.SystolicPressureField(
                         blank=True, null=True
                     ),
                 ),
                 (
                     "dia_blood_pressure",
-                    edc_model.models.fields.blood_pressure.DiastolicPressureField(
+                    edc_vitals.models.fields.blood_pressure.DiastolicPressureField(
                         blank=True, null=True
                     ),
                 ),
@@ -1071,13 +1071,13 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "sys_blood_pressure",
-                    edc_model.models.fields.blood_pressure.SystolicPressureField(
+                    edc_vitals.models.fields.blood_pressure.SystolicPressureField(
                         blank=True, null=True
                     ),
                 ),
                 (
                     "dia_blood_pressure",
-                    edc_model.models.fields.blood_pressure.DiastolicPressureField(
+                    edc_vitals.models.fields.blood_pressure.DiastolicPressureField(
                         blank=True, null=True
                     ),
                 ),

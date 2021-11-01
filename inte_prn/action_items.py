@@ -1,6 +1,7 @@
 from edc_action_item.site_action_items import site_action_items
 from edc_adverse_event.constants import DEATH_REPORT_ACTION
-from edc_ltfu.action_items import LossToFollowupAction as BaseLossToFollowupAction
+from edc_dx_review.constants import DIABETES_CLINIC, HIV_CLINIC, HYPERTENSION_CLINIC
+from edc_ltfu.action_items import LtfuAction as BaseLtfuAction
 from edc_offstudy.action_items import EndOfStudyAction as BaseEndOfStudyAction
 from edc_prn.action_items import (
     ProtocolDeviationViolationAction as BaseProtocolDeviationViolationAction,
@@ -12,12 +13,7 @@ from edc_transfer.action_items import SubjectTransferAction as BaseSubjectTransf
 from edc_transfer.constants import SUBJECT_TRANSFER_ACTION
 
 from inte_consent.models import SubjectConsent
-from inte_screening.constants import (
-    DIABETES_CLINIC,
-    HIV_CLINIC,
-    HYPERTENSION_CLINIC,
-    NCD_CLINIC,
-)
+from inte_screening.constants import NCD_CLINIC
 
 from .constants import (
     END_OF_STUDY_HIV_ACTION,
@@ -57,7 +53,7 @@ class EndOfStudyNcdAction(BaseEndOfStudyAction):
     ]
 
 
-class LossToFollowupHivAction(BaseLossToFollowupAction):
+class LtfuHivAction(BaseLtfuAction):
     reference_model = "inte_prn.losstofollowuphiv"
     admin_site_name = "inte_prn_admin"
     display_name = "Loss to followup (HIV)"
@@ -70,7 +66,7 @@ class LossToFollowupHivAction(BaseLossToFollowupAction):
         return next_actions
 
 
-class LossToFollowupNcdAction(BaseLossToFollowupAction):
+class LtfuNcdAction(BaseLtfuAction):
     reference_model = "inte_prn.losstofollowupncd"
     admin_site_name = "inte_prn_admin"
     display_name = "Loss to followup (NCD)"
@@ -117,8 +113,8 @@ class UnblindingReviewAction(BaseUnblindingReviewAction):
 
 site_action_items.register(EndOfStudyHivAction)
 site_action_items.register(EndOfStudyNcdAction)
-site_action_items.register(LossToFollowupHivAction)
-site_action_items.register(LossToFollowupNcdAction)
+site_action_items.register(LtfuHivAction)
+site_action_items.register(LtfuNcdAction)
 site_action_items.register(SubjectTransferAction)
 site_action_items.register(ProtocolDeviationViolationAction)
 site_action_items.register(UnblindingRequestAction)

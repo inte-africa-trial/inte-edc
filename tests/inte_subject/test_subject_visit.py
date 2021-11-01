@@ -2,6 +2,7 @@ from dateutil.relativedelta import relativedelta
 from django import forms
 from django.test import TestCase, override_settings
 from edc_constants.constants import HIV, NOT_APPLICABLE, OTHER, STUDY_DEFINED_TIMEPOINT
+from edc_dx_review.constants import HIV_CLINIC
 from edc_utils import get_utcnow
 from edc_visit_schedule.constants import DAY1, MONTH6, MONTH12
 from edc_visit_tracking.constants import MISSED_VISIT, SCHEDULED
@@ -13,12 +14,12 @@ from inte_prn.icc_registered import (
     is_icc_registered_site,
 )
 from inte_prn.models import IntegratedCareClinicRegistration
-from inte_screening.constants import HIV_CLINIC
 from inte_sites.is_intervention_site import NotInterventionSite
 from inte_subject.choices import INFO_SOURCE
 from inte_subject.constants import INTEGRATED
 from inte_subject.forms.subject_visit_form import SubjectVisitFormValidator
-from tests.inte_test_case_mixin import InteTestCaseMixin
+
+from ..inte_test_case_mixin import InteTestCaseMixin
 
 
 class TestSubjectVisitFormValidator(InteTestCaseMixin, TestCase):

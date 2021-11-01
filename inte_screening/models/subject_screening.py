@@ -8,7 +8,9 @@ from django_crypto_fields.fields import EncryptedCharField
 from edc_constants.choices import YES_NO
 from edc_model.models import BaseUuidModel
 from edc_screening.model_mixins import ScreeningModelMixin
-from edc_screening.screening_identifier import ScreeningIdentifier
+from edc_screening.screening_identifier import (
+    ScreeningIdentifier as BaseScreeningIdentifier,
+)
 
 from ..choices import CLINIC_CHOICES, SELECTION_METHOD
 from ..eligibility import check_eligible_final
@@ -18,7 +20,7 @@ class SubjectScreeningModelError(Exception):
     pass
 
 
-class ScreeningIdentifier(ScreeningIdentifier):
+class ScreeningIdentifier(BaseScreeningIdentifier):
     template = "S{random_string}"
 
 
@@ -69,7 +71,7 @@ class SubjectScreening(
     )
 
     requires_acute_care = models.CharField(
-        verbose_name=("Does the patient require acute care including in-patient admission"),
+        verbose_name="Does the patient require acute care including in-patient admission",
         max_length=25,
         choices=YES_NO,
     )

@@ -1,9 +1,9 @@
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from edc_constants.constants import NO, NOT_REQUIRED, YES
+from edc_dx_review.utils import raise_if_clinical_review_does_not_exist
 from edc_form_validators.form_validator import FormValidator
 from edc_visit_schedule.utils import is_baseline
-from respond_forms.utils import raise_if_clinical_review_does_not_exist
 
 from inte_subject.models import HtnInitialReview
 

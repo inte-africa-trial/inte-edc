@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 from django.contrib.sites.models import Site
-from edc_constants.constants import MOBILE_NUMBER, NO, NOT_APPLICABLE, POS, YES
+from edc_constants.constants import MOBILE_NUMBER, NO, NOT_APPLICABLE, YES
 from edc_lab.constants import LT
 from edc_utils import get_utcnow
 from edc_visit_tracking.constants import SCHEDULED

@@ -10,12 +10,12 @@ import django_audit_fields.fields.userfield
 import django_audit_fields.fields.uuid_auto_field
 import django_audit_fields.models.audit_model_mixin
 import django_revision.revision_field
-import edc_model.models.fields.height
-import edc_model.models.fields.weight
 import edc_model.models.validators.date
 import edc_protocol.validators
 import edc_utils.date
 import edc_visit_tracking.managers
+import edc_vitals.models.fields.height
+import edc_vitals.models.fields.weight
 import simple_history.models
 from django.conf import settings
 from django.db import migrations, models
@@ -33,22 +33,22 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="historicalindicators",
             name="height",
-            field=edc_model.models.fields.height.HeightField(blank=True, null=True),
+            field=edc_vitals.models.fields.height.HeightField(blank=True, null=True),
         ),
         migrations.AlterField(
             model_name="historicalindicators",
             name="weight",
-            field=edc_model.models.fields.weight.WeightField(blank=True, null=True),
+            field=edc_vitals.models.fields.weight.WeightField(blank=True, null=True),
         ),
         migrations.AlterField(
             model_name="indicators",
             name="height",
-            field=edc_model.models.fields.height.HeightField(blank=True, null=True),
+            field=edc_vitals.models.fields.height.HeightField(blank=True, null=True),
         ),
         migrations.AlterField(
             model_name="indicators",
             name="weight",
-            field=edc_model.models.fields.weight.WeightField(blank=True, null=True),
+            field=edc_vitals.models.fields.weight.WeightField(blank=True, null=True),
         ),
         migrations.CreateModel(
             name="HistoricalFamilyHistory",

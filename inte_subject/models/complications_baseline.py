@@ -1,6 +1,7 @@
 from django.db import models
 from edc_constants.choices import YES_NO
 from edc_constants.constants import NO
+from edc_model import duration_to_date
 from edc_model import models as edc_models
 
 from ..model_mixins import CrfModelMixin
@@ -163,7 +164,7 @@ class ComplicationsBaseline(CrfModelMixin, edc_models.BaseUuidModel):
         ]
         for complication in complications:
             if getattr(self, f"{complication}_ago", None):
-                duration = edc_models.duration_to_date(
+                duration = duration_to_date(
                     getattr(self, f"{complication}_ago", None), self.report_datetime
                 )
                 setattr(self, f"{complication}_estimated_date", duration)

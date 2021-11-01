@@ -5,18 +5,14 @@ from edc_constants.constants import (
     OTHER,
     PURPOSIVELY_SELECTED,
     RANDOM_SAMPLING,
-)
-
-from inte_subject.constants import INTEGRATED, NCD
-
-from .constants import (
-    DIABETES_CLINIC,
-    HIV_CLINIC,
-    HYPERTENSION_CLINIC,
-    NCD_CLINIC,
     SEQUENTIAL,
     SYSTEMATIC,
 )
+from edc_dx_review.constants import DIABETES_CLINIC, HIV_CLINIC, HYPERTENSION_CLINIC
+
+from inte_subject.constants import INTEGRATED, NCD
+
+from .constants import NCD_CLINIC
 
 CLINIC_CHOICES = (
     (HIV_CLINIC, "HIV Clinic"),

@@ -4,13 +4,15 @@ from dateutil.relativedelta import relativedelta
 from django.forms import ValidationError
 from django.test import TestCase, tag
 from edc_action_item.models import ActionItem, ActionType
-from edc_constants.constants import YES
+from edc_constants.constants import DEAD, DECEASED, YES
+from edc_dx_review.constants import HIV_CLINIC
+from edc_offstudy.constants import COMPLETED_FOLLOWUP
 from edc_utils import get_utcnow
 from model_bakery import baker
 
 from inte_ae.models import DeathReport
+from inte_lists.models import OffstudyReasons
 from inte_prn.form_validators import EndOfStudyFormValidator
-from inte_screening.constants import HIV_CLINIC
 from inte_visit_schedule.constants import SCHEDULE_HIV
 
 from ..inte_test_case_mixin import InteTestCaseMixin
@@ -65,9 +67,11 @@ class TestProtocolViolation(InteTestCaseMixin, TestCase):
             action_identifier=action_item.action_identifier,
             death_date=now - relativedelta(days=5),
         )
+        offschedule_reason = OffstudyReasons.objects.get(name=DECEASED)
         cleaned_data = {
             "subject_identifier": self.subject_consent.subject_identifier,
             "report_datetime": now,
+            "offschedule_reason": offschedule_reason,
             "visit_schedule": "visit_schedule",
             "schedule_name": SCHEDULE_HIV,
             "death_date": now - relativedelta(days=5),

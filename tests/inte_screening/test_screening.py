@@ -1,4 +1,4 @@
-from django.test import TestCase, tag
+from django.test import TestCase
 from edc_constants.constants import MALE, NO, NOT_APPLICABLE, RANDOM_SAMPLING, YES
 from edc_utils.date import get_utcnow
 
@@ -8,7 +8,8 @@ from inte_screening.models import SubjectScreening
 
 
 class TestForms(TestCase):
-    def get_data(self):
+    @staticmethod
+    def get_data():
         return {
             "screening_consent": YES,
             "selection_method": RANDOM_SAMPLING,

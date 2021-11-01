@@ -4,6 +4,7 @@ from edc_appointment.constants import COMPLETE_APPT, INCOMPLETE_APPT
 from edc_appointment.creators import UnscheduledAppointmentCreator
 from edc_constants.choices import YES_NO_DONT_KNOW
 from edc_constants.constants import COMPLETE, HIV, NO, NOT_APPLICABLE, OTHER, YES
+from edc_dx_review.constants import HIV_CLINIC
 from edc_utils import get_utcnow
 from edc_visit_schedule.constants import MONTH6, MONTH12
 from edc_visit_tracking.constants import UNSCHEDULED
@@ -18,14 +19,14 @@ from inte_lists.models import (
     LaboratoryTests,
 )
 from inte_prn.models import IntegratedCareClinicRegistration
-from inte_screening.constants import HIV_CLINIC
 from inte_subject.choices import HCF_PRESCRIPTION_COLLECTION_CHOICES
 from inte_subject.constants import NURSE
 from inte_subject.forms.integrated_care_review_form import (
     IntegratedCareReviewForm,
     IntegratedCareReviewFormValidator,
 )
-from tests.inte_test_case_mixin import InteTestCaseMixin
+
+from ..inte_test_case_mixin import InteTestCaseMixin
 
 
 @tag("icr")

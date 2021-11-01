@@ -1,13 +1,9 @@
 from django import forms
 from edc_constants.constants import NOT_APPLICABLE, YES
+from edc_dx_review.constants import DIABETES_CLINIC, HIV_CLINIC, HYPERTENSION_CLINIC
 from edc_form_validators.form_validator import FormValidator
 
-from inte_screening.constants import (
-    DIABETES_CLINIC,
-    HIV_CLINIC,
-    HYPERTENSION_CLINIC,
-    NCD_CLINIC,
-)
+from inte_screening.constants import NCD_CLINIC
 
 from ..models import ClinicalReviewBaseline
 from .mixins import (
