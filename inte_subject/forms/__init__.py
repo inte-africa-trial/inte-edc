@@ -14,6 +14,7 @@ from .drug_supply_hiv_form import DrugSupplyHivForm
 from .drug_supply_htn_form import DrugSupplyHtnForm
 from .family_history_form import FamilyHistoryForm
 from .glucose_form import GlucoseForm
+from .hba1c_result_form import Hba1cResultForm
 from .health_economics_revised_form import (
     HealthEconomicsRevisedForm,
     HealthEconomicsRevisedFormValidator,
