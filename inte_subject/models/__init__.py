@@ -14,6 +14,7 @@ from .drug_supply_hiv import DrugSupplyHiv
 from .drug_supply_htn import DrugSupplyHtn
 from .family_history import FamilyHistory
 from .glucose import Glucose
+from .hba1c_result import Hba1cResult
 from .health_economics import HealthEconomics
 from .health_economics_revised import HealthEconomicsRevised
 from .health_economics_revised_two import HealthEconomicsRevisedTwo
