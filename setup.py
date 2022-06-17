@@ -21,7 +21,7 @@ setup(
     include_package_data=True,
     url="https://github.com/inte-africa-trial/inte-edc",
     license="GPL license, see LICENSE",
-    description="META Trial EDC (http://www.isrctn.com/ISRCTN76157257)",
+    description="INTE-AFRICA Trial EDC (https://www.isrctn.com/ISRCTN43896688)",
     long_description=README,
     zip_safe=False,
     keywords="django inte africa EDC",

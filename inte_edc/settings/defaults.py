@@ -129,6 +129,7 @@ INSTALLED_APPS = [
     "edc_transfer.apps.AppConfig",
     "edc_visit_tracking.apps.AppConfig",
     "edc_form_describer.apps.AppConfig",
+    "canned_views.apps.AppConfig",
     "inte_consent.apps.AppConfig",
     "inte_lists.apps.AppConfig",
     "inte_dashboard.apps.AppConfig",

@@ -12,7 +12,7 @@ Integrating HIV, Diabetes and Hypertension Services in Africa: A Cluster - Rando
 Liverpool School of Tropical Medicine
 
 
-http://www.isrctn.com/
+https://www.isrctn.com/ISRCTN43896688
 
 
 See also https://github.com/clinicedc/edc
