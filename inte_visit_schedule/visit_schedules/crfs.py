@@ -10,6 +10,7 @@ crfs_prn = FormsCollection(
     name="prn",
 )
 
+
 crfs_unscheduled = FormsCollection(
     Crf(show_order=110, model="inte_subject.clinicalreview"),
     Crf(show_order=111, model="inte_subject.indicators"),
