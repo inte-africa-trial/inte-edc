@@ -1,3 +1,4 @@
+from canned_views.admin_site import canned_views_admin
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
@@ -90,6 +91,7 @@ urlpatterns = [
     path("edc_registration/", include("edc_registration.urls")),
     path("edc_subject_dashboard/", include("edc_subject_dashboard.urls")),
     path("edc_visit_schedule/", include("edc_visit_schedule.urls")),
+    path("canned_views/", include("canned_views.urls")),
     # admin sites
     path("edc_action_item_admin/", edc_action_item_admin.urls),
     path("edc_adverse_event_admin/", edc_adverse_event_admin.urls),
@@ -111,6 +113,7 @@ urlpatterns = [
     path("edc_reference_admin/", edc_reference_admin.urls),
     path("edc_registration_admin/", edc_registration_admin.urls),
     path("edc_visit_schedule_admin/", edc_visit_schedule_admin.urls),
+    path("canned_views_admin/", canned_views_admin.urls),
     path("inte_consent_admin/", inte_consent_admin.urls),
     path("inte_subject_admin/", inte_subject_admin.urls),
     path("inte_ae_admin/", inte_ae_admin.urls),

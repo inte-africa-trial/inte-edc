@@ -6,7 +6,7 @@ from .defaults import *  # noqa
 
 print(f"Settings file {__file__}")  # noqa
 
-SITE_ID = SiteID(default=103)
+SITE_ID = SiteID(default=106)
 EDC_SITES_UAT_DOMAIN = False
 DEBUG = True
 ALLOWED_HOSTS = [
@@ -25,3 +25,5 @@ ALLOWED_HOSTS = [
 if os.path.exists(BASE_DIR) and not os.path.exists(KEY_PATH):  # noqa
     os.makedirs(KEY_PATH)  # noqa
     AUTO_CREATE_KEYS = True
+AUTO_CREATE_KEYS = False
+DATABASE_SQLITE_ENABLED = False
