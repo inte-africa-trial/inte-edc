@@ -11,12 +11,11 @@ style = color_style()
 def update_forms_reference(sender=None, **kwargs):
 
     from edc_form_describer import FormsReference
-
     from effect_subject.admin_site import effect_subject_admin
     from effect_visit_schedule.visit_schedules import visit_schedule
 
     sys.stdout.write(
-        style.MIGRATE_HEADING(f"Refreshing CRF reference document for effect_subject\n")
+        style.MIGRATE_HEADING("Refreshing CRF reference document for effect_subject\n")
     )
     doc_folder = os.path.join(settings.BASE_DIR, "docs")
     if not os.path.exists(doc_folder):

@@ -1,6 +1,6 @@
 import csv
 
-from dateutil.parser import *
+from dateutil.parser import parse
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management import BaseCommand
 from edc_registration.models import RegisteredSubject
@@ -51,7 +51,10 @@ def import_hba1c(filename=None):
                         row.get("drawn_date"),
                         f"{subject_visit.visit_code}.{subject_visit.visit_code_sequence}",
                         subject_visit.report_datetime,
-                        f"{last_subject_visit.visit_code}.{last_subject_visit.visit_code_sequence}",
+                        (
+                            f"{last_subject_visit.visit_code}."
+                            f"{last_subject_visit.visit_code_sequence}"
+                        ),
                         last_subject_visit.report_datetime,
                         0
                         if not subject_visit
@@ -65,7 +68,10 @@ def import_hba1c(filename=None):
                         row.get("drawn_date").date(),
                         "????????",
                         "????????",
-                        f"{last_subject_visit.visit_code}.{last_subject_visit.visit_code_sequence}",
+                        (
+                            f"{last_subject_visit.visit_code}."
+                            f"{last_subject_visit.visit_code_sequence}"
+                        ),
                         last_subject_visit.report_datetime.date(),
                     )
 
