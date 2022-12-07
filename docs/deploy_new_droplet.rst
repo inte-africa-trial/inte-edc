@@ -14,7 +14,7 @@ Update the DB
 Configure access to mysql on the db droplet
 +++++++++++++++++++++++++++++++++++++++++++
 
-To allow the new droplet to access the database, you need to confugre both the firewall and the ``mysql`` database permissions.
+To allow the new droplet to access the database, you need to configure both the firewall and the ``mysql`` database permissions.
 
 Log in to the ``db`` droplet
 
@@ -22,10 +22,10 @@ Update ``mysql`` USER and privileges
 
 .. code-block:: bash
 
-  mysql> CREATE USER 'edc'@'x.x.x.x' IDENTIFIED BY 'password'; FLUSH PRIVILEGES;
+  mysql> CREATE USER 'edc-<host-desc>'@'x.x.x.x' IDENTIFIED BY 'password'; FLUSH PRIVILEGES;
   Query OK, 0 rows affected (0.00 sec)
 
-  mysql> GRANT ALL PRIVILEGES ON *.* TO 'edc'@'x.x.x.x' WITH GRANT OPTION;
+  mysql> GRANT ALL PRIVILEGES ON `<database_name>`.* TO 'edc-<host-desc>'@'x.x.x.x';
   Query OK, 0 rows affected (0.00 sec)
 
 
@@ -133,7 +133,7 @@ Renable each site:
 
 .. code-block:: bash
 
-  $ sudo ln -s /etc/nginx/sites-available/inte.conf /etc/nginx/sites-enabled  
+  $ sudo ln -s /etc/nginx/sites-available/inte.conf /etc/nginx/sites-enabled
   $ sudo ln -s /etc/nginx/sites-available/inte-uat.conf /etc/nginx/sites-enabled
 
 
@@ -147,7 +147,7 @@ Get new certificates and configure for HTTPS:
 Configure for both ``xxx.live.clinicedc.org`` and xxx.uat.inte.clinicedc.org``and selected to redirect all traffic to HTTPS.
 
 Check the files
-  
+
 .. code-block:: bash
 
   $ sudo nginx -t
@@ -157,5 +157,3 @@ Restart nginx
 .. code-block:: bash
 
   $ sudo systemctl reload nginx
-
-
