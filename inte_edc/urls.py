@@ -1,4 +1,3 @@
-from canned_views.admin_site import canned_views_admin
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
@@ -11,7 +10,6 @@ from edc_auth.admin_site import edc_auth_admin
 from edc_crf.admin_site import edc_crf_admin
 from edc_dashboard.views import AdministrationView
 from edc_data_manager.admin_site import edc_data_manager_admin
-from edc_export.admin_site import edc_export_admin
 from edc_facility.admin_site import edc_facility_admin
 from edc_identifier.admin_site import edc_identifier_admin
 from edc_lab.admin_site import edc_lab_admin
@@ -75,7 +73,6 @@ urlpatterns = [
     path("edc_consent/", include("edc_consent.urls")),
     path("edc_data_manager/", include("edc_data_manager.urls")),
     path("edc_device/", include("edc_device.urls")),
-    path("edc_export/", include("edc_export.urls")),
     path("edc_pdutils/", include("edc_pdutils.urls")),
     path("edc_offstudy/", include("edc_offstudy.urls")),
     path("edc_lab/", include("edc_lab.urls")),
@@ -99,7 +96,6 @@ urlpatterns = [
     path("edc_auth_admin/", edc_auth_admin.urls),
     path("edc_crf_admin/", edc_crf_admin.urls),
     path("edc_data_manager_admin/", edc_data_manager_admin.urls),
-    path("edc_export_admin/", edc_export_admin.urls),
     path("edc_facility_admin/", edc_facility_admin.urls),
     path("edc_identifier_admin/", edc_identifier_admin.urls),
     path("edc_lab_admin/", edc_lab_admin.urls),
@@ -113,7 +109,6 @@ urlpatterns = [
     path("edc_reference_admin/", edc_reference_admin.urls),
     path("edc_registration_admin/", edc_registration_admin.urls),
     path("edc_visit_schedule_admin/", edc_visit_schedule_admin.urls),
-    path("canned_views_admin/", canned_views_admin.urls),
     path("inte_consent_admin/", inte_consent_admin.urls),
     path("inte_subject_admin/", inte_subject_admin.urls),
     path("inte_ae_admin/", inte_ae_admin.urls),
@@ -121,7 +116,6 @@ urlpatterns = [
     path("inte_export_admin/", inte_export_admin.urls),
     path("inte_prn_admin/", inte_prn_admin.urls),
     path("inte_screening_admin/", inte_screening_admin.urls),
-    path("defender/", include("defender.urls")),  # defender admin
     path("admin/", admin.site.urls),
     path(
         "switch_sites/",

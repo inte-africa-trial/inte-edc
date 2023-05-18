@@ -78,7 +78,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
-    "defender",
+    # "defender",
     "multisite",
     "django_crypto_fields.apps.AppConfig",
     "django_revision.apps.AppConfig",
@@ -111,7 +111,7 @@ INSTALLED_APPS = [
     "edc_metadata.apps.AppConfig",
     "edc_model.apps.AppConfig",
     "edc_model_admin.apps.AppConfig",
-    "edc_navbar.apps.AppConfig",
+    # "edc_navbar.apps.AppConfig",
     "edc_notification.apps.AppConfig",
     "edc_offstudy.apps.AppConfig",
     "edc_pharmacy.apps.AppConfig",
@@ -155,7 +155,7 @@ MIDDLEWARE = [
     "django.contrib.sites.middleware.CurrentSiteMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "defender.middleware.FailedLoginMiddleware",
+    # "defender.middleware.FailedLoginMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -342,7 +342,7 @@ SUBJECT_VISIT_MISSED_REASONS_MODEL = env.str("EDC_SUBJECT_VISIT_MISSED_REASONS_M
 SUBJECT_VISIT_MODEL = env.str("EDC_SUBJECT_VISIT_MODEL")
 
 EDC_NAVBAR_DEFAULT = env("EDC_NAVBAR_DEFAULT")
-eval
+
 # edc dashboards
 EDC_BOOTSTRAP = env("DJANGO_EDC_BOOTSTRAP")
 DASHBOARD_URL_NAMES = env.dict("DJANGO_DASHBOARD_URL_NAMES")
@@ -470,18 +470,18 @@ else:
     STATIC_URL = env.str("DJANGO_STATIC_URL")
     STATIC_ROOT = env.str("DJANGO_STATIC_ROOT")
 
-SENTRY_DSN = env("SENTRY_DSN")
-
-if SENTRY_ENABLED and SENTRY_DSN:
-    import sentry_sdk
-    from sentry_sdk.integrations.django import DjangoIntegration
-
-    sentry_sdk.init(
-        dsn=SENTRY_DSN,
-        integrations=[DjangoIntegration()],
-        traces_sample_rate=1.0,
-        send_default_pii=True,
-    )
+# SENTRY_DSN = env("SENTRY_DSN")
+#
+# if SENTRY_ENABLED and SENTRY_DSN:
+#     import sentry_sdk
+#     from sentry_sdk.integrations.django import DjangoIntegration
+#
+#     sentry_sdk.init(
+#         dsn=SENTRY_DSN,
+#         integrations=[DjangoIntegration()],
+#         traces_sample_rate=1.0,
+#         send_default_pii=True,
+#     )
 
 if env("DJANGO_LOGGING_ENABLED"):
     from .logging import LOGGING  # noqa
