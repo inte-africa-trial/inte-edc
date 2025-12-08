@@ -78,7 +78,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
-    "defender",
+    # "defender",
     "multisite",
     "django_crypto_fields.apps.AppConfig",
     "django_revision.apps.AppConfig",
@@ -470,7 +470,7 @@ else:
     STATIC_URL = env.str("DJANGO_STATIC_URL")
     STATIC_ROOT = env.str("DJANGO_STATIC_ROOT")
 
-SENTRY_DSN = env("SENTRY_DSN")
+# SENTRY_DSN = env("SENTRY_DSN")
 
 if SENTRY_ENABLED and SENTRY_DSN:
     import sentry_sdk

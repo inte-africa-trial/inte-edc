@@ -121,7 +121,7 @@ urlpatterns = [
     path("inte_export_admin/", inte_export_admin.urls),
     path("inte_prn_admin/", inte_prn_admin.urls),
     path("inte_screening_admin/", inte_screening_admin.urls),
-    path("defender/", include("defender.urls")),  # defender admin
+    # path("defender/", include("defender.urls")),  # defender admin
     path("admin/", admin.site.urls),
     path(
         "switch_sites/",
