@@ -1,0 +1,20 @@
+[project]
+name = "inte-analysis"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "beautifulsoup4>=4.14.3",
+    "canned-views>=0.1.7",
+    "dj-notebook>=0.7.0",
+    "django-import-export>=4.1.1",
+    "django-logentry-admin>=1.1.0",
+    "django-multisite>=1.9.0",
+    "edc==0.3.27",
+    "ipython>=8.18.1",
+    "respond-africa==0.1.12",
+]
+
+[dependency-groups]
+dev = []
